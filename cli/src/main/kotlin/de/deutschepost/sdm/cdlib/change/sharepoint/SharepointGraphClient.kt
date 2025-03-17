@@ -1,5 +1,7 @@
 package de.deutschepost.sdm.cdlib.change.sharepoint
 
+import retrofit2.http.Header
+import retrofit2.http.Body
 import de.deutschepost.sdm.cdlib.change.commonClients.O365Configuration
 import io.micronaut.http.annotation.Body
 import io.micronaut.http.annotation.Header
@@ -16,15 +18,12 @@ import io.micronaut.retry.annotation.Retryable
 
 @Client(SHAREPOINT_GRAPH_URL, configuration = O365Configuration::class)
 @Retryable
-interface SharepointGraphClient {
-    @Post("/{siteId}/lists/{listId}/items")
-    fun addEntry(
+fun addEntry(
         siteId: String,
         listId: String,
-        @Header Authorization: String,
+        @Header("Authorization") authorization: String,
         @Body body: GraphSharepointDTO
     ): GraphSharepointResponse
-}
 
 const val SHAREPOINT_GRAPH_URL = "https://graph.microsoft.com/v1.0/sites"
 
