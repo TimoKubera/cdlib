@@ -79,11 +79,13 @@ class ChangeCloseIntegrationTest(
             output shouldNotContain "Could not transition to 'Under Review'."
             output shouldContain "Transitioning to next change request phase."
             output shouldContain "Change request phase transitioned successfully: 'Under Review'. Change was implemented successfully and is to be reviewed."
-            output shouldContain "Pushing following metric object:"
+            const val METRIC_OBJECT_MESSAGE = "Pushing following metric object:"
+            
+            output shouldContain METRIC_OBJECT_MESSAGE
             exitCode shouldBe 0
-        }
-
-        "Close change request fails when no change was created" {
+                }
+            
+                "Close change request fails when no change was created" {
             changeHandler
                 .findExisting()
                 .closeExisting()
@@ -93,12 +95,12 @@ class ChangeCloseIntegrationTest(
                     *"--debug --test --jira-token $token --commercial-reference $commercialReference --status $status".toArgsArray()
                 )
             }
-
+            
             closeOutput shouldContain "Could not find change to close for the current pipeline."
             exitCode shouldBe -1
-        }
-
-        "Close change request fails and prints warnings when multiple changes were created" {
+                }
+            
+                "Close change request fails and prints warnings when multiple changes were created" {
             changeHandler
                 .post(changeDetails)
                 .preauthorize()
@@ -106,57 +108,57 @@ class ChangeCloseIntegrationTest(
                 .post(changeDetails)
                 .preauthorize()
                 .transition(OPEN_TO_IMPLEMENTATION)
-
+            
             val (exitCode, closeOutput) = withStandardOutput {
                 PicocliRunner.call(
                     ChangeCommand.CloseCommand::class.java,
                     *"--debug --test --jira-token $token --commercial-reference $commercialReference --status $status".toArgsArray()
                 )
             }
-
+            
             closeOutput shouldContain "Found multiple changes for this pipeline, please close them manually using the links below: "
             exitCode shouldBe -1
-        }
-
-        "Publishing metrics with invalid parameter status fails and prints warnings" {
+                }
+            
+                "Publishing metrics with invalid parameter status fails and prints warnings" {
             changeHandler
                 .post(changeDetails)
                 .preauthorize()
                 .transition(OPEN_TO_IMPLEMENTATION)
-
+            
             val (exitCode, output) = withStandardOutput {
                 PicocliRunner.call(
                     ChangeCommand.CloseCommand::class.java,
                     *"--debug --test --jira-token $token --commercial-reference $commercialReference --status Invalid".toArgsArray()
                 )
             }
-
+            
             output shouldContain "Failed to parse Pipeline status"
             output shouldNotContain "Failed to create metric object."
             exitCode shouldBe -1
             changeTestHelper.closeChangeRequest(token, commercialReference)
-        }
-
-        "Publishing metrics with status: SUCCESS is a success" {
+                }
+            
+                "Publishing metrics with status: SUCCESS is a success" {
             changeHandler
                 .post(changeDetails)
                 .preauthorize()
                 .transition(OPEN_TO_IMPLEMENTATION)
-
+            
             val (exitCode, output) = withStandardOutput {
                 PicocliRunner.call(
                     ChangeCommand.CloseCommand::class.java,
                     *"--debug --test --jira-token $token --commercial-reference $commercialReference --status SUCCESS".toArgsArray()
                 )
             }
-
+            
             output shouldNotContain "Failed to parse Pipeline status"
             output shouldNotContain "Failed to create metric object."
-            output shouldContain "Pushing following metric object:"
+            output shouldContain METRIC_OBJECT_MESSAGE
             exitCode shouldBe 0
-        }
-
-        "Change is not closed for failed status" {
+                }
+            
+                "Change is not closed for failed status" {
             listOf("FAILED", "FAILURE").forAll {
                 val (exitCode, output) = withStandardOutput {
                     changeHandler
@@ -170,7 +172,7 @@ class ChangeCloseIntegrationTest(
                 }
                 output shouldNotContain "Closing change"
                 output shouldContain "not closing change request."
-                output shouldContain "Pushing following metric object:"
+                output shouldContain METRIC_OBJECT_MESSAGE
                 exitCode shouldBe 0
 
 
