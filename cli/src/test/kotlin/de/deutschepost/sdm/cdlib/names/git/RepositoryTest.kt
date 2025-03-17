@@ -23,21 +23,23 @@ class RepositoryTest : AnnotationSpec() {
             shortMessage = "Dummy Commit",
             authorName = "Firstname Lastname",
             authorEmail = "f.l@dhl.com",
+            
+            authorEmail = EMAIL,
             committerName = "Firstname Lastname",
-            committerEmail = "f.l@dhl.com"
-        )
-    }
-
-    @Test
-    fun testLastCommit() {
-        val revision = GitRepository.lastBranchCommit(currDir)
-        revision.id shouldBeEqualComparingTo "a5c5bc3ce1907e844490697b9aa22c4196c5d781"
-        revision.longMessage shouldBeEqualComparingTo "Dummy Commit"
-        revision.shortMessage shouldBeEqualComparingTo "Dummy Commit"
-        revision.authorName shouldBeEqualComparingTo "Firstname Lastname"
-        revision.authorEmail shouldBeEqualComparingTo "f.l@dhl.com"
-        revision.committerName shouldBeEqualComparingTo "Firstname Lastname"
-        revision.committerEmail shouldBeEqualComparingTo "f.l@dhl.com"
+            committerEmail = EMAIL
+                )
+            }
+            
+            @Test
+            fun testLastCommit() {
+                val revision = GitRepository.lastBranchCommit(currDir)
+                revision.id shouldBeEqualComparingTo "a5c5bc3ce1907e844490697b9aa22c4196c5d781"
+                revision.longMessage shouldBeEqualComparingTo "Dummy Commit"
+                revision.shortMessage shouldBeEqualComparingTo "Dummy Commit"
+                revision.authorName shouldBeEqualComparingTo "Firstname Lastname"
+                revision.authorEmail shouldBeEqualComparingTo EMAIL
+                revision.committerName shouldBeEqualComparingTo "Firstname Lastname"
+                revision.committerEmail shouldBeEqualComparingTo EMAIL
     }
 
     @Test
