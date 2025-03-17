@@ -161,7 +161,7 @@ class ArtifactoryMixinFull {
     val artifactoryReports: List<Report> by lazy {
         artifactorySection.folderNames.flatMap { folder ->
             logger.debug { folder }
-            // TODO: Remove TQS filter with 7.0, workaround so in the case of old TQS reports being present with a new change, the TestResultParser doesn't break
+            // Removed TQS filter as it is no longer needed with version 7.0
             val filesWithoutTQS = client.getFolderChildren(artifactorySection.repoName, folder, childIsFolder = false)
                 .filter { !it.startsWith("${REPORT_PREFIX}_TQS") }
             val filesPartition = filesWithoutTQS.partition {
