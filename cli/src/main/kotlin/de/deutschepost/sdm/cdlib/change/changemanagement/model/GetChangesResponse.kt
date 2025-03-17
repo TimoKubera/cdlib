@@ -87,7 +87,7 @@ data class GetChangesResponse(
             @JsonProperty(EXECUTION_GROUP)
             val executionGroup: String,
             @JsonProperty(AFFECTED_IT_SYSTEMS)
-            val affectedItSystems: List<String>?, // TODO: Remove nullable once implemented in create
+            val affectedItSystems: List<String>,
         ) {
             data class Category(val value: String)
             data class IssueType(val name: String)
