@@ -1,0 +1,1 @@
+Q 2kotlinXrhrKsrc/main/kotlin/de/deutschepost/sdm/cdlib/mixins/artifactory/UploadMixin.kt

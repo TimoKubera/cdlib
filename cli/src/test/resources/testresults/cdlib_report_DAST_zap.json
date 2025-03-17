@@ -1,0 +1,45 @@
+{
+    "date": "2022-07-12T15:26:22+01:00",
+    "name": "appName_TEST",
+    "test": {
+        "uri": "zap.json",
+        "date": "2021-10-12T13:15:14+01:00",
+        "reportType": "DAST",
+        "tool": {
+            "name": "OWASP Zed Attack Proxy",
+            "version": "2.11.1",
+            "vendor": "OWASP Zed Attack Proxy",
+            "ruleVersion": "2.11.1"
+        },
+        "vulnerabilities": {
+            "scannedObjects": 0,
+            "vulnerableObjects": 0,
+            "open": [],
+            "openCount": 0,
+            "suppressed": [],
+            "suppressedCount": 0,
+            "severityCounts": {
+                "critical": 0,
+                "high": 0,
+                "medium": 0,
+                "low": 0,
+                "none": 0,
+                "unknown": 0
+            }
+        }
+    },
+    "testHash": "72ba3b4a28ae638709c3d1cf04cf4ad22202feed932cc970e7b9756a5b1f6b08",
+    "lastCommit": {
+        "authorMail": "gitMail_TEST",
+        "authorName": "gitName_TEST",
+        "id": "gitId_TEST",
+        "link": "gitLink_TEST",
+        "message": "gitMessage_TEST",
+        "repository": "gitOrigin_TEST"
+    },
+    "pipeline": {
+        "name": "cicdPlatform_TEST",
+        "instance": "https://test-url.jenkuns.example.com",
+        "url": "https://test-url.jenkuns.example.com/jobUrl_TEST"
+    }
+}

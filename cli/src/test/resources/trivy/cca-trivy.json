@@ -1,0 +1,93 @@
+{
+    "uri": "https://dpdhl.css-qhcr-pi.azure.deutschepost.de/api/v2.0/projects/sdc/repositories/gitpod%252Fpostgres/artifacts/10.19-alpine/additions/vulnerabilities",
+    "date": "2022-06-27T13:37:42+01:00",
+    "reportType": "CCA",
+    "tool": {
+        "name": "Trivy",
+        "version": "v0.24.2",
+        "vendor": "Aqua Security",
+        "ruleVersion": ""
+    },
+    "vulnerabilities": {
+        "scannedObjects": 0,
+        "vulnerableObjects": 16,
+        "open": [
+            {
+      "id" : "CVE-2022-1271",
+      "severity" : "HIGH",
+      "origin" : "xz-libs"
+    }, {
+      "id" : "CVE-2022-24407",
+      "severity" : "HIGH",
+      "origin" : "libsasl"
+    } ],
+    "openCount" : 2,
+    "suppressed" : [ {
+      "id" : "CVE-2021-3995",
+      "severity" : "MEDIUM",
+      "origin" : "libuuid"
+    }, {
+      "id" : "CVE-2021-3996",
+      "severity" : "MEDIUM",
+      "origin" : "libuuid"
+    }, {
+      "id" : "CVE-2022-0563",
+      "severity" : "MEDIUM",
+      "origin" : "libuuid"
+    }, {
+      "id" : "CVE-2022-23308",
+      "severity" : "HIGH",
+      "origin" : "libxml2"
+    }, {
+      "id" : "CVE-2022-0778",
+      "severity" : "HIGH",
+      "origin" : "libcrypto1.1"
+    }, {
+      "id" : "CVE-2022-0778",
+      "severity" : "HIGH",
+      "origin" : "libssl1.1"
+    }, {
+      "id" : "CVE-2022-0778",
+      "severity" : "HIGH",
+      "origin" : "libretls"
+    }, {
+      "id" : "CVE-2021-37750",
+      "severity" : "MEDIUM",
+      "origin" : "krb5-libs"
+    }, {
+      "id" : "CVE-2018-25032",
+      "severity" : "HIGH",
+      "origin" : "zlib"
+    }, {
+      "id" : "CVE-2022-28391",
+      "severity" : "CRITICAL",
+      "origin" : "busybox"
+    }, {
+      "id" : "CVE-2022-28391",
+      "severity" : "CRITICAL",
+      "origin" : "ssl_client"
+    }, {
+      "id" : "CVE-2021-30560",
+      "severity" : "HIGH",
+      "origin" : "libxslt"
+    }, {
+      "id" : "CVE-2022-29824",
+      "severity" : "MEDIUM",
+      "origin" : "libxml2"
+    }, {
+      "id" : "CVE-2022-29155",
+      "severity" : "CRITICAL",
+      "origin" : "libldap"
+    } ],
+    "suppressedCount" : 14,
+    "severityCounts" : {
+      "critical" : 0,
+      "high" : 2,
+      "medium" : 0,
+      "low" : 0,
+      "none" : 0,
+      "unknown" : 0
+    }
+  },
+  "pregenerated" : false
+}

@@ -1,0 +1,1 @@
+À 2kotlinXahrWsrc/test/kotlin/de/deutschepost/sdm/cdlib/release/ReportOslcNPMPluginIntegrationTest.kt

@@ -1,0 +1,13 @@
+{
+    "@version": "2.11.1",
+    "@generated": "Tue, 12 Oct 2021 06:27:20",
+    "site": [
+        {
+            "@name": "https://example.com",
+            "@host": "example.com",
+            "@port": "443",
+            "@ssl": "true",
+            "alerts": []
+        }
+    ]
+}

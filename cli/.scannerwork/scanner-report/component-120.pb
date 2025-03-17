@@ -1,0 +1,1 @@
+x 2kotlinXhrpsrc/main/kotlin/de/deutschepost/sdm/cdlib/release/report/internal/oslcComplianceChecker/OslcLicenseDefinition.kt

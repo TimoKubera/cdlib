@@ -1,0 +1,7 @@
+<body><p>This step uses the <code>cdlib-cli</code> container to create different important names for your build/deployment.
+It ensures a standardized naming schema and speeds up the pipeline creation as the names are needed for other steps.
+These names are exported as environment variables. 
+These environment variables are prefixed with <code>CDLIB_</code></p><h4>Example</h4><p>Prerequisite is to have configured the <a href="../cli/README.md#container-agent-setup">Kubernetes agent</a> accordingly.</p><pre><code class="language-groovy">withCdlibCliNamesCreate(containerName: 'cdlib-cli') {
+        sh returnStdout: true, script: 'cdlib names create'
+}
+</code></pre></body>

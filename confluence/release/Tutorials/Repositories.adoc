@@ -1,0 +1,67 @@
+= Repository Structure
+:toc:
+:keywords: latest
+
+The source code is managed via git (in `git.dhl.com`, `LCM` or Azure DevOps).
+In general there are 2 ways to organize your repository, that are described below.
+
+== Monorepository
+
+____
+
+*preferred*
+
+____
+
+This way you can organize your application with all the services inside a single repository:
+
+----
+|Jenkinsfile (pipeline file for jenkins)
+|config.jenkins (configuration for pipeline file)
+|README.md (describe your app)
+|--services/
+|  |--service1/
+|  |  |--src/ (complete code with build scripts)
+|  |  |--test/ (main folder for all test scripts
+|  |  |  |--unit/ (e. g. jUnit)
+|  |  |  |--integration/ (e. g. mocha-scripts)
+|  |  |  |--performance/ (e. g.  jMeter-config)
+|  |--service2/ (complete code with build scripts)
+|  |  |--src/ (complete code with build scripts)
+|  |  |--test/ (main folder for all test scripts
+|  |  |  |--unit/ (e. g. jUnit)
+|  |  |  |--integration/ (e. g. mocha-scripts)
+|  |  |  |--performance/ (e. g.  jMeter-config)
+|--test/ (main folder for all test scripts
+|  |--end2end/ (e. g. selenium-scripts)
+|--config/ (all configuration files, e. g. for different environments)
+----
+
+=== Downsides
+
+* Jenkins will trigger all your pipelines if you change only 1 service, if you are not using a hack with meta stage
+
+== Multirepository
+
+This way you have a single repository for each service of your application, each with the following structure:
+
+----
+|Jenkinsfile (pipeline file for jenkins)
+|config.jenkins (configuration for pipeline file)
+|README.md (describe your app)
+|--src/ (complete code with build scripts)
+|--test/ (main folder for all test scripts
+|  |--unit/ (e. g. jUnit)
+|  |--integration/ (e. g. mocha-scripts)
+|  |--end2end/ (e. g. selenium-scripts)
+|  |--performance/ (e. g.  jMeter-config)
+|--infra/ (all infrastrukture descriptions, e. g. dockerfiles, helm charts or cloud templates)
+|--config/ (all configuration files, e. g. for different environments)
+----
+
+=== Downsides
+
+* if you want an environment per feature branch you will either need to manually create a branch in every repo or write some kind of automation to do it, so in every repo there is the same branch with the same name so you can test your whole application before merging with master
+* where do you place your end-2-end test scripts that need to run for every change on every service - if you put them in a separate repo, how do you version it with your application and how do you test feature branches?
+* in case you use github projects, it can get messy to find your issues and board and you will lose track of all the pull requests
+* in case you perform a change to multiple services you will not have a single view on it in a single PR and most probably will miss to merge one

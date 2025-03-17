@@ -1,0 +1,30 @@
+{
+    "reportSchema": "1.1",
+    "scanInfo": {
+        "engineVersion": "6.1.6",
+        "dataSource": [
+            {
+                "name": "NVD CVE Checked",
+                "timestamp": "2021-10-04T21:51:08"
+            },
+            {
+                "name": "NVD CVE Modified",
+                "timestamp": "2021-10-04T21:51:08"
+            }
+        ]
+    },
+    "projectInfo": {
+        "name": "carts",
+        "groupID": "works.weave.microservices-demo",
+        "artifactID": "carts",
+        "version": "1.4.4.RELEASE",
+        "reportDate": "2021-10-04T21:51:30.780Z",
+        "credits": {
+            "NVD": "This report contains data retrieved from the National Vulnerability Database: http://nvd.nist.gov",
+            "NPM": "This report may contain data retrieved from the NPM Public Advisories: https://www.npmjs.com/advisories",
+            "RETIREJS": "This report may contain data retrieved from the RetireJS community: https://retirejs.github.io/retire.js/",
+            "OSSINDEX": "This report may contain data retrieved from the Sonatype OSS Index: https://ossindex.sonatype.org"
+        }
+    },
+    "dependencies": []
+}

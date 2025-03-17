@@ -1,0 +1,850 @@
+{
+    "allowedLicenses": [
+        {
+            "shortIdentifier": "Xcore",
+            "name": " XCore Open Source License",
+            "version": "no version",
+            "url": "https://en.wikipedia.org/wiki/XCore_Open_Source_License"
+        },
+        {
+            "shortIdentifier": "AFL-2.1",
+            "name": "Academic Free License",
+            "version": "2.1",
+            "url": "https://spdx.org/licenses/AFL-2.1"
+        },
+        {
+            "shortIdentifier": "AFL-2.0",
+            "name": "Academic Free License",
+            "version": "2.0",
+            "url": "https://spdx.org/licenses/AFL-2.0"
+        },
+        {
+            "shortIdentifier": "AFL-1.2",
+            "name": "Academic Free License",
+            "version": "1.2",
+            "url": "https://spdx.org/licenses/AFL-1.2"
+        },
+        {
+            "shortIdentifier": "AFL-1.1",
+            "name": "Academic Free License",
+            "version": "1.1",
+            "url": "https://spdx.org/licenses/AFL-1.1"
+        },
+        {
+            "shortIdentifier": "ACETAOCIAO",
+            "name": "ACETAOCIAO-License",
+            "version": "no version",
+            "url": "http://www.cs.wustl.edu/~schmidt/ACE-copying.html"
+        },
+        {
+            "shortIdentifier": "APL-1.0",
+            "name": "Adaptive Public License",
+            "version": "1.0",
+            "url": "http://opensource.org/licenses/APL-1.0"
+        },
+        {
+            "shortIdentifier": "ANTLR-2",
+            "name": "ANTLR 2 License",
+            "version": "no version",
+            "url": "http://www.antlr2.org/license.html"
+        },
+        {
+            "shortIdentifier": "ANTLR-3",
+            "name": "ANTLR 3 License",
+            "version": "no version",
+            "url": "http://www.antlr3.org/license.html"
+        },
+        {
+            "shortIdentifier": "ANTLR-4",
+            "name": "ANTLR 4 License",
+            "version": "no version",
+            "url": "http://www.antlr.org/license.html"
+        },
+        {
+            "shortIdentifier": "Apache-1.0",
+            "name": "Apache License 1.0",
+            "version": "1.0",
+            "url": "https://www.apache.org/licenses/LICENSE-1.0"
+        },
+        {
+            "shortIdentifier": "Apache-1.1",
+            "name": "Apache License 1.1",
+            "version": "1.1",
+            "url": "https://www.apache.org/licenses/LICENSE-1.1"
+        },
+        {
+            "shortIdentifier": "Apache-2.0",
+            "name": "Apache License 2.0",
+            "version": "2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0"
+        },
+        {
+            "shortIdentifier": "AML",
+            "name": "Apple MIT License",
+            "version": "no version",
+            "url": "https://spdx.org/licenses/AML.html"
+        },
+        {
+            "shortIdentifier": "ASCL",
+            "name": "Apple Sample Code License",
+            "version": "No version",
+            "url": "https://developer.apple.com/library/archive/samplecode/Reachability/Listings/LICENSE_txt.html#//apple_ref/doc/uid/DTS40007324-LICENSE_txt-DontLinkElementID_3"
+        },
+        {
+            "shortIdentifier": "Arphic",
+            "name": "Arphic Public License",
+            "version": "no version",
+            "url": "https://www.freedesktop.org/wiki/Arphic_Public_License/"
+        },
+        {
+            "shortIdentifier": "Artistic-clar",
+            "name": "Artistic License (Clarified)",
+            "version": "1.0",
+            "url": "http://gianluca.dellavedova.org/2011/01/03/clarified-artistic-license/"
+        },
+        {
+            "shortIdentifier": "Artistic-2.0",
+            "name": "Artistic License (Perl)",
+            "version": "2.0",
+            "url": "http://opensource.org/licenses/artistic-license-2.0"
+        },
+        {
+            "shortIdentifier": "Artistic-1.0",
+            "name": "Artistic License (Perl)",
+            "version": "1.0",
+            "url": "http://spdx.org/licenses/Artistic-1.0-Perl#licenseText"
+        },
+        {
+            "shortIdentifier": "AAL",
+            "name": "Attribution Assurance License",
+            "version": "no version",
+            "url": "http://spdx.org/licenses/AAL"
+        },
+        {
+            "shortIdentifier": "BSL-1.0",
+            "name": "Boost Software License",
+            "version": "1.0",
+            "url": "http://spdx.org/licenses/BSL-1.0"
+        },
+        {
+            "shortIdentifier": "Bouncy",
+            "name": "Bouncy Castle Licence ",
+            "version": "no version",
+            "url": "http://www.bouncycastle.org/licence.html"
+        },
+        {
+            "shortIdentifier": "BSD-2-Clause",
+            "name": "BSD 2-clause \"Simplified\" or \"FreeBSD\" License",
+            "version": "2-clause",
+            "url": "http://opensource.org/licenses/BSD-2-Clause"
+        },
+        {
+            "shortIdentifier": "BSD-3-Clause",
+            "name": "BSD License (3-clause, New or Revised) ",
+            "version": "3-clause",
+            "url": "http://opensource.org/licenses/BSD-3-Clause"
+        },
+        {
+            "shortIdentifier": "BSD-4-Clause",
+            "name": "BSD original (4-clause)",
+            "version": "no version",
+            "url": "http://en.wikipedia.org/wiki/BSD_licenses#4-clause_license_.28original_.22BSD_License.22.29"
+        },
+        {
+            "shortIdentifier": "Clearthrough-2.0",
+            "name": "Clearthought Software License",
+            "version": "2.0",
+            "url": "https://lists.debian.org/debian-legal/2009/06/msg00050.html"
+        },
+        {
+            "shortIdentifier": "CNRI-Python",
+            "name": "CNRI Python License",
+            "version": "no version",
+            "url": "http://opensource.org/licenses/CNRI-Python"
+        },
+        {
+            "shortIdentifier": "CPOL-1.02",
+            "name": "Code Project Open License",
+            "version": "1.02",
+            "url": "http://www.codeproject.com/info/cpol10.aspx"
+        },
+        {
+            "shortIdentifier": "CDDL-1.1",
+            "name": "Common Development and Distribution License",
+            "version": "1.1",
+            "url": "http://spdx.org/licenses/CDDL-1.1"
+        },
+        {
+            "shortIdentifier": "CDDL-1.0",
+            "name": "Common Development and Distribution License",
+            "version": "1.0",
+            "url": "https://oss.oracle.com/licenses/CDDL"
+        },
+        {
+            "shortIdentifier": "CPL-1.0",
+            "name": "Common Public License",
+            "version": "1.0",
+            "url": "http://www.opensource.org/licenses/cpl1.0.php"
+        },
+        {
+            "shortIdentifier": "CRYPTIX",
+            "name": "Cryptix General License",
+            "version": "no version",
+            "url": "http://www.cryptix.org/LICENSE.TXT"
+        },
+        {
+            "shortIdentifier": "cURL",
+            "name": "cURL License",
+            "version": "no version",
+            "url": "http://curl.haxx.se/docs/copyright.html"
+        },
+        {
+            "shortIdentifier": "WTFPL-2",
+            "name": "Do What The Fuck You Want To Public License",
+            "version": "2.0",
+            "url": "http://www.wtfpl.net/about/"
+        },
+        {
+            "shortIdentifier": "WTFPL",
+            "name": "Do What The Fuck You Want To Public License ",
+            "version": "1.0",
+            "url": "http://en.wikipedia.org/wiki/WTFPL"
+        },
+        {
+            "shortIdentifier": "DOM4J",
+            "name": "DOM4J License",
+            "version": "no version",
+            "url": "https://github.com/dom4j/dom4j/blob/master/LICENSE"
+        },
+        {
+            "shortIdentifier": "EDL-1.0",
+            "name": "Eclipse Distribution License ",
+            "version": "1.0",
+            "url": "https://eclipse.org/org/documents/edl-v10.php"
+        },
+        {
+            "shortIdentifier": "EPL-1.0",
+            "name": "Eclipse Public License 1.0",
+            "version": "1.0",
+            "url": "http://www.eclipse.org/legal/epl-v10.html"
+        },
+        {
+            "shortIdentifier": "EPL-2.0",
+            "name": "Eclipse Public License 2.0",
+            "version": "2.0",
+            "url": "https://www.eclipse.org/legal/epl-2.0/"
+        },
+        {
+            "shortIdentifier": "ECL-2.0",
+            "name": "Educational Community License",
+            "version": "2.0",
+            "url": "http://opensource.org/licenses/ECL-2.0"
+        },
+        {
+            "shortIdentifier": "ECL-1.0",
+            "name": "Educational Community License",
+            "version": "1.0",
+            "url": "http://spdx.org/licenses/ECL-1.0"
+        },
+        {
+            "shortIdentifier": "EFL-2.0",
+            "name": "Eiffel Forum License",
+            "version": "2.0",
+            "url": "http://spdx.org/licenses/EFL-2.0"
+        },
+        {
+            "shortIdentifier": "EFL-1.0",
+            "name": "Eiffel Forum License ",
+            "version": "1.0",
+            "url": "http://spdx.org/licenses/EFL-1.0"
+        },
+        {
+            "shortIdentifier": "Entessa",
+            "name": "Entessa Public License",
+            "version": "1.0",
+            "url": "http://opensource.org/licenses/Entessa"
+        },
+        {
+            "shortIdentifier": "EUDatagrid",
+            "name": "EU DataGrid License",
+            "version": "no version",
+            "url": "http://opensource.org/licenses/EUDatagrid"
+        },
+        {
+            "shortIdentifier": "EUPL-1.1",
+            "name": "European Union Public License, Version 1.1",
+            "version": "1.1",
+            "url": "https://joinup.ec.europa.eu/sites/default/files/custom-page/attachment/eupl1.1.-licence-en_0.pdf"
+        },
+        {
+            "shortIdentifier": "FacebookJAVAClient",
+            "name": "Facebook Development Platform Java Client",
+            "version": "no version",
+            "url": "https://community.jivesoftware.com/docs/DOC-4007"
+        },
+        {
+            "shortIdentifier": "Fair",
+            "name": "Fair License",
+            "version": "no version",
+            "url": "http://opensource.org/licenses/Fair"
+        },
+        {
+            "shortIdentifier": "FPDF",
+            "name": "FPDF Free License",
+            "version": "no version",
+            "url": "http://www.fpdf.org"
+        },
+        {
+            "shortIdentifier": "FreeImage",
+            "name": "FreeImage Public License",
+            "version": "1.0",
+            "url": "http://freeimage.sourceforge.net/freeimage-license.txt"
+        },
+        {
+            "shortIdentifier": "GTPL",
+            "name": "Globus Toolkit Public License",
+            "version": "3.0",
+            "url": "http://toolkit.globus.org/toolkit/docs/5.2/5.2.3/licenses/license-v3.html"
+        },
+        {
+            "shortIdentifier": "GPL-3.0",
+            "name": "GNU General Public License",
+            "version": "3.0",
+            "url": "http://www.gnu.org/licenses/gpl-3.0.html"
+        },
+        {
+            "shortIdentifier": "GPL-2.0",
+            "name": "GNU General Public License",
+            "version": "2.0",
+            "url": "http://www.gnu.org/licenses/gpl-2.0.html"
+        },
+        {
+            "shortIdentifier": "GNU-Classpath",
+            "name": "GNU GPL with Classpath/Linking Exception",
+            "version": "no version",
+            "url": "http://www.gnu.org/software/classpath/license.html"
+        },
+        {
+            "shortIdentifier": "LGPL-3.0",
+            "name": "GNU Lesser General Public License",
+            "version": "3.0",
+            "url": "http://www.gnu.org/licenses/lgpl-3.0.html"
+        },
+        {
+            "shortIdentifier": "LGPL-2.1",
+            "name": "GNU Lesser General Public License",
+            "version": "2.1",
+            "url": "http://www.gnu.org/licenses/lgpl-2.1.html"
+        },
+        {
+            "shortIdentifier": "LGPL-2.0",
+            "name": "GNU Library General Public License",
+            "version": "2.0",
+            "url": "http://www.gnu.org/licenses/old-licenses/lgpl-2.0.en.html"
+        },
+        {
+            "shortIdentifier": "H2",
+            "name": "H2 Database License",
+            "version": "no version",
+            "url": "http://www.h2database.com/html/license.html#h2_license"
+        },
+        {
+            "shortIdentifier": "IPL-1.0",
+            "name": "IBM Public License 1.0",
+            "version": "1.0",
+            "url": "http://opensource.org/licenses/IPL-1.0"
+        },
+        {
+            "shortIdentifier": "ICU",
+            "name": "ICU License",
+            "version": "no version",
+            "url": "http://source.icu-project.org/repos/icu/icu/trunk/license.html"
+        },
+        {
+            "shortIdentifier": "ICU4J",
+            "name": "ICU4J license",
+            "version": "no version",
+            "url": "http://www.novell.com/documentation/vibe34/vibe34_inst/data/bkrtnzf.html"
+        },
+        {
+            "shortIdentifier": "Imlib2",
+            "name": "IMLIB2 License",
+            "version": "no version",
+            "url": "https://fedoraproject.org/wiki/Licensing:Imlib2?rd=Licensing/Imlib2"
+        },
+        {
+            "shortIdentifier": "IJG",
+            "name": "Independent JPEG Group License",
+            "version": "no version",
+            "url": "https://spdx.org/licenses/IJG"
+        },
+        {
+            "shortIdentifier": "Indiana",
+            "name": "Indiana University Extreme! Lab Software License ",
+            "version": "no version",
+            "url": "http://www.extreme.indiana.edu/xgws/xsoap/PullParser/LICENSE.txt"
+        },
+        {
+            "shortIdentifier": "Intel",
+            "name": "Intel Open Source License",
+            "version": "no version",
+            "url": "http://opensource.org/licenses/Intel"
+        },
+        {
+            "shortIdentifier": "ISC",
+            "name": "ISC License",
+            "version": "no version",
+            "url": "http://opensource.org/licenses/ISC"
+        },
+        {
+            "shortIdentifier": "JAXEN",
+            "name": "Jaxen License",
+            "version": "no version",
+            "url": "http://www.protecode.com/osslicenses/Jaxen%20License.html"
+        },
+        {
+            "shortIdentifier": "JDOM",
+            "name": "JDOM License",
+            "version": "no version",
+            "url": "https://docs.oracle.com/cloud/latest/big-data-discovery-cloud/BDDLG/cl_jdom_license.htm#BDDLG-concept_01FC5849F8D0009944A3CB4DC1ADD32F0BEFD"
+        },
+        {
+            "shortIdentifier": "jMock",
+            "name": "jMock Project License ",
+            "version": "no version",
+            "url": "http://jmock.org/license.html"
+        },
+        {
+            "shortIdentifier": "JSON",
+            "name": "JSON License",
+            "version": "no version",
+            "url": "http://www.json.org/license.html"
+        },
+        {
+            "shortIdentifier": "JTidy",
+            "name": "JTidy Software License",
+            "version": "no version",
+            "url": "http://olex.openlogic.com/licenses/jtidy-license"
+        },
+        {
+            "shortIdentifier": "LPL-1.02",
+            "name": "Lucent Public License",
+            "version": "1.02",
+            "url": "http://opensource.org/licenses/LPL-1.02"
+        },
+        {
+            "shortIdentifier": "MattKruse",
+            "name": "Matt Kruse JavaScript License",
+            "version": "no version",
+            "url": "http://www.mattkruse.com"
+        },
+        {
+            "shortIdentifier": "MS-PL",
+            "name": "Microsoft Public License ",
+            "version": "no version",
+            "url": "http://msdn.microsoft.com/en-us/library/ff648068.aspx"
+        },
+        {
+            "shortIdentifier": "MS-RL",
+            "name": "Microsoft Reciprocal License",
+            "version": "no version",
+            "url": "http://opensource.org/licenses/MS-RL"
+        },
+        {
+            "shortIdentifier": "MirOS",
+            "name": "MirOS License",
+            "version": "no version",
+            "url": "http://opensource.org/licenses/MirOS"
+        },
+        {
+            "shortIdentifier": "MIT",
+            "name": "MIT License",
+            "version": "no version",
+            "url": "http://www.opensource.org/licenses/mit-license.php"
+        },
+        {
+            "shortIdentifier": "MPL-1.1",
+            "name": "Mozilla Public License",
+            "version": "1.1",
+            "url": "http://www.mozilla.org/MPL/MPL-1.1.html"
+        },
+        {
+            "shortIdentifier": "MPL-1.0",
+            "name": "Mozilla Public License",
+            "version": "1.0",
+            "url": "http://www.mozilla.org/MPL/MPL-1.0.html"
+        },
+        {
+            "shortIdentifier": "MPL-2.0",
+            "name": "Mozilla Public License 2.0",
+            "version": "2.0",
+            "url": "http://www.mozilla.org/MPL/2.0/"
+        },
+        {
+            "shortIdentifier": "Multics",
+            "name": "Multics License",
+            "version": "no version",
+            "url": "http://opensource.org/licenses/Multics"
+        },
+        {
+            "shortIdentifier": "MX4J",
+            "name": "MX4J License",
+            "version": "no version",
+            "url": "http://mx4j.sourceforge.net/docs/ch01s06.html"
+        },
+        {
+            "shortIdentifier": "Naumen",
+            "name": "Naumen Public License",
+            "version": "no version",
+            "url": "http://opensource.org/licenses/Naumen"
+        },
+        {
+            "shortIdentifier": "NBPL-1.0",
+            "name": "Net Boolean Public License",
+            "version": "1.0",
+            "url": "http://spdx.org/licenses/NBPL-1.0"
+        },
+        {
+            "shortIdentifier": "NPL",
+            "name": "Netscape Public License",
+            "version": "1.1",
+            "url": "http://website-archive.mozilla.org/www.mozilla.org/mpl/MPL/NPL/1.1/"
+        },
+        {
+            "shortIdentifier": "Nokia",
+            "name": "Nokia Open Source License",
+            "version": "1.0a",
+            "url": "http://opensource.org/licenses/Nokia"
+        },
+        {
+            "shortIdentifier": "NTP",
+            "name": "NTP License ",
+            "version": "no version",
+            "url": "http://opensource.org/licenses/NTP"
+        },
+        {
+            "shortIdentifier": "Nunit",
+            "name": "NUnit License",
+            "version": "no version",
+            "url": "http://nunit.org/index.php?p=license&r=2.6.2"
+        },
+        {
+            "shortIdentifier": "Nunit",
+            "name": "NUnit License",
+            "version": "no version",
+            "url": "http://nunit.org/index.php?p=license&r=2.6.2"
+        },
+        {
+            "shortIdentifier": "OLDAP-2.7",
+            "name": "OpenLDAP License",
+            "version": "2.7",
+            "url": "http://spdx.org/licenses/OLDAP-2.7"
+        },
+        {
+            "shortIdentifier": "OpenSSL",
+            "name": "OpenSSL License",
+            "version": "no version",
+            "url": "http://www.openssl.org/source/license.html"
+        },
+        {
+            "shortIdentifier": "OpenSymphony",
+            "name": "OpenSymphony Software License",
+            "version": "1.1",
+            "url": "http://wiki.sitemesh.org/wiki/display/sitemesh/License"
+        },
+        {
+            "shortIdentifier": "PayPalSDK",
+            "name": "PayPal SDK License",
+            "version": "no version",
+            "url": "https://github.com/paypal/sdk-core-java/blob/master/LICENSE.txt"
+        },
+        {
+            "shortIdentifier": "PHP-3.0",
+            "name": "PHP License 3.0",
+            "version": "3.0",
+            "url": "http://opensource.org/licenses/PHP-3.0"
+        },
+        {
+            "shortIdentifier": "PHP-3.01",
+            "name": "PHP License 3.01",
+            "version": "3.01",
+            "url": "http://spdx.org/licenses/PHP-3.01"
+        },
+        {
+            "shortIdentifier": "PostgreSQL",
+            "name": "PostgreSQL License",
+            "version": "no version",
+            "url": "http://opensource.org/licenses/PostgreSQL"
+        },
+        {
+            "shortIdentifier": "Proxool",
+            "name": "Proxool's licence",
+            "version": "no version",
+            "url": "http://proxool.sourceforge.net/licence.html"
+        },
+        {
+            "shortIdentifier": "",
+            "name": "Public Domain declerations (different variations)",
+            "version": "no version",
+            "url": ""
+        },
+        {
+            "shortIdentifier": "Python-2.0",
+            "name": "Python License",
+            "version": "2.0",
+            "url": "http://opensource.org/licenses/Python-2.0"
+        },
+        {
+            "shortIdentifier": "Python-2.0",
+            "name": "Python Software Foundation License 2",
+            "version": "2.0",
+            "url": "https://spdx.org/licenses/Python-2.0.html#licenseText"
+        },
+        {
+            "shortIdentifier": "QPL-1.0",
+            "name": "Q Public License",
+            "version": "1.0",
+            "url": "http://opensource.org/licenses/QPL-1.0"
+        },
+        {
+            "shortIdentifier": "Ruby",
+            "name": "Ruby License",
+            "version": "no version",
+            "url": "http://spdx.org/licenses/Ruby"
+        },
+        {
+            "shortIdentifier": "SAX-PD",
+            "name": "Sax Public Domain Decleration",
+            "version": "no version",
+            "url": "http://spdx.org/licenses/SAX-PD"
+        },
+        {
+            "shortIdentifier": "Scriptaculous",
+            "name": "Script aculo us license",
+            "version": "No version",
+            "url": "http://madrobby.github.io/scriptaculous/license/"
+        },
+        {
+            "shortIdentifier": "SGI-B-2.0",
+            "name": "SGI Free Software License B",
+            "version": "2.0",
+            "url": "http://spdx.org/licenses/SGI-B-2.0"
+        },
+        {
+            "shortIdentifier": "SharpZipLib",
+            "name": "SharpZipLib Licence",
+            "version": "no version",
+            "url": "http://icsharpcode.github.io/SharpZipLib/"
+        },
+        {
+            "shortIdentifier": "SimpleMagic",
+            "name": "SimpleMagic OSS License",
+            "version": "no version",
+            "url": "http://256.com/sources/simplemagic/javadoc/simplemagic/doc-files/simplemagic.html#License"
+        },
+        {
+            "shortIdentifier": "Sleepycat",
+            "name": "Sleepycat License (aka Open Source License for Oracle Berkeley DB Java Edition)",
+            "version": "no version",
+            "url": "http://www.oracle.com/technetwork/database/database-technologies/berkeleydb/downloads/jeoslicense-086837.html"
+        },
+        {
+            "shortIdentifier": "SMLNJ",
+            "name": "Standard ML of New Jersey License",
+            "version": "no version",
+            "url": "http://spdx.org/licenses/SMLNJ"
+        },
+        {
+            "shortIdentifier": "STLPort",
+            "name": "STLPort License",
+            "version": "no version",
+            "url": "http://www.stlport.org/doc/license.html"
+        },
+        {
+            "shortIdentifier": "SPL-1.0",
+            "name": "Sun Public License",
+            "version": "1.0",
+            "url": "http://opensource.org/licenses/SPL-1.0"
+        },
+        {
+            "shortIdentifier": "NCSA",
+            "name": "University of Illinois/NCSA Open Source License",
+            "version": "no version",
+            "url": "http://spdx.org/licenses/NCSA"
+        },
+        {
+            "shortIdentifier": "NCSA",
+            "name": "Vovida Software License",
+            "version": "1.0",
+            "url": "http://opensource.org/licenses/VSL-1.0"
+        },
+        {
+            "shortIdentifier": "W3C",
+            "name": "W3C Software Notice and License ",
+            "version": "no version",
+            "url": "http://opensource.org/licenses/W3C"
+        },
+        {
+            "shortIdentifier": "Xnet",
+            "name": "X.Net License",
+            "version": "no version",
+            "url": "http://opensource.org/licenses/Xnet"
+        },
+        {
+            "shortIdentifier": "X11",
+            "name": "X11 License",
+            "version": "no version",
+            "url": "http://www.de.freebsd.org/copyright/license.html"
+        },
+        {
+            "shortIdentifier": "XFree86 License 1.1",
+            "name": "XFree86 License",
+            "version": "1.1",
+            "url": "http://spdx.org/licenses/XFree86-1.1"
+        },
+        {
+            "shortIdentifier": "Xstream",
+            "name": "XStream BSD License",
+            "version": "No version",
+            "url": "http://olex.openlogic.com/licenses/xstream-bsd-license"
+        },
+        {
+            "shortIdentifier": "OBSD",
+            "name": "Zero Clause BSD",
+            "version": "no version",
+            "url": "https://opensource.org/licenses/0BSD"
+        },
+        {
+            "shortIdentifier": "zlib License",
+            "name": "zlib/libpng License",
+            "version": "no version",
+            "url": "http://www.opensource.org/licenses/zlib-license.php"
+        },
+        {
+            "shortIdentifier": "ZPL-1.1",
+            "name": "Zope Public License 1.1",
+            "version": "1.1",
+            "url": "http://spdx.org/licenses/ZPL-1.1"
+        },
+        {
+            "shortIdentifier": "ZPL-2.0",
+            "name": "Zope Public License 2.0",
+            "version": "2.0",
+            "url": "http://spdx.org/licenses/ZPL-2.0"
+        },
+        {
+            "shortIdentifier": "ZPL-2.1",
+            "name": "Zope Public License 2.1",
+            "version": "2.1",
+            "url": "http://spdx.org/licenses/ZPL-2.1"
+        },
+        {
+            "shortIdentifier": "CC-BY 1.0",
+            "name": "Creative Commons Attribution Generic",
+            "version": "1.0",
+            "url": "https://creativecommons.org/licenses/by/1.0/legalcode"
+        },
+        {
+            "shortIdentifier": "CC-BY 2.0",
+            "name": "Creative Commons Attribution Generic",
+            "version": "2.0",
+            "url": "https://creativecommons.org/licenses/by/2.0/legalcode"
+        },
+        {
+            "shortIdentifier": "CC-BY 2.5",
+            "name": "Creative Commons Attribution Generic",
+            "version": "2.5",
+            "url": "https://creativecommons.org/licenses/by/2.5/legalcode"
+        },
+        {
+            "shortIdentifier": "CC-BY 3.0",
+            "name": "Creative Commons Attribution Generic",
+            "version": "3.0",
+            "url": "https://creativecommons.org/licenses/by/3.0/legalcode"
+        },
+        {
+            "shortIdentifier": "CC-BY 4.0",
+            "name": "Creative Commons Attribution Generic",
+            "version": "4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/legalcode"
+        },
+        {
+            "shortIdentifier": "CC-BY 3.0 US",
+            "name": "Creative Commons Attribution US",
+            "version": "3.0",
+            "url": "https://creativecommons.org/licenses/by/3.0/us/legalcode"
+        },
+        {
+            "shortIdentifier": "CC-BY-ND 1.0",
+            "name": "Creative Commons Attribution-NoDerivs Generic",
+            "version": "1.0",
+            "url": "https://creativecommons.org/licenses/by-nd/1.0/legalcode"
+        },
+        {
+            "shortIdentifier": "CC-BY-ND 2.0",
+            "name": "Creative Commons Attribution-NoDerivs Generic",
+            "version": "2.0",
+            "url": "https://creativecommons.org/licenses/by-nd/2.0/legalcode"
+        },
+        {
+            "shortIdentifier": "CC-BY-ND 2.5",
+            "name": "Creative Commons Attribution-NoDerivs Generic",
+            "version": "2.5",
+            "url": "https://creativecommons.org/licenses/by-nd/2.5/legalcode"
+        },
+        {
+            "shortIdentifier": "CC-BY-ND 3.0",
+            "name": "Creative Commons Attribution-NoDerivs Generic",
+            "version": "3.0",
+            "url": "https://creativecommons.org/licenses/by-nd/3.0/legalcode"
+        },
+        {
+            "shortIdentifier": "CC-BY-ND 4.0",
+            "name": "Creative Commons Attribution-NoDerivs Generic",
+            "version": "4.0",
+            "url": "https://creativecommons.org/licenses/by-nd/4.0/legalcode"
+        },
+        {
+            "shortIdentifier": "CC BY-SA 1.0",
+            "name": "Creative Commons Attribution-ShareAlike Generic",
+            "version": "1.0",
+            "url": "https://creativecommons.org/licenses/by-sa/1.0/legalcode"
+        },
+        {
+            "shortIdentifier": "CC BY-SA 2.0",
+            "name": "Creative Commons Attribution-ShareAlike Generic",
+            "version": "2.0",
+            "url": "https://creativecommons.org/licenses/by-sa/2.0/legalcode"
+        },
+        {
+            "shortIdentifier": "CC BY-SA 2.5",
+            "name": "Creative Commons Attribution-ShareAlike Generic",
+            "version": "2.5",
+            "url": "https://creativecommons.org/licenses/by-sa/2.5/legalcode"
+        },
+        {
+            "shortIdentifier": "CC BY-SA 3.0",
+            "name": "Creative Commons Attribution-ShareAlike Generic",
+            "version": "3.0",
+            "url": "https://creativecommons.org/licenses/by-sa/3.0/legalcode"
+        },
+        {
+            "shortIdentifier": "CC BY-SA 4.0",
+            "name": "Creative Commons Attribution-ShareAlike Generic",
+            "version": "4.0",
+            "url": "https://creativecommons.org/licenses/by-sa/4.0/legalcode"
+        },
+        {
+            "shortIdentifier": "CC0 1.0",
+            "name": "Creative Commons Public Domain Dedication",
+            "version": "1.0",
+            "url": "https://creativecommons.org/publicdomain/zero/1.0/legalcode"
+        },
+        {
+            "shortIdentifier": "CC PD 1.0",
+            "name": "Creative Commons Public Domain Mark 1.0",
+            "version": "1.0",
+            "url": "https://creativecommons.org/publicdomain/mark/1.0/"
+        }
+    ]
+}

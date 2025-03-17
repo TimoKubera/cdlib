@@ -1,0 +1,36 @@
+{
+    "entries": [
+        {
+            "packageName": "org.edge.case:caseOne",
+            "justification": "Test",
+            "version": ""
+        },
+        {
+            "packageName": "org.edge.case:caseTwo",
+            "justification": "Test",
+            "version": "",
+            "newLicense": {
+                "license": "Apache 2.0",
+                "url": ""
+            }
+        },
+        {
+            "packageName": "org.edge.case:caseThree",
+            "justification": "Test",
+            "version": "",
+            "newLicense": {
+                "license": "LPPL",
+                "url": ""
+            }
+        },
+        {
+            "packageName": "org.edge.case:caseNever",
+            "justification": "Test",
+            "version": "",
+            "newLicense": {
+                "license": "ALLADIN",
+                "url": ""
+            }
+        }
+    ]
+}

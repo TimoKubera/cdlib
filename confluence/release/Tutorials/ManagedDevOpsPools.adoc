@@ -1,0 +1,94 @@
+= Managed DevOps Pools as Azure Pipeline Agents
+:toc:
+:keywords: latest
+
+We have been working closely with Microsoft to find an out of the box and supported solution to have dynamic agents with container execution capabilities in Azure Pipelines.
+https://learn.microsoft.com/en-us/azure/devops/managed-devops-pools/?view=azure-devops[Managed DevOps pools] are quite similar to public Azure Pipeline agents, but they can be customized to run within our companies network and based on our resource needs.
+Since the VMs are deployed to Microsofts tenant and owned by them, GWSS rules don't apply and we can finally use the only supported container runtime again - Docker.
+
+== Prerequisites
+You need to have the following things to deploy Managed DevOps Pools:
+
+* if you don't already have a service principal for terraform, request a new one with role `DPDHL ZR Managed DevOps Pools` via https://fastlaneprod.service-now.com/sp?id=sc_cat_item&sys_id=828ead261b448a502a08ddb6bb4bcb54&sysparm_category=e81696881b817d101bb3d8f99a4bcbe6
+* if you already have a service principal for terraform, request assignment of role `DPDHL ZR Managed DevOps Pools` for it via https://fastlaneprod.service-now.com/sp?id=sc_cat_item&sys_id=828ead261b448a502a08ddb6bb4bcb54&sysparm_category=e81696881b817d101bb3d8f99a4bcbe6
+* request permissions for said service principal to create pools inside Azure DevOps via https://lcm.deutschepost.de/jira1/secure/CreateIssue.jspa?pid=14900&issuetype=1 (mention the name of the SP and this link: https://dev.azure.com/sw-zustellung-31b3183/_settings/groups?subjectDescriptor=vssgp.Uy0xLTktMTU1MTM3NDI0NS0xMzU2NzkzNzI0LTE1NzE5Nzk1ODQtMjg4MTg0ODc0OC0yOTMzOTg1NzMtMS0zNTAwODg1MjcyLTIzNjcyNjg5NDEtMjY4ODEwOTA2NC0xNDk3MjMxODQ2)
+* Furthermore, to create pools inside Azure DevOps, give the service principal 'Build Administrators' permissions in your project. Go to Azure DevOps -> <your-project> -> Project Settings -> Permissions -> Build Administration -> Add the service principal.
+
+Although you can also use the Managed DevOps Pools in the public cloud, we recommend using them in our network, since for the majority of pipeline tasks you will need internal resources anyways.
+Follow these steps to prepare your subnet:
+
+> IMPORTANT: you won't be able to deploy other resources to that subnet, since you delegated control to Microsoft - in case you are having trouble starting the agent, remove delegation and deploy a debug VM to check the firewall clearances
+
+* grant the service principal `DevOpsInfrastructure` the roles `Reader` and `DPDHL ZR ADO MDP` on your subscription via https://fastlaneprod.service-now.com/sp?id=sc_cat_item&table=sc_cat_item&sys_id=cd2344931bb002502d4a657f7b4bcb20
+* register the `Microsoft.DevOpsInfrastructure` provider on your subscription via https://fastlaneprod.service-now.com/sp?id=sc_cat_item&table=sc_cat_item&sys_id=285537c11b864e102a08ddb6bb4bcb9b
+* delegate subnet to service `Microsoft.DevOpsInfrastructure/pools` via https://fastlaneprod.service-now.com/sp?id=sc_cat_item&table=sc_cat_item&sys_id=285537c11b864e102a08ddb6bb4bcb9b
+
+> be aware that this is another ZR just for the DevOpsInfrastructure service principal
+
+== Firewalls
+As the Managed DevOps pools are just ordinary Azure Pipelines agents, they require the same firewall clearances as before - and a few more:
+
+* as Azure-Firewall-Request Outbound via Web-Proxy https://learn.microsoft.com/en-us/azure/devops/organizations/security/allow-list-ip-url?view=azure-devops&tabs=IP-V4[for Azure DevOps in general] and https://learn.microsoft.com/en-us/azure/devops/managed-devops-pools/configure-networking?view=azure-devops&tabs=azure-portal#restricting-outbound-connectivity[for Managed DevOps Pools specificly]:
+** http://azure.archive.ubuntu.com (Provisioning Linux machines - this is HTTP, not HTTPS !!!)
+** https://*.prod.manageddevops.microsoft.com (Managed DevOps Pools endpoint)
+** https://rmprodbuilds.azureedge.net (Worker binaries)
+** https://vstsagentpackage.azureedge.net (Azure DevOps agent CDN location)
+** https://*.queue.core.windows.net (Worker queue for communicating with Managed DevOps Pools service)
+** https://server.pipe.aria.microsoft.com (Common client side telemetry solution (and used by the Agent Pool Validation extension among others))
+** https://www.microsoft.com (Provisioning Linux machines)
+** https://packages.microsoft.com (Provisioning Linux machines)
+** https://ppa.launchpad.net (Provisioning Ubuntu machines)
+** https://auth.docker.io (to use Azure Pipelines Container Jobs)
+** https://dev.azure.com (Azure DevOps SaaS)
+** https://*.dev.azure.com (Azure DevOps SaaS)
+** https://login.microsoftonline.com (Azure DevOps SaaS)
+** https://management.core.windows.net (Azure DevOps SaaS)
+** https://aex.dev.azure.com
+** https://aexprodea1.vsaex.visualstudio.com
+** https://*.vstmrblob.vsassets.io
+** https://amp.azure.net
+** https://app.vssps.dev.azure.com
+** https://azure.microsoft.com
+** https://go.microsoft.com
+** https://graph.microsoft.com
+** https://management.azure.com
+** https://microsoft.com
+** https://microsoftonline.com
+** https://static2.sharepointonline.com
+** https://visualstudio.com
+** https://vsrm.dev.azure.com
+** https://*.windows.net
+** https://*.visualstudio.com (Task Publish und Download Artifact)
+** https://*.blob.core.windows.net (Task Publish und Download Artifact)
+** https://*.services.visualstudio.com
+** https://*.vsblob.visualstudio.com
+** https://*.vssps.visualstudio.com
+* as Classic Firewall-Request
+** IT-S Github https://git.dhl.com
+** IT-S Artifactory https://artifactory.dhl.com
+** IT-M Sharepoint https://itm.prg-dc.dhl.com/ (Integrated Webapproval)
+* via Target System
+** LCM (helpdeskbrief@deutschepost.de)
+** CDlib Dashboard (https://lcm.deutschepost.de/jira1/secure/CreateIssue.jspa?pid=14900&issuetype=1[request via jira issue])
+
+In case you have problems doing stuff within Azure Pipelines it may be necessary to open access to https://learn.microsoft.com/en-us/azure/devops/organizations/security/allow-list-ip-url?view=azure-devops&tabs=IP-V4#outbound-connections[those IP-ranges]:
+
+* 13.107.6.0/24
+* 13.107.9.0/24
+* 13.107.42.0/24
+* 13.107.43.0/24
+
+== Deployment
+Make sure that you request the needed quota for your pool/region/subscription/sku via Fastlane as a general request.
+Until provisioned, you can start with 2 VMs in the default SKU as 5 vCPUs are always granted.
+
+Follow the https://learn.microsoft.com/en-us/azure/devops/managed-devops-pools/prerequisites?view=azure-devops&tabs=azure-portal[guide], we recommend using the https://github.com/actions/runner-images/tree/main/images/ubuntu[Azure Pipelines agent image], as it comes with loads of preinstalled software, including Docker and is maintained by Microsoft.
+
+Instead of a manual deployment, we use the https://registry.terraform.io/modules/Azure/avm-res-devopsinfrastructure-pool/azurerm/latest[Terraform module and provider] like this:
+
+[source,terraform]
+----
+include::../../../cdaas-template-gitops/terraform/managed-devops-pools.tf[indent=0]
+----
+
+> A complete Terraform example can be found https://dev.azure.com/sw-zustellung-31b3183/ICTO-3339_SDM/_git/gitops?path=/terraform/managed-devops-pools.tf&version=GBterraform-cloud-restruct&line=1&lineEnd=126&lineStartColumn=1&lineEndColumn=1&lineStyle=plain&_a=contents[here]

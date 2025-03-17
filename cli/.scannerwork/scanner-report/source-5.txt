@@ -1,0 +1,97 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    jenkins: slave
+  name: "jenkins-slave-prg-multi"
+  namespace: "its-jenkins-prod"
+spec:
+  imagePullSecrets:
+    - name: pnp-secret
+  containers:
+    #tag::cli[]
+    - name: cdlib-cli
+      image: dpdhl.css-thcr-pi.azure.deutschepost.de/cdlib/cdlib-cli:6.latest
+      tty: true
+      command:
+        - cat
+      resources:
+        requests:
+          cpu: 50m
+          memory: 100Mi
+        limits:
+          cpu: 250m
+          memory: 512Mi
+      imagePullPolicy: Always
+      workingDir: "/var/lib/jenkins"
+    #end::cli[]
+    - name: helm
+      image: dpdhl.css-thcr-pi.azure.deutschepost.de/cdlib/helm:latest
+      tty: true
+      command:
+        - cat
+      resources:
+        requests:
+          cpu: 50m
+          memory: 100Mi
+        limits:
+          cpu: 400m
+          memory: 512Mi
+      imagePullPolicy: Always
+      workingDir: "/var/lib/jenkins"
+    - name: java
+      image: dpdhl.css-qhcr-pi.azure.deutschepost.de/dockerhub/library/eclipse-temurin:21-jdk
+      tty: true
+      command:
+        - cat
+      resources:
+        requests:
+          cpu: 50m
+          memory: 100Mi
+        limits:
+          cpu: 3000m
+          memory: 4Gi
+      imagePullPolicy: Always
+      workingDir: "/var/lib/jenkins"
+    - name: dependency-check
+      image: dpdhl.css-qhcr-pi.azure.deutschepost.de/cdlib/dependency-check:latest
+      tty: true
+      command:
+        - cat
+      resources:
+        requests:
+          cpu: 50m
+          memory: 100Mi
+        limits:
+          cpu: 1000m
+          memory: 2Gi
+      imagePullPolicy: Always
+      workingDir: "/var/lib/jenkins"
+    - name: fortify
+      image: dpdhl.css-thcr-pi.azure.deutschepost.de/cdlib/fortify:2.latest
+      tty: true
+      command:
+        - cat
+      resources:
+        requests:
+          cpu: 50m
+          memory: 100Mi
+        limits:
+          cpu: 1000m
+          memory: 2Gi
+      imagePullPolicy: Always
+      workingDir: "/var/lib/jenkins"
+    - name: jira-cli
+      image: ghcr-docker.artifactory.dhl.com/ankitpokhrel/jira-cli:latest
+      tty: true
+      command:
+        - cat
+      resources:
+        requests:
+          cpu: 50m
+          memory: 100Mi
+        limits:
+          cpu: 250m
+          memory: 256Mi
+      imagePullPolicy: Always
+      workingDir: "/var/lib/jenkins"

@@ -1,0 +1,83 @@
+= Tutorials
+:keywords: latest
+
+Due to the huge selection of technologies available to code, build, test and deploy, every pipeline is different.
+That's why *CDlib* transformed from a predefined Jenkins Library to a framework mainly focusing on *tutorials* and support that help you building your own pipelines for your individual technology stack.
+
+To get started with *CDlib* we recommend this tutorial:
+
+____
+xref:Tutorials/GettingStarted.adoc[GET STARTED WITH CDLIB]
+____
+
+To browse our tutorials, either use the following list or use the search function of Confluence the top right.
+
+== Processes
+
+* xref:Tutorials/IntegratedWebApproval.adoc[Integrated Web Approval]
+* xref:Tutorials/IntegratedOpenSourceLicenseComplianceVerification.adoc[Integrated Open Source License Compliance Verification]
+* xref:Tutorials/IntegratedChangeManagement.adoc[Integrated Change Management]
+* xref:Tutorials/ItsGSN.adoc[Change Management via GSN (IT-S only)]
+
+== Pipelines In General
+
+* xref:Tutorials/GettingStarted.adoc[Getting Started]
+* xref:Tutorials/PipelineTypes.adoc[Pipeline Types]
+* xref:Tutorials/ContinuousDelivery.adoc[Continuous Delivery Maturity]
+
+== CI/CD Tools
+
+* xref:Tutorials/PickingTheRightCICDTool.adoc[Picking The Right CI/CD Tool]
+* xref:Tutorials/ToolAuthentication.adoc[Technical User Authentication (Service Accounts)]
+* https://devsecops.dhl.com/services/build/jenkins-cloudbees/[IT-S Cloudbees Jenkins]
+* xref:Tutorials/JenkinsPipelineConfig.adoc[Pipeline Configuration]
+* xref:Tutorials/KubernetesAsJenkinsAgent.adoc[Kubernetes As Jenkins Agent]
+* xref:Tutorials/AzureDevOps.adoc[Azure Pipelines]
+* xref:Tutorials/SecretsAzureKeyVault.adoc[Using secrets via Azure Key Vault]
+* xref:Tutorials/ManagedDevOpsPools.adoc[Managed DevOps Pools]
+
+== Version Control System
+
+* xref:Tutorials/Repositories.adoc[Source Code Repository Layouts]
+
+== Artifact Management
+
+* https://devsecops.dhl.com/services/build/artifactory/get-started[IT-S Artifactory]
+* xref:Tutorials/Build.adoc[Build]
+* xref:Tutorials/Buildkit.adoc[BuildKit on IT-S Jenkins]
+* xref:Tutorials/ContainerImageLifecycle.adoc[Container Image Lifecycle]
+
+== Deployment
+
+* xref:Tutorials/ItsOpenshift.adoc[IT-S Openshift]
+* xref:Tutorials/Helm.adoc[Helm for Kubernetes and Openshift]
+* xref:Tutorials/GitOps.adoc[GitOps for Kubernetes with FluxCD]
+
+=== Infrastructure
+
+* https://confluence1.lcm.deutschepost.de/confluence1/display/CCCENTER/Cloud+Competence+Center[T-Systems Azure I]
+* xref:Tutorials/Terraform.adoc[Infrastructure as Code with Terraform]
+* xref:Tutorials/TerraformQualityChecks.adoc[Terraform Quality Checks]
+* xref:Tutorials/IaCdeploymentVerifactionWithInspec.adoc[Deployment Verification with Inspec]
+
+== Scans
+
+* https://devsecops.dhl.com/services/test/sonarqube/[IT-S Sonarqube]
+* xref:Tutorials/Sonarqube.adoc[Static Code Analysis With Sonarqube]
+* xref:Tutorials/OpenSourceLicenseComplianceScan.adoc[Open Source License Compliance Scan with FlexNet Code Insight]
+
+=== Security
+
+* xref:Tutorials/SoftwareCompositionAnalysis.adoc[Software Composition Analysis (SCA) with OWASP Dependency-Check]
+* xref:Tutorials/ItsFortify.adoc[Static Application Security Scan (SAST) with IT-S Fortify]
+* xref:Tutorials/DynamicApplicationSecurityTestWithZAP.adoc[Dynamic Application Security Test (DAST) with OWASP ZAP]
+* xref:Tutorials/ContainerCompositionAnalysis.adoc[Container Composition Analysis (CCA) with Trivy]
+* xref:Tutorials/LintingContainerSpecification.adoc[Deprecated: Linting Container Specification]
+* xref:Tutorials/Renovate.adoc[Renovate for Automated Dependency Updates]
+
+== Tests
+
+* xref:Tutorials/UnitTest.adoc[Unit Testing]
+* xref:Tutorials/Pitest.adoc[PIT Mutation Testing]
+* xref:Tutorials/AcceptanceTestsWithSeleniumWebdriverAndItsSeleniumGrid.adoc[Acceptance Tests with Selenium]
+* xref:Tutorials/MFOctane.adoc[Test Result Management with Octane]

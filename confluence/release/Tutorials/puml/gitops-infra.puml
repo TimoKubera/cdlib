@@ -1,0 +1,41 @@
+@startuml
+actor CodeOwner
+actor Dev
+database "gitops:npi <img:../img/git_small.png>"
+database "gitops:featureX <img:../img/git_small.png>"
+control "PRE-PROD <img:../img/azuredevops_small.png>"
+database "LCM-Jira"
+database "gitops:prod <img:../img/git_small.png>"
+control "POST-PROD <img:../img/azuredevops_small.png>"
+database "LCM-Jira"
+entity "flux <img:../img/flux_small.png>"
+collections "npi <img:../img/kubernetes_small.png>"
+collections "prod <img:../img/kubernetes_small.png>"
+database "CDlib-Dashboard"
+
+group TEST
+Dev -> "gitops:npi <img:../img/git_small.png>" : push
+"gitops:npi <img:../img/git_small.png>" -> "flux <img:../img/flux_small.png>" : trigger reconcilation <img:../img/flux_small.png>
+"flux <img:../img/flux_small.png>" -> "npi <img:../img/kubernetes_small.png>" : deploy/update resources
+Dev -> "npi <img:../img/kubernetes_small.png>" : validate
+end
+
+group APPROVAL
+Dev -> "gitops:featureX <img:../img/git_small.png>": create feature branch and PR
+"gitops:featureX <img:../img/git_small.png>" -> "PRE-PROD <img:../img/azuredevops_small.png>" : triggers change process
+"PRE-PROD <img:../img/azuredevops_small.png>" <-> "LCM-Jira" : verify release and create change
+"PRE-PROD <img:../img/azuredevops_small.png>" -> "gitops:featureX <img:../img/git_small.png>" : ready PR
+"CodeOwner" -> "gitops:featureX <img:../img/git_small.png>" : approve
+end
+
+"gitops:featureX <img:../img/git_small.png>" -> "gitops:prod <img:../img/git_small.png>" : merge
+
+group PROD-DEPLOYMENT
+"gitops:prod <img:../img/git_small.png>" -> "flux <img:../img/flux_small.png>" : trigger reconciliation
+"flux <img:../img/flux_small.png>" -> "prod <img:../img/kubernetes_small.png>" : deploy/update resources
+"gitops:prod <img:../img/git_small.png>" -> "POST-PROD <img:../img/azuredevops_small.png>" : trigger
+"POST-PROD <img:../img/azuredevops_small.png>" -> "flux <img:../img/flux_small.png>" : query reconciliation status
+"POST-PROD <img:../img/azuredevops_small.png>" -> "LCM-Jira" : close change
+"POST-PROD <img:../img/azuredevops_small.png>" -> "CDlib-Dashboard" : report metrics
+end
+@enduml

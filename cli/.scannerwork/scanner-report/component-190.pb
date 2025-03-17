@@ -1,0 +1,1 @@
+¾ 2kotlinX|hrZsrc/test/kotlin/de/deutschepost/sdm/cdlib/release/ReportOslcGradlePluginIntegrationTest.kt

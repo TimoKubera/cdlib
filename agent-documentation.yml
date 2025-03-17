@@ -1,0 +1,76 @@
+apiVersion: v1
+kind: Pod
+spec:
+  imagePullSecrets:
+    - name: pnp-secret
+  containers:
+    - name: confluence-publisher
+      image: dpdhl.css-qhcr-pi.azure.deutschepost.de/dockerhub/confluencepublisher/confluence-publisher:0.0.0-SNAPSHOT
+      tty: true
+      command:
+        - cat
+      resources:
+        requests:
+          cpu: 50m
+          memory: 100Mi
+        limits:
+          cpu: 1
+          memory: 1024Mi
+      imagePullPolicy: Always
+      workingDir: '/var/lib/jenkins'
+    - name: helm
+      image: dpdhl.css-thcr-pi.azure.deutschepost.de/cdlib/helm:latest
+      tty: true
+      command:
+        - cat
+      resources:
+        requests:
+          cpu: 50m
+          memory: 100Mi
+        limits:
+          cpu: 400m
+          memory: 512Mi
+      imagePullPolicy: Always
+      workingDir: "/var/lib/jenkins"
+    - name: cdlib-cli
+      image: dpdhl.css-thcr-pi.azure.deutschepost.de/cdlib/cdlib-cli:6.latest
+      tty: true
+      command:
+        - cat
+      resources:
+        requests:
+          cpu: 50m
+          memory: 100Mi
+        limits:
+          cpu: 250m
+          memory: 512Mi
+      imagePullPolicy: Always
+      workingDir: '/var/lib/jenkins'
+    - name: asciidoctor
+      image: dpdhl.css-qhcr-pi.azure.deutschepost.de/dockerhub/asciidoctor/docker-asciidoctor
+      tty: true
+      command:
+        - cat
+      resources:
+        requests:
+          cpu: 50m
+          memory: 100Mi
+        limits:
+          cpu: 1
+          memory: 1024Mi
+      imagePullPolicy: Always
+      workingDir: '/var/lib/jenkins'
+    - name: jira-cli
+      image: ghcr-docker.artifactory.dhl.com/ankitpokhrel/jira-cli:latest
+      tty: true
+      command:
+        - cat
+      resources:
+        requests:
+          cpu: 50m
+          memory: 100Mi
+        limits:
+          cpu: 250m
+          memory: 256Mi
+      imagePullPolicy: Always
+      workingDir: "/var/lib/jenkins"

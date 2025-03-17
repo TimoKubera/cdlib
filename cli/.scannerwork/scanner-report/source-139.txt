@@ -1,0 +1,24 @@
+<configuration>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+<!--        <withJansi>false</withJansi>-->
+        <!-- encoders are assigned the type
+             ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+        <encoder>
+            <pattern>%cyan(%d{HH:mm:ss.SSS}) %gray([%thread]) %highlight(%-5level) %magenta(%logger{36}) - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="org.eclipse.jgit.util.FS" level="OFF"/>
+    <logger name="io.micronaut.retry.intercept.DefaultRetryInterceptor" level="DEBUG"/>
+    <logger name="com.azure.cosmos.implementation.Utils" level="ERROR"/>
+    <logger name="com.azure.cosmos" level="ERROR"/>
+    <logger name="com.azure.core.http.netty.implementation.Utility" level="ERROR"/>
+
+
+    <!---<logger name="io.micronaut.http" level="TRACE"/>-->
+
+    <root level="info">
+        <appender-ref ref="STDOUT"/>
+    </root>
+</configuration>

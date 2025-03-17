@@ -1,0 +1,28 @@
+= Azure DevOps
+:toc:
+:keywords: latest
+
+Azure DevOps is the development suite provided my Microsoft, formerly known as Visual Studio Team Services, and provided as a SaaS.
+
+In general everyone could create an organization and project there and start using it, but then the team would need to make sure that the usage is secure and compliant.
+Since this is too much effort for an individual team the team from 19C provides a managed organization inside Azure DevOps with security and compliance.
+
+== Benefits of Managed Azure DevOps organization `sw-zustellung-31b3183`
+
+* optimized for usage with our Azure workspaces
+* security assured by 19C
+* compliant regarding data privacy and works council
+* support in case of problems or questions
+* DP DHL Active Directory integration &amp; authentication (AD users are required, you can request new AD users via "RequestIT")
+
+== Access
+
+Our Azure DevOps organization is accessible via https://dev.azure.com/sw-zustellung-31b3183/ from any device connected to the internet.
+
+== More Information
+
+You are looking for more information regarding (managed) Azure DevOps?
+The team is providing documentation - especially for starting in our managed Azure DevOps organization - via https://lcm.deutschepost.de/confluence1/pages/viewpage.action?pageId=72196138[Confluence].
+
+Furthermore, we provide some specific Azure DevOps Pipelines tutorials in this https://lcm.deutschepost.de/confluence1/display/SDM/Tutorials[subsection].
+Of course, you will also find information on how-to use Azure DevOps Pipelines for various pipeline tasks inside our generic tutorials.

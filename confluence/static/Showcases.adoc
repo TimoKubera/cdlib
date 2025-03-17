@@ -1,0 +1,12 @@
+= Showcases
+:keywords: latest
+
+If you want to see how we build pipelines (incl. our custom steps), have a look at our showcase implementations.
+We use them for our tutorials and as integration tests for the custom steps:
+
+|===
+|Name |Repositories |Description |Build Tools |CI-Tool |Cloud 
+
+|Phippy and Friends |https://dev.azure.com/sw-zustellung-31b3183/ICTO-3339_SDM/_git/phippyandfriends |Based on the Azure DevOps Showcase https://github.com/Azure/phippyandfriends[Phippy and Friends] |image:../release/Tutorials/img/dotnet.png[] (KEDA and GitOps) image:../release/Tutorials/img/npm.jpg[] (MDP and GitOps) image:../release/Tutorials/img/go.png[] (KEDA and non-GitOps) | image:../release/Tutorials/img/azuredevops.png[] |image:../release/Tutorials/img/azure.png[] image:../release/Tutorials/img/Terraform.png[]
+|Sock Shop |https://git.dhl.com/SockShop |Based on the original https://microservices-demo.github.io/[Weaveworks Sock Shop] |image:../release/Tutorials/img/gradle.png[] image:../release/Tutorials/img/maven.png[] image:../release/Tutorials/img/yarn.png[] image:../release/Tutorials/img/go.png[] |image:../release/Tutorials/img/jenkins.png[] |image:../release/Tutorials/img/openshift.png[]
+|===

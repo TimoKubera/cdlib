@@ -1,0 +1,1 @@
+z 2kotlinX'hrosrc/main/kotlin/de/deutschepost/sdm/cdlib/release/report/internal/oslcComplianceChecker/VersionSpecification.kt

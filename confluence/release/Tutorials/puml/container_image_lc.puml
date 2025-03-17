@@ -1,0 +1,25 @@
+@startuml
+hide empty description
+
+Uncommited: Dockerfile configuration
+Uncommited: Fixing Bugs
+Uncommited --> Pipeline: Commit
+
+state Pipeline {
+
+Build: Container Image creation and static testing
+
+Build --> Artifactory : Upload to **Container Image Registry**
+
+Artifactory: Provides Image information for helm chart
+
+note right
+  The image infromation 
+  is added to Helm Chart
+  and follows its life-cycle
+end note
+
+Pipeline --> Uncommited: Failure
+
+}
+@enduml

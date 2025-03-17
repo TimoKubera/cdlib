@@ -1,0 +1,19 @@
+name: CLI
+on:
+  push:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: [ arc-small-container ]
+    container: dpdhl.css-qhcr-pi.azure.deutschepost.de/cdlib/helm
+    steps:
+    - name: dogger
+      shell: bash
+      run: |
+        if [ -f /.dockerenv ]; then
+            echo "Running inside a Docker container"
+        else
+            echo "Not running inside a Docker container"
+        fi
+        

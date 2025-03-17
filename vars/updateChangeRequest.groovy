@@ -1,0 +1,9 @@
+import dhl.gsn.GSNWebService
+
+def call(Map data, String changeRequestId, GSNWebService gsn) {
+    if (gsn == null) {
+		gsn = new GSNWebService()
+	}
+    
+    gsn.update('change_request', data, changeRequestId)
+}

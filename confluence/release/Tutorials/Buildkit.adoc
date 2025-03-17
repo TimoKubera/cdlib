@@ -1,0 +1,49 @@
+= BuildKit in IT-S Jenkins
+:toc:
+:keywords: latest
+
+Building a docker image on xref:KubernetesAsJenkinsAgent.adoc[Openshift 4 agents] is much slower than on Openshift 3 because we cannot use the Docker daemon of the node anymore.
+When you run `docker build` it is actually running podman inside a cri-o container.
+Podman needs to create an overlay filesystem in the container and that is slow.
+Maybe the performance can be improved once the Openshift 4 nodes are upgraded to RHEL 8/Core OS.
+One rootless alternative to podman is https://github.com/moby/buildkit[BuildKit].
+One big advantage of BuildKit is that it is possible to cache the layers in a remote registry like https://devsecops.dhl.com/services/build/artifactory/get-started[IT-S Artifactory] and use that cache to speed up the build process.
+Only the layer you have changed and the layers over that one need to be rebuilt. 
+
+== How to use BuildKit
+=== General way (using default Jenkins namespace)
+The team behind https://devsecops.dhl.com/services/build/jenkins-cloudbees/[IT-S Cloudbees Jenkins] deployed a BuildKit daemon in a seperate Openshift 4 namespace that you can use to build your image.
+They have also added `buildctl binary` to the Jenkins jnlp agent.
+The only thing you have to do in order to build your image with BuildKit and use the remote cache is to add a step in your pipeline like this:
+
+[source,groovy]
+----
+stage('BUILD AND PUSH CONTAINER') {
+    environment {
+        DOCKER_CONFIG= "${HOME}/.docker"
+    }
+    steps {
+        script {
+            String image = "sockshop-docker-dev-local.artifactory.dhl.com/sockshop/carts:latest"
+            withCredentials([usernamePassword(credentialsId: ARTIFACTORY, usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                sh """
+                    mkdir -p ${HOME}/.docker
+                    docker login -u $USERNAME -p $PASSWORD --authfile=${HOME}/.docker/config.json sockshop-docker-dev-local.artifactory.dhl.com
+                    buildctl --addr tcp://buildkitd.its-buildkit-prod.svc.cluster.local:1234 build --export-cache type=inline --import-cache type=registry,ref=$image --frontend dockerfile.v0 --local context=. --local dockerfile=. --output type=image,name=$image,push=true
+                """
+            }
+        }
+    }
+}
+----
+
+Where:
+
+- ARTIFACTORY is the xref:ToolAuthentication.adoc[Jenkins Credentials ID] for xref:ToolAuthentication.adoc[username and token of the service account] you use to connect to https://devsecops.dhl.com/services/build/artifactory/get-started[IT-S Artifactory]
+- IMAGE is the image name you want to push to https://devsecops.dhl.com/services/build/artifactory/get-started[IT-S Artifactory] including path and tag.
+
+=== Using your own namespace to run Jenkins agents
+You will need to allow connection from your namespace to BuildKit namespace by adding the label `network.openshift.io/policy-group=buildkit` to your namespace with `oc label ns <your namespace> network.openshift.io/policy-group=buildkit`.
+
+If your namespace is in Prague test cluster then you need to replace the address of BuildKit daemon like this:
+`buildctl --addr buildkitd.its-buildkit-test.svc.cluster.local:1234 ...`

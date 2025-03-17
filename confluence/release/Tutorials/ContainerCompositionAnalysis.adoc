@@ -1,0 +1,87 @@
+= Container Composition Analysis (CCA) with CSS (DEPRECATED!)
+:toc:
+:keywords: latest
+
+== DEPRECATED
+With the sunset of CCS this tutorial is deprecated and will be updated soon
+
+Containers are the most common application packaging and deployment format for cloud-native applications.
+With more and more teams building new applications or redesigning their old ones, more containers are used.
+One big advantage of containers is, that you can most probably easily find an existing container that you only need to enhance or adapt in order to be used for your application, instead of creating it from scratch.
+But how do you know that the content of the base container you are using is secure?
+
+In the past we used to perform the vulnerability scan for containers, also called Container Composition Analysis (derived from the xref:SoftwareCompositionAnalysis.adoc[Software Composition Analysis]) abbreviated CCA, directly inside our CI/CD pipelines, but:
+
+- the scan inside our Azure DevOps Pipelines was rather complex
+- we had to perform 2 scan runs, one for medium and low and one for high and critical, to break the pipeline in the latter case
+- with the introduction of https://git.dhl.com/GB19-CCP/CSS-Registry/blob/main/README.md[CSS registry] and their already included trivy scan, we would perform the scan twice, which is inefficient (cost and ecologically) and in the worst case leads to conflicting results, especially since the scanner inside CSS is more important as it blocks sync to the trusted registry in case of critical findings (in case this block is activated)
+
+Therefore we leave the scan to https://git.dhl.com/GB19-CCP/CSS-Registry/blob/main/README.md[CSS registry] and this tutorial explains how to fetch and check the results.
+
+> check our xref:ContainerImageLifecycle.adoc[container image lifecycle tutorial] to see how to use CSS inside your CI/CD pipeline
+
+== Pipeline Integration
+After you have pushed your container image to https://git.dhl.com/GB19-CCP/CSS-Registry/blob/main/README.md[CSS registry], it will automatically perform a vulnerability scan (currently with Trivy) and provide the results via API.
+To fetch the results we provide a command with our `cdlib-cli` called `cdlib report fetch ccs` that will query the CSS registry (QHCR instance only) and create a `cca-trivy-RELEASENAME.json`.
+
+> we expect that you run xref:../CLI.adoc[`cdlib names create`] previously in your pipeline to derive the release name from the environment variables
+
+After fetching the scan results you probably want to verify them, especially to check whether there are critical vulnerabilities.
+For this we provide another command with our `cdlib-cli` called `cdlib report check` that will parse the previously fetched `cca-trivy-RELEASENAME.json` and print out an overview of all vulnerabilities incl. the number of suppressed ones.
+
+> The default timeout is 10 minutes and can be configured with the parameter `--timeout-in-minutes`
+
+Below you find examples to integrate this into your pipeline depending on your CI/CD tool.
+
+=== Jenkins
+Add the following snippet to your pipeline to fetch and verify the scan results:
+
+[source,groovy]
+----
+include::../../../cli/Jenkinsfile[tags=cca, indent=0]
+----
+
+> the sample also builds and pushes the image with podman, you can of course also use other build methods, check out our xref:ContainerImageLifecycle.adoc[Container Image Lifecycle tutorial] for this
+
+This requires a `cdlib-cli` container inside your `agent.yaml`:
+[source,yaml]
+----
+include::../../../cli/agent.yml[indent=0]
+----
+
+Check our samples below to see the full integration into a pipeline.
+
+=== Azure DevOps
+Add the the following job to your pipeline to fetch and verify the scan results:
+
+[source,yaml]
+----
+include::../../../cdaas-template-maven/azure-pipelines.yaml[tags=cca, indent=0]
+----
+
+It will call a template module to fetch the report, that can look like this:
+
+[source,yaml]
+----
+include::../../../cdaas/ado/container-job-templates/cca-harbor.yaml[indent=0]
+----
+
+> as you can see we fetch the CSS robot account from our key vault, learn more about this xref:SecretsAzureKeyVault.adoc[here]
+
+After that it calls another template to verify the report which looks like this:
+
+[source,yaml]
+----
+include::../../../cdaas/ado/container-job-templates/report-upload-azure.yaml[indent=0]
+----
+
+> --severity sets the minimum breaking threshold for the build, you can also set `HIGH` to break for `HIGH AND CRITICAL` vulnerabilities
+
+As long as you are not interested in the integrated web approval, you can skip the upload part.
+
+=== GitHub Actions
+
+We are still figuring out how to perform the CCA with GitHub Actions and hope to provide a solution in April 2025.
+
+== Suppressing Vulnerabilities
+To learn how to suppress new vulnerabilities (false-positives and accepted risks) please check the https://git.dhl.com/GB19-CCP/CSS-Registry/blob/main/tutorials/scan-for-vulnerabilities.md[CSS documentation].

@@ -1,0 +1,1 @@
+¬ 2kotlinX¬hrJsrc/test/kotlin/de/deutschepost/sdm/cdlib/names/NameResolverJenkinsTest.kt

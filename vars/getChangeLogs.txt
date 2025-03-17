@@ -1,0 +1,1 @@
+<body><p>Provides the information about the changes to the code from the Jenkins <code>changeSets</code> provided by the repository.</p><p>For more information regarding this step and its integration, please have a look at our <a href="../tutorials/ItsGSNDeveloperGuide.md">GSN Developer's Guide</a> here.</p></body>

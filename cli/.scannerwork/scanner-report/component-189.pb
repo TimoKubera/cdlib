@@ -1,0 +1,1 @@
+½ 2kotlinXkhrZsrc/test/kotlin/de/deutschepost/sdm/cdlib/release/ReportFetchFnciCommandIntegrationTest.kt

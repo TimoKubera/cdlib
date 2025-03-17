@@ -1,0 +1,1 @@
+X 2kotlinX$hrBsrc/main/kotlin/de/deutschepost/sdm/cdlib/names/git/GitRevision.kt

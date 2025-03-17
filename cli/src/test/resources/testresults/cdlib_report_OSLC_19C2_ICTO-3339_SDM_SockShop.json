@@ -1,0 +1,55 @@
+{
+    "date": "2023-02-23T13:50:20.3007246+01:00",
+    "name": "cli",
+    "test": {
+        "tool": {
+            "name": "CodeInsight",
+            "version": "",
+            "vendor": "Revenera",
+            "ruleVersion": ""
+        },
+        "uri": "oslc-fnci-report-cli_5065.json",
+        "date": "2023-02-23T13:50:20.2902462+01:00",
+        "reportType": "OSLC",
+        "uniqueLicenses": [
+            "Apache License 2.0",
+            "BSD 2-Clause \"Simplified\" License",
+            "BSD 4-Clause \"Original\" or \"Old\" License",
+            "BSD-3-Clause",
+            "BSD-Style License",
+            "Creative Commons CC0 1.0 Universal Public Domain Dedication ",
+            "Eclipse Public License 1.0",
+            "Eclipse Public License 2.0",
+            "GNU General Public License v2.0 only",
+            "I don't know",
+            "ISC License",
+            "MIT License",
+            "MIT-Style License",
+            "Mozilla Public License 1.1",
+            "N/A",
+            "The Unlicense"
+        ],
+        "projectName": "19C2_ICTO-3339_SDM_SockShop",
+        "projectId": 184,
+        "depth": "libs",
+        "policyProfile": "Non-Distribution insecure",
+        "unapprovedItems": {},
+        "totalArtifactCount": 257,
+        "complianceStatus": "GREEN",
+        "valid": true
+    },
+    "testHash": "8a9289e348271936310faf46372c654ca69b37b1af650ee77e8dc60f95626057",
+    "lastCommit": {
+        "authorMail": "integration-test-git-mail",
+        "authorName": "integration-test-git-author",
+        "id": "integration-test-git-id",
+        "link": "integration-test-git-link",
+        "message": "integration-test-git-message",
+        "repository": "integration-test-git-origin"
+    },
+    "pipeline": {
+        "name": "integration-test-platform",
+        "instance": "https://integration-test-url.jenkuns.example.com",
+        "url": "https://integration-test-url.jenkuns.example.com/foo/bar/job/1337"
+    }
+}

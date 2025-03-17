@@ -1,0 +1,1 @@
+p 2kotlinXwhrRsrc/main/kotlin/de/deutschepost/sdm/cdlib/release/report/external/OdcTestResult.kt

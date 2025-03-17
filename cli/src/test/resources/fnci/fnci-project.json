@@ -1,0 +1,53 @@
+{
+    "data": {
+        "id": 184,
+        "name": "19C2_ICTO-3339_SDM_SockShop",
+        "description": "Showcase demo project for microservice-based application with Jenkins pipeline-based scans.",
+        "owner": "lutterjohann",
+        "dateCreated": "2021-02-16 16:07:15.0",
+        "scanPaths": [
+            {
+                "path": "C:/Projects/184"
+            }
+        ],
+        "scanProfileName": "UB P&P OSLC Default Scan Profile",
+        "policyProfileName": "Non-Distribution insecure",
+        "type": "Standard",
+        "risk": "Low",
+        "projectVisibiity": "Public",
+        "legalContactName": "lutterjohann",
+        "securityContactName": "lutterjohann",
+        "devContactName": "lutterjohann",
+        "projectStatus": "Analysis Completed",
+        "scanServerAlias": "LocalScanner",
+        "totalFiles": 0,
+        "codebaseSize": null,
+        "numberOfLines": 0,
+        "projectPath": "/Pipelines/SDM/19C2_ICTO-3339_SDM_SockShop",
+        "childProjects": [],
+        "parentProjects": [],
+        "licenses": {
+            "P1": 1,
+            "P2": 4,
+            "P3": 177,
+            "Unknown": 73
+        },
+        "vulnerabilities": {
+            "CvssV2": {
+                "High": 20,
+                "Medium": 63,
+                "Low": 19,
+                "Unknown": 0
+            },
+            "CvssV3": {
+                "Critical": 14,
+                "High": 25,
+                "Medium": 48,
+                "Low": 1,
+                "None": 14
+            }
+        },
+        "customFields": [],
+        "deleteEmptyInventory": true
+    }
+}

@@ -1,0 +1,8 @@
+#  change/sharepoint/SharepointClient.kt:91, we trust Sharepoint to provide valid responses
+8B6F2E2234150981B439BEDCDF8D90DD
+#  release/ReportCommand.kt:447, since we don't provide a running service, a hacker can only hack his own system, have fun
+15D5230B27444D974CCB842EF8980839
+#  release/ReportCommand.kt:456, since we don't provide a running service, a hacker can only hack his own system, have fun
+E04779C8BB618AF1389FBFB0484E5681
+#  utils/Jsonable.kt:29, since we don't provide a running service, a hacker can only hack his own system, have fun
+9C048502BFC3D6800E772B6F31B082F0

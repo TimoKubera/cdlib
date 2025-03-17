@@ -1,0 +1,24 @@
+= Picking The Right CI/CD Tool
+:toc:
+:keywords: latest
+
+Before you start setting up your CI/CD pipelines you need to decide which tool to use.
+This table gives an overview of the available options and their strengths and weaknesses including a recommendation from
+us, when to pick which.
+Of course there are 1000 other options available on the market, but we can't support them all.
+
+|===
+|Category |xref:AzureDevOps.adoc[Azure Pipelines] |LCM Jenkins | https://lcm.deutschepost.de/confluence1/display/HILFE/LCM-Jenkins+Distribution[IT-S Cloudbees Jenkins] |LCM Gitlab CI |IT-S GitHub Actions
+|Verdict |our former default CI/CD tool|only for legacy use |only for legacy use |Gitlab is not a future platform for us, but only a replacement for TeamForges git repo|default for DHL Group, use this one for new setups
+|Pricing|free for all P&P users (license: 4€/u/m)|free for all P&P users (no license)|free for all IT-S teams (?)|free for all P&P users (license: 26€/u/m)|free for all IT-S teams (license: 21€/u/m)
+|CDlib Support|yes|in sunset|in sunset|no|yes
+|Availability|> 99,9% 24/7|95% 8x5|95% 24/7|95% 8x5|95% 24/7
+|Disaster Recovery| starting point (even for LCM) as it is provided outside DHL infrastructure|if your Azure system is gone, LCM Jenkins probably is gone too|IT-S Cloudbees Jenkins doesn't run in Azure, but may be impacted from Ransomware or other attacks|if your Azure system is gone, LCM Gitlab probably is gone too|IT-S GitHub itself doesn't run in Azure, but it's central Action runners
+|Secrets|secrets are securely stored Azure Key Vault|secrets are typically stored inside Jenkins Credential Store|secrets are typically stored inside Jenkins Credential Store|secrets are typically stored inside Gitlab|secrets are stored inside GitHub
+|Access Management|access management and logging deeply integrated with dedicated Azure Cloud tenant and SIEM/SOC|access managed via LCM Crowd|access managed via global DHL tenant with all employees|access managed via LCM Crowd|access managed via global DHL tenant with all employees and requires RequestIT order
+|Access|accessible via internet|only via VPN/Zscaler|only via VPN/Zscaler|only via VPN/Zscaler|accessible via internet
+|Debugging|easy rerun for failed jobs (no need to rerun whole pipeline), but no possibility to one-shot edit the pipeline|Replay function for debugging|Replay function for debugging|?|easy rerun for failed jobs (no need to rerun whole pipeline), but no possibility to one-shot edit the pipeline
+|UI |fresh, well-arranged and user-friendly|outdated user interface with bad usability|outdated user interface with arguable usability|fresh, well-arranged and user-friendly|fresh, well-arranged and user-friendly
+|Agents|you need to bring your own agents xref:ManagedDevOpsPools.adoc[via MDP, which are fully flexible]|you need to bring your own agents|centrally provided agents on Openshift/IT-S AKS|you need to bring your own agents|you can pay for the centrally provided ones
+|Syntax|YAML|Groovy|Groovy|YAML|YAML
+|===

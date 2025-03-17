@@ -1,0 +1,1 @@
+3 2kotlinXhrSsrc/main/kotlin/de/deutschepost/sdm/cdlib/change/commonClients/O365Configuration.kt

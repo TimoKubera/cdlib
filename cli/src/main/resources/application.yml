@@ -1,0 +1,15 @@
+micronaut:
+  application:
+    name: cdlib
+  http:
+    services:
+      o365:
+        proxy-type: HTTP
+        read-timeout: 60s
+        exception-on-error-status: false
+    client:
+      read-timeout: 60s
+      exception-on-error-status: false
+
+change-frozenzone-start: "2024-11-29T00:00:00+01:00[Europe/Berlin]"
+change-frozenzone-end: "2024-12-24T00:00:00+01:00[Europe/Berlin]"

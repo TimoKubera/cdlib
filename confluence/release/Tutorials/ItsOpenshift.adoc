@@ -1,0 +1,31 @@
+= IT-S Openshift
+:toc:
+:keywords: latest
+
+Typically DevOps teams leverage containers to package, deploy and run their applications besides native platform services.
+The default orchestration for containers is https://kubernetes.io/[kubernetes] and Openshift is the platform hosted by IT-S.
+
+== Openshift in General
+
+https://www.openshift.com/[Openshift is the commercial offering from Red Hat] based on the open source project https://github.com/openshift/origin[Origin].
+It is considered to be an enterprise-ready kubernetes distribution as it comes with additional security and services compared to vanilla kubernetes.
+
+More details about IT-S Openshift can be found on https://git.dhl.com/bimodal-coc/ITS-Container-Platform-Wiki/wiki[Openshift Wiki].
+
+== Ordering IT-S Openshift
+
+For P&amp;P https://map.deutschepost.de/map[MAP] is used to order by requesting a quotation for Openshift based on this https://isharenew.dhl.com/sites/itspaas/Shared%20Documents/10%20Service%20Description/ITS%20Container%20Platform%20-%20Charge%20Estimation%20Tool%20actual.xlsx?Web=1[calculation spreadsheet].
+
+After that you will be provided with your own namespaces (`projects`) inside IT-S Openshift cluster and 2 service accounts (`npi` and `prod`).
+
+== Support
+
+In case you have a problem with IT-S Openshift just issue a ticket via https://servicenow.dhl.com/requestit/servicedesk_ticket_item.do?sysparm_id=857ace5ddbe476402de4bedffe961915[Request IT Support Form] by describing your problem and *selecting GSN service `GLOBAL_PAAS`* under `auto-routing options`.
+
+____
+
+*HINT:* before you issue a ticket, check their https://isharenew.dhl.com/sites/itspaas/SitePages/Home.aspx[announcements], maybe it is a planned downtime
+
+____
+
+In case it is urgent your can contact them via xref:mailto:openshift-tech@dhl.com[email] in parallel.

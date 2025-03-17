@@ -1,0 +1,69 @@
+= Jenkins Pipeline Configuration
+:toc:
+:keywords: latest
+
+We like to separate concerns to avoid confusion, to not lose track and to enable reusability.
+That's why we recommend separating the pipeline code from the parameters, via a separate config file we call `config.jenkins`.
+This enables you to have multiple config files for different scenarios like:
+- test pipeline and real pipeline, to enable/disable things just at one place without changing the logic of your pipeline
+- 1 pipeline for multiple microservices only differing in parameters
+
+== config.jenkins
+
+Place your `config.jenkins` file next to your `Jenkinsfile` and fill it with your configuration with a `Groovy Object` structure.
+
+Typically, you will have multiple sections, e.g. `createNames` for different parts of your pipeline with multiple parameter entries, e.g. `project` and `scanAlias`:
+
+----
+fnci: [
+    project: '19C2_ICTO-3339_SDM_SockShop',
+    projectId: '184',
+    server: 'https://fnci.deutschepost.de/codeinsight',
+    credentialsId: 'fnci_pup',
+    scanAlias: 'carts'
+]
+----
+
+We are using this approach in all our pipelines, so pick any to see how it works. For example have a look at our https://git.dhl.com/SockShop/carts/blob/master/config.jenkins[Showcase *Sockshop*].
+
+== Loading The Configuration
+
+To load the configuration from `config.jenkins` in your first stage, call the step `load`, specify the path to your `config.jenkins` file and assign this object to a variable (in this case `config`).
+Now the configuration is available to your pipeline and you can see how to use it in the next section.
+
+----
+stages {
+    stage('SETUP') {
+        steps {
+            script {
+                config = load 'config.jenkins'
+            }
+        }
+    }
+----
+
+== Using The Configuration
+
+In case you named your configuration variable according to our sample above (`config`), you can now access the content of the file through this object.
+
+----
+ stage('OSLC'){
+    steps{
+        container('fnci-cli') {
+            sh "fnci_scan.sh ${config.fnci.project} ${config.fnci.server} ${TOKEN} ${WORKSPACE} ${config.fnci.projectId} ${config.fnci.scanAlias} no-report-download"
+        }
+    }
+}
+----
+
+Of course you can also access individual parts of sections, like shown in the example below:
+
+----
+ withCredentials([string(credentialsId: config.sonar.userCredentialsId, variable:'SONARQUBE_TOKEN')]) {
+    sh "mvn -s settings.xml sonar:sonar -Dsonar.host.url=${config.sonar.hostUrl} -Dsonar.login=${env.SONARQUBE_TOKEN} -Dsonar.projectKey=${config.sonar.projectKey}"
+}
+----
+
+As you can see we are accessing the individual parameters of section `sonar`, like `config.sonar.login` or `config.sonar.host.url`.
+
+More details on the default step `load` can be found at https://jenkins.io/doc/pipeline/steps/workflow-cps/#load-evaluate-a-groovy-source-file-into-the-pipeline-script[jenkins.io].

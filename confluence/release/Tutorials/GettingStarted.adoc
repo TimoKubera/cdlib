@@ -1,0 +1,193 @@
+= Getting Started
+:toc:
+:keywords: latest
+
+== Welcome to CDlib!
+
+We have written this guide to provide you with an easy starting point to use `CDlib` and setup your CI/CD pipeline(s).
+Of course every reader will have a different background, mission and setup, so feel free to skip topics you are already familiar with and https://git.dhl.com/CDLib/CDlib/issues[contact us] in case something is unclear or wrong.
+
+== Overview
+
+This section provides you with a small overview of this guide to help you navigate it's content.
+
+We will start with a brief introduction of `CDlib` and its different modules and explain how it can be useful for you.
+
+Then we will discuss basic things to consider when setting up your CI/CD process.
+What we won't cover are the basic principles behind CI/CD as there is extensive literature out there, from people with more knowledge and experience than us.
+To have a starting point we recommend reading the https://www.buecher.de/shop/softwareentwicklung/continuous-delivery-ebook-epub/humble-jez-farley-david/products_products/detail/prod_id/53004487/[CI/CD bible from Dave Farley and Jez Humble called "Continuous Delivery"].
+
+____
+
+No time to read a whole book? you can watch https://www.youtube.com/watch?v=V_GdpGukQ4g[this 1h summary on Youtube]
+
+____
+
+After we have discussed some principle things, we provide you with a logical order to set up your own CI/CD process - of course you can adapt it according to your needs by skipping parts or adding others as well.
+
+We hope that this guide will be helpful, if not please contact us.
+
+== CDlib Introduction
+
+`CDlib` started in 2015 when we built our second pipeline in P&amp;P and noticed that many things are similar to our first one, convincing us that we should centralize the things in common.
+This would also help us reduce the costs (back then up to 250.000€ per Pipeline and months of effort) and speed up adoption of CI/CD.
+With time, we have integrated more and more things like performing different quality checks like Sonarqube, OSLC or Fortify or deploying to different infrastructure with Flux or terraform.
+Originally we created custom build steps (therefore the name "lib") that were reused inside Jenkinsfiles (actually when we started there were only Freestyle jobs).
+With more and more teams adopting CI/CD we have noticed that the differences are too big and we couldn't wrap all the complexity behind our abstractions anymore.
+Mostly because every team was using other technologies (e.g. build tools like maven, gradle, npm, go, etc.) and also other CI/CD tools (Jenkins, Teamcity, Gitlab, Azure DevOps, etc.), but also because nobody understood the magic (or "voodoo") behind it and it felt like a dead end.
+That's why in 2020 we have rebuilt everything with portability in mind by only providing tutorials that can be used in all CI/CD tools and are less effort to write so we could provide them for more build tools.
+Only the very essential custom steps would remain, because every team would need them.
+Since the tutorials alone might not be sufficient we have also decided to provide real-life showcases that we build, test and deploy according to the tutorials, so we know that it works and so you can see how to do it and we know when something stops working.
+Since all those pipelines generate a lot of data that typically is unused, we have decided to provide dashboards to gain insights for individual teams to learn about their maturity, but also to track overall DevOps adoption as part of the digital transformation.
+
+== Things To Consider Before Setting Up Your CI/CD
+
+Before you start writing your first pipeline code and start integrating your test and deployment, you should take time to discuss a few basics with your team which will determine what your delivery process looks like.
+This will be different for every product and team, but we can give some important topics and hints to think about.
+
+=== How Many Pipelines
+
+…do you need?
+Just one or will it be many?
+This depends on how your application architecture is designed.
+In case you have one monolithic application that can only be changed as a whole, this means you will have one single pipeline for all components.
+Doesn't matter whether it is just one component or 12, split up on application level or even with individual containers - important is whether changes to a single component can be done, without changing other components.
+As long as your application is tightly coupled and the changes you perform demand changing multiple services at once, you will stick with one pipeline.
+
+Of course this is not a good idea, because it will be slower than having multiple pipelines for smaller components, where the build, test and deployment is faster.
+Especially when you are in a situation that you need to fix something fast in production this will be crucial and painful to wait and everyone will ask "why do we have to wait for the Fortify scan of component B, when we only change component C" - well because that is how your architecture is and how your team works.
+Therefore you should aim at a microservice architecture where you can introduce change in small batches to single services very often without impacting other components.
+A good aim should be that your pipeline runs faster than 1 hour to complete all things from checkout to prod deployment, the faster the better, so if you can make it in 5 mins - why not?
+Only downside might be that you lose track of all the different pipelines and services and that your application performance will decrease because instead of local communication you know rely on remote http requests.
+
+=== Pipeline Layout
+
+For every pipeline you need to decide what shall be done when and how.
+Do you want a security scan for every commit, only for pull requests, only on main branch prior release or not inside your pipeline at all, but frequently (e.g. bi-weekly)?
+The later you perform a task (e.g. the security scan) the faster your pipeline will be, but also the less value it will provide.
+You could only perform a build and then deploy it right to production - probably the fastest way.
+However, your pipeline(s) should be your safety net and cover all important aspects to you (and the organization in terms of policies).
+Everything that happens outside the pipeline and not at least once per release on main branch will most likely be forgotten or lead to late feedback which has to be ignored or will delay your release.
+You need to find the right balance for this, but in general the mantra is "shift left testing", so do everything as early as possible.
+Humans tend to forget what they did and it is easier to fix a bug introduced 5 minutes ago than 3 days, 2 weeks or 8 months later.
+It is also easier and way more cheaper to replace a freshly picked library with another one because the license would require you to open source your application, which you don't want.
+Imagine you find discover this after 4 months of implementation (right before go live) and you have to start at the beginning.
+
+Besides deciding what happens in the pipeline and on which occasion and on which stage, you need to figure out whether you want a full pipeline, doing everything from checkout to prod deployment or whether you want to split it in different sub-pipelines.
+Using a pipeline for every step is not considered a pipeline anymore and you will lose oversight.
+Many teams tend to use a split pipeline instead of a full pipeline, splitting the build and scan from the deployments, which can be handy to avoid time intensive rebuilding and scanning only because you couldn't reach your deployment target (e.g. Openshift token invalid).
+To learn more about the different split options, have a look at xref:PipelineTypes.adoc[our pipeline type guide].
+
+One last important thing to consider about the layout are approvals.
+Think really hard about which approvals you really need inside your CI/CD process and who can grant them.
+There is no point in having 10 manual approvals from 10 different people, because every time you want to deliver new software or a hotfix you will need to ask them.
+If you think in case of a hotfix you don't need the approvals, then most probably you won't need them in any other occasion.
+Maybe you won't need any approval at all?
+It should be sufficient to just have other team members (incl. product owner) to approve your pull request and then the pipeline can just run without interruption.
+
+=== Repository Type: Mono or Multi
+
+This is connected to the discussion before whether you will have one pipeline or multiple.
+In case you only have one, you can skip this, because it only makes sense to have a monorepository.
+As soon as you have multiple independent services and pipelines you might consider having a separate repository per service.
+
+=== Branching
+
+Chances are high that you and your team are working on multiple issues (features, bugs, improvements, etc.) in parallel.
+To avoid conflicts teams often decide to branch out their changes, by creating a separate branch per issue ("Feature Branching").
+Although the highest maturity level of CI/CD is working on a single branch and branching by abstraction (inside code with feature flags), we consider Feature Branches a good idea, because it is easy to understand and handle.
+Still you need to make sure that you merge your feature branches frequently, otherwise you end up with Continuous Delivery without Continuous Integration.
+
+For every branch (or just pull request) you can automatically create (and destroy) an independent environment and on your main branch (formerly called `master`) you can in theory also use static environments, used for integration tests with other systems outside your control.
+In case you cannot automatically create complete (incl. databases and mocked up interfaces etc.) environments per branch, most likely you would need to batch your changes into bigger releases.
+Then you can use Gitflow, but it will heavily impact your agility, so better get a real cloud and stop using it :)
+
+=== Which CI/CD Tool
+
+Lastly you need to find the right CI/CD tool for your needs.
+Instead of setting up your own, you should first check what is provided internally and centrally.
+
+To help you to decide which one might be right for you, we provide a small xref:PickingTheRightCICDTool.adoc[decision guide].
+
+== Path To Set Up Your CI/CD
+
+Now that you know what CI/CD is, what CDlib offers and what your pipeline(s) should look like, you can actually start building - yay.
+This section suggest an order to approach the setup, but feel free to deviate.
+
+=== Get The Tools
+
+We suggest with starting to set up the tools you need.
+In some cases this will be fast, in other cases you will need weeks to troubleshoot firewalls and missing permissions or even commercially ordering it.
+Tools you will need are:
+
+- Code Management: https://devsecops.dhl.com/services/build/github[IT-S GitHub]
+- CI/CD Tool: https://devsecops.dhl.com/services/build/github-actions/get-started[IT-S GitHub Actions]
+- Binary Management: https://devsecops.dhl.com/services/build/artifactory/get-started[IT-S Artifactory]
+- Static Code Quality Analysis: https://devsecops.dhl.com/services/test/sonarqube/[IT-S Sonarqube]
+- Cloud to deploy your infrastructure: https://confluence1.lcm.deutschepost.de/confluence1/display/CCCENTER/Cloud+Competence+Center[Azure]
+- Infrastructure Management: xref:Terraform.adoc[IT-S Terraform]
+
+=== Build
+
+With all the tools (or at least CI/CD, Code and Binary management) you can start setting up your pipeline.
+You will create a new pipeline definition, store it inside your git repository and create a pipeline based on it inside your CI/CD tool.
+Then you can add the build of your application to the pipeline definition according to xref:Build.adoc[our tutorial].
+
+____
+_HINT_: if you didn't think about using containers (for your application and the pipeline agents), then think again and do it :)
+____
+
+=== Unit Test
+
+Your build works and the binaries (hopefully container images ;)) are archived.
+So let's add the first quality check to the pipeline, to make sure that changes don't break existing functionality and that the new functionality works.
+You can do this by following xref:UnitTest.adoc[our tutorial].
+
+=== Deployment
+
+Great, you can now deploy your application to your chosen cloud, maybe even create a new infrastructure for every branch.
+Keep in mind that the deployment should happen on every stage in the same fashion, with the same images and configuration (besides parameters like interface URLs obviously).
+The deployment to production should happen without any impact to other services inside your application but also to other external interfaces or users, otherwise you will be stuck with releasing outside business hours or in a monthly change window - not really agile.
+To learn about deploying infrastructure in a public cloud, please refer to our guide for xref:Terraform.adoc[Terraform].
+After that you can focus on deploying your containerized application with xref:GitOps.adoc[Flux]
+
+To make sure that your productive changes are known to every one it might interested (interface partners, users, management, incident management, etc.) you will need to integrate the xref:IntegratedChangeManagement.adoc[Change Management Process].
+
+=== Security
+
+You already have a pretty decent pipeline and can quickly release new features and fix bugs.
+But you still need to check your security manually, this should be changed.
+You can add the xref:IntegratedWebApproval.adoc[web approval] to your pipeline to automatically check for security issues inside your code.
+
+=== OSLC
+
+Tired of manually checking the license restrictions of all your dependencies (especially when using `npm` or `yarn')?
+You can automate this process xref:OpenSourceLicenseComplianceScan.adoc[according to this tutorial] to automatically ensure that the application is compliant in regards of Opensource Licenses.
+
+=== Acceptance Test
+
+You already have a simple test on unit level to make sure that the basic functionality of your application is not broken with a change.
+By integrating an automated acceptance test you can increase confidence in your changes and also convince the product owner and business to trust the pipeline and refrain from manual testing.
+This test is really depending on your application, but hopefully you can learn something from xref:AcceptanceTestsWithSeleniumWebdriverAndItsSeleniumGrid.adoc[our tutorial on how we did it for one of our showcases] based on P&amp;Ps test automation framework.
+In case you don't have a frontend (e.g. API), you can still use the same approach, but use other tools.
+
+=== Now What?
+
+At this point your pipeline(s) are already pretty far, congratz!
+You should check what are the bottlenecks to release more frequently and with less incidents and rework and address those issues.
+Maybe the xref:../Tutorials.adoc[remaining tutorials inside CDlib] with give you some hints and ideas on how to solve it and improve your pipeline(s) even more.
+
+== HELP I'M STUCK
+
+You may find yourself in a situation where google and stackoverflow won't help anymore and you ran out of ideas.
+Maybe even our tutorials are incomplete or wrong, so something doesn't work.
+
+Don't hesitate to contact us, we are there to help you.
+
+== Closing Notes
+
+This guide was useful?
+Tell it to your peers!
+
+This guide wasn't what you needed and you still wonder why do I need CDlib?
+Well maybe you just don't need it, because you are a CI/CD pro (think about joining our team and teach us) or because you cannot apply CI/CD in your context.

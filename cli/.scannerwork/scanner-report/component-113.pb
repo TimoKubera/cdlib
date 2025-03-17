@@ -1,0 +1,1 @@
+q 2kotlinXMhr_src/main/kotlin/de/deutschepost/sdm/cdlib/release/report/external/OslcGradlePluginTestResult.kt

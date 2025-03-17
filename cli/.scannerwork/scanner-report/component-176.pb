@@ -1,0 +1,1 @@
+° 2kotlinXLhrUsrc/test/kotlin/de/deutschepost/sdm/cdlib/release/report/FnciClientIntegrationTest.kt

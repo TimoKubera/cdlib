@@ -1,0 +1,178 @@
+{
+    "disallowedLicenses": [
+        {
+            "shortIdentifier": "AFL-3.0",
+            "name": "Academic Free License",
+            "version": "3.0",
+            "url": "http://www.opensource.org/licenses/academic.php"
+        },
+        {
+            "shortIdentifier": "ALLADIN",
+            "name": "Alladin Free Public License",
+            "version": "9",
+            "url": "http://web.archive.org/web/20021010015844/http://www.artifex.com/downloads/doc/Public.htm"
+        },
+        {
+            "shortIdentifier": "APSL-2.0",
+            "name": "Apple Public Source License",
+            "version": "2.0",
+            "url": "http://opensource.org/licenses/APSL-2.0"
+        },
+        {
+            "shortIdentifier": "CPAL-1.0",
+            "name": "Common Public Attribution License 1.0",
+            "version": "1.0",
+            "url": "http://opensource.org/licenses/CPAL-1.0"
+        },
+        {
+            "shortIdentifier": "CCL",
+            "name": "Confluent Community License",
+            "version": "1.0",
+            "url": "https://www.confluent.io/confluent-community-license"
+        },
+        {
+            "shortIdentifier": "AGPL-1",
+            "name": "GNU Affero GPL",
+            "version": "1",
+            "url": "http://www.affero.org/oagpl.html"
+        },
+        {
+            "shortIdentifier": "AGPL-3.0",
+            "name": "GNU Affero GPL v3",
+            "version": "3.0",
+            "url": "http://www.gnu.org/licenses/agpl-3.0.en.html"
+        },
+        {
+            "shortIdentifier": "IPA",
+            "name": "IPA Font License",
+            "version": "1.0",
+            "url": "http://opensource.org/licenses/IPA"
+        },
+        {
+            "shortIdentifier": "LPPL",
+            "name": "LaTeX Project Public License",
+            "version": "1.3c",
+            "url": "http://opensource.org/licenses/LPPL-1.3c"
+        },
+        {
+            "shortIdentifier": "OSL",
+            "name": "Open Software License",
+            "version": "3.0",
+            "url": "http://www.opensource.org/licenses/osl-3.0.php"
+        },
+        {
+            "shortIdentifier": "OFL-1.1",
+            "name": "SIL Open Font License",
+            "version": "1.1",
+            "url": "https://spdx.org/licenses/OFL-1.1.html"
+        },
+        {
+            "shortIdentifier": "Watcom-1.0",
+            "name": "Sybase Open Watcom Public License",
+            "version": "1.0",
+            "url": "http://opensource.org/licenses/watcom-1.0"
+        },
+        {
+            "shortIdentifier": "CC BY-NC-ND 1.0",
+            "name": "Creative Commons Attribution-NoDerivs-NonCommercial",
+            "version": "1.0",
+            "url": "https://creativecommons.org/licenses/by-nd-nc/1.0/legalcode"
+        },
+        {
+            "shortIdentifier": "CC BY-NC-ND 2.0",
+            "name": "Creative Commons Attribution-NoDerivs-NonCommercial",
+            "version": "2.0",
+            "url": "https://creativecommons.org/licenses/by-nd-nc/2.0/legalcode"
+        },
+        {
+            "shortIdentifier": "CC BY-NC-ND 2.5",
+            "name": "Creative Commons Attribution-NoDerivs-NonCommercial",
+            "version": "2.5",
+            "url": "https://creativecommons.org/licenses/by-nd-nc/2.5/legalcode"
+        },
+        {
+            "shortIdentifier": "CC BY-NC-ND 3.0",
+            "name": "Creative Commons Attribution-NoDerivs-NonCommercial",
+            "version": "3.0",
+            "url": "https://creativecommons.org/licenses/by-nd-nc/3.0/legalcode"
+        },
+        {
+            "shortIdentifier": "CC BY-NC-ND 4.0",
+            "name": "Creative Commons Attribution-NoDerivs-NonCommercial",
+            "version": "4.0",
+            "url": "https://creativecommons.org/licenses/by-nd-nc/4.0/legalcode"
+        },
+        {
+            "shortIdentifier": "CC BY-NC 1.0",
+            "name": "Creative Commons Attribution-NonCommercial",
+            "version": "1.0",
+            "url": "https://creativecommons.org/licenses/by-nc/1.0/legalcode"
+        },
+        {
+            "shortIdentifier": "CC BY-NC 2.0",
+            "name": "Creative Commons Attribution-NonCommercial",
+            "version": "2.0",
+            "url": "https://creativecommons.org/licenses/by-nc/2.0/legalcode"
+        },
+        {
+            "shortIdentifier": "CC BY-NC 2.5",
+            "name": "Creative Commons Attribution-NonCommercial",
+            "version": "2.5",
+            "url": "https://creativecommons.org/licenses/by-nc/2.5/legalcode"
+        },
+        {
+            "shortIdentifier": "CC BY-NC 3.0",
+            "name": "Creative Commons Attribution-NonCommercial",
+            "version": "3.0",
+            "url": "https://creativecommons.org/licenses/by-nc/3.0/legalcode"
+        },
+        {
+            "shortIdentifier": "CC BY-NC 4.0",
+            "name": "Creative Commons Attribution-NonCommercial",
+            "version": "4.0",
+            "url": "https://creativecommons.org/licenses/by-nc/4.0/legalcode"
+        },
+        {
+            "shortIdentifier": "CC BY-NC-SA 1.0",
+            "name": "Creative Commons Attribution-NonCommercial-ShareAlike",
+            "version": "1.0",
+            "url": "https://creativecommons.org/licenses/by-nc-sa/1.0/legalcode"
+        },
+        {
+            "shortIdentifier": "CC BY-NC-SA 2.0",
+            "name": "Creative Commons Attribution-NonCommercial-ShareAlike",
+            "version": "2.0",
+            "url": "https://creativecommons.org/licenses/by-nc-sa/2.0/legalcode"
+        },
+        {
+            "shortIdentifier": "CC BY-NC-SA 2.5",
+            "name": "Creative Commons Attribution-NonCommercial-ShareAlike",
+            "version": "2.5",
+            "url": "https://creativecommons.org/licenses/by-nc-sa/2.5/legalcode"
+        },
+        {
+            "shortIdentifier": "CC BY-NC-SA 3.0",
+            "name": "Creative Commons Attribution-NonCommercial-ShareAlike",
+            "version": "3.0",
+            "url": "https://creativecommons.org/licenses/by-nc-sa/3.0/legalcode"
+        },
+        {
+            "shortIdentifier": "CC BY-NC-SA 4.0",
+            "name": "Creative Commons Attribution-NonCommercial-ShareAlike",
+            "version": "4.0",
+            "url": "https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode"
+        },
+        {
+            "shortIdentifier": "UNLICENSED",
+            "name": "UNLICENSED",
+            "version": "N/A",
+            "url": "N/A"
+        },
+        {
+            "shortIdentifier": "UNKNOWN",
+            "name": "UNKNOWN",
+            "version": "N/A",
+            "url": "N/A"
+        }
+    ]
+}

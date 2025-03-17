@@ -1,0 +1,46 @@
+{
+    "date": "2022-07-12T15:26:22+01:00",
+    "name": "cli",
+    "test": {
+        "uri": "dependency-check-report.json",
+        "date": "2021-10-04T13:15:14+01:00",
+        "reportType": "SCA",
+        "tool": {
+            "name": "OWASP Dependency Check",
+            "version": "6.1.6",
+            "vendor": "OWASP Dependency Check",
+            "ruleVersion": "2021-10-04T21:51:08"
+        },
+        "vulnerabilities": {
+            "scannedObjects": 0,
+            "vulnerableObjects": 0,
+            "open": [],
+            "openCount": 0,
+            "suppressed": [],
+            "suppressedCount": 0,
+            "severityCounts": {
+                "critical": 0,
+                "high": 0,
+                "medium": 0,
+                "low": 0,
+                "none": 0,
+                "unknown": 0
+            }
+        },
+        "pregenerated": false
+    },
+    "testHash": "da23f0e6082cc7b53cc5b7967c9d688f7c0f4ed4fd0c2067ac82aa1847ec1015",
+    "lastCommit": {
+        "authorMail": "gitMail_TEST",
+        "authorName": "gitName_TEST",
+        "id": "gitId_TEST",
+        "link": "gitLink_TEST",
+        "message": "gitMessage_TEST",
+        "repository": "gitOrigin_TEST"
+    },
+    "pipeline": {
+        "name": "cicdPlatform_TEST",
+        "instance": "https://test-url.jenkuns.example.com",
+        "url": "https://test-url.jenkuns.example.com/jobUrl_TEST"
+    }
+}

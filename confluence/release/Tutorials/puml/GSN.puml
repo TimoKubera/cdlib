@@ -1,0 +1,96 @@
+@startuml
+
+class Change {
+
+    changeRequestData
+    implTask
+    testTask
+    pirTask
+    changeRequestNumber
+
+}
+
+class GSNWebService {
+
+    steps
+    hostname
+    credential
+
+    convertToMap(nodes)
+    callService(request, action, tableName)
+    getById(String tableName, String id)
+    buildGetByIdRequest(String tableName, String id)
+    getByNumber(String tableName, String number)
+    create(String tableName, Map data)
+    buildCreateRequest(String tableName, Map data)
+    update(String tableName, String id, Map data)
+    buildUpdateRequest(String tableName, String id, Map data)
+    createSoapEnv(String tableName, Closure cl)
+    find(String tableName, Map parameters)
+    buildFindRequest(String tableName, Map params)
+
+}
+
+package "" <<Rectangle>> {
+
+    class approveChangeRequest<< (S,orchid) >>
+    class createCTask<< (S,orchid) >>
+    class createGroupApproval<< (S,orchid) >>
+    class createNewChangeRequest<< (S,orchid) >>
+    class getChangeLogs<< (S,orchid) >>
+    class updateChangeRequest<< (S,orchid) >>
+    class updateCtask<< (S,orchid) >>
+    class withGSN<< (S,orchid) >>
+
+}
+
+createNewChangeRequest -down-> GSNWebService : getByNumber, create, update, find
+
+createGroupApproval -down-> GSNWebService : create
+
+createCTask  -down-> GSNWebService : getById, create
+
+updateChangeRequest -down-> GSNWebService : update
+
+approveChangeRequest -down-> GSNWebService : find, update
+
+updateCtask -down-> GSNWebService : update
+
+withGSN *-down- GSNWebService : creates
+
+
+package "Aggregates" <<Rectangle>> {
+
+    class beforeProd<< (S,yellow) >>
+    class implementationKO<< (S,yellow) >>
+    class implementationOK<< (S,yellow) >>
+    class PIRAndClose<< (S,yellow) >>
+
+}
+
+
+beforeProd --> withGSN : find, getByNumber
+beforeProd --> getChangeLogs
+beforeProd --> createNewChangeRequest
+beforeProd --> createGroupApproval
+beforeProd --> createCTask
+beforeProd --> updateChangeRequest
+beforeProd --> approveChangeRequest
+beforeProd -down-> Change : creates
+
+implementationKO <-down- Change
+implementationKO --> withGSN
+implementationKO --> updateCtask
+implementationKO --> updateChangeRequest
+
+implementationOK <-down- Change
+implementationOK --> withGSN
+implementationOK --> updateCtask
+implementationOK --> updateChangeRequest
+
+PIRAndClose <-down- Change
+PIRAndClose --> withGSN
+PIRAndClose --> updateCtask
+PIRAndClose --> updateChangeRequest
+
+@enduml

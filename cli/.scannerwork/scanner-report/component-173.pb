@@ -1,0 +1,1 @@
+­ 2kotlinX‚hrHsrc/test/kotlin/de/deutschepost/sdm/cdlib/names/NamesCommandAzureTest.kt

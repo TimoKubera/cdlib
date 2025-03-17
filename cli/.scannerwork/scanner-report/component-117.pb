@@ -1,0 +1,1 @@
+u 2kotlinXhrisrc/main/kotlin/de/deutschepost/sdm/cdlib/release/report/internal/oslcComplianceChecker/OslcAcceptList.kt

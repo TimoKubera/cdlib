@@ -1,0 +1,124 @@
+= IT-S Global ServiceNow (GSN)
+:toc:
+:keywords: latest
+
+This guide will help you to set up a completely automated change process integrated into your pipeline.
+With this you will be able to release to production any time you want, without the manual approval from the Change Advisory Board (CAB).
+This is done by integrating https://servicenow.dhl.com[Global SerivceNow], which is the IT-Service Management Tool Suite used at DPDHL Group and managed by IT-S.
+
+> There is also an integration for xref:IntegratedChangeManagement.adoc[P&P specific change management via LCM], which should make the GSN change management obsolete when working for P&P.
+
+Before you deploy to production you will create a so called `Fast RFC` (Request for Change) in GSN, then you deploy and then you close the `Fast RFC`, either with a success code or an error code (due to failure or abortion of deployment).
+
+== Prerequisites
+Before you can use your pipeline to create Fast RFCs you will need to take care of the following things:
+
+* create a assignment group and service for your team in GSN
+* create a change in GSN and let Change Management pre-approve it, so it can be used as a template
+* if you are not on https://devsecops.dhl.com/services/build/jenkins-cloudbees/[IT-S Cloudbees Jenkins], get xref:ToolAuthentication.adoc[service account] with permission to manage your changes
+
+=== Assignment Group and Service in GSN
+You will need to create a new service in GSN and with that also an assignment group that is responsible for this service and that manages the changes related with it.
+
+=== Change Template and Approval
+You will need to create a new RFC in GSN, describing your change process.
+This will be a description of what your pipeline is doing, ideally you will include a link to the job and to the Jenkinsfile.
+
+> **HINT:** an example would be: `RFC1348101`
+
+After this, you will need to ask IT-S Change Management to check your RFC and if they like it, they can create a template from it by pre-authorizing it.
+
+== Jenkins Steps
+CDlib provides the following steps to interact with GSN Change Management.
+
+|===
+|Step |Description
+
+|beforeProd
+|This is an automated change management procedure used to create a change request and go through the process of approval including creating approval groups, creating and updating change tasks, approving change request and updating change request. Provides the change request information that is used by the following steps to operate on a singular change.
+
+|implementationOK
+|This is used in case of a successful deployment. It updates the change task and the change request with the successfully implemented status and the completed change event respectively.
+
+|implementationKO
+|This is used in case of a failed deployment. It updates the change task and the change request with the failed implementation status and the completed change event respectively.
+
+|PIRAndClose
+|Creates a Post Implementation Review (PIR) and close the change request. Updates the PIR task and the change request with the result based on the `rollback` flag. In case the change failed, the user must complete a form inside Jenkins.
+|===
+
+== Pipeline
+Use CDLib as the library to be used for the Jenkinsfile that orchestrates your production deployment.
+
+[source,groovy]
+----
+@Library('CDlib@6.latest') _
+pipeline {
+}
+----
+
+Then add the configuration needed for your Fast RFC to your xref:JenkinsPipelineConfig.adoc[config.jenkins]:
+
+[source,groovy]
+----
+chm: [
+	template: 'RFC',
+	assignmentGroup: '',
+	url: 'https://servicenow.dhl.com',
+	credentialsId: 'gsn_prod',
+	approval: [
+		user: '',
+		mail: '@deutschepost.de'
+	],
+	requestor: ''
+]
+----
+
+> **IMPORTANT:** you need to fill in the necessary values for the configuration
+
+> **HINT:** use url:'https://servicenow-uat.dhl.com' and credentialsId: 'gsn_sa' for testing
+
+Then load the configuration into your pipeline by adding this to your `Jenkinsfile`:
+
+[source,groovy]
+----
+stage('Setup') {
+	steps {
+		script {
+			config = load 'config.jenkins'
+		}
+	}
+}
+----
+
+At the beginning of your `PROD`-Stage the product owner (or a representative) will be asked to approve the deployment to production:
+
+[source,groovy]
+----
+include::../../../carts/JenkinsfileDeploy[tags=gsn-approval, indent=0]
+----
+
+Then the change will be created:
+
+[source,groovy]
+----
+include::../../../carts/JenkinsfileDeploy[tags=gsn-create-change, indent=0]
+----
+
+____
+ATTENTION: this will take the user who approved in the previous stage as the one who approved the GSN change - this will only work, if the user is part of the GSN assignment group
+____
+
+After the deployment you close the Fast RFC either with success or failure code (when it failed or was aborted).
+Finally, you add the Post Implementation Review:
+
+[source,groovy]
+----
+include::../../../carts/JenkinsfileDeploy[tags=gsn-deployment, indent=0]
+----
+
+In case of job failure or job abort we need to rollback the release:
+[source,groovy]
+----
+include::../../../carts/JenkinsfileDeploy[tags=gsn-rollback, indent=0]
+----

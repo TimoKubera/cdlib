@@ -1,0 +1,1 @@
+o 2kotlinX–hrVsrc/main/kotlin/de/deutschepost/sdm/cdlib/release/report/external/FortifyTestResult.kt

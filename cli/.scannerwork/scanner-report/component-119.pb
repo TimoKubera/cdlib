@@ -1,0 +1,1 @@
+w 2kotlinXëhrpsrc/main/kotlin/de/deutschepost/sdm/cdlib/release/report/internal/oslcComplianceChecker/OslcComplianceChecker.kt

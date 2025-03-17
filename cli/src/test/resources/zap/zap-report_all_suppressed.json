@@ -1,0 +1,1148 @@
+{
+    "@version": "D-2021-10-12",
+    "@generated": "Tue, 12 Oct 2021 06:27:20",
+    "site": [
+        {
+            "@name": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com",
+            "@host": "its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com",
+            "@port": "443",
+            "@ssl": "true",
+            "alerts": [
+                {
+                    "pluginid": "10027",
+                    "alertRef": "10027",
+                    "alert": "Information Disclosure - Suspicious Comments",
+                    "name": "Information Disclosure - Suspicious Comments",
+                    "riskcode": "0",
+                    "confidence": "0",
+                    "riskdesc": "Informational (Low)",
+                    "desc": "<p>The response appears to contain suspicious comments which may help an attacker. Note: Matches made within script blocks or files are against the entire content not only comments.</p>",
+                    "instances": [
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "query"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "query"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/basket.html",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "query"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/basket.html",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "user"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/category.html",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "query"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/detail.html?id='%20+%20element.id%20+%20'",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "query"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/detail.html?id=6d62d909-f957-430e-8689-b5129c0bb75e",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "query"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/js/client.js",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "query"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/js/client.js",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "user"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/js/client.js",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "username"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/js/jquery-1.11.0.min.js",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "db"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/js/jquery-1.11.0.min.js",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "username"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/js/respond.min.js",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "query"
+                        }
+                    ],
+                    "count": "13",
+                    "solution": "<p>Remove all comments that return information that may help an attacker and fix any underlying problems they refer to.</p>",
+                    "otherinfo": "<p>The following pattern was used: \\bQUERY\\b and was detected in the element starting with: \"<script src=\"js/jquery.query-object.js\"></script>\", see evidence field for the suspicious comment/snippet.</p>",
+                    "reference": "",
+                    "cweid": "200",
+                    "wascid": "13",
+                    "sourceid": "7"
+                },
+                {
+                    "pluginid": "10109",
+                    "alertRef": "10109",
+                    "alert": "Modern Web Application",
+                    "name": "Modern Web Application",
+                    "riskcode": "0",
+                    "confidence": "0",
+                    "riskdesc": "Informational (Medium)",
+                    "desc": "<p>The application appears to be a modern web application. If you need to explore it automatically then the Ajax Spider may well be more effective than the standard one.</p>",
+                    "instances": [
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "<a href=\"#\">We love socks!</a>"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "<a href=\"#\">We love socks!</a>"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/basket.html",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "<a class=\"btn btn-default\" onclick=\"updateCart()\"><i\n                                        class=\"fa fa-refresh\"></i> Update basket\n                                </a>"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/category.html",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "<a\n                                class=\"btn btn-xs btn-danger pull-right\"\n                                href=\"#\" onclick='resetTags()'><i class=\"fa fa-times-circle\"></i>\n                            Clear</a>"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/category.html?sort-by=Name",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "<a\n                                class=\"btn btn-xs btn-danger pull-right\"\n                                href=\"#\" onclick='resetTags()'><i class=\"fa fa-times-circle\"></i>\n                            Clear</a>"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/customer-orders.html",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "<a href=\"#\">Home</a>"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/detail.html",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "<a id=\"buttonCart\" class=\"btn btn-primary\"><i\n                                        class=\"fa fa-shopping-cart\"></i> Add to\n                                    cart</a>"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/detail.html?id='%20+%20element.id%20+%20'",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "<a id=\"buttonCart\" class=\"btn btn-primary\"><i\n                                        class=\"fa fa-shopping-cart\"></i> Add to\n                                    cart</a>"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/detail.html?id=6d62d909-f957-430e-8689-b5129c0bb75e",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "<a id=\"buttonCart\" class=\"btn btn-primary\"><i\n                                        class=\"fa fa-shopping-cart\"></i> Add to\n                                    cart</a>"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/index.html",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "<a href=\"#\">We love socks!</a>"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/js/jquery-1.11.0.min.js",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "<a href='#'></a>"
+                        }
+                    ],
+                    "count": "11",
+                    "solution": "<p>This is an informational alert and so no changes are required.</p>",
+                    "otherinfo": "<p>Links have been found that do not have traditional href attributes, which is an indication that this is a modern web application.</p>",
+                    "reference": "",
+                    "cweid": "-1",
+                    "wascid": "-1",
+                    "sourceid": "7"
+                },
+                {
+                    "pluginid": "10003",
+                    "alertRef": "10003",
+                    "alert": "Vulnerable JS Library",
+                    "name": "Vulnerable JS Library",
+                    "riskcode": "0",
+                    "confidence": "0",
+                    "riskdesc": "Informational (Medium)",
+                    "desc": "<p>The identified library bootstrap, version 3.3.7 is vulnerable.</p>",
+                    "instances": [
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/js/bootstrap.min.js",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "* Bootstrap v3.3.7"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/js/jquery-1.11.0.min.js",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "jquery-1.11.0.min.js"
+                        }
+                    ],
+                    "count": "2",
+                    "solution": "<p>Please upgrade to the latest version of bootstrap.</p>",
+                    "otherinfo": "<p>CVE-2019-8331</p><p>CVE-2018-14041</p><p>CVE-2018-14040</p><p>CVE-2018-14042</p><p></p>",
+                    "reference": "<p>https://github.com/twbs/bootstrap/issues/28236</p><p>https://github.com/twbs/bootstrap/issues/20184</p><p></p>",
+                    "cweid": "829",
+                    "wascid": "-1",
+                    "sourceid": "68"
+                },
+                {
+                    "pluginid": "10202",
+                    "alertRef": "10202",
+                    "alert": "Absence of Anti-CSRF Tokens",
+                    "name": "Absence of Anti-CSRF Tokens",
+                    "riskcode": "1",
+                    "confidence": "0",
+                    "riskdesc": "Low (False Positive)",
+                    "desc": "<p>No Anti-CSRF tokens were found in a HTML submission form.</p><p>A cross-site request forgery is an attack that involves forcing a victim to send an HTTP request to a target destination without their knowledge or intent in order to perform an action as the victim. The underlying cause is application functionality using predictable URL/form actions in a repeatable way. The nature of the attack is that CSRF exploits the trust that a web site has for a user. By contrast, cross-site scripting (XSS) exploits the trust that a user has for a web site. Like XSS, CSRF attacks are not necessarily cross-site, but they can be. Cross-site request forgery is also known as CSRF, XSRF, one-click attack, session riding, confused deputy, and sea surf.</p><p></p><p>CSRF attacks are effective in a number of situations, including:</p><p>    * The victim has an active session on the target site.</p><p>    * The victim is authenticated via HTTP auth on the target site.</p><p>    * The victim is on the same local network as the target site.</p><p></p><p>CSRF has primarily been used to perform an action against a target site using the victim's privileges, but recent techniques have been discovered to disclose information by gaining access to the response. The risk of information disclosure is dramatically increased when the target site is vulnerable to XSS, because XSS can be used as a platform for CSRF, allowing the attack to operate within the bounds of the same-origin policy.</p>",
+                    "instances": [
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/basket.html",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "<form action=\"customer-orders.html\">"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/basket.html",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "<form action=\"\" id=\"form-address\">"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/basket.html",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "<form action=\"\" id=\"form-card\">"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/basket.html",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "<form>"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/basket.html?city=ZAP&country=ZAP&house-number=ZAP&post-code=ZAP&street=ZAP",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "<form action=\"customer-orders.html\">"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/basket.html?city=ZAP&country=ZAP&house-number=ZAP&post-code=ZAP&street=ZAP",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "<form action=\"\" id=\"form-address\">"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/basket.html?city=ZAP&country=ZAP&house-number=ZAP&post-code=ZAP&street=ZAP",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "<form action=\"\" id=\"form-card\">"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/basket.html?city=ZAP&country=ZAP&house-number=ZAP&post-code=ZAP&street=ZAP",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "<form>"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/category.html",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "<form id=\"filters-form\">"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/category.html",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "<form class=\"form-inline\">"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/category.html?sort-by=Name",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "<form id=\"filters-form\">"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/category.html?sort-by=Name",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "<form class=\"form-inline\">"
+                        }
+                    ],
+                    "count": "12",
+                    "solution": "<p>Phase: Architecture and Design</p><p>Use a vetted library or framework that does not allow this weakness to occur or provides constructs that make this weakness easier to avoid.</p><p>For example, use anti-CSRF packages such as the OWASP CSRFGuard.</p><p></p><p>Phase: Implementation</p><p>Ensure that your application is free of cross-site scripting issues, because most CSRF defenses can be bypassed using attacker-controlled script.</p><p></p><p>Phase: Architecture and Design</p><p>Generate a unique nonce for each form, place the nonce into the form, and verify the nonce upon receipt of the form. Be sure that the nonce is not predictable (CWE-330).</p><p>Note that this can be bypassed using XSS.</p><p></p><p>Identify especially dangerous operations. When the user performs a dangerous operation, send a separate confirmation request to ensure that the user intended to perform that operation.</p><p>Note that this can be bypassed using XSS.</p><p></p><p>Use the ESAPI Session Management control.</p><p>This control includes a component for CSRF.</p><p></p><p>Do not use the GET method for any request that triggers a state change.</p><p></p><p>Phase: Implementation</p><p>Check the HTTP Referer header to see if the request originated from an expected page. This could break legitimate functionality, because users or proxies may have disabled sending the Referer for privacy reasons.</p>",
+                    "otherinfo": "<p>No known Anti-CSRF token [anticsrf, CSRFToken, __RequestVerificationToken, csrfmiddlewaretoken, authenticity_token, OWASP_CSRFTOKEN, anoncsrf, csrf_token, _csrf, _csrfSecret, __csrf_magic, CSRF, _token, _csrf_token] was found in the following HTML form: [Form 1: \"\" ].</p>",
+                    "reference": "<p>http://projects.webappsec.org/Cross-Site-Request-Forgery</p><p>http://cwe.mitre.org/data/definitions/352.html</p>",
+                    "cweid": "352",
+                    "wascid": "9",
+                    "sourceid": "57"
+                },
+                {
+                    "pluginid": "10055",
+                    "alertRef": "10055",
+                    "alert": "CSP: Wildcard Directive",
+                    "name": "CSP: Wildcard Directive",
+                    "riskcode": "2",
+                    "confidence": "0",
+                    "riskdesc": "Medium (False Positive)",
+                    "desc": "<p>The following directives either allow wildcard sources (or ancestors), are not defined, or are overly broadly defined: </p><p>frame-ancestors, form-action</p><p></p><p>The directive(s): frame-ancestors, form-action are among the directives that do not fallback to default-src, missing/excluding them is the same as allowing anything.</p>",
+                    "instances": [
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/'%20+%20data.imageUrl%5B0%5D%20+%20'",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "default-src 'none'"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/'%20+%20data.imageUrl%5Bi%5D%20+%20'",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "default-src 'none'"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/'%20+%20element.imageUrl%5B0%5D%20+%20'",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "default-src 'none'"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/'%20+%20element.imageUrl%5B1%5D%20+%20'",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "default-src 'none'"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/blog.html",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "default-src 'none'"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/category-full.html",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "default-src 'none'"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/category-right.html",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "default-src 'none'"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/contact.html",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "default-src 'none'"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/faq.html",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "default-src 'none'"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/post.html",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "default-src 'none'"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/robots.txt",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "default-src 'none'"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/sitemap.xml",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "default-src 'none'"
+                        }
+                    ],
+                    "count": "12",
+                    "solution": "<p>Ensure that your web server, application server, load balancer, etc. is properly configured to set the Content-Security-Policy header.</p>",
+                    "otherinfo": "",
+                    "reference": "<p>http://www.w3.org/TR/CSP2/</p><p>http://www.w3.org/TR/CSP/</p><p>http://caniuse.com/#search=content+security+policy</p><p>http://content-security-policy.com/</p><p>https://github.com/shapesecurity/salvation</p><p>https://developers.google.com/web/fundamentals/security/csp#policy_applies_to_a_wide_variety_of_resources</p>",
+                    "cweid": "693",
+                    "wascid": "15",
+                    "sourceid": "86"
+                },
+                {
+                    "pluginid": "10038",
+                    "alertRef": "10038",
+                    "alert": "Content Security Policy (CSP) Header Not Set",
+                    "name": "Content Security Policy (CSP) Header Not Set",
+                    "riskcode": "2",
+                    "confidence": "0",
+                    "riskdesc": "Medium (False Positive)",
+                    "desc": "<p>Content Security Policy (CSP) is an added layer of security that helps to detect and mitigate certain types of attacks, including Cross Site Scripting (XSS) and data injection attacks. These attacks are used for everything from data theft to site defacement or distribution of malware. CSP provides a set of standard HTTP headers that allow website owners to declare approved sources of content that browsers should be allowed to load on that page \u2014 covered types are JavaScript, CSS, HTML frames, fonts, images and embeddable objects such as Java applets, ActiveX, audio and video files.</p>",
+                    "instances": [
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": ""
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": ""
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/basket.html",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": ""
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/basket.html?city=ZAP&country=ZAP&house-number=ZAP&post-code=ZAP&street=ZAP",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": ""
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/category.html",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": ""
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/category.html?sort-by=Name",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": ""
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/customer-orders.html",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": ""
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/detail.html",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": ""
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/detail.html?id='%20+%20element.id%20+%20'",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": ""
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/detail.html?id=6d62d909-f957-430e-8689-b5129c0bb75e",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": ""
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/index.html",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": ""
+                        }
+                    ],
+                    "count": "11",
+                    "solution": "<p>Ensure that your web server, application server, load balancer, etc. is configured to set the Content-Security-Policy header, to achieve optimal browser support: \"Content-Security-Policy\" for Chrome 25+, Firefox 23+ and Safari 7+, \"X-Content-Security-Policy\" for Firefox 4.0+ and Internet Explorer 10+, and \"X-WebKit-CSP\" for Chrome 14+ and Safari 6+.</p>",
+                    "otherinfo": "",
+                    "reference": "<p>https://developer.mozilla.org/en-US/docs/Web/Security/CSP/Introducing_Content_Security_Policy</p><p>https://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html</p><p>http://www.w3.org/TR/CSP/</p><p>http://w3c.github.io/webappsec/specs/content-security-policy/csp-specification.dev.html</p><p>http://www.html5rocks.com/en/tutorials/security/content-security-policy/</p><p>http://caniuse.com/#feat=contentsecuritypolicy</p><p>http://content-security-policy.com/</p>",
+                    "cweid": "693",
+                    "wascid": "15",
+                    "sourceid": "7"
+                },
+                {
+                    "pluginid": "10054",
+                    "alertRef": "10054",
+                    "alert": "Cookie with SameSite Attribute None",
+                    "name": "Cookie with SameSite Attribute None",
+                    "riskcode": "1",
+                    "confidence": "0",
+                    "riskdesc": "Low (False Positive)",
+                    "desc": "<p>A cookie has been set with its SameSite attribute set to \"none\", which means that the cookie can be sent as a result of a 'cross-site' request. The SameSite attribute is an effective counter measure to cross-site request forgery, cross-site script inclusion, and timing attacks.</p>",
+                    "instances": [
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": ""
+                        }
+                    ],
+                    "count": "1",
+                    "solution": "<p>Ensure that the SameSite attribute is set to either 'lax' or ideally 'strict' for all cookies.</p>",
+                    "otherinfo": "",
+                    "reference": "<p>https://tools.ietf.org/html/draft-ietf-httpbis-cookie-same-site</p>",
+                    "cweid": "1275",
+                    "wascid": "13",
+                    "sourceid": "1"
+                },
+                {
+                    "pluginid": "10054",
+                    "alertRef": "10054",
+                    "alert": "Cookie without SameSite Attribute",
+                    "name": "Cookie without SameSite Attribute",
+                    "riskcode": "1",
+                    "confidence": "0",
+                    "riskdesc": "Low (False Positive)",
+                    "desc": "<p>A cookie has been set without the SameSite attribute, which means that the cookie can be sent as a result of a 'cross-site' request. The SameSite attribute is an effective counter measure to cross-site request forgery, cross-site script inclusion, and timing attacks.</p>",
+                    "instances": [
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": ""
+                        }
+                    ],
+                    "count": "1",
+                    "solution": "<p>Ensure that the SameSite attribute is set to either 'lax' or ideally 'strict' for all cookies.</p>",
+                    "otherinfo": "",
+                    "reference": "<p>https://tools.ietf.org/html/draft-ietf-httpbis-cookie-same-site</p>",
+                    "cweid": "1275",
+                    "wascid": "13",
+                    "sourceid": "1"
+                },
+                {
+                    "pluginid": "10015",
+                    "alertRef": "10015",
+                    "alert": "Incomplete or No Cache-control Header Set",
+                    "name": "Incomplete or No Cache-control Header Set",
+                    "riskcode": "1",
+                    "confidence": "0",
+                    "riskdesc": "Low (False Positive)",
+                    "desc": "<p>The cache-control header has not been set properly or is missing, allowing the browser and proxies to cache content.</p>",
+                    "instances": [
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com",
+                            "method": "GET",
+                            "param": "Cache-Control",
+                            "attack": "",
+                            "evidence": "public, max-age=0"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/",
+                            "method": "GET",
+                            "param": "Cache-Control",
+                            "attack": "",
+                            "evidence": "public, max-age=0"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/",
+                            "method": "GET",
+                            "param": "Cache-Control",
+                            "attack": "",
+                            "evidence": "public, max-age=0, private"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/basket.html",
+                            "method": "GET",
+                            "param": "Cache-Control",
+                            "attack": "",
+                            "evidence": "public, max-age=0"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/basket.html?city=ZAP&country=ZAP&house-number=ZAP&post-code=ZAP&street=ZAP",
+                            "method": "GET",
+                            "param": "Cache-Control",
+                            "attack": "",
+                            "evidence": "public, max-age=0"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/category.html",
+                            "method": "GET",
+                            "param": "Cache-Control",
+                            "attack": "",
+                            "evidence": "public, max-age=0"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/category.html?sort-by=Name",
+                            "method": "GET",
+                            "param": "Cache-Control",
+                            "attack": "",
+                            "evidence": "public, max-age=0"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/customer-orders.html",
+                            "method": "GET",
+                            "param": "Cache-Control",
+                            "attack": "",
+                            "evidence": "public, max-age=0"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/detail.html",
+                            "method": "GET",
+                            "param": "Cache-Control",
+                            "attack": "",
+                            "evidence": "public, max-age=0"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/detail.html?id='%20+%20element.id%20+%20'",
+                            "method": "GET",
+                            "param": "Cache-Control",
+                            "attack": "",
+                            "evidence": "public, max-age=0"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/detail.html?id=6d62d909-f957-430e-8689-b5129c0bb75e",
+                            "method": "GET",
+                            "param": "Cache-Control",
+                            "attack": "",
+                            "evidence": "public, max-age=0"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/index.html",
+                            "method": "GET",
+                            "param": "Cache-Control",
+                            "attack": "",
+                            "evidence": "public, max-age=0"
+                        }
+                    ],
+                    "count": "12",
+                    "solution": "<p>Whenever possible ensure the cache-control HTTP header is set with no-cache, no-store, must-revalidate.</p>",
+                    "otherinfo": "",
+                    "reference": "<p>https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html#web-content-caching</p><p>https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control</p>",
+                    "cweid": "525",
+                    "wascid": "13",
+                    "sourceid": "7"
+                },
+                {
+                    "pluginid": "10037",
+                    "alertRef": "10037",
+                    "alert": "Server Leaks Information via \"X-Powered-By\" HTTP Response Header Field(s)",
+                    "name": "Server Leaks Information via \"X-Powered-By\" HTTP Response Header Field(s)",
+                    "riskcode": "1",
+                    "confidence": "0",
+                    "riskdesc": "Low (False Positive)",
+                    "desc": "<p>The web/application server is leaking information via one or more \"X-Powered-By\" HTTP response headers. Access to such information may facilitate attackers identifying other frameworks/components your web application is reliant upon and the vulnerabilities such components may be subject to.</p>",
+                    "instances": [
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "X-Powered-By: Express"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "X-Powered-By: Express"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/css/animate.min.css",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "X-Powered-By: Express"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/css/bootstrap.min.css",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "X-Powered-By: Express"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/css/font-awesome.css",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "X-Powered-By: Express"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/css/owl.carousel.css",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "X-Powered-By: Express"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/css/owl.theme.css",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "X-Powered-By: Express"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/detail.html?id='%20+%20element.id%20+%20'",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "X-Powered-By: Express"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/detail.html?id=6d62d909-f957-430e-8689-b5129c0bb75e",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "X-Powered-By: Express"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/robots.txt",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "X-Powered-By: Express"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/sitemap.xml",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "X-Powered-By: Express"
+                        }
+                    ],
+                    "count": "11",
+                    "solution": "<p>Ensure that your web server, application server, load balancer, etc. is configured to suppress \"X-Powered-By\" headers.</p>",
+                    "otherinfo": "",
+                    "reference": "<p>http://blogs.msdn.com/b/varunm/archive/2013/04/23/remove-unwanted-http-response-headers.aspx</p><p>http://www.troyhunt.com/2012/02/shhh-dont-let-your-response-headers.html</p>",
+                    "cweid": "200",
+                    "wascid": "13",
+                    "sourceid": "7"
+                },
+                {
+                    "pluginid": "10035",
+                    "alertRef": "10035",
+                    "alert": "Strict-Transport-Security Header Not Set",
+                    "name": "Strict-Transport-Security Header Not Set",
+                    "riskcode": "1",
+                    "confidence": "0",
+                    "riskdesc": "Low (False Positive)",
+                    "desc": "<p>HTTP Strict Transport Security (HSTS) is a web security policy mechanism whereby a web server declares that complying user agents (such as a web browser) are to interact with it using only secure HTTPS connections (i.e. HTTP layered over TLS/SSL). HSTS is an IETF standards track protocol and is specified in RFC 6797.</p>",
+                    "instances": [
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": ""
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": ""
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/css/animate.min.css",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": ""
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/css/bootstrap.min.css",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": ""
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/css/font-awesome.css",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": ""
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/css/owl.carousel.css",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": ""
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/css/owl.theme.css",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": ""
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/detail.html?id='%20+%20element.id%20+%20'",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": ""
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/detail.html?id=6d62d909-f957-430e-8689-b5129c0bb75e",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": ""
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/robots.txt",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": ""
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/sitemap.xml",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": ""
+                        }
+                    ],
+                    "count": "11",
+                    "solution": "<p>Ensure that your web server, application server, load balancer, etc. is configured to enforce Strict-Transport-Security.</p>",
+                    "otherinfo": "",
+                    "reference": "<p>https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Strict_Transport_Security_Cheat_Sheet.html</p><p>https://owasp.org/www-community/Security_Headers</p><p>http://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security</p><p>http://caniuse.com/stricttransportsecurity</p><p>http://tools.ietf.org/html/rfc6797</p>",
+                    "cweid": "319",
+                    "wascid": "15",
+                    "sourceid": "7"
+                },
+                {
+                    "pluginid": "10096",
+                    "alertRef": "10096",
+                    "alert": "Timestamp Disclosure - Unix",
+                    "name": "Timestamp Disclosure - Unix",
+                    "riskcode": "1",
+                    "confidence": "0",
+                    "riskdesc": "Low (False Positive)",
+                    "desc": "<p>A timestamp was disclosed by the application/web server - Unix</p>",
+                    "instances": [
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/css/bootstrap.min.css",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "00000000"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/css/bootstrap.min.css",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "33333333"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/css/bootstrap.min.css",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "42857143"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/css/bootstrap.min.css",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "66666667"
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/css/bootstrap.min.css",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "80000000"
+                        }
+                    ],
+                    "count": "5",
+                    "solution": "<p>Manually confirm that the timestamp data is not sensitive, and that the data cannot be aggregated to disclose exploitable patterns.</p>",
+                    "otherinfo": "<p>00000000, which evaluates to: 1970-01-01 00:00:00</p>",
+                    "reference": "<p>http://projects.webappsec.org/w/page/13246936/Information%20Leakage</p>",
+                    "cweid": "200",
+                    "wascid": "13",
+                    "sourceid": "47"
+                },
+                {
+                    "pluginid": "10021",
+                    "alertRef": "10021",
+                    "alert": "X-Content-Type-Options Header Missing",
+                    "name": "X-Content-Type-Options Header Missing",
+                    "riskcode": "1",
+                    "confidence": "0",
+                    "riskdesc": "Low (False Positive)",
+                    "desc": "<p>The Anti-MIME-Sniffing header X-Content-Type-Options was not set to 'nosniff'. This allows older versions of Internet Explorer and Chrome to perform MIME-sniffing on the response body, potentially causing the response body to be interpreted and displayed as a content type other than the declared content type. Current (early 2014) and legacy versions of Firefox will use the declared content type (if one is set), rather than performing MIME-sniffing.</p>",
+                    "instances": [
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com",
+                            "method": "GET",
+                            "param": "X-Content-Type-Options",
+                            "attack": "",
+                            "evidence": ""
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/",
+                            "method": "GET",
+                            "param": "X-Content-Type-Options",
+                            "attack": "",
+                            "evidence": ""
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/category.html",
+                            "method": "GET",
+                            "param": "X-Content-Type-Options",
+                            "attack": "",
+                            "evidence": ""
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/css/animate.min.css",
+                            "method": "GET",
+                            "param": "X-Content-Type-Options",
+                            "attack": "",
+                            "evidence": ""
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/css/bootstrap.min.css",
+                            "method": "GET",
+                            "param": "X-Content-Type-Options",
+                            "attack": "",
+                            "evidence": ""
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/css/font-awesome.css",
+                            "method": "GET",
+                            "param": "X-Content-Type-Options",
+                            "attack": "",
+                            "evidence": ""
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/css/owl.carousel.css",
+                            "method": "GET",
+                            "param": "X-Content-Type-Options",
+                            "attack": "",
+                            "evidence": ""
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/css/owl.theme.css",
+                            "method": "GET",
+                            "param": "X-Content-Type-Options",
+                            "attack": "",
+                            "evidence": ""
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/css/style.blue.css",
+                            "method": "GET",
+                            "param": "X-Content-Type-Options",
+                            "attack": "",
+                            "evidence": ""
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/detail.html?id='%20+%20element.id%20+%20'",
+                            "method": "GET",
+                            "param": "X-Content-Type-Options",
+                            "attack": "",
+                            "evidence": ""
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/detail.html?id=6d62d909-f957-430e-8689-b5129c0bb75e",
+                            "method": "GET",
+                            "param": "X-Content-Type-Options",
+                            "attack": "",
+                            "evidence": ""
+                        }
+                    ],
+                    "count": "11",
+                    "solution": "<p>Ensure that the application/web server sets the Content-Type header appropriately, and that it sets the X-Content-Type-Options header to 'nosniff' for all web pages.</p><p>If possible, ensure that the end user uses a standards-compliant and modern web browser that does not perform MIME-sniffing at all, or that can be directed by the web application/web server to not perform MIME-sniffing.</p>",
+                    "otherinfo": "<p>This issue still applies to error type pages (401, 403, 500, etc.) as those pages are often still affected by injection issues, in which case there is still concern for browsers sniffing pages away from their actual content type.</p><p>At \"High\" threshold this scan rule will not alert on client or server error responses.</p>",
+                    "reference": "<p>http://msdn.microsoft.com/en-us/library/ie/gg622941%28v=vs.85%29.aspx</p><p>https://owasp.org/www-community/Security_Headers</p>",
+                    "cweid": "693",
+                    "wascid": "15",
+                    "sourceid": "7"
+                },
+                {
+                    "pluginid": "10020",
+                    "alertRef": "10020",
+                    "alert": "X-Frame-Options Header Not Set",
+                    "name": "X-Frame-Options Header Not Set",
+                    "riskcode": "2",
+                    "confidence": "0",
+                    "riskdesc": "Medium (False Positive)",
+                    "desc": "<p>X-Frame-Options header is not included in the HTTP response to protect against 'ClickJacking' attacks.</p>",
+                    "instances": [
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com",
+                            "method": "GET",
+                            "param": "X-Frame-Options",
+                            "attack": "",
+                            "evidence": ""
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/",
+                            "method": "GET",
+                            "param": "X-Frame-Options",
+                            "attack": "",
+                            "evidence": ""
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/basket.html",
+                            "method": "GET",
+                            "param": "X-Frame-Options",
+                            "attack": "",
+                            "evidence": ""
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/basket.html?city=ZAP&country=ZAP&house-number=ZAP&post-code=ZAP&street=ZAP",
+                            "method": "GET",
+                            "param": "X-Frame-Options",
+                            "attack": "",
+                            "evidence": ""
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/category.html",
+                            "method": "GET",
+                            "param": "X-Frame-Options",
+                            "attack": "",
+                            "evidence": ""
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/category.html?sort-by=Name",
+                            "method": "GET",
+                            "param": "X-Frame-Options",
+                            "attack": "",
+                            "evidence": ""
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/customer-orders.html",
+                            "method": "GET",
+                            "param": "X-Frame-Options",
+                            "attack": "",
+                            "evidence": ""
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/detail.html",
+                            "method": "GET",
+                            "param": "X-Frame-Options",
+                            "attack": "",
+                            "evidence": ""
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/detail.html?id='%20+%20element.id%20+%20'",
+                            "method": "GET",
+                            "param": "X-Frame-Options",
+                            "attack": "",
+                            "evidence": ""
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/detail.html?id=6d62d909-f957-430e-8689-b5129c0bb75e",
+                            "method": "GET",
+                            "param": "X-Frame-Options",
+                            "attack": "",
+                            "evidence": ""
+                        },
+                        {
+                            "uri": "https://its-abq-showcase-uat-front-end-master.cz3.cloudapps.dhl.com/index.html",
+                            "method": "GET",
+                            "param": "X-Frame-Options",
+                            "attack": "",
+                            "evidence": ""
+                        }
+                    ],
+                    "count": "11",
+                    "solution": "<p>Most modern Web browsers support the X-Frame-Options HTTP header. Ensure it's set on all web pages returned by your site (if you expect the page to be framed only by pages on your server (e.g. it's part of a FRAMESET) then you'll want to use SAMEORIGIN, otherwise if you never expect the page to be framed, you should use DENY. Alternatively consider implementing Content Security Policy's \"frame-ancestors\" directive. </p>",
+                    "otherinfo": "",
+                    "reference": "<p>https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options</p>",
+                    "cweid": "1021",
+                    "wascid": "15",
+                    "sourceid": "7"
+                }
+            ]
+        }
+    ]
+}

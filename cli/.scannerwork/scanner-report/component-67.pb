@@ -1,0 +1,1 @@
+C 2kotlinXhresrc/main/kotlin/de/deutschepost/sdm/cdlib/change/sharepoint/model/SharepointApprovalConfigurations.kt

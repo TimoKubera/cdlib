@@ -1,0 +1,785 @@
+{
+    "accepts@1.3.8": {
+        "licenses": "MIT",
+        "repository": "https://github.com/jshttp/accepts",
+        "path": "/home/nodebrady/node_modules/accepts",
+        "licenseFile": "/home/nodebrady/node_modules/accepts/LICENSE"
+    },
+    "ansi-regex@2.1.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/chalk/ansi-regex",
+        "publisher": "Sindre Sorhus",
+        "email": "sindresorhus@gmail.com",
+        "path": "/home/nodebrady/node_modules/ansi-regex",
+        "licenseFile": "/home/nodebrady/node_modules/ansi-regex/license"
+    },
+    "ansi-styles@2.2.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/chalk/ansi-styles",
+        "publisher": "Sindre Sorhus",
+        "email": "sindresorhus@gmail.com",
+        "path": "/home/nodebrady/node_modules/koa-logger/node_modules/ansi-styles",
+        "licenseFile": "/home/nodebrady/node_modules/koa-logger/node_modules/ansi-styles/license"
+    },
+    "ansi-styles@4.3.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/chalk/ansi-styles",
+        "publisher": "Sindre Sorhus",
+        "email": "sindresorhus@gmail.com",
+        "path": "/home/nodebrady/node_modules/ansi-styles",
+        "licenseFile": "/home/nodebrady/node_modules/ansi-styles/license"
+    },
+    "any-promise@1.3.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/kevinbeaty/any-promise",
+        "publisher": "Kevin Beaty",
+        "path": "/home/nodebrady/node_modules/any-promise",
+        "licenseFile": "/home/nodebrady/node_modules/any-promise/LICENSE"
+    },
+    "async@3.2.4": {
+        "licenses": "MIT",
+        "repository": "https://github.com/caolan/async",
+        "publisher": "Caolan McMahon",
+        "path": "/home/nodebrady/node_modules/async",
+        "licenseFile": "/home/nodebrady/node_modules/async/LICENSE"
+    },
+    "balanced-match@1.0.2": {
+        "licenses": "MIT",
+        "repository": "https://github.com/juliangruber/balanced-match",
+        "publisher": "Julian Gruber",
+        "email": "mail@juliangruber.com",
+        "path": "/home/nodebrady/node_modules/balanced-match",
+        "licenseFile": "/home/nodebrady/node_modules/balanced-match/LICENSE.md"
+    },
+    "bluebird@3.7.2": {
+        "licenses": "MIT",
+        "repository": "https://github.com/petkaantonov/bluebird",
+        "publisher": "Petka Antonov",
+        "email": "petka_antonov@hotmail.com",
+        "path": "/home/nodebrady/node_modules/bluebird",
+        "licenseFile": "/home/nodebrady/node_modules/bluebird/LICENSE"
+    },
+    "brace-expansion@1.1.11": {
+        "licenses": "MIT",
+        "repository": "https://github.com/juliangruber/brace-expansion",
+        "publisher": "Julian Gruber",
+        "email": "mail@juliangruber.com",
+        "path": "/home/nodebrady/node_modules/minimatch/node_modules/brace-expansion",
+        "licenseFile": "/home/nodebrady/node_modules/minimatch/node_modules/brace-expansion/LICENSE"
+    },
+    "brace-expansion@2.0.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/juliangruber/brace-expansion",
+        "publisher": "Julian Gruber",
+        "email": "mail@juliangruber.com",
+        "path": "/home/nodebrady/node_modules/brace-expansion",
+        "licenseFile": "/home/nodebrady/node_modules/brace-expansion/LICENSE"
+    },
+    "bytes@1.0.0": {
+        "licenses": "MIT*",
+        "repository": "https://github.com/visionmedia/bytes.js",
+        "publisher": "TJ Holowaychuk",
+        "email": "tj@vision-media.ca",
+        "path": "/home/nodebrady/node_modules/koa-logger/node_modules/bytes",
+        "licenseFile": "/home/nodebrady/node_modules/koa-logger/node_modules/bytes/Readme.md"
+    },
+    "bytes@2.5.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/visionmedia/bytes.js",
+        "publisher": "TJ Holowaychuk",
+        "email": "tj@vision-media.ca",
+        "path": "/home/nodebrady/node_modules/koa-compress/node_modules/bytes",
+        "licenseFile": "/home/nodebrady/node_modules/koa-compress/node_modules/bytes/LICENSE"
+    },
+    "bytes@3.1.2": {
+        "licenses": "MIT",
+        "repository": "https://github.com/visionmedia/bytes.js",
+        "publisher": "TJ Holowaychuk",
+        "email": "tj@vision-media.ca",
+        "path": "/home/nodebrady/node_modules/bytes",
+        "licenseFile": "/home/nodebrady/node_modules/bytes/LICENSE"
+    },
+    "call-bind@1.0.2": {
+        "licenses": "MIT",
+        "repository": "https://github.com/ljharb/call-bind",
+        "publisher": "Jordan Harband",
+        "email": "ljharb@gmail.com",
+        "path": "/home/nodebrady/node_modules/call-bind",
+        "licenseFile": "/home/nodebrady/node_modules/call-bind/LICENSE"
+    },
+    "chalk@1.1.3": {
+        "licenses": "MIT",
+        "repository": "https://github.com/chalk/chalk",
+        "path": "/home/nodebrady/node_modules/koa-logger/node_modules/chalk",
+        "licenseFile": "/home/nodebrady/node_modules/koa-logger/node_modules/chalk/license"
+    },
+    "chalk@4.1.2": {
+        "licenses": "MIT",
+        "repository": "https://github.com/chalk/chalk",
+        "path": "/home/nodebrady/node_modules/chalk",
+        "licenseFile": "/home/nodebrady/node_modules/chalk/license"
+    },
+    "co-body@6.1.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/cojs/co-body",
+        "path": "/home/nodebrady/node_modules/co-body",
+        "licenseFile": "/home/nodebrady/node_modules/co-body/Readme.md"
+    },
+    "co-render@1.1.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/visionmedia/co-render",
+        "path": "/home/nodebrady/node_modules/co-render",
+        "licenseFile": "/home/nodebrady/node_modules/co-render/Readme.md"
+    },
+    "co-views@2.1.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/tj/co-views",
+        "path": "/home/nodebrady/node_modules/co-views",
+        "licenseFile": "/home/nodebrady/node_modules/co-views/Readme.md"
+    },
+    "co@4.6.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/tj/co",
+        "path": "/home/nodebrady/node_modules/co",
+        "licenseFile": "/home/nodebrady/node_modules/co/LICENSE"
+    },
+    "color-convert@2.0.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/Qix-/color-convert",
+        "publisher": "Heather Arthur",
+        "email": "fayearthur@gmail.com",
+        "path": "/home/nodebrady/node_modules/color-convert",
+        "licenseFile": "/home/nodebrady/node_modules/color-convert/LICENSE"
+    },
+    "color-name@1.1.4": {
+        "licenses": "MIT",
+        "repository": "https://github.com/colorjs/color-name",
+        "publisher": "DY",
+        "email": "dfcreative@gmail.com",
+        "path": "/home/nodebrady/node_modules/color-name",
+        "licenseFile": "/home/nodebrady/node_modules/color-name/LICENSE"
+    },
+    "composition@2.3.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/thenables/composition",
+        "publisher": "Jonathan Ong",
+        "email": "me@jongleberry.com",
+        "path": "/home/nodebrady/node_modules/composition",
+        "licenseFile": "/home/nodebrady/node_modules/composition/LICENSE"
+    },
+    "compressible@2.0.18": {
+        "licenses": "MIT",
+        "repository": "https://github.com/jshttp/compressible",
+        "path": "/home/nodebrady/node_modules/compressible",
+        "licenseFile": "/home/nodebrady/node_modules/compressible/LICENSE"
+    },
+    "concat-map@0.0.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/substack/node-concat-map",
+        "publisher": "James Halliday",
+        "email": "mail@substack.net",
+        "path": "/home/nodebrady/node_modules/concat-map",
+        "licenseFile": "/home/nodebrady/node_modules/concat-map/LICENSE"
+    },
+    "consolidate@0.14.5": {
+        "licenses": "MIT",
+        "repository": "https://github.com/visionmedia/consolidate.js",
+        "publisher": "TJ Holowaychuk",
+        "email": "tj@vision-media.ca",
+        "path": "/home/nodebrady/node_modules/consolidate",
+        "licenseFile": "/home/nodebrady/node_modules/consolidate/Readme.md"
+    },
+    "content-disposition@0.5.4": {
+        "licenses": "MIT",
+        "repository": "https://github.com/jshttp/content-disposition",
+        "publisher": "Douglas Christopher Wilson",
+        "email": "doug@somethingdoug.com",
+        "path": "/home/nodebrady/node_modules/content-disposition",
+        "licenseFile": "/home/nodebrady/node_modules/content-disposition/LICENSE"
+    },
+    "content-type@1.0.4": {
+        "licenses": "MIT",
+        "repository": "https://github.com/jshttp/content-type",
+        "publisher": "Douglas Christopher Wilson",
+        "email": "doug@somethingdoug.com",
+        "path": "/home/nodebrady/node_modules/content-type",
+        "licenseFile": "/home/nodebrady/node_modules/content-type/LICENSE"
+    },
+    "cookies@0.8.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/pillarjs/cookies",
+        "publisher": "Jed Schmidt",
+        "email": "tr@nslator.jp",
+        "path": "/home/nodebrady/node_modules/cookies",
+        "licenseFile": "/home/nodebrady/node_modules/cookies/LICENSE"
+    },
+    "debug@2.6.9": {
+        "licenses": "MIT",
+        "repository": "https://github.com/visionmedia/debug",
+        "publisher": "TJ Holowaychuk",
+        "email": "tj@vision-media.ca",
+        "path": "/home/nodebrady/node_modules/debug",
+        "licenseFile": "/home/nodebrady/node_modules/debug/LICENSE"
+    },
+    "deep-equal@1.0.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/substack/node-deep-equal",
+        "publisher": "James Halliday",
+        "email": "mail@substack.net",
+        "path": "/home/nodebrady/node_modules/deep-equal",
+        "licenseFile": "/home/nodebrady/node_modules/deep-equal/LICENSE"
+    },
+    "delegates@1.0.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/visionmedia/node-delegates",
+        "path": "/home/nodebrady/node_modules/delegates",
+        "licenseFile": "/home/nodebrady/node_modules/delegates/License"
+    },
+    "depd@1.1.2": {
+        "licenses": "MIT",
+        "repository": "https://github.com/dougwilson/nodejs-depd",
+        "publisher": "Douglas Christopher Wilson",
+        "email": "doug@somethingdoug.com",
+        "path": "/home/nodebrady/node_modules/http-assert/node_modules/depd",
+        "licenseFile": "/home/nodebrady/node_modules/http-assert/node_modules/depd/LICENSE"
+    },
+    "depd@2.0.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/dougwilson/nodejs-depd",
+        "publisher": "Douglas Christopher Wilson",
+        "email": "doug@somethingdoug.com",
+        "path": "/home/nodebrady/node_modules/depd",
+        "licenseFile": "/home/nodebrady/node_modules/depd/LICENSE"
+    },
+    "destroy@1.2.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/stream-utils/destroy",
+        "publisher": "Jonathan Ong",
+        "email": "me@jongleberry.com",
+        "path": "/home/nodebrady/node_modules/destroy",
+        "licenseFile": "/home/nodebrady/node_modules/destroy/LICENSE"
+    },
+    "ee-first@1.1.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/jonathanong/ee-first",
+        "publisher": "Jonathan Ong",
+        "email": "me@jongleberry.com",
+        "path": "/home/nodebrady/node_modules/ee-first",
+        "licenseFile": "/home/nodebrady/node_modules/ee-first/LICENSE"
+    },
+    "ejs@3.1.8": {
+        "licenses": "Apache-2.0",
+        "repository": "https://github.com/mde/ejs",
+        "publisher": "Matthew Eernisse",
+        "email": "mde@fleegix.org",
+        "path": "/home/nodebrady/node_modules/ejs",
+        "licenseFile": "/home/nodebrady/node_modules/ejs/LICENSE"
+    },
+    "error-inject@1.0.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/node-modules/error-inject",
+        "publisher": "dead_horse",
+        "email": "dead_horse@qq.com",
+        "path": "/home/nodebrady/node_modules/error-inject",
+        "licenseFile": "/home/nodebrady/node_modules/error-inject/README.md"
+    },
+    "escape-html@1.0.3": {
+        "licenses": "MIT",
+        "repository": "https://github.com/component/escape-html",
+        "path": "/home/nodebrady/node_modules/escape-html",
+        "licenseFile": "/home/nodebrady/node_modules/escape-html/LICENSE"
+    },
+    "escape-string-regexp@1.0.5": {
+        "licenses": "MIT",
+        "repository": "https://github.com/sindresorhus/escape-string-regexp",
+        "publisher": "Sindre Sorhus",
+        "email": "sindresorhus@gmail.com",
+        "path": "/home/nodebrady/node_modules/escape-string-regexp",
+        "licenseFile": "/home/nodebrady/node_modules/escape-string-regexp/license"
+    },
+    "filelist@1.0.4": {
+        "licenses": "Apache-2.0",
+        "repository": "https://github.com/mde/filelist",
+        "publisher": "Matthew Eernisse",
+        "email": "mde@fleegix.org",
+        "path": "/home/nodebrady/node_modules/filelist",
+        "licenseFile": "/home/nodebrady/node_modules/filelist/README.md"
+    },
+    "fresh@0.5.2": {
+        "licenses": "MIT",
+        "repository": "https://github.com/jshttp/fresh",
+        "publisher": "TJ Holowaychuk",
+        "email": "tj@vision-media.ca",
+        "path": "/home/nodebrady/node_modules/fresh",
+        "licenseFile": "/home/nodebrady/node_modules/fresh/LICENSE"
+    },
+    "function-bind@1.1.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/Raynos/function-bind",
+        "publisher": "Raynos",
+        "email": "raynos2@gmail.com",
+        "path": "/home/nodebrady/node_modules/function-bind",
+        "licenseFile": "/home/nodebrady/node_modules/function-bind/LICENSE"
+    },
+    "get-intrinsic@1.1.3": {
+        "licenses": "MIT",
+        "repository": "https://github.com/ljharb/get-intrinsic",
+        "publisher": "Jordan Harband",
+        "email": "ljharb@gmail.com",
+        "path": "/home/nodebrady/node_modules/get-intrinsic",
+        "licenseFile": "/home/nodebrady/node_modules/get-intrinsic/LICENSE"
+    },
+    "has-ansi@2.0.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/sindresorhus/has-ansi",
+        "publisher": "Sindre Sorhus",
+        "email": "sindresorhus@gmail.com",
+        "path": "/home/nodebrady/node_modules/has-ansi",
+        "licenseFile": "/home/nodebrady/node_modules/has-ansi/license"
+    },
+    "has-flag@4.0.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/sindresorhus/has-flag",
+        "publisher": "Sindre Sorhus",
+        "email": "sindresorhus@gmail.com",
+        "path": "/home/nodebrady/node_modules/has-flag",
+        "licenseFile": "/home/nodebrady/node_modules/has-flag/license"
+    },
+    "has-symbols@1.0.3": {
+        "licenses": "MIT",
+        "repository": "https://github.com/inspect-js/has-symbols",
+        "publisher": "Jordan Harband",
+        "email": "ljharb@gmail.com",
+        "path": "/home/nodebrady/node_modules/has-symbols",
+        "licenseFile": "/home/nodebrady/node_modules/has-symbols/LICENSE"
+    },
+    "has@1.0.3": {
+        "licenses": "MIT",
+        "repository": "https://github.com/tarruda/has",
+        "publisher": "Thiago de Arruda",
+        "email": "tpadilha84@gmail.com",
+        "path": "/home/nodebrady/node_modules/has",
+        "licenseFile": "/home/nodebrady/node_modules/has/LICENSE-MIT"
+    },
+    "http-assert@1.5.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/jshttp/http-assert",
+        "path": "/home/nodebrady/node_modules/http-assert",
+        "licenseFile": "/home/nodebrady/node_modules/http-assert/LICENSE"
+    },
+    "http-errors@1.6.3": {
+        "licenses": "MIT",
+        "repository": "https://github.com/jshttp/http-errors",
+        "publisher": "Jonathan Ong",
+        "email": "me@jongleberry.com",
+        "path": "/home/nodebrady/node_modules/resolve-path/node_modules/http-errors",
+        "licenseFile": "/home/nodebrady/node_modules/resolve-path/node_modules/http-errors/LICENSE"
+    },
+    "http-errors@1.8.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/jshttp/http-errors",
+        "publisher": "Jonathan Ong",
+        "email": "me@jongleberry.com",
+        "path": "/home/nodebrady/node_modules/http-assert/node_modules/http-errors",
+        "licenseFile": "/home/nodebrady/node_modules/http-assert/node_modules/http-errors/LICENSE"
+    },
+    "http-errors@2.0.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/jshttp/http-errors",
+        "publisher": "Jonathan Ong",
+        "email": "me@jongleberry.com",
+        "path": "/home/nodebrady/node_modules/http-errors",
+        "licenseFile": "/home/nodebrady/node_modules/http-errors/LICENSE"
+    },
+    "humanize-number@0.0.2": {
+        "licenses": "MIT*",
+        "repository": "https://github.com/component/humanize-number",
+        "path": "/home/nodebrady/node_modules/humanize-number",
+        "licenseFile": "/home/nodebrady/node_modules/humanize-number/Readme.md"
+    },
+    "iconv-lite@0.4.24": {
+        "licenses": "MIT",
+        "repository": "https://github.com/ashtuchkin/iconv-lite",
+        "publisher": "Alexander Shtuchkin",
+        "email": "ashtuchkin@gmail.com",
+        "path": "/home/nodebrady/node_modules/iconv-lite",
+        "licenseFile": "/home/nodebrady/node_modules/iconv-lite/LICENSE"
+    },
+    "inflation@2.0.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/stream-utils/inflation",
+        "publisher": "Jonathan Ong",
+        "email": "me@jongleberry.com",
+        "path": "/home/nodebrady/node_modules/inflation",
+        "licenseFile": "/home/nodebrady/node_modules/inflation/LICENSE"
+    },
+    "inherits@2.0.3": {
+        "licenses": "ISC",
+        "repository": "https://github.com/isaacs/inherits",
+        "path": "/home/nodebrady/node_modules/resolve-path/node_modules/inherits",
+        "licenseFile": "/home/nodebrady/node_modules/resolve-path/node_modules/inherits/LICENSE"
+    },
+    "inherits@2.0.4": {
+        "licenses": "ISC",
+        "repository": "https://github.com/isaacs/inherits",
+        "path": "/home/nodebrady/node_modules/inherits",
+        "licenseFile": "/home/nodebrady/node_modules/inherits/LICENSE"
+    },
+    "isarray@0.0.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/juliangruber/isarray",
+        "publisher": "Julian Gruber",
+        "email": "mail@juliangruber.com",
+        "path": "/home/nodebrady/node_modules/isarray",
+        "licenseFile": "/home/nodebrady/node_modules/isarray/README.md"
+    },
+    "jake@10.8.5": {
+        "licenses": "Apache-2.0",
+        "repository": "https://github.com/jakejs/jake",
+        "publisher": "Matthew Eernisse",
+        "email": "mde@fleegix.org",
+        "path": "/home/nodebrady/node_modules/jake",
+        "licenseFile": "/home/nodebrady/node_modules/jake/README.md"
+    },
+    "keygrip@1.1.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/crypto-utils/keygrip",
+        "path": "/home/nodebrady/node_modules/keygrip",
+        "licenseFile": "/home/nodebrady/node_modules/keygrip/LICENSE"
+    },
+    "koa-compose@2.5.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/koajs/compose",
+        "path": "/home/nodebrady/node_modules/koa-compose",
+        "licenseFile": "/home/nodebrady/node_modules/koa-compose/Readme.md"
+    },
+    "koa-compress@1.0.9": {
+        "licenses": "MIT",
+        "repository": "https://github.com/koajs/compress",
+        "publisher": "Jonathan Ong",
+        "email": "me@jongleberry.com",
+        "path": "/home/nodebrady/node_modules/koa-compress",
+        "licenseFile": "/home/nodebrady/node_modules/koa-compress/LICENSE"
+    },
+    "koa-is-json@1.0.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/koajs/is-json",
+        "publisher": "Jonathan Ong",
+        "email": "me@jongleberry.com",
+        "path": "/home/nodebrady/node_modules/koa-is-json",
+        "licenseFile": "/home/nodebrady/node_modules/koa-is-json/LICENSE"
+    },
+    "koa-logger@1.3.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/koajs/logger",
+        "path": "/home/nodebrady/node_modules/koa-logger",
+        "licenseFile": "/home/nodebrady/node_modules/koa-logger/Readme.md"
+    },
+    "koa-route@2.4.2": {
+        "licenses": "MIT",
+        "repository": "https://github.com/koajs/route",
+        "path": "/home/nodebrady/node_modules/koa-route",
+        "licenseFile": "/home/nodebrady/node_modules/koa-route/Readme.md"
+    },
+    "koa-send@3.3.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/koajs/send",
+        "path": "/home/nodebrady/node_modules/koa-send",
+        "licenseFile": "/home/nodebrady/node_modules/koa-send/Readme.md"
+    },
+    "koa-static@2.1.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/koajs/static",
+        "path": "/home/nodebrady/node_modules/koa-static",
+        "licenseFile": "/home/nodebrady/node_modules/koa-static/Readme.md"
+    },
+    "koa@1.7.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/koajs/koa",
+        "path": "/home/nodebrady/node_modules/koa",
+        "licenseFile": "/home/nodebrady/node_modules/koa/LICENSE"
+    },
+    "media-typer@0.3.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/jshttp/media-typer",
+        "publisher": "Douglas Christopher Wilson",
+        "email": "doug@somethingdoug.com",
+        "path": "/home/nodebrady/node_modules/media-typer",
+        "licenseFile": "/home/nodebrady/node_modules/media-typer/LICENSE"
+    },
+    "methods@1.1.2": {
+        "licenses": "MIT",
+        "repository": "https://github.com/jshttp/methods",
+        "path": "/home/nodebrady/node_modules/methods",
+        "licenseFile": "/home/nodebrady/node_modules/methods/LICENSE"
+    },
+    "mime-db@1.52.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/jshttp/mime-db",
+        "path": "/home/nodebrady/node_modules/mime-db",
+        "licenseFile": "/home/nodebrady/node_modules/mime-db/LICENSE"
+    },
+    "mime-types@2.1.35": {
+        "licenses": "MIT",
+        "repository": "https://github.com/jshttp/mime-types",
+        "path": "/home/nodebrady/node_modules/mime-types",
+        "licenseFile": "/home/nodebrady/node_modules/mime-types/LICENSE"
+    },
+    "minimatch@3.1.2": {
+        "licenses": "ISC",
+        "repository": "https://github.com/isaacs/minimatch",
+        "publisher": "Isaac Z. Schlueter",
+        "email": "i@izs.me",
+        "path": "/home/nodebrady/node_modules/minimatch",
+        "licenseFile": "/home/nodebrady/node_modules/minimatch/LICENSE"
+    },
+    "minimatch@5.1.1": {
+        "licenses": "ISC",
+        "repository": "https://github.com/isaacs/minimatch",
+        "publisher": "Isaac Z. Schlueter",
+        "email": "i@izs.me",
+        "path": "/home/nodebrady/node_modules/filelist/node_modules/minimatch",
+        "licenseFile": "/home/nodebrady/node_modules/filelist/node_modules/minimatch/LICENSE"
+    },
+    "ms@2.0.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/zeit/ms",
+        "path": "/home/nodebrady/node_modules/ms",
+        "licenseFile": "/home/nodebrady/node_modules/ms/license.md"
+    },
+    "mz@2.7.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/normalize/mz",
+        "publisher": "Jonathan Ong",
+        "email": "me@jongleberry.com",
+        "path": "/home/nodebrady/node_modules/mz",
+        "licenseFile": "/home/nodebrady/node_modules/mz/LICENSE"
+    },
+    "negotiator@0.6.3": {
+        "licenses": "MIT",
+        "repository": "https://github.com/jshttp/negotiator",
+        "path": "/home/nodebrady/node_modules/negotiator",
+        "licenseFile": "/home/nodebrady/node_modules/negotiator/LICENSE"
+    },
+    "nodebrady@0.0.1": {
+        "licenses": "UNLICENSED",
+        "private": true,
+        "path": "/home/nodebrady"
+    },
+    "object-assign@4.1.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/sindresorhus/object-assign",
+        "publisher": "Sindre Sorhus",
+        "email": "sindresorhus@gmail.com",
+        "path": "/home/nodebrady/node_modules/object-assign",
+        "licenseFile": "/home/nodebrady/node_modules/object-assign/license"
+    },
+    "object-inspect@1.12.2": {
+        "licenses": "MIT",
+        "repository": "https://github.com/inspect-js/object-inspect",
+        "publisher": "James Halliday",
+        "email": "mail@substack.net",
+        "path": "/home/nodebrady/node_modules/object-inspect",
+        "licenseFile": "/home/nodebrady/node_modules/object-inspect/LICENSE"
+    },
+    "on-finished@2.4.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/jshttp/on-finished",
+        "path": "/home/nodebrady/node_modules/on-finished",
+        "licenseFile": "/home/nodebrady/node_modules/on-finished/LICENSE"
+    },
+    "only@0.0.2": {
+        "licenses": "MIT*",
+        "repository": "https://github.com/visionmedia/node-only",
+        "publisher": "TJ Holowaychuk",
+        "email": "tj@vision-media.ca",
+        "path": "/home/nodebrady/node_modules/only",
+        "licenseFile": "/home/nodebrady/node_modules/only/Readme.md"
+    },
+    "parseurl@1.3.3": {
+        "licenses": "MIT",
+        "repository": "https://github.com/pillarjs/parseurl",
+        "path": "/home/nodebrady/node_modules/parseurl",
+        "licenseFile": "/home/nodebrady/node_modules/parseurl/LICENSE"
+    },
+    "passthrough-counter@1.0.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/stream-utils/passthrough-counter",
+        "publisher": "Jonathan Ong",
+        "email": "me@jongleberry.com",
+        "path": "/home/nodebrady/node_modules/passthrough-counter",
+        "licenseFile": "/home/nodebrady/node_modules/passthrough-counter/LICENSE"
+    },
+    "path-is-absolute@1.0.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/sindresorhus/path-is-absolute",
+        "publisher": "Sindre Sorhus",
+        "email": "sindresorhus@gmail.com",
+        "path": "/home/nodebrady/node_modules/path-is-absolute",
+        "licenseFile": "/home/nodebrady/node_modules/path-is-absolute/license"
+    },
+    "path-to-regexp@1.8.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/pillarjs/path-to-regexp",
+        "path": "/home/nodebrady/node_modules/path-to-regexp",
+        "licenseFile": "/home/nodebrady/node_modules/path-to-regexp/LICENSE"
+    },
+    "qs@6.11.0": {
+        "licenses": "BSD-3-Clause",
+        "repository": "https://github.com/ljharb/qs",
+        "path": "/home/nodebrady/node_modules/qs",
+        "licenseFile": "/home/nodebrady/node_modules/qs/LICENSE.md"
+    },
+    "raw-body@2.5.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/stream-utils/raw-body",
+        "publisher": "Jonathan Ong",
+        "email": "me@jongleberry.com",
+        "path": "/home/nodebrady/node_modules/raw-body",
+        "licenseFile": "/home/nodebrady/node_modules/raw-body/LICENSE"
+    },
+    "resolve-path@1.4.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/pillarjs/resolve-path",
+        "publisher": "Jonathan Ong",
+        "email": "me@jongleberry.com",
+        "path": "/home/nodebrady/node_modules/resolve-path",
+        "licenseFile": "/home/nodebrady/node_modules/resolve-path/LICENSE"
+    },
+    "safe-buffer@5.2.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/feross/safe-buffer",
+        "publisher": "Feross Aboukhadijeh",
+        "email": "feross@feross.org",
+        "path": "/home/nodebrady/node_modules/safe-buffer",
+        "licenseFile": "/home/nodebrady/node_modules/safe-buffer/LICENSE"
+    },
+    "safer-buffer@2.1.2": {
+        "licenses": "MIT",
+        "repository": "https://github.com/ChALkeR/safer-buffer",
+        "publisher": "Nikita Skovoroda",
+        "email": "chalkerx@gmail.com",
+        "path": "/home/nodebrady/node_modules/safer-buffer",
+        "licenseFile": "/home/nodebrady/node_modules/safer-buffer/LICENSE"
+    },
+    "setprototypeof@1.1.0": {
+        "licenses": "ISC",
+        "repository": "https://github.com/wesleytodd/setprototypeof",
+        "publisher": "Wes Todd",
+        "path": "/home/nodebrady/node_modules/resolve-path/node_modules/setprototypeof",
+        "licenseFile": "/home/nodebrady/node_modules/resolve-path/node_modules/setprototypeof/LICENSE"
+    },
+    "setprototypeof@1.2.0": {
+        "licenses": "ISC",
+        "repository": "https://github.com/wesleytodd/setprototypeof",
+        "publisher": "Wes Todd",
+        "path": "/home/nodebrady/node_modules/setprototypeof",
+        "licenseFile": "/home/nodebrady/node_modules/setprototypeof/LICENSE"
+    },
+    "side-channel@1.0.4": {
+        "licenses": "MIT",
+        "repository": "https://github.com/ljharb/side-channel",
+        "publisher": "Jordan Harband",
+        "email": "ljharb@gmail.com",
+        "path": "/home/nodebrady/node_modules/side-channel",
+        "licenseFile": "/home/nodebrady/node_modules/side-channel/LICENSE"
+    },
+    "statuses@1.5.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/jshttp/statuses",
+        "path": "/home/nodebrady/node_modules/http-assert/node_modules/statuses",
+        "licenseFile": "/home/nodebrady/node_modules/http-assert/node_modules/statuses/LICENSE"
+    },
+    "statuses@2.0.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/jshttp/statuses",
+        "path": "/home/nodebrady/node_modules/statuses",
+        "licenseFile": "/home/nodebrady/node_modules/statuses/LICENSE"
+    },
+    "strip-ansi@3.0.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/chalk/strip-ansi",
+        "publisher": "Sindre Sorhus",
+        "email": "sindresorhus@gmail.com",
+        "path": "/home/nodebrady/node_modules/strip-ansi",
+        "licenseFile": "/home/nodebrady/node_modules/strip-ansi/license"
+    },
+    "supports-color@2.0.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/chalk/supports-color",
+        "publisher": "Sindre Sorhus",
+        "email": "sindresorhus@gmail.com",
+        "path": "/home/nodebrady/node_modules/koa-logger/node_modules/supports-color",
+        "licenseFile": "/home/nodebrady/node_modules/koa-logger/node_modules/supports-color/license"
+    },
+    "supports-color@7.2.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/chalk/supports-color",
+        "publisher": "Sindre Sorhus",
+        "email": "sindresorhus@gmail.com",
+        "path": "/home/nodebrady/node_modules/supports-color",
+        "licenseFile": "/home/nodebrady/node_modules/supports-color/license"
+    },
+    "thenify-all@1.6.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/thenables/thenify-all",
+        "publisher": "Jonathan Ong",
+        "email": "me@jongleberry.com",
+        "path": "/home/nodebrady/node_modules/thenify-all",
+        "licenseFile": "/home/nodebrady/node_modules/thenify-all/LICENSE"
+    },
+    "thenify@3.3.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/thenables/thenify",
+        "publisher": "Jonathan Ong",
+        "email": "me@jongleberry.com",
+        "path": "/home/nodebrady/node_modules/thenify",
+        "licenseFile": "/home/nodebrady/node_modules/thenify/LICENSE"
+    },
+    "toidentifier@1.0.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/component/toidentifier",
+        "publisher": "Douglas Christopher Wilson",
+        "email": "doug@somethingdoug.com",
+        "path": "/home/nodebrady/node_modules/toidentifier",
+        "licenseFile": "/home/nodebrady/node_modules/toidentifier/LICENSE"
+    },
+    "tsscmp@1.0.6": {
+        "licenses": "MIT",
+        "repository": "https://github.com/suryagh/tsscmp",
+        "publisher": "suryagh",
+        "path": "/home/nodebrady/node_modules/tsscmp",
+        "licenseFile": "/home/nodebrady/node_modules/tsscmp/LICENSE"
+    },
+    "type-is@1.6.18": {
+        "licenses": "MIT",
+        "repository": "https://github.com/jshttp/type-is",
+        "path": "/home/nodebrady/node_modules/type-is",
+        "licenseFile": "/home/nodebrady/node_modules/type-is/LICENSE"
+    },
+    "unpipe@1.0.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/stream-utils/unpipe",
+        "publisher": "Douglas Christopher Wilson",
+        "email": "doug@somethingdoug.com",
+        "path": "/home/nodebrady/node_modules/unpipe",
+        "licenseFile": "/home/nodebrady/node_modules/unpipe/LICENSE"
+    },
+    "vary@1.1.2": {
+        "licenses": "MIT",
+        "repository": "https://github.com/jshttp/vary",
+        "publisher": "Douglas Christopher Wilson",
+        "email": "doug@somethingdoug.com",
+        "path": "/home/nodebrady/node_modules/vary",
+        "licenseFile": "/home/nodebrady/node_modules/vary/LICENSE"
+    },
+    "Fake@6.6.6": {
+        "licenses": "EPL-1.0",
+        "repository": "https://github.com/404/404",
+        "publisher": "Evil Guy McBaddy",
+        "email": "mcbaddy@somethingdoug.com",
+        "path": "/home/of/evil",
+        "licenseFile": "/home/of/evil"
+    }
+}
+

@@ -1,0 +1,56 @@
+<body><p>Only for <strong>GSNLib Service</strong><br />
+Updates the change task <code>updateCtask</code> and the change request <code>updateChangeRequest</code> with the implemented status and the completed change event respectively.
+Uses <code>withGSN</code> for creating a GSNWebService Object for use in the various operation. The operations of implementationOK are provided as closure to <code>withGSN</code>.</p><p>For more information regarding this step and its integration, please have a look at our <a href="../tutorials/ItsGSN.md">GSN User documentation</a> here.</p><h3>Parameter</h3><table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>change</td><td>Change</td><td>Information about the change request including its tasks</td></tr><tr class="intellij-row-even"><td>hostname</td><td>String</td><td>Hostname of the GSN Portal</td></tr><tr><td>credential</td><td>String</td><td>Credentials for the GSN Portal</td></tr></tbody></table><h3>Example Code</h3><h4>Pipeline</h4><pre><code class="language-groovy">stage('PROD') {
+    steps {
+        script {
+            // update Change
+            rollback = false
+            def result = input message: 'Test your application. Deployment was ok?', parameters: [choice(choices: 'Everything ok, continue\nRollback', description: '', name: 'next_action')]
+            if (result == 'Everything ok, continue') {
+                implementationOK(change, config.gsn.url, config.gsn.credential)
+            } else {
+                implementationKO(change, config.gsn.url, config.gsn.credential)
+                rollback = true
+            }
+        }
+    }
+}
+</code></pre><h4>Config</h4><pre><code class="language-groovy">gsn: [
+        templaterfc: 'RFC1283950',
+        requestor: 'ab6jg8',
+        group: 'GLOBAL-CI.SUPPORT',
+        subject: 'CDLib GSN Initial Testing',
+        approver: 'ab6jg8',
+        url: 'https://servicenow-uat.dhl.com',
+        credential: 'gsn_uat'
+],
+</code></pre><h4>Result</h4><pre><code>[Pipeline] stage
+[Pipeline] { (PROD)
+[Pipeline] script
+[Pipeline] {
+[Pipeline] input
+15:27:18  Input requested
+15:27:24  Approved by Werner,M.,SNL IT P&amp;P,Abt.4210,DD,External, external
+[Pipeline] httpRequest
+15:27:24  HttpMethod: POST
+15:27:24  URL: https://servicenow-uat.dhl.com/change_task.do?hierarchical=true&amp;SOAP
+15:27:24  SOAPAction: urn:update
+15:27:24  Content-Type: text/xml;charset=UTF-8
+15:27:24  Using authentication: gsn_uat
+15:27:24  Sending request to url: https://servicenow-uat.dhl.com/change_task.do?hierarchical=true&amp;SOAP
+15:27:25  Response Code: HTTP/1.1 200 OK
+15:27:25  Response: 
+15:27:25  &lt;&quot;Response Data in XML Format&quot;&gt;
+15:27:25  Success code from [200‥200]
+..
+.. 1 more Http Request are done successfully ..
+..
+[Pipeline] echo
+15:27:26  ########################################
+15:27:26  Implemented RFC: RFC1404548
+[Pipeline] echo
+15:27:26  implementationOK complete
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+</code></pre></body>

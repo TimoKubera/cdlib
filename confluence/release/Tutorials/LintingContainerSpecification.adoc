@@ -1,0 +1,86 @@
+= Linting Container Specification
+:toc:
+:keywords: latest
+
+> DEPRECATED, USE xref:ItsFortify.adoc[Static Application Security Scan (SAST) with IT-S Fortify] INSTEAD
+
+Most likely you are using containers to run your application and the images are specified via a `Dockerfile`.
+There are many best practices around writing a `Dockerfile` that can easily be linted to ensure that your `Dockerfile`s are great.
+
+We recommend using https://github.com/hadolint/hadolint[Hadolint] before you actually build your container image inside your pipeline, to make sure that only great images are pushed to the registry.
+This is explained in the following tutorial.
+
+== Preconditions
+In order for the following steps to work, you need to make sure that:
+
+. you are running on Jenkins, e.g. https://devsecops.dhl.com/services/build/jenkins-cloudbees/[IT-S Cloudbees Jenkins]
+. you have installed the https://github.com/jenkinsci/performance-signature-dynatrace-plugin/blob/master/README.md#installation[Jenkins-Plugin] and know the `envID` (already done on https://devsecops.dhl.com/services/build/jenkins-cloudbees/[IT-S Cloudbees Jenkins])
+. you have a `Dockerfile`
+
+== Add hadolint agent to your pipeline
+You can easily add hadolint to your `agent.yaml` like shown below:
+
+[source,yaml]
+----
+- name: hadolint
+  image: docker.artifactory.dhl.com/hadolint/hadolint:latest-alpine
+  tty: true
+  command:
+    - cat
+  resources:
+    requests:
+      cpu: 50m
+      memory: 100Mi
+    limits:
+      cpu: 250m
+      memory: 256Mi
+  imagePullPolicy: Always
+  workingDir: "/var/lib/jenkins"
+----
+
+Then add the following section to your `Jenkinsfile`:
+
+[source,yaml]
+----
+agent {
+    kubernetes {
+        cloud 'prod-prg'
+        inheritFrom 'jenkins-slave-prg'
+    }
+}
+----
+
+> **TIP:** click the link for xref:KubernetesAsJenkinsAgent.adoc[more information about dynamic agents]
+
+== Perform hadolint inside your pipeline
+With the hadolint cli available you can now easily perform the scan inside your `Jenkinsfile`:
+
+[source,groovy]
+----
+container('hadolint') {
+    sh "hadolint Dockerfile"
+}
+----
+
+Hadolint unfortunately doesn't print out any results in case the linter finds no violation.
+In case it finds something it will print out the rule that is broken and it will break the pipeline.
+If you don't want to obey to the default rules you can check out the next section.
+
+== Configure your hadolint scan
+Most probably you will not use the out of the box configuration, but you want to specify your own preferences.
+You can do this by providing a `.hadolint.yaml` inside your workspace, like in our example:
+
+[source,yaml]
+----
+include::../../../carts/.hadolint.yaml[indent=0]
+----
+
+You should keep the `trusted-registry` configuration as we only should pull our images from https://devsecops.dhl.com/services/build/artifactory/get-started[IT-S Artifactory].
+
+Rule https://github.com/hadolint/hadolint/wiki/DL3007[DL3007] ignores `latest`-tags which are considered a bad practice.
+We have set it, just to show you how to use the configuration and since we are convinced that the risk of smaller unplanned updates due to latest is lower than never upgrading or only every 5 years.
+
+== Sample
+You can find a working implementation in our SockShop Carts service:
+
+- https://git.dhl.com/SockShop/carts/blob/master/.hadolint.yaml[.hadolint.yaml]

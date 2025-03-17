@@ -1,0 +1,9 @@
+= Trainings
+:keywords: latest
+
+We provide the following interactive workshop-style trainings:
+
+- CI/CD Basics: learn how to build and deploy a containerized app via helm to AKS via Azure Pipelines
+- CI/CD Security: learn how to perform SAST, CCA, SCA and DAST inside an Azure Pipeline and how to read the reports and handle findings including the usage of the Integrated Web Approval
+
+Use the https://hrd-pundp.com/index.php?id=5215[P&P booking tool] to participate by clicking on `Skill Development IT P&amp;P` and selecting topic `DevOps`.

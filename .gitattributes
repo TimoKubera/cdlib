@@ -1,0 +1,7 @@
+# Set the default behavior for all files.
+* text=auto eol=lf
+
+# Specify binary files explicitly.
+*.jpg binary
+*.png binary
+*.jar binary

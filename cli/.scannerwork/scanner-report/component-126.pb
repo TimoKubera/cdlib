@@ -1,0 +1,1 @@
+~ 2kotlinX"hrMsrc/main/kotlin/de/deutschepost/sdm/cdlib/release/report/internal/Severity.kt

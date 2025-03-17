@@ -1,0 +1,246 @@
+= Build
+:toc:
+:keywords: latest
+
+This step is probably the most basic part of your pipeline.
+In order for your pipeline to be able to do all the other things, you first need to be able to build your application.
+This step makes sure that all things required to perform a successful build are actually there and complete and that the process can be repeated over and over again.
+
+Besides your own code, the most important aspect is how you handle third-party dependencies that you will surely have.
+Typically, they are taken from places like `maven.org` or `npmjs.com` depending on your build tool.
+This comes with the following problems:
+- you might not have access to those sources inside our network
+- `npm` and `yarn` don't solely use `npmjs.com` but also other sources like `github.com` to resolve dependencies of dependencies, that you don't know of and that might fail again due to inaccessibility
+- there is no allow or denylist to tell which dependencies are safe to use
+- nobody ensures that those dependencies will be there in 2 years and not removed by the creator, breaking your future build
+- our company has no overview on which third-party dependencies are used
+- our proxy infrastructure is overloaded as we take everything from the internet (in case you are using dynamic agents that can't cache) and we might hit rate limits on the external sources due to too many requests from a single IP
+
+To avoid those problems, you can use https://devsecops.dhl.com/services/build/artifactory/get-started[artifactory] to resolve and download all your dependencies.
+
+The last aspect is archiving the resulting binaries.
+For this we use https://devsecops.dhl.com/services/build/artifactory/get-started[artifactory] again.
+You are hopefully using containers to build and deploy your application, so you won't need to archive the intermediate build results like `.war` or `.js`, but just the xref:ContainerImageLifecycle.adoc[container images] and their xref:Helm.adoc[helm charts].
+Follow our lifecycle guides for xref:ContainerImageLifecycle.adoc[containers] and xref:Helm.adoc[helm] to learn how you can properly store and archive them inside https://devsecops.dhl.com/services/build/artifactory/get-started[artifactory].
+
+== Preconditions
+
+In order for the setup described below to work, you need to make sure that depending on your CI/CD tool the following preconditions are met:
+
+|===
+|Jenkins |Azure DevOps |GitHub Actions
+
+|you are running on https://devsecops.dhl.com/services/build/jenkins-cloudbees/[IT-S Cloudbees Jenkins] |you are running on xref:AzureDevOps.adoc[Azure DevOps]
+|you are using xref:KubernetesAsJenkinsAgent.adoc[Kubernetes Agents] |you are using xref:ManagedDevOpsPools.adoc[Managed DevOps Pools]
+|you are using https://devsecops.dhl.com/services/build/github[IT-S GitHub] |you are using https://devsecops.dhl.com/services/build/github-actions[IT-S GitHub Actions]
+|===
+
+In the following chapter we will explain how to perform the build with the supported CI tools.
+
+== Jenkins
+
+We execute the build commands inside xref:KubernetesAsJenkinsAgent.adoc[containers running as Openshift 4 as Jenkins agents].
+
+=== Maven with Jenkins
+
+==== Config
+
+To build your maven application we will use a xref:KubernetesAsJenkinsAgent.adoc[container] with `mvn` - so add this section to your `Jenkinsfile`:
+
+[source,groovy]
+----
+include::../../../carts/JenkinsfileBuild[tags=agent,indent=0]
+----
+
+This will require a separate `agent.yaml` file with a container spec of:
+
+[source,groovy]
+----
+include::../../../carts/JenkinsfileBuild[tags=maven, indent=0]
+----
+
+Furthermore you will need to set some `maven opts` as environment variables to your `Jenkinsfile`:
+
+[source,groovy]
+----
+include::../../../carts/JenkinsfileBuild[tags=environment, indent=0]
+----
+
+The actual build is performed within the following section of your `Jenkinsfile`:
+
+[source,groovy]
+----
+include::../../../carts/JenkinsfileBuild[tags=build, indent=0]
+----
+
+After this you can continue with the build of the xref:ContainerImageLifecycle.adoc[container image].
+
+==== Sample
+
+We are using this configuration in our Showcase *Sockshop*.
+- go to https://git.dhl.com/SockShop/carts/blob/master/JenkinsfileBuild[Jenkinsfile]
+- go to https://git.dhl.com/SockShop/carts/blob/master/agent.yaml[agent.yaml]
+
+=== Yarn with Jenkins
+
+In case you are using a basic `NodeJS`-app you won't need any build and can start right away with the build of the xref:ContainerImageLifecycle.adoc[container image].
+
+In case you have something like a `React`-app follow this guide.
+
+==== Config
+
+We can use the `yarn` cli to perform the build.
+For this you need to add a `node` agent to your `agent.yaml`:
+
+[source,yaml]
+----
+include::../../../frontend/JenkinsfileBuild[tags=yarn-agent, indent=0]
+----
+
+> *HINT:* click the link for xref:KubernetesAsJenkinsAgent.adoc[more information about dynamic agents]
+
+Then add the agent to your `jenkinsfile`:
+
+[source,groovy]
+----
+include::../../../frontend/JenkinsfileBuild[tags=agent, indent=0]
+----
+
+Then add the actual build to your `jenkinsfile`:
+
+[source,groovy]
+----
+stage('BUILD') {
+    steps {
+        container('node') {
+            sh """
+               npm install -g yarn
+               export PATH=$PATH:/opt/app-root/src/.npm-global/lib/node_modules/yarn/bin               
+               yarn config set registry https://artifactory.dhl.com/api/npm/npm/
+               yarn run build
+            """
+        }
+    }
+}
+----
+
+For this, your `package.json` will require this `start`-script:
+
+[source,json]
+----
+{
+    "scripts": {
+        "build": "react-scripts build"
+    }
+}
+----
+
+After this you can continue with the build of the xref:ContainerImageLifecycle.adoc[container image].
+
+==== Sample
+
+Sorry we have no sample for this :(
+
+=== Gradle with Jenkins
+
+==== Config
+
+We can use the `gradlew` cli to perform the build.
+In order to be able to execute it inside your pipeline, you can locally set the permissions:
+`git update-index --chmod=+x gradlew`
+
+The commands will be executed on a xref:KubernetesAsJenkinsAgent.adoc[container agent] based on `java`, that has to be added to your `Jenkinsfile`:
+
+[source,groovy]
+----
+include::../../../shipping/JenkinsfileBuild[tags=agent, indent=0]
+----
+
+Finally, add the build itself to your `jenkinsfile`:
+
+[source,groovy]
+----
+include::../../../shipping/JenkinsfileBuild[tags=build, indent=0]
+----
+
+In some cases the chosen agent does not provide enough permissions to `gradlew` (like `docker.artifactory.dhl.com/adoptopenjdk/openjdk11-openj9:ubi-minimal`), add this to your `Jenkinsfile`:
+
+[source,groovy]
+----
+include::../../../shipping/JenkinsfileBuild[tags=environment, indent=0]
+----
+
+This would be all if we wouldn't want to use https://devsecops.dhl.com/services/build/artifactory/get-started[IT-S Artifactory] as our dependency proxy.
+You can set it within your `settings.gradle`:
+
+[source,groovy]
+----
+include::../../../shipping/settings.gradle[tags=artifactory, indent=0]
+----
+
+> *HINT:* must be the first entry inside `settings.gradle`
+
+After this you can continue with the build of the xref:ContainerImageLifecycle.adoc[container image].
+
+==== Sample
+
+We are using this configuration in our Showcase *Sockshop*.
+- go to https://git.dhl.com/SockShop/shipping/blob/master/JenkinsfileBuild[Jenkinsfile]
+- go to https://git.dhl.com/SockShop/shipping/blob/master/agent.yaml[agent.yaml]
+
+=== Go with Jenkins
+
+==== Config
+
+We can use the `go-toolset` cli to perform the build.
+For this you need to add a `go-toolset` agent to your `agent.yaml`:
+
+[source,yaml]
+----
+include::../../../payment/agent.yaml[tags=go,indent=0]
+----
+
+> *HINT:* click the link for xref:KubernetesAsJenkinsAgent.adoc[more information about dynamic agents]
+
+Then add the agent to your `jenkinsfile`:
+
+[source,groovy]
+----
+include::../../../payment/JenkinsfileBuild[tags=agent, indent=0]
+----
+
+Set the necessary environment variables:
+
+[source,groovy]
+----
+include::../../../payment/JenkinsfileBuild[tags=env, indent=0]
+----
+
+Finally, add the build itself to your `jenkinsfile`:
+
+[source,groovy]
+----
+include::../../../payment/JenkinsfileBuild[tags=build, indent=0]
+----
+
+> *IMPORTANT:* you need to adapt the references to your servicename from ours `payment`
+
+After this you can continue with the build of the xref:ContainerImageLifecycle.adoc[container image].
+
+==== Sample
+
+We are using this configuration in our Showcase *Sockshop*.
+- go to https://git.dhl.com/SockShop/payment/blob/master/JenkinsfileBuild[Jenkinsfile]
+- go to https://git.dhl.com/SockShop/payment/blob/master/agent.yaml[agent.yaml]
+
+== Azure DevOps
+
+We execute the build commands as part of the xref:ContainerImageLifecycle.adoc[container build].
+
+To learn how you can directly execute your build tool instead, check our xref:UnitTest.adoc[Unit Test Guide].
+
+== GitHub Actions
+
+We execute the build commands as part of the xref:ContainerImageLifecycle.adoc[container build].
+
+To learn how you can directly execute your build tool instead, check our xref:UnitTest.adoc[Unit Test Guide].

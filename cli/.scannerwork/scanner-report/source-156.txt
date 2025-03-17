@@ -1,0 +1,332 @@
+package de.deutschepost.sdm.cdlib.change.changemanagement
+
+import de.deutschepost.sdm.cdlib.change.changemanagement.api.ChangeManagementRepository
+import de.deutschepost.sdm.cdlib.change.changemanagement.api.JiraApiClient
+import de.deutschepost.sdm.cdlib.change.changemanagement.model.*
+import de.deutschepost.sdm.cdlib.change.changemanagement.model.CreateChangeRequest.CommercialReference
+import de.deutschepost.sdm.cdlib.change.changemanagement.model.CreateChangeRequest.ImpactClass
+import de.deutschepost.sdm.cdlib.change.changemanagement.model.GetChangesResponse.Issue.Fields.*
+import de.deutschepost.sdm.cdlib.change.changemanagement.model.JiraConstants.ChangeStatus.AWAITING_IMPLEMENTATION
+import de.deutschepost.sdm.cdlib.change.changemanagement.model.JiraConstants.ChangeType.PREAUTHORIZED
+import de.deutschepost.sdm.cdlib.change.changemanagement.model.JiraConstants.ImpactClass.NONE
+import io.kotest.core.annotation.RequiresTag
+import io.kotest.core.annotation.Tags
+import io.kotest.core.spec.style.FunSpec
+import io.kotest.core.test.TestCase
+import io.kotest.extensions.system.OverrideMode
+import io.kotest.extensions.system.SystemEnvironmentTestListener
+import io.kotest.matchers.shouldBe
+import io.micronaut.context.annotation.Value
+import io.micronaut.test.extensions.kotest5.MicronautKotest5Extension.getMock
+import io.micronaut.test.extensions.kotest5.annotation.MicronautTest
+import io.mockk.mockk
+import java.time.ZonedDateTime
+
+@RequiresTag("UnitTest")
+@Tags("UnitTest")
+@MicronautTest
+class ChangeManagementRepositoryTest(
+    @Value("\${change-management-token}") val token: String
+) : FunSpec() {
+
+    lateinit var changeManagementRepository: ChangeManagementRepository
+    lateinit var jiraApiClient: JiraApiClient
+
+    override fun listeners() = listOf(
+        SystemEnvironmentTestListener(
+            mapOf(
+                "CDLIB_RELEASE_NAME_UNIQUE" to "test summary",
+                "CDLIB_PIPELINE_URL" to "test build url: https://integrationtest.jenkinsbuildurl.de",
+                "CDLIB_JOB_URL" to "test build url: https://integrationtest.jenkinsbuildurl.de",
+            ), OverrideMode.SetOrOverride
+        )
+    )
+
+    override suspend fun beforeTest(testCase: TestCase) {
+        super.beforeTest(testCase)
+        jiraApiClient = getMock(mockJiraApiClient())
+        changeManagementRepository = ChangeManagementRepository(jiraApiClient)
+    }
+
+    init {
+        context("Models maps correctly:") {
+            val issueKey = "key"
+            val date = ZonedDateTime.now()
+            val issueId = "issueId"
+            val issue = GetChangesResponse.Issue(
+                "",
+                fields = GetChangesResponse.Issue.Fields(
+                    category = Category(JiraConstants.Category.ROLLOUT.value),
+                    fallback = "fallback",
+                    impact = "impact",
+                    impactClass = listOf(NONE.value),
+                    implementationRisk = "implementationRisk",
+                    issueType = IssueType("issueType"),
+                    omissionRisk = "omissionRisk",
+                    project = Project("project"),
+                    labels = listOf("labels"),
+                    status = Status(AWAITING_IMPLEMENTATION.value, "status"),
+                    created = date,
+                    description = "description",
+                    type = listOf(PREAUTHORIZED.value),
+                    plannedStartDate = date,
+                    plannedEndDate = date,
+                    referenceTwo = "referenceTwo",
+                    responseDate = date,
+                    summary = "summary",
+                    target = "target",
+                    commercialReference = "commercialReference",
+                    urgency = UrgencyField(id = JiraConstants.Urgency.LOW.value, value = "fluff"),
+                    approvalStatus = ApprovalStatusField(JiraConstants.ApprovalStatus.OPEN.value),
+                    completionCode = null,
+                    executionGroup = "T-Systems",
+                    affectedItSystems = null
+                ),
+                id = issueId, key = issueKey,
+            )
+            val change = Change(issue)
+
+            test("Change to CreateChangeRequest") {
+                val createChangeRequest = CreateChangeRequest(change)
+
+                createChangeRequest.category.value shouldBe change.category.value
+                createChangeRequest.fallback shouldBe change.fallback
+                createChangeRequest.impact shouldBe change.impact
+                createChangeRequest.impactClass shouldBe listOf(ImpactClass(change.impactClass.value))
+                createChangeRequest.implementationRisk shouldBe change.implementationRisk
+                createChangeRequest.issueType?.name shouldBe change.issueType
+                createChangeRequest.omissionRisk shouldBe change.omissionRisk
+                createChangeRequest.project.key shouldBe change.project
+                createChangeRequest.labels shouldBe change.labels
+                createChangeRequest.description shouldBe change.description
+                createChangeRequest.plannedStartDate shouldBe change.start
+                createChangeRequest.plannedEndDate shouldBe change.end
+                createChangeRequest.referenceTwo shouldBe change.referenceTwo
+                createChangeRequest.responseTime shouldBe change.response
+                createChangeRequest.summary shouldBe change.summary
+                createChangeRequest.commercialReference shouldBe listOf(CommercialReference(change.commercialReference))
+            }
+
+            test("Change to UpdateChangeRequest") {
+                val updateChangeRequest = UpdateChangeRequest(change)
+
+                updateChangeRequest.changeType shouldBe listOf(ChangeType(change.type!!.value))
+                updateChangeRequest.description shouldBe change.description
+                updateChangeRequest.plannedEndDate shouldBe change.end
+                updateChangeRequest.responseTime shouldBe change.response
+            }
+
+            test("Issue to Change") {
+                val fields = issue.fields
+
+                issueId shouldBe issue.id
+                issueKey shouldBe issue.key
+                change.category.value shouldBe fields.category.value
+                change.fallback shouldBe fields.fallback
+                change.impact shouldBe fields.impact
+                change.impactClass shouldBe NONE
+                change.implementationRisk shouldBe fields.implementationRisk
+                change.issueType shouldBe fields.issueType.name
+                change.omissionRisk shouldBe fields.omissionRisk
+                change.project shouldBe fields.project.key
+                change.labels shouldBe fields.labels
+                change.status shouldBe AWAITING_IMPLEMENTATION
+                change.created shouldBe fields.created
+                change.description shouldBe fields.description
+                change.type shouldBe PREAUTHORIZED
+                change.start shouldBe fields.plannedStartDate
+                change.end shouldBe fields.plannedEndDate
+                change.referenceTwo shouldBe fields.referenceTwo
+                change.response shouldBe fields.responseDate
+                change.summary shouldBe fields.summary
+                change.commercialReference shouldBe fields.commercialReference
+                change.self shouldBe "https://jira1.lcm.deutschepost.de/jira1/browse/$issueKey"
+            }
+
+            test("Change to UpdateChangeRequest") {
+                val updateChangeRequest = UpdateChangeRequest(change)
+
+                updateChangeRequest.changeType?.first()?.key shouldBe PREAUTHORIZED.value
+                updateChangeRequest.description shouldBe change.description
+                updateChangeRequest.plannedEndDate shouldBe change.end
+                updateChangeRequest.responseTime shouldBe change.response
+            }
+        }
+
+
+        test("mapItSystemInfo maps correctly to ItSystem") {
+            val commercialReference = "commercialReference"
+            val almAttributeId = 2
+            val itSystemAttributeId = 1
+            val businessYearAttributeId = 3
+            val almId = "almId"
+            val businessYear = "2022"
+            val businessYearLater = "2023"
+            val itSystemName = "itSystemName"
+            val itSystemKey = "itSystemKey"
+            val criticality = "Nicht kritisch/Archiv"
+            val itSystemResponse = ItSystemResponse(
+                objectEntries = listOf(
+                    JiraObjectEntry(
+                        attributes = listOf(
+                            JiraAttribute(
+                                objectAttributeValues = listOf(
+                                    JiraObjectAttributeValue(
+                                        displayValue = itSystemName,
+                                        searchValue = itSystemKey,
+                                        referencedObject = JiraObjectEntry(
+                                            attributes = listOf(
+                                                JiraAttribute(
+                                                    objectAttributeValues = listOf(
+                                                        JiraObjectAttributeValue(
+                                                            displayValue = criticality,
+                                                            searchValue = criticality,
+                                                            referencedObject = JiraObjectEntry(
+                                                                attributes = listOf(),
+                                                                objectType = JiraObjectType(
+                                                                    name = "Business KritikalitÃ¤t",
+                                                                    6
+                                                                ),
+                                                                objectKey = "objectKey",
+                                                                label = "label"
+                                                            ),
+                                                        )
+                                                    ),
+                                                    objectTypeAttributeId = itSystemAttributeId
+                                                )
+                                            ),
+                                            objectType = JiraObjectType(
+                                                name = "Business KritikalitÃ¤t",
+                                                6
+                                            ),
+                                            objectKey = "objectKey",
+                                            label = "label"
+                                        ),
+                                    )
+                                ),
+                                objectTypeAttributeId = itSystemAttributeId
+                            ),
+                            JiraAttribute(
+                                objectAttributeValues = listOf(
+                                    JiraObjectAttributeValue(
+                                        displayValue = almId,
+                                        searchValue = almId,
+                                        referencedObject = null,
+                                    )
+                                ),
+                                objectTypeAttributeId = almAttributeId
+                            ),
+                            JiraAttribute(
+                                objectAttributeValues = listOf(
+                                    JiraObjectAttributeValue(
+                                        displayValue = businessYear,
+                                        searchValue = businessYear,
+                                        referencedObject = null,
+                                    )
+                                ),
+                                objectTypeAttributeId = businessYearAttributeId
+                            )
+                        ),
+                        objectType = JiraObjectType(
+                            name = "name",
+                            6
+                        ),
+                        objectKey = commercialReference,
+                        label = "label"
+                    ),
+                    JiraObjectEntry(
+                        attributes = listOf(
+                            JiraAttribute(
+                                objectAttributeValues = listOf(
+                                    JiraObjectAttributeValue(
+                                        displayValue = itSystemName,
+                                        searchValue = itSystemKey,
+                                        referencedObject = JiraObjectEntry(
+                                            attributes = listOf(
+                                                JiraAttribute(
+                                                    objectAttributeValues = listOf(
+                                                        JiraObjectAttributeValue(
+                                                            displayValue = criticality,
+                                                            searchValue = criticality,
+                                                            referencedObject = JiraObjectEntry(
+                                                                attributes = listOf(),
+                                                                objectType = JiraObjectType(
+                                                                    name = "Business KritikalitÃ¤t",
+                                                                    6
+                                                                ),
+                                                                objectKey = "objectKey",
+                                                                label = "label"
+                                                            ),
+                                                        )
+                                                    ),
+                                                    objectTypeAttributeId = itSystemAttributeId
+                                                )
+                                            ),
+                                            objectType = JiraObjectType(
+                                                name = "Business KritikalitÃ¤t",
+                                                6
+                                            ),
+                                            objectKey = "objectKey",
+                                            label = "label"
+                                        ),
+                                    )
+                                ),
+                                objectTypeAttributeId = itSystemAttributeId
+                            ),
+                            JiraAttribute(
+                                objectAttributeValues = listOf(
+                                    JiraObjectAttributeValue(
+                                        displayValue = almId,
+                                        searchValue = almId,
+                                        referencedObject = null,
+                                    )
+                                ),
+                                objectTypeAttributeId = almAttributeId
+                            ),
+                            JiraAttribute(
+                                objectAttributeValues = listOf(
+                                    JiraObjectAttributeValue(
+                                        displayValue = businessYearLater,
+                                        searchValue = businessYearLater,
+                                        referencedObject = null,
+                                    )
+                                ),
+                                objectTypeAttributeId = businessYearAttributeId
+                            )
+                        ),
+                        objectType = JiraObjectType(
+                            name = "name",
+                            6
+                        ),
+                        objectKey = commercialReference,
+                        label = "label"
+                    ),
+                ),
+                objectTypeAttributes = listOf(
+                    JiraObjectTypeAttribute(
+                        id = itSystemAttributeId,
+                        name = "IT-System/-Applikation ID"
+                    ),
+                    JiraObjectTypeAttribute(
+                        id = almAttributeId,
+                        name = "ALM-ID"
+                    ),
+                    JiraObjectTypeAttribute(
+                        id = businessYearAttributeId,
+                        name = "GeschÃ¤ftsjahr"
+                    )
+                )
+            )
+            val itSystem = itSystemResponse.mapItSystemInfo()
+
+            itSystem.commercialReferenceNumber shouldBe commercialReference
+            itSystem.almId shouldBe almId
+            itSystem.name shouldBe itSystemName
+            itSystem.key shouldBe itSystemKey
+            itSystem.businessYear shouldBe businessYearLater.toInt() // to test if sorting DESC by date works
+            itSystem.criticality shouldBe JiraConstants.Criticality.NON_CRITICAL
+        }
+    }
+
+    private fun mockJiraApiClient(): JiraApiClient = mockk()
+}

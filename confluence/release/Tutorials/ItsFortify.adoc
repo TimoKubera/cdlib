@@ -1,0 +1,121 @@
+= Security Scan with ITS Fortify
+:toc:
+:keywords: latest
+
+Trust is our company's value proposition so security is very important to us.
+Your pipeline can help you to avoid security issues with some checks.
+The most basic one is checking your own code for vulnerabilities.
+This can be done with https://fortify.dhl.com[IT-S Fortify] and is explained in the following tutorial.
+
+> More information needed about IT-S managed DevOps Tools? Just have a look at https://esharenew.dhl.com/sites/DPDHL_Forge/Tool/default.aspx[IT-S Forge].
+
+== General Fortify Flow
+In general performing a fortify scan requires you to complete 4 phases which are briefly explained in the following subchapters.
+For more details have a look into the https://www.microfocus.com/documentation/fortify-static-code-analyzer-and-tools/2310/SCA_Guide_23.1.0.pdf[documentation of sourceanalyzer] and see our samples below.
+
+=== Translation
+First fo all the relevant source code modules have to be translated by Fortify into an intermediate representation using a build session ID that is required throughout the entire SCAN stage.
+
+Code translation depends on the programming language/framework used, e.g. Java-based modules required different translation parameters that other languages.
+
+> Please note: You can add multiple translation packages (e.g. different source code packages) to the same Fortify session by using the same build ID multiple times (-b argument).
+
+=== Analysis
+The scan phase uses all files added during previous translation steps.
+The scan step will then load the configured rules baked into the Fortify container image and assess the source code according to these rules and practices.
+
+As a result, the scan step produces a FPR file (Fortify Project Results) that contains all findings exhibited during the scan.
+Using the Fortify FPRUtility, issues can be listed and filtered for further processing.
+
+=== Report Generation
+Based on the scan results from the previous step (FPR file), a report can be generated from various templates.
+
+=== Build Breaker
+As a final step you should add a build breaker to check if the analysis results contains high or critical issues.
+
+== Pipeline Integration
+
+The scan can be performed via https://devsecops.dhl.com/services/build/jenkins-cloudbees[Jenkins], xref:AzureDevOps.adoc[Azure DevOps] or GitHub Actions as described in the following chapters.
+
+=== Jenkins
+In order for the following steps to work, you need to make sure that you are using xref:KubernetesAsJenkinsAgent.adoc[Kubernetes Agents].
+Alternatively you can also use the https://www.jenkins.io/doc/book/pipeline/docker/[single docker image as an agent], which is not explained or supported.
+
+==== Scan Agent
+The Fortify scan will be done in an xref:KubernetesAsJenkinsAgent.adoc[agent] within the pipeline based on a https://dev.azure.com/sw-zustellung-31b3183/ICTO-3339_SDM/_git/Images?path=/fortify[custom build scanner].
+This agent is defined in the agent.yaml:
+
+[source,groovy]
+----
+include::../../../carts/JenkinsfileBuild[tags=fortify-agent, indent=0]
+----
+
+> **IMPORTANT:** in some cases, especially when using Javascript like `NodeJS`, Fortify will require more power, therefore check your pipeline for the error `script.sh: line 1: 277 Killed sourceanalyzer`, this means it ran out of memory and Openshift killed the pod, so you need to raise the memory limit (sometimes also CPU), don't forget to also adapt the `-Xmx` value inside your Jenkinsfile, to 2/3 of the memory limit specified here
+
+==== Pipeline Steps
+First of all you need to add the agent to your `Jenkinsfile`:
+
+[source,groovy]
+----
+include::../../../carts/JenkinsfileBuild[tags=agent, indent=0]
+----
+
+Then you can add the actual scan to your `Jenkinsfile`:
+
+[source,groovy]
+----
+include::../../../carts/JenkinsfileBuild[tags=fortify, indent=0]
+----
+
+> **IMPORTANT:** this sample works only for `java` check documentation above and samples below
+
+=== Azure Pipelines
+Before you can start any pipeline action, you need to get access to a xref:ManagedDevOpsPools.adoc[MDP].
+
+To add the fortify scan to your pipeline, you can use the following structure:
+[source,yaml]
+----
+include::../../../cdaas-template-maven/azure-pipelines.yaml[tags=fortify, indent=0]
+----
+
+> **IMPORTANT:** this sample works only for `javascript` check documentation above
+
+This calls a universal pipeline template which orchestrates the fortify flow described above:
+[source,yaml]
+----
+include::../../../cdaas/ado/container-job-templates/fortify.yaml[indent=0]
+----
+
+> **IMPORTANT:**  check the listed parameters and documentation to fine tune your fortify process
+
+=== GitHub Actions
+Within our template repository you can find a working example on how to use IT-S Fortify to scan your application.
+Pipeline: https://git.dhl.com/CDLib/cdaas-template-maven/blob/8b57829877c879b8754c7170252a74febfc0bfcd/.github/workflows/pipeline.yaml#L31
+Workflow: https://git.dhl.com/CDLib/cdaas-workflows/blob/main/.github/workflows/fortify.yaml
+
+== False-Positives
+Issues can be excluded (suppressed) from a scan (rather the report) with a set of issue filter conditions.
+These conditions can be specified in a text file as shown below.
+You must only filter issues that are verified false-positives.
+Issues that you currently cannot fix, are open risks and need to be managed via the https://dpdhl.sharepoint.com/sites/Post-und-Paket-IT-Security-Compliance/SitePages/Informationssicherheits-Risikomanagement---Operative-Schritte.aspx[risk management process] prior deployment to production.
+
+To identify the instance id for your issue, just look at the output of the step that performs the `FPRUtility -information -listIssues` query.
+
+https://dev.azure.com/sw-zustellung-31b3183/ICTO-3339_SDM/_git/phippyandfriends?path=/captainkube/fortify_filter.txt&version=GBmaster&_a=contents[Sample file for Fortify issue filter conditions]
+[source,text]
+----
+include::../../../phippyandfriends/captainkube/fortify_filter.txt[ indent=0]
+----
+
+In case you have dynamic agents you might encounter the problem that the instance ids change over time.
+To combat this you need to make sure that the translation part of the Fortify scan has no varying parts, like a different build number for each Azure pipeline run as part of the GOPATH, by creating a https://git.dhl.com/CDLib/phippyandfriends/blob/508621addf87b8f628e60a715f89c492b936e1d0/pipeline-template-fortify-translate-go.yaml#L20[symlink that contains no relative parts] as the translation base.
+
+== Uploading reports to SSC
+In case you want to upload your fortify scan results to SSC, you need to request an own project inside Fortify Software Security Center via https://gsd.dhl.com/forms/1830[GSD].
+Besides creating a new project, a Certified Fortify Engineer will be assigned to your project that will guide you through the steps and sort out the false-positives after the initial scan.
+
+The engineer will also xref:ToolAuthentication.adoc[create a token for you], that you can use to upload the .fpr file at the end of the scan with this command:
+
+`fortifyclient uploadFPR -file "${.fpr}" -applicationVersionID ${VERSIONID} -url https://fortify.dhl.com/ssc/ -authtoken ${SSCTOKEN}`
+
+> please make sure that you have the necessary firewall clearance

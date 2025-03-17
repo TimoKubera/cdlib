@@ -1,0 +1,1 @@
+def GSN_URL = 'https://servicenow-uat.dhl.com/api/now/table'

@@ -1,0 +1,1 @@
+Å 2kotlinXóhrLsrc/main/kotlin/de/deutschepost/sdm/cdlib/release/report/TestResultParser.kt

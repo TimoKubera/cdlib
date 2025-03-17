@@ -1,0 +1,56 @@
+@Library('CDlib@master') _
+pipeline {
+    options {
+        timestamps()
+        durabilityHint 'PERFORMANCE_OPTIMIZED'
+    }
+    agent {
+        kubernetes {
+            cloud 'prod-prg'
+            inheritFrom 'jenkins-slave-prg'
+            customWorkspace "jobs/${env.BUILD_NUMBER}"
+            yamlFile 'agent-cleanup.yaml'
+        }
+    }
+    triggers {
+        //run every tuesday 1am to prepare integration runs
+        cron('0 1 * * *')
+    }
+    environment {
+        HOME = "${env.WORKSPACE}"
+    }
+    stages {
+        stage('CLEANUP') {
+            steps {
+                container('helm') {
+                    withCredentials([
+                            string(credentialsId: 'openshift-4-test-token', variable: 'OPENSHIFT_TEST_TOKEN'),
+                            string(credentialsId: 'openshift-4-prod-token', variable: 'OPENSHIFT_PROD_TOKEN')
+                    ]) {
+                        sh "oc login 'https://api.czchooct002.dhl.com:6443' --token=${OPENSHIFT_TEST_TOKEN} -n its-abq-uat"
+                        sh "helm ls -a"
+                        sh "helm ls -a | awk 'NR > 1 { print  \"-n \"\$2, \$1}' | xargs -L1 helm delete"
+                        sh "oc login 'https://api.czchoocp001.dhl.com:6443' --token=${OPENSHIFT_PROD_TOKEN} -n its-abq-prod"
+                        sh "helm ls -a"
+                        sh "helm ls -a | awk 'NR > 1 { print  \"-n \"\$2, \$1}' | xargs -L1 helm delete"
+                    }
+                }
+            }
+        }
+    }
+    post {
+        failure {
+            script {
+                if (env.BRANCH_NAME == 'master') {
+                    //send alert to MS Teams: https://teams.microsoft.com/l/channel/19%3add6d5a5a31234b79b58f4cfdd5d10f68%40thread.tacv2/Alerts?groupId=6289fd47-8e65-47cf-a14e-4bbf445426f5&tenantId=cd99fef8-1cd3-4a2a-9bdf-15531181d65e
+                    def alertPayload = libraryResource resource: 'alert.json'
+                    alertPayload = alertPayload.replace('TEXT_MESSAGE',"${currentBuild.result} ${currentBuild.fullDisplayName}")
+                    alertPayload = alertPayload.replace('BUILD_URL', "${BUILD_URL}")
+                    withCredentials([string(credentialsId: 'MSTEAMS_ALERT_WEBHOOK_LIEFERHELDEN', variable: 'WEBHOOK')]) {
+                        sh "curl -X POST --location https://dpdhl.webhook.office.com/webhookb2/${WEBHOOK} -H 'Content-Type: application/json' -d '$alertPayload'"
+                    }
+                }
+            }
+        }
+    }
+}

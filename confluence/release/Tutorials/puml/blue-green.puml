@@ -1,0 +1,25 @@
+@startuml
+actor Dev
+actor "Product Owner"
+database "Feature Branch"
+database "Git Master"
+
+Dev -> "Feature Branch" : push
+"Feature Branch" -> "DEV Feature" : tf create/update
+"DEV Feature" -> "DEV Feature" : deploy/test app
+"DEV Feature" -> "DEV Feature" : tf destroy
+
+"Feature Branch" -> "Git Master" : merge
+
+"Git Master" -> "UAT Master" : tf create/update
+"UAT Master" -> "UAT Master" : deploy/test app
+
+
+"UAT Master" -> "Prod New" : tf create
+"Prod New" -> "Prod New" : deploy/test app
+Dev --> "Prod New" : verify
+"Product Owner" --> "Prod New" : approve
+"Prod old" -> "Prod New" : change route
+
+"Git Master" -> "Prod old" : tf destroy
+@enduml

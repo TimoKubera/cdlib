@@ -1,0 +1,119 @@
+{
+    "date": "2022-07-15T13:22:57+01:00",
+    "name": "appName_TEST",
+    "test": {
+        "uri": "generic.json",
+        "date": "2021-06-04T13:15:14+01:00",
+        "reportType": "OTHER",
+        "tool": {
+            "name": "OWASP Dependency Check",
+            "version": "6.1.6",
+            "vendor": "OWASP Dependency Check",
+            "ruleVersion": "2021-06-01T05:00:02"
+        },
+        "vulnerabilities": {
+            "scannedObjects": 6,
+            "vulnerableObjects": 1,
+            "open": [
+                {
+                    "id": "CVE-2016-1000338",
+                    "severity": "UNKNOWN",
+                    "origin": "bcprov-jdk15on-1.55.jar"
+                },
+                {
+                    "id": "CVE-2016-1000339",
+                    "severity": "MEDIUM",
+                    "origin": "bcprov-jdk15on-1.55.jar"
+                },
+                {
+                    "id": "CVE-2016-1000340",
+                    "severity": "NONE",
+                    "origin": "bcprov-jdk15on-1.55.jar"
+                },
+                {
+                    "id": "CVE-2016-1000341",
+                    "severity": "MEDIUM",
+                    "origin": "bcprov-jdk15on-1.55.jar"
+                },
+                {
+                    "id": "CVE-2016-1000342",
+                    "severity": "NONE",
+                    "origin": "bcprov-jdk15on-1.55.jar"
+                },
+                {
+                    "id": "CVE-2016-1000343",
+                    "severity": "NONE",
+                    "origin": "bcprov-jdk15on-1.55.jar"
+                },
+                {
+                    "id": "CVE-2016-1000344",
+                    "severity": "NONE",
+                    "origin": "bcprov-jdk15on-1.55.jar"
+                },
+                {
+                    "id": "CVE-2016-1000345",
+                    "severity": "MEDIUM",
+                    "origin": "bcprov-jdk15on-1.55.jar"
+                },
+                {
+                    "id": "CVE-2016-1000346",
+                    "severity": "LOW",
+                    "origin": "bcprov-jdk15on-1.55.jar"
+                },
+                {
+                    "id": "CVE-2016-1000352",
+                    "severity": "NONE",
+                    "origin": "bcprov-jdk15on-1.55.jar"
+                },
+                {
+                    "id": "CVE-2017-13098",
+                    "severity": "MEDIUM",
+                    "origin": "bcprov-jdk15on-1.55.jar"
+                },
+                {
+                    "id": "CVE-2018-1000180",
+                    "severity": "NONE",
+                    "origin": "bcprov-jdk15on-1.55.jar"
+                },
+                {
+                    "id": "CVE-2018-1000613",
+                    "severity": "LOW",
+                    "origin": "bcprov-jdk15on-1.55.jar"
+                },
+                {
+                    "id": "CVE-2020-26939",
+                    "severity": "MEDIUM",
+                    "origin": "bcprov-jdk15on-1.55.jar"
+                }
+            ],
+            "openCount": 14,
+            "suppressed": [
+                "QRH15235zqWQERG"
+            ],
+            "suppressedCount": 1,
+            "severityCounts": {
+                "critical": 0,
+                "high": 0,
+                "medium": 5,
+                "low": 2,
+                "none": 6,
+                "unknown": 1
+            }
+        },
+        "pregenerated": true
+    },
+    "testHash": "4e7b424a7b8acc54137a0fcbac466fdf3dde24ed1fea81e37c01f399abcb65cd",
+    "lastCommit": {
+        "authorMail": "gitMail_TEST",
+        "authorName": "gitName_TEST",
+        "id": "gitId_TEST",
+        "link": "gitLink_TEST",
+        "message": "gitMessage_TEST",
+        "repository": "gitOrigin_TEST"
+    },
+    "pipeline": {
+        "name": "cicdPlatform_TEST",
+        "instance": "https://test-url.jenkuns.example.com",
+        "url": "https://test-url.jenkuns.example.com/jobUrl_TEST"
+    }
+}

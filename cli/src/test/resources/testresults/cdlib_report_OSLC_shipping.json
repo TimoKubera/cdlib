@@ -1,0 +1,57 @@
+{
+    "date": "2023-04-27T07:39:32.028561012Z",
+    "name": "shipping",
+    "test": {
+        "tool": {
+            "name": "OSLC Gradle Plugin",
+            "version": "",
+            "vendor": "",
+            "ruleVersion": ""
+        },
+        "uri": "oslc-gradle-plugin-report.json",
+        "date": "2023-04-27T07:39:32.01769929Z",
+        "reportType": "OSLC",
+        "uniqueLicenses": [
+            "Eclipse Public License - v 1.0",
+            "GNU Lesser General Public License",
+            "Apache License, Version 2.0",
+            "The Apache Software License, Version 2.0",
+            "ASL 2.0",
+            "GPL v2",
+            "MPL 2.0",
+            "EPL 2.0",
+            "Eclipse Public License v. 2.0",
+            "GNU General Public License, version 2 with the GNU Classpath Exception",
+            "GPL2 w/ CPE",
+            "COMMON DEVELOPMENT AND DISTRIBUTION LICENSE (CDDL) Version 1.0",
+            "BSD-2-Clause",
+            "Public Domain, per Creative Commons CC0",
+            "BSD-3-Clause",
+            "BSD-3-Clause;link=https://asm.ow2.io/LICENSE.txt",
+            "MIT License",
+            "Apache 2.0"
+        ],
+        "projectName": "CDLIB_APP_NAME",
+        "projectId": -1,
+        "depth": "libs",
+        "policyProfile": "Non-Distribution",
+        "unapprovedItems": {},
+        "totalArtifactCount": 75,
+        "complianceStatus": "GREEN",
+        "valid": true
+    },
+    "testHash": "bf19c2a974165d6111d253633e6e00ebe4639b1f36261cc5aa0fe6e6a6ccc409",
+    "lastCommit": {
+        "authorMail": "Maximilian.Schaefer@deutschepost.de",
+        "authorName": "maxischa",
+        "id": "5ab7f11dbba75dc86c58bfe3ee85b436330aba41",
+        "link": "https://git.dhl.com/SockShop/shipping/commit/5ab7f11dbba75dc86c58bfe3ee85b436330aba41",
+        "message": "fix pipeline",
+        "repository": "https://git.dhl.com/SockShop/shipping.git"
+    },
+    "pipeline": {
+        "name": "Jenkins",
+        "instance": "https://jenkins.dhl.com",
+        "url": "https://jenkins.dhl.com/job/SDM/job/SockShop/job/shipping/job/PR-29/29/display/redirect"
+    }
+}

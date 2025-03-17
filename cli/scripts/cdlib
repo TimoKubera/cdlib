@@ -1,0 +1,2 @@
+#!/usr/bin/bash
+/opt/java/openjdk/bin/java -XX:TieredStopAtLevel=1 -XX:MaxRAMPercentage=75 -cp "/app/resources:/app/classes:/app/libs/*" de.deutschepost.sdm.cdlib.CdlibCommand "$@"

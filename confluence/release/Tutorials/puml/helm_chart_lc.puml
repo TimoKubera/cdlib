@@ -1,0 +1,39 @@
+@startuml
+hide empty description
+
+Uncommited: Update chart configuration
+Uncommited: Fixing Bugs
+Uncommited --> Pipeline: Commit
+
+state Pipeline {
+
+Build: Lint helm chart and static testing
+Build: Package **ImageRegistry** image information
+Build: Create helm chart
+
+Build -> Artifactory : Upload chart to\n **Helm Chart repository**
+
+Build ---> UAT : Deploy to UAT
+
+Artifactory -[dashed]-> UAT : Apply Helm Chart
+
+UAT: Unit and Integration testing
+UAT: Performance and Acceptance testing
+
+UAT ---> Production : Deploy to\nProduction
+
+Artifactory -[dashed]-> Production : Apply Helm Chart
+
+Production: Runs only for **master** branch
+Production: Release chart runs release image
+
+Production -> SetArtifactoryProperty: Tag artifact deployed to Production  
+
+SetArtifactoryProperty : Container Image property **lifecycle** to **live**
+SetArtifactoryProperty : Helm Chart property **lifecycle** to **live**  
+
+SetArtifactoryProperty -[dashed]-> Artifactory : Set Artifact Property
+
+Pipeline --> Uncommited: Failure
+}
+@enduml

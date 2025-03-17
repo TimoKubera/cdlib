@@ -1,0 +1,478 @@
+{
+    "date": "2022-07-14T17:35:23.52345+01:00",
+    "name": "cli",
+    "test": {
+        "uri": "fortify.fpr",
+        "date": "2022-05-06T13:15:14.234+01:00",
+        "reportType": "SAST",
+        "tool": {
+            "name": "Fortify",
+            "version": "21.2.3.0005",
+            "vendor": "IT-S",
+            "ruleVersion": "21.2.3.0005"
+        },
+        "vulnerabilities": {
+            "scannedObjects": 58,
+            "vulnerableObjects": 79,
+            "open": [
+                {
+                    "id": "06174313C2AA4A2D6C1F306F9A35B00A",
+                    "severity": "LOW",
+                    "origin": "public/register.html"
+                },
+                {
+                    "id": "06174313C2AA4A2D6C1F306F9A35B00B",
+                    "severity": "LOW",
+                    "origin": "public/register.html"
+                },
+                {
+                    "id": "06174313C2AA4A2D6C1F306F9A35B00C",
+                    "severity": "LOW",
+                    "origin": "public/register.html"
+                },
+                {
+                    "id": "06174313C2AA4A2D6C1F306F9A35B00D",
+                    "severity": "LOW",
+                    "origin": "public/register.html"
+                },
+                {
+                    "id": "0C2E6C6A4EEB3CFC0B5FDC0CA2C5D5A6",
+                    "severity": "LOW",
+                    "origin": "public/category.html"
+                },
+                {
+                    "id": "0C2E6C6A4EEB3CFC0B5FDC0CA2C5D5A7",
+                    "severity": "LOW",
+                    "origin": "public/category.html"
+                },
+                {
+                    "id": "0C61F7F97867E3C50ABC310EB99CBB77",
+                    "severity": "LOW",
+                    "origin": "public/basket.html"
+                },
+                {
+                    "id": "0DF21D240C42C621A1B81E604EB84DB7",
+                    "severity": "LOW",
+                    "origin": "public/basket.html"
+                },
+                {
+                    "id": "105CF21BCFEFF2B8A0EE6EC6445AB870",
+                    "severity": "LOW",
+                    "origin": "api/user/index.js"
+                },
+                {
+                    "id": "105CF21BCFEFF2B8A0EE6EC6445AB871",
+                    "severity": "LOW",
+                    "origin": "api/user/index.js"
+                },
+                {
+                    "id": "1668B1DCB1FF7671C7CF3D3BAADD725D",
+                    "severity": "LOW",
+                    "origin": "public/checkout2.html"
+                },
+                {
+                    "id": "1668B1DCB1FF7671C7CF3D3BAADD725E",
+                    "severity": "LOW",
+                    "origin": "public/checkout2.html"
+                },
+                {
+                    "id": "1668B1DCB1FF7671C7CF3D3BAADD725F",
+                    "severity": "LOW",
+                    "origin": "public/checkout2.html"
+                },
+                {
+                    "id": "17DB87832F837FC0696644A12041D758",
+                    "severity": "LOW",
+                    "origin": "public/customer-order.html"
+                },
+                {
+                    "id": "1B87289954501EF8FD3861819DD98C27",
+                    "severity": "LOW",
+                    "origin": "public/category.html"
+                },
+                {
+                    "id": "1EB58D60626162EBAE05D12039FEFC8D",
+                    "severity": "LOW",
+                    "origin": "public/detail.html"
+                },
+                {
+                    "id": "23283205BFDD4DAF421C0DAF1290AF95",
+                    "severity": "LOW",
+                    "origin": "public/basket.html"
+                },
+                {
+                    "id": "23283205BFDD4DAF421C0DAF1290AF96",
+                    "severity": "LOW",
+                    "origin": "public/category.html"
+                },
+                {
+                    "id": "23283205BFDD4DAF421C0DAF1290AF97",
+                    "severity": "LOW",
+                    "origin": "public/index.html"
+                },
+                {
+                    "id": "23E28CD11BFCAD680405E5DFDC19B2AD",
+                    "severity": "LOW",
+                    "origin": "public/detail.html"
+                },
+                {
+                    "id": "2837CF14E350BDF6BD795E81006EDC68",
+                    "severity": "LOW",
+                    "origin": "public/detail.html"
+                },
+                {
+                    "id": "378A7E1CCD7EAF9345EB7ABF7532086D",
+                    "severity": "LOW",
+                    "origin": "api/user/index.js"
+                },
+                {
+                    "id": "378A7E1CCD7EAF9345EB7ABF7532086E",
+                    "severity": "LOW",
+                    "origin": "api/user/index.js"
+                },
+                {
+                    "id": "3DC38DC403EDD7803A73A0899EBDC5ED",
+                    "severity": "LOW",
+                    "origin": "public/detail.html"
+                },
+                {
+                    "id": "42920BBE559DBC5B968B807FEB9A113C",
+                    "severity": "LOW",
+                    "origin": "api/user/index.js"
+                },
+                {
+                    "id": "42920BBE559DBC5B968B807FEB9A113D",
+                    "severity": "LOW",
+                    "origin": "api/user/index.js"
+                },
+                {
+                    "id": "4C4A780DA3B77BA8459607A63E3DFA4E",
+                    "severity": "LOW",
+                    "origin": "public/js/client.js"
+                },
+                {
+                    "id": "525403EBED319BD7226D757147D2578A",
+                    "severity": "LOW",
+                    "origin": "public/basket.html"
+                },
+                {
+                    "id": "55660F88158E90B186ED86EE776D7BD8",
+                    "severity": "LOW",
+                    "origin": "public/customer-wishlist.html"
+                },
+                {
+                    "id": "55660F88158E90B186ED86EE776D7BD9",
+                    "severity": "LOW",
+                    "origin": "public/customer-wishlist.html"
+                },
+                {
+                    "id": "5D03A154A44EE978139D5F55DE957438",
+                    "severity": "LOW",
+                    "origin": "public/basket.html"
+                },
+                {
+                    "id": "6352AB855CD71F8393F97E20A3C319D4",
+                    "severity": "LOW",
+                    "origin": "public/customer-order.html"
+                },
+                {
+                    "id": "659A196B5D49E74E98A2B51CE50DE513",
+                    "severity": "LOW",
+                    "origin": "public/customer-account.html"
+                },
+                {
+                    "id": "659A196B5D49E74E98A2B51CE50DE514",
+                    "severity": "LOW",
+                    "origin": "public/customer-account.html"
+                },
+                {
+                    "id": "659A196B5D49E74E98A2B51CE50DE515",
+                    "severity": "LOW",
+                    "origin": "public/customer-account.html"
+                },
+                {
+                    "id": "659A196B5D49E74E98A2B51CE50DE516",
+                    "severity": "LOW",
+                    "origin": "public/customer-account.html"
+                },
+                {
+                    "id": "6638777E79A2B9005AE67B6571026BDB",
+                    "severity": "LOW",
+                    "origin": "public/basket.html"
+                },
+                {
+                    "id": "7057618F77921875B7C74CB53F347DBA",
+                    "severity": "LOW",
+                    "origin": "api/user/index.js"
+                },
+                {
+                    "id": "7057618F77921875B7C74CB53F347DBB",
+                    "severity": "LOW",
+                    "origin": "api/user/index.js"
+                },
+                {
+                    "id": "754D0FF708B8BA82221780ECEDA419C7",
+                    "severity": "LOW",
+                    "origin": "public/basket.html"
+                },
+                {
+                    "id": "804A4D548645556094329F2A9BB000FA",
+                    "severity": "LOW",
+                    "origin": "public/topbar.html"
+                },
+                {
+                    "id": "804A4D548645556094329F2A9BB000FB",
+                    "severity": "LOW",
+                    "origin": "public/topbar.html"
+                },
+                {
+                    "id": "813F95B438F2A619ABEB89F5F321A892",
+                    "severity": "LOW",
+                    "origin": "public/checkout4.html"
+                },
+                {
+                    "id": "813F95B438F2A619ABEB89F5F321A893",
+                    "severity": "LOW",
+                    "origin": "public/checkout4.html"
+                },
+                {
+                    "id": "813F95B438F2A619ABEB89F5F321A894",
+                    "severity": "LOW",
+                    "origin": "public/checkout4.html"
+                },
+                {
+                    "id": "86CF92AEB0BA74965138AC7846CB4DC6",
+                    "severity": "LOW",
+                    "origin": "public/js/client.js"
+                },
+                {
+                    "id": "96540678364FD977A2E116060BAF27A2",
+                    "severity": "LOW",
+                    "origin": "public/checkout1.html"
+                },
+                {
+                    "id": "96540678364FD977A2E116060BAF27A3",
+                    "severity": "LOW",
+                    "origin": "public/checkout1.html"
+                },
+                {
+                    "id": "96540678364FD977A2E116060BAF27A4",
+                    "severity": "LOW",
+                    "origin": "public/checkout1.html"
+                },
+                {
+                    "id": "AF97E5F8CCFF1C0814D90421E2C3B4F7",
+                    "severity": "LOW",
+                    "origin": "public/customer-orders.html"
+                },
+                {
+                    "id": "B0A7C67B067BC4DB80EEED53C37D4E41",
+                    "severity": "LOW",
+                    "origin": "public/customer-order.html"
+                },
+                {
+                    "id": "B0BE998B3DEF07E151FAC64685E77F6B",
+                    "severity": "LOW",
+                    "origin": "public/basket.html"
+                },
+                {
+                    "id": "B3270C865BCBE8E240036E2D24CE297E",
+                    "severity": "LOW",
+                    "origin": "public/basket.html"
+                },
+                {
+                    "id": "B3270C865BCBE8E240036E2D24CE297F",
+                    "severity": "LOW",
+                    "origin": "public/basket.html"
+                },
+                {
+                    "id": "B3270C865BCBE8E240036E2D24CE2980",
+                    "severity": "LOW",
+                    "origin": "public/basket.html"
+                },
+                {
+                    "id": "B3270C865BCBE8E240036E2D24CE2981",
+                    "severity": "LOW",
+                    "origin": "public/basket.html"
+                },
+                {
+                    "id": "B481D7BB2AEAA4C2F381E3AD9DB6B299",
+                    "severity": "LOW",
+                    "origin": "public/category.html"
+                },
+                {
+                    "id": "B8CA2B33AA63BAEB2E49552893A48DAE",
+                    "severity": "LOW",
+                    "origin": "public/checkout3.html"
+                },
+                {
+                    "id": "B8CA2B33AA63BAEB2E49552893A48DAF",
+                    "severity": "LOW",
+                    "origin": "public/checkout3.html"
+                },
+                {
+                    "id": "B8CA2B33AA63BAEB2E49552893A48DB0",
+                    "severity": "LOW",
+                    "origin": "public/checkout3.html"
+                },
+                {
+                    "id": "BC2E1FD91861CA808ECFEE436346DE9B",
+                    "severity": "LOW",
+                    "origin": "public/category.html"
+                },
+                {
+                    "id": "C233FE726E9DA405FA5006BC3C0F0416",
+                    "severity": "LOW",
+                    "origin": "public/basket.html"
+                },
+                {
+                    "id": "C2E99AF9DD09C891F101749246267633",
+                    "severity": "LOW",
+                    "origin": "public/customer-orders.html"
+                },
+                {
+                    "id": "C9E2ECE0EED91F9889EB8C0E80BF47EC",
+                    "severity": "LOW",
+                    "origin": "public/customer-order.html"
+                },
+                {
+                    "id": "CA65A31DF4087A03AC783512347F27EE",
+                    "severity": "LOW",
+                    "origin": "api/user/index.js"
+                },
+                {
+                    "id": "CA65A31DF4087A03AC783512347F27EF",
+                    "severity": "LOW",
+                    "origin": "api/user/index.js"
+                },
+                {
+                    "id": "CD7A377E921B8F8677CDBED8383A5B4C",
+                    "severity": "LOW",
+                    "origin": "api/user/index.js"
+                },
+                {
+                    "id": "CD7A377E921B8F8677CDBED8383A5B4D",
+                    "severity": "LOW",
+                    "origin": "api/user/index.js"
+                },
+                {
+                    "id": "CD7A377E921B8F8677CDBED8383A5B4E",
+                    "severity": "LOW",
+                    "origin": "api/user/index.js"
+                },
+                {
+                    "id": "CD7A377E921B8F8677CDBED8383A5B4F",
+                    "severity": "LOW",
+                    "origin": "api/user/index.js"
+                },
+                {
+                    "id": "D11BD5C3124BA997C148B4760303826B",
+                    "severity": "LOW",
+                    "origin": "public/basket.html"
+                },
+                {
+                    "id": "D11BD5C3124BA997C148B4760303826C",
+                    "severity": "LOW",
+                    "origin": "public/category.html"
+                },
+                {
+                    "id": "D11BD5C3124BA997C148B4760303826D",
+                    "severity": "LOW",
+                    "origin": "public/index.html"
+                },
+                {
+                    "id": "D6B1EF486E73EF31355475787A8C4298",
+                    "severity": "LOW",
+                    "origin": "api/cart/index.js"
+                },
+                {
+                    "id": "D6B1EF486E73EF31355475787A8C4299",
+                    "severity": "LOW",
+                    "origin": "api/orders/index.js"
+                },
+                {
+                    "id": "D739B2E51B127BDFA4FE07B5A7662A44",
+                    "severity": "MEDIUM",
+                    "origin": "public/footer.html"
+                },
+                {
+                    "id": "D739B2E51B127BDFA4FE07B5A7662A45",
+                    "severity": "MEDIUM",
+                    "origin": "public/footer.html"
+                },
+                {
+                    "id": "DCEDD320CD15B1629421860F75A9E542",
+                    "severity": "LOW",
+                    "origin": "public/basket.html"
+                },
+                {
+                    "id": "E006FE411261434BE6C5B4D1BDFCD481",
+                    "severity": "LOW",
+                    "origin": "public/category.html"
+                }
+            ],
+            "openCount": 79,
+            "suppressed": [
+                "1EC05E41510036D1DB8FB2B720D50BFC",
+                "1EC05E41510036D1DB8FB2B720D50BFB",
+                "C9718E95F889CDF7061713F2628CAA37",
+                "C9718E95F889CDF7061713F2628CAA36",
+                "F1F0DFA48C93ED6F2152D05B726913DA",
+                "021137871E0DC19EBD0A45907475BF46",
+                "D693E0C1EFEE94FDF4A63758F2050C8D",
+                "D693E0C1EFEE94FDF4A63758F2050C8E",
+                "77376512D8F30B6AEF75CC01F9139A9E",
+                "156E4BBA462D3B979C7CAC991996435A",
+                "156E4BBA462D3B979C7CAC991996435B",
+                "01913E8A2ECDB143B5A4F44FBB50C959",
+                "156E4BBA462D3B979C7CAC9919964359",
+                "A1864AFE1B5473A58D086424B3DA1031",
+                "F6760D1287DB640EC2649543ED937D80",
+                "F6760D1287DB640EC2649543ED937D81",
+                "C7CBA78406B3F40A98FAE88CD9252D51",
+                "F6760D1287DB640EC2649543ED937D7E",
+                "F6760D1287DB640EC2649543ED937D7F",
+                "AE67CE04E63F34F1D7E4489ADAD53128",
+                "F9F19434072A04787FE6DF4BBD511F5B",
+                "3C647EE33E31C5E33544184C320B9299",
+                "C71B683ED1CEC9FDCC4EEAC3637AAA9F",
+                "6F1B41BD3E803F1DDD172BDF03EF5209",
+                "D7E070A493302BD80374FA852F7F82D2",
+                "48CF3F94A900550BC9B8C63CFBDD02F5",
+                "FE25162391F6F9FF6C34281AF3962DE1",
+                "68F65DFEFEA0335229A409EECC7468AC",
+                "B1980161B52548E78C4D5B18F799BCD2",
+                "9A3AC261F75037999FFADA0B8F86C870",
+                "9A3AC261F75037999FFADA0B8F86C871",
+                "E3F6CFD8D9B8AF1439BB4F3EAEB7E0B2",
+                "E3F6CFD8D9B8AF1439BB4F3EAEB7E0B1",
+                "E3F6CFD8D9B8AF1439BB4F3EAEB7E0B0",
+                "8BE2CDF6C9D26CD742D064C31F360122"
+            ],
+            "suppressedCount": 35,
+            "severityCounts": {
+                "critical": 0,
+                "high": 0,
+                "medium": 2,
+                "low": 77,
+                "none": 0,
+                "unknown": 0
+            }
+        },
+        "pregenerated": false
+    },
+    "testHash": "6897b2fb3676b1a05c6c09a5cabfa751c82ccc7c89fa09cc7fef92aae769aa1d",
+    "lastCommit": {
+        "authorMail": "gitMail_TEST",
+        "authorName": "gitName_TEST",
+        "id": "gitId_TEST",
+        "link": "gitLink_TEST",
+        "message": "gitMessage_TEST",
+        "repository": "gitOrigin_TEST"
+    },
+    "pipeline": {
+        "name": "cicdPlatform_TEST",
+        "instance": "https://test-url.jenkuns.example.com",
+        "url": "https://test-url.jenkuns.example.com/jobUrl_TEST"
+    }
+}

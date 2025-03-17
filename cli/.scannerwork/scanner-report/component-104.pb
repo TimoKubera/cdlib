@@ -1,0 +1,1 @@
+h 2kotlinXhrSsrc/main/kotlin/de/deutschepost/sdm/cdlib/release/report/external/cca/ScanStatus.kt

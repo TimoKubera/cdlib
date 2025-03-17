@@ -1,0 +1,132 @@
+= Terraform Deployment Verification with Inspec
+:toc:
+:keywords: latest
+
+CI/CD Pipelines enable devops teams to receive early and fast feedback about the changes which are applied to the code.
+Since teams are able to describe and manage the (cloud) infrastructure through code as well, the concept of automated testing through pipelines should be also utilized for the applications underlying infrastructure code.
+
+With automated testing the infrastructure code and verify the result of an infrastructure deployment (e.g. create, update or destroy), devops teams are able to check, if everything would go up according to that was planned.
+For example a version update of the kubernetes cluster, or a change on the load balancer configuration.
+With the feedback about the outcome of the changes made to the infrastructure, deployments are more predictable and leading to a better service for our customers.
+
+In the following tutorial we will describe and show how you can write tests for your infrastructure code by using https://community.chef.io/tools/chef-inspec/[Inspec] from Chef within your `CDLib` driven pipeline.
+
+== Write and execute infrastructure tests with `inspec` (in general)
+
+With `inspec` you can write human-readable test code with Ruby and automatically check for example:
+
+- deployment verification by comparing current and desired state of the infrastructure,
+- companies compliance policies,
+
+from your CLI or preferably within your CI/CD pipeline runs.
+
+=== Create an `inspec` profile
+
+Before you can execute your tests, you need to create a provider specific profile, see the example down below for tests within Microsoft Azure Cloud.
+
+[source]
+----
+$ inspec init profile --platform azure my-profile
+
+ ─────────────────────────── InSpec Code Generator ───────────────────────────
+
+Creating new profile at /Users/spaterson/my-profile
+ • Creating directory libraries
+ • Creating file README.md
+ • Creating directory controls
+ • Creating file controls/example.rb
+ • Creating file inspec.yml
+ • Creating file libraries/.gitkeep
+
+----
+
+=== Writing a test case
+
+The structure of the `inspec` tests are simple but powerful.
+By adding `title` and `desc` you can define metadata that fully describes the importance and purpose of the test with a succinct and complete description.
+Within the `describe` block, you can define your expected conditions and reference your resources.
+
+In this example down below, we are checking, if the Azure CosmosDB was deployed and allocated to the correct database `account_name`.
+
+[source,ruby]
+----
+include::../../../terraform-registry/azure/cosmosdb/core_sql/sample/inspec/azure-inspec-tests/controls/azure-account-check.rb[tags=pre-test,indent=0]
+----
+
+=== Run the tests
+
+After creating the profile and the test file(s), executing the test set is pretty easy, as you can see in the example:
+
+[source,sh]
+----
+$ cd  my-profile/
+$ inspec exec . -t azure://<YOUR_SUBSCRIPTION_ID>
+
+
+Profile: Azure InSpec Profile (my-profile)
+Version: 0.1.0
+Target:  azure://12345abc-987d-654e-fg21-abcdef23324r
+
+  ×  azure-virtual-machines-exist-check: Check resource groups to see if any VMs exist. (4 failed)
+     ×  Azure Virtual Machines should exist
+     expected Azure Virtual Machines to exist
+     ×  Azure Virtual Machines should exist
+     expected Azure Virtual Machines to exist
+     ×  Azure Virtual Machines should exist
+     expected Azure Virtual Machines to exist
+     ×  Azure Virtual Machines should exist
+     expected Azure Virtual Machines to exist
+     ✔  Azure Virtual Machines should exist
+     ✔  Azure Virtual Machines should exist
+     ✔  Azure Virtual Machines should exist
+
+
+Profile: Azure Resource Pack (inspec-azure)
+Version: 1.2.0
+Target:  azure://12345abc-987d-654e-fg21-abcdef23324r
+
+     No tests executed.
+
+Profile Summary: 0 successful controls, 1 control failure, 0 controls skipped
+Test Summary: 3 successful, 4 failures, 0 skipped
+
+----
+
+== Pipeline integration
+
+In the following chapter, we will describe, how you can integrate the `inspec` tests within your CI/CD pipeline.
+
+=== Sample jobs
+
+|======
+| CI/CD Tool | Pipeline Definition | Agent Configuration
+
+|image:img/jenkins.png[] Jenkins
+| https://git.dhl.com/CDLib/terraform_registry/blob/master/azure/cosmosdb/core_sql/sample/Jenkinsfile[Jenkinsfile]
+| https://git.dhl.com/CDLib/terraform_registry/blob/master/azure/cosmosdb/core_sql/sample/agent.yml[agent.yaml]
+
+|======
+
+=== Jenkins
+
+Add the `inspec-cli` to your xref:KubernetesAsJenkinsAgent.adoc[build agent] on https://devsecops.dhl.com/services/build/jenkins-cloudbees/[IT-S Cloudbees Jenkins]:
+
+[source,yaml]
+----
+include::../../../terraform-registry/azure/cosmosdb/core_sql/sample/agent.yml[tags=inspec-yaml, indent=0]
+----
+
+Then you can add the `inspec` tests as a stage to your `Jenkinsfile`:
+
+> **Remark:** this requires an initialized profile
+
+[source,groovy]
+----
+include::../../../terraform-registry/azure/cosmosdb/core_sql/sample/Jenkinsfile[tags=inspec-test,indent=0]
+----
+
+> **Important:** if the test cannot be executed successfully, build will break.
+
+== Need help?
+
+If you are facing any problems, please don't hesitate and get in contact with the `Lieferhelden` team by issue a ticket on https://git.dhl.com/CDLib/CDlib/issues[GitHub].

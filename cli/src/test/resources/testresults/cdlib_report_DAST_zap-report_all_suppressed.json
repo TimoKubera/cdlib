@@ -1,0 +1,117 @@
+{
+    "date": "2022-10-11T10:42:52+01:00",
+    "name": "cli",
+    "test": {
+        "uri": "zap-report_all_suppressed.json",
+        "date": "2021-10-12T13:15:14+01:00",
+        "reportType": "DAST",
+        "tool": {
+            "name": "OWASP Zed Attack Proxy",
+            "version": "D-2021-10-12",
+            "vendor": "OWASP Zed Attack Proxy",
+            "ruleVersion": "D-2021-10-12"
+        },
+        "vulnerabilities": {
+            "scannedObjects": 1,
+            "vulnerableObjects": 33,
+            "open": [],
+            "openCount": 0,
+            "suppressed": [
+                {
+                    "id": "10027",
+                    "severity": "NONE",
+                    "origin": "Information Disclosure - Suspicious Comments"
+                },
+                {
+                    "id": "10109",
+                    "severity": "NONE",
+                    "origin": "Modern Web Application"
+                },
+                {
+                    "id": "10003",
+                    "severity": "NONE",
+                    "origin": "Vulnerable JS Library"
+                },
+                {
+                    "id": "10202",
+                    "severity": "LOW",
+                    "origin": "Absence of Anti-CSRF Tokens"
+                },
+                {
+                    "id": "10055",
+                    "severity": "MEDIUM",
+                    "origin": "CSP: Wildcard Directive"
+                },
+                {
+                    "id": "10038",
+                    "severity": "MEDIUM",
+                    "origin": "Content Security Policy (CSP) Header Not Set"
+                },
+                {
+                    "id": "10054",
+                    "severity": "LOW",
+                    "origin": "Cookie with SameSite Attribute None"
+                },
+                {
+                    "id": "10054",
+                    "severity": "LOW",
+                    "origin": "Cookie without SameSite Attribute"
+                },
+                {
+                    "id": "10015",
+                    "severity": "LOW",
+                    "origin": "Incomplete or No Cache-control Header Set"
+                },
+                {
+                    "id": "10037",
+                    "severity": "LOW",
+                    "origin": "Server Leaks Information via \"X-Powered-By\" HTTP Response Header Field(s)"
+                },
+                {
+                    "id": "10035",
+                    "severity": "LOW",
+                    "origin": "Strict-Transport-Security Header Not Set"
+                },
+                {
+                    "id": "10096",
+                    "severity": "LOW",
+                    "origin": "Timestamp Disclosure - Unix"
+                },
+                {
+                    "id": "10021",
+                    "severity": "LOW",
+                    "origin": "X-Content-Type-Options Header Missing"
+                },
+                {
+                    "id": "10020",
+                    "severity": "MEDIUM",
+                    "origin": "X-Frame-Options Header Not Set"
+                }
+            ],
+            "suppressedCount": 14,
+            "severityCounts": {
+                "critical": 0,
+                "high": 0,
+                "medium": 0,
+                "low": 0,
+                "none": 0,
+                "unknown": 0
+            }
+        },
+        "pregenerated": false
+    },
+    "testHash": "d6ddaa64b2947cf89900d169169821c184bbf00d9da89c082300af3b6fa21331",
+    "lastCommit": {
+        "authorMail": "integration-test-git-mail",
+        "authorName": "integration-test-git-author",
+        "id": "integration-test-git-id",
+        "link": "integration-test-git-link",
+        "message": "integration-test-git-message",
+        "repository": "integration-test-git-origin"
+    },
+    "pipeline": {
+        "name": "integration-test-platform",
+        "instance": "jenkins//jenkins",
+        "url": "jenkins"
+    }
+}

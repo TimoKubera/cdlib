@@ -1,0 +1,1 @@
+y 2kotlinX[hrlsrc/main/kotlin/de/deutschepost/sdm/cdlib/release/report/internal/oslcComplianceChecker/OslcTestPreResult.kt

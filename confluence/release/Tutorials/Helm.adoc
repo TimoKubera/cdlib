@@ -1,0 +1,88 @@
+= Helm
+:toc:
+:keywords: latest
+
+https://helm.sh/[Helm] is a package manager for https://kubernetes.io[Kubernetes].
+We use Helm to describe the deployment of the application, but not the for the deployment itself, since we use GitOps for that.
+
+== Charts
+You can create your Charts from scratch as described https://helm.sh/docs/chart_template_guide/[inside the official helm documentation].
+
+Once your Chart works locally, push it to https://devsecops.dhl.com/services/build/github/get-started[Github] as part of your application repository.
+
+=== Accessing Private Container Registries with ImagePullSecrets
+
+You need to define how your images will be downloaded to your kubernetes namespace.
+As your registry is private, you need to provide an `imagePullSecret` as part of your Chart.
+This will be then referenced in your `deployment.yaml` (responsible for the deployment of your image(s)).
+
+Please make sure that the secret has a unique name corresponding to the deployment, otherwise you'll might remove a secret used by another deployment.
+To do that you can add a little helper file to your chart:
+
+[source,gotemplate]
+----
+include::../../../phippyandfriends/captainkube/charts/captainkube/templates/sdm-cdlib-template.yaml[tags=secret, indent=0]
+----
+
+This template enables you to have a separate image pull secret for each deployment inside your `deployment.yaml`:
+
+[source,yaml]
+----
+include::../../../phippyandfriends/captainkube/charts/captainkube/templates/deployment.yaml[tags=secret, indent=0]
+----
+
+The image pull secret is defined in a separate `image-pull-secret.yaml`:
+
+[source,yaml]
+----
+include::../../../phippyandfriends/captainkube/charts/captainkube/templates/image-pull-secret.yaml[indent=0]
+----
+
+
+== Pipeline
+=== Jenkins
+To be able to use helm inside your pipeline you need to include a helm container to your agent.
+
+First specify that you want to use a kubernetes agent inside your `Jenkinsfile`:
+[source,groovy]
+----
+include::../../../carts/JenkinsfileBuild[tags=agent, indent=0]
+----
+
+Then create the `agent.yaml` (if not there yet) and add helm to it:
+[source,yaml]
+----
+include::../../../carts/agent-deploy.yaml[indent=0]
+----
+
+> learn more about xref:KubernetesAsJenkinsAgent.adoc[Kubernetes agents]
+
+Now you can use helm to build and publish your helm chart inside your `Jenkinsfile`:
+[source,groovy]
+----
+include::../../../carts/JenkinsfileBuild[tags=helm, indent=0]
+----
+
+We are using our xref:../CLI.adoc[cli] to automatically create compatible version strings, so make sure to call that before executing any helm command - ideally as the first thing in your pipeline.
+
+Furthermore depending on the current branch we are deriving the correct repository to use as described above:
+[source,groovy]
+----
+include::../../../carts/JenkinsfileBuild[tags=setup, indent=0]
+----
+
+Lastly we are using quite a few parameters inside the pipeline, which we load from a separate `config.jenkins` file:
+[source,groovy]
+----
+include::../../../carts/config.jenkins[tags=helm, indent=0]
+----
+
+=== Azure Pipelines
+Check out our xref:GitOps.adoc[GitOps] tutorial to see how to use your helm chart with Azure DevOps Pipelines.
+
+=== GitHub Actions
+
+Within our template repository you can find a working example on how to use helm to deploy your application.
+Helm Chart: https://git.dhl.com/CDLib/cdaas-template-maven/tree/main/charts/cdaas-template-maven
+Pipeline: https://git.dhl.com/CDLib/cdaas-template-maven/blob/8b57829877c879b8754c7170252a74febfc0bfcd/.github/workflows/pipeline.yaml#L63
+Workflow: https://git.dhl.com/CDLib/cdaas-workflows/blob/main/.github/workflows/fluxconfigreconcile.yaml

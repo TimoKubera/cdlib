@@ -1,0 +1,49 @@
+{
+    "entries": [
+        {
+            "packageName": "ch.qos.logback:logback-classic",
+            "justification": "Test",
+            "version": "",
+            "newLicense": {
+                "license": "Apache 2.0",
+                "url": ""
+            }
+        },
+        {
+            "packageName": "ch.qos.logback:logback-core",
+            "justification": "Test",
+            "version": "",
+            "newLicense": {
+                "license": "Apache 2.0",
+                "url": ""
+            }
+        },
+        {
+            "packageName": "com.rabbitmq:amqp-client",
+            "justification": "Test",
+            "version": "",
+            "newLicense": {
+                "license": "Apache 2.0",
+                "url": ""
+            }
+        },
+        {
+            "packageName": "jakarta.annotation:jakarta.annotation-api",
+            "justification": "Test",
+            "version": "",
+            "newLicense": {
+                "license": "Apache 2.0",
+                "url": ""
+            }
+        },
+        {
+            "packageName": "org.apache.tomcat.embed:tomcat-embed-core",
+            "justification": "Test",
+            "version": "",
+            "newLicense": {
+                "license": "Apache 2.0",
+                "url": ""
+            }
+        }
+    ]
+}

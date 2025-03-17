@@ -1,0 +1,1 @@
+ 2kotlinX^hrOsrc/main/kotlin/de/deutschepost/sdm/cdlib/release/report/internal/TestResult.kt

@@ -1,0 +1,1 @@
+} 2kotlinXÆhrWsrc/main/kotlin/de/deutschepost/sdm/cdlib/release/report/internal/SecurityTestResult.kt

@@ -1,0 +1,23 @@
+@startuml feature
+actor CodeOwner
+actor Dev
+database "app:featurex"
+control "Feature"
+database "Artifactory"
+
+database "gitops:npi"
+entity "flux"
+collections "npi:featurex"
+
+Dev -> "app:featurex" : push
+"app:featurex" -> "Feature" : trigger
+"Feature" -> "Artifactory" : push container
+"Feature" -> "gitops:npi" : render helm template and push cluster/service/featurex/featurex.yaml
+"Feature" -> "flux" : trigger webhook
+"flux" -> "npi:featurex" : deploy/update resources
+"flux" -> "gitops:npi" : set commit status
+"Feature" -> "gitops:npi" : query reconcilation status
+"Feature" -> "npi:featurex" : perform dynamic tests
+Dev -> "app:featurex": create PR
+CodeOwner -> "app:featurex": Approve
+@enduml

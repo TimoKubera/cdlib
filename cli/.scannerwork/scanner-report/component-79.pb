@@ -1,0 +1,1 @@
+O 2kotlinXíhrTsrc/main/kotlin/de/deutschepost/sdm/cdlib/mixins/artifactory/ArtifactoryMixinFull.kt

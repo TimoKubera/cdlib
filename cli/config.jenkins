@@ -1,0 +1,79 @@
+[
+        cdlibCli: [
+                artifactory: [
+                    credentialsId: 'artifactoryAzureIdentityToken',
+                    repoName: 'ICTO-3339_sdm_sockshop_release_reports',
+                    immutableRepoName: 'ICTO-3339_sdm_sockshop_nonimmutable_reports'
+                ],
+                artifactoryAzure: [
+                    credentialsId: 'artifactoryAzureIdentityToken',
+                ],
+                artifactoryITS: [
+                    credentialsId: 'artifactoryITSIdentityToken',
+                    repoName: 'sdm-proj-prg-cdlib-cli-appimage',
+                    immutableRepoName: 'sdm-proj-prg-cdlib-cli-appimage'
+                ],
+                changeManagement: [
+                    credentialsId: 'cd_bot_chgm_token'
+                ],
+                webapproval: [
+                    credentialsId: 'cdlib-its-bot',
+                    applicationId: 298,
+                ],
+                qhcr: [
+                    credentialsId: 'css_qhcr_robot_cdlib',
+                    integrationCredentialsId: 'css_qhcr_robot_cdlib-integration'
+                ],
+                metrics: [
+                    product: 'TEST',
+                    almId: 'ICTO-3339',
+                ],
+                ghCliVersion: '2.23.0'
+        ],
+        container: [
+                master: [
+                        registry: [
+                                url: 'sdm-docker-release-local.artifactory.dhl.com',
+                                credentialsId: 'cdlib-its-bot',
+                                path: 'cdlib'
+                        ],
+                        registryCSS: [
+                                url: 'dpdhl.css-qhcr-pi.azure.deutschepost.de',
+                                credentialsId: 'css_qhcr_robot_cdlib',
+                                path: 'cdlib'
+                        ],
+                        image: [
+                                name: 'cdlib-cli'
+                        ]
+                ],
+                dev: [
+                        registry: [
+                                url: 'sdm-docker-dev-local.artifactory.dhl.com',
+                                credentialsId: 'cdlib-its-bot',
+                                path: 'cdlib'
+                        ],
+                        registryCSS: [
+                                url: 'dpdhl.css-qhcr-pi.azure.deutschepost.de',
+                                credentialsId: 'css_qhcr_robot_cdlib',
+                                path: 'cdlib'
+                        ],
+                        image: [
+                                name: 'cdlib-cli'
+                        ]
+                ]
+        ],
+        dependencyCheck: [
+            properties: [
+                failBuildOnCVSS: '7',
+                cveUrlBase: 'https://artifactory.dhl.com/artifactory/nvd-local/nvdcve-1.1-%d.json.gz',
+                cveUrlModified: 'https://artifactory.dhl.com/artifactory/nvd-local/nvdcve-1.1-modified.json.gz',
+                kevUrl: 'https://artifactory.dhl.com/artifactory/nvd-local/known_exploited_vulnerabilities.json',
+                retireJsUrl: 'https://artifactory.dhl.com/api/vcs/downloadBranchFile/github/Retirejs/retire.js/master!repository/jsrepository.json'
+            ]
+        ],
+        chm: [
+            approval: [
+                user: 'ab6jg8, omh9ote011'
+            ]
+        ]
+]

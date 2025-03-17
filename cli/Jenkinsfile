@@ -1,0 +1,497 @@
+pipeline {
+    libraries {
+        lib("CDlib@${env.CHANGE_BRANCH ?: env.BRANCH_NAME}")
+    }
+    triggers {
+        cron 'H 5 * * 3'
+    }
+    options {
+        timestamps()
+        durabilityHint 'PERFORMANCE_OPTIMIZED'
+        ansiColor('xterm')
+        timeout(time: 3, unit: 'HOURS')
+    }
+    agent {
+        kubernetes {
+            cloud 'prod-prg'
+            inheritFrom 'jenkins-slave-prg'
+            yamlFile 'cli/agent.yml'
+        }
+    }
+    //tag::cli[]
+    environment {
+        HOME = "${env.WORKSPACE}"
+        APP_PATH = 'cli'
+        JAVA_TOOL_OPTIONS = "-Duser.home=${env.WORKSPACE}"
+        XDG_CACHE_HOME = "${HOME}/.cache"
+        MICRONAUT_HTTP_SERVICES_O365_PROXY_ADDRESS = "b2b-http.dhl.com:8080"
+    }
+    //end::cli[]
+    parameters {
+        string(defaultValue: '0.0.0-SNAPSHOT', description: 'Version of the CDlib. (not the CLI)', name: 'cdlibVersion', trim: true)
+    }
+    stages {
+        stage('META') {
+            /* only start a build when something changed inside the microservice or it is triggered manually */
+            when {
+                anyOf {
+                    triggeredBy cause: 'UserIdCause'
+                    changeset 'cli/**'
+                }
+            }
+            stages {
+                stage('SETUP') {
+                    steps {
+                        script {
+                            dir(env.APP_PATH) {
+                                config = load 'config.jenkins'
+                                container_config = config.container[env.BRANCH_NAME] ?: config.container.dev
+                                //tag::cli-nc[]
+                                withCdlibCliNamesCreate(containerName: 'cdlib-cli') {
+                                    sh returnStdout: true, script: "cdlib names create"
+                                }
+                                //end::cli-nc[]
+                            }
+                        }
+                    }
+                }
+                stage('BUILD') {
+                    steps {
+                        container('java') {
+                            dir(env.APP_PATH) {
+                                withCredentials([
+                                    usernamePassword(credentialsId: 'prod-dashboard-contributor', usernameVariable: 'DASHBOARD_PROD_ID', passwordVariable: 'DASHBOARD_PROD_SECRET'),
+                                    usernamePassword(credentialsId: 'graph-client', usernameVariable: 'GRAPH_CLIENT_ID', passwordVariable: 'GRAPH_CLIENT_SECRET'),
+                                ]) {
+                                    sh """
+                                        echo 'cdlib-version: ${params.cdlibVersion}' >> src/main/resources/application.yml
+                                        echo 'cli-release-version: ${env.CDLIB_RELEASE_VERSION}' >> src/main/resources/application.yml
+                                        echo 'cli-container-tag: ${env.CDLIB_CONTAINER_TAG}' >> src/main/resources/application.yml
+                                        echo 'webhook-publish-metrics: ${env.MSTEAMS_PUBLISH_METRICS_WEBHOOK_LIEFERHELDEN}' >> src/main/resources/application.yml
+                                        echo 'webhook-publish-metrics-test: ${env.MSTEAMS_PUBLISH_METRICS_TEST_WEBHOOK_LIEFERHELDEN}' >> src/main/resources/application.yml
+                                        echo 'graph-client-id: ${env.GRAPH_CLIENT_ID}' >> src/main/resources/application.yml
+                                        echo 'graph-secret: ${env.GRAPH_CLIENT_SECRET}' >> src/main/resources/application.yml
+                                        echo 'dashboard-npi-client-id: ${env.DASHBOARD_NPI_ID}' >> src/main/resources/application.yml
+                                        echo 'dashboard-npi-client-secret: ${env.DASHBOARD_NPI_SECRET}' >> src/main/resources/application.yml
+                                        echo 'dashboard-prod-client-id: ${env.DASHBOARD_PROD_ID}' >> src/main/resources/application.yml
+                                        echo 'dashboard-prod-client-secret: ${env.DASHBOARD_PROD_SECRET}' >> src/main/resources/application.yml
+                                        """
+                                }
+                                sh "./gradlew clean buildLayers"
+                            }
+                        }
+                    }
+                }
+                //tag::jib[]
+                stage('CONTAINER') {
+                    environment {
+                        GRADLE_OPTS = ''
+                    }
+                    steps {
+                        dir(env.APP_PATH) {
+                            container('java') {
+                                withCredentials([
+                                    usernamePassword(credentialsId: container_config.registry.credentialsId, usernameVariable: 'AUSERNAME', passwordVariable: 'APASSWORD'),
+                                    usernamePassword(credentialsId: container_config.registryCSS.credentialsId, usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                                    retry(3) {
+                                        // push image to CSS Harbor QHCR
+                                        sh """
+                                            ./gradlew jib --image ${container_config.registryCSS.url}/${container_config.registryCSS.path}/${container_config.image.name}:${CONTAINER_TAG} \
+                                                -Djib.console=plain -Djib.httpTimeout=120000 \
+                                                -Djib.to.auth.username=$USERNAME -Djib.to.auth.password=$PASSWORD
+                                        """
+                                    }
+                                    retry(3) {
+                                        // push image to IT-S Artifactory
+                                        sh """
+                                            ./gradlew jib --image ${container_config.registry.url}/${container_config.registry.path}/${container_config.image.name}:${CONTAINER_TAG} \
+                                                -Djib.console=plain -Djib.httpTimeout=120000 \
+                                                -Djib.to.auth.username=$AUSERNAME -Djib.to.auth.password='$APASSWORD'
+                                        """
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                //end::jib[]
+                stage('TEST') {
+                    parallel {
+                        //tag::cca[]
+                        stage('CCA') {
+                            steps {
+                                container('cdlib-cli') {
+                                    withCredentials([usernamePassword(credentialsId: config.cdlibCli.qhcr.credentialsId, usernameVariable: 'HARBOR_USERNAME', passwordVariable: 'HARBOR_TOKEN')]) {
+                                        sh "cdlib report fetch css --robot-account $HARBOR_USERNAME --token $HARBOR_TOKEN --image dpdhl.css-qhcr-pi.azure.deutschepost.de/cdlib/cdlib-cli:${CONTAINER_TAG}"
+                                        sh "cdlib report check -f cca-trivy-${env.RELEASE_NAME}.json"
+                                    }
+                                }
+                            }
+                        }
+                        //end::cca[]
+                        stage('UNIT') {
+                            steps {
+                                container('java') {
+                                    dir(env.APP_PATH) {
+                                        withCredentials([
+                                            usernamePassword(credentialsId: config.cdlibCli.webapproval.credentialsId, usernameVariable: 'SHAREPOINT_USERNAME', passwordVariable: 'SHAREPOINT_PASSWORD'),
+                                            usernamePassword(credentialsId: config.cdlibCli.qhcr.integrationCredentialsId, usernameVariable: 'HARBOR_USERNAME', passwordVariable: 'HARBOR_TOKEN'),
+                                            string(credentialsId: config.cdlibCli.changeManagement.credentialsId, variable: 'CHANGE_MANAGEMENT_TOKEN'),
+                                            string(credentialsId: 'fnci_pup', variable: 'FNCI_TOKEN'),
+                                            string(credentialsId: config.cdlibCli.artifactory.credentialsId, variable: 'ARTIFACTORY_IDENTITY_TOKEN'),
+                                            string(credentialsId: config.cdlibCli.artifactoryAzure.credentialsId, variable: 'ARTIFACTORY_AZURE_IDENTITY_TOKEN'),
+                                            string(credentialsId: config.cdlibCli.artifactoryITS.credentialsId, variable: 'ARTIFACTORY_ITS_IDENTITY_TOKEN')
+                                        ]) {
+                                            container('java') {
+                                                sh "./gradlew --info test integrationTest"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            post {
+                                always {
+                                    xunit thresholds: [failed(failureNewThreshold: '0', failureThreshold: '0', unstableNewThreshold: '0', unstableThreshold: '0')],
+                                        tools: [JUnit(deleteOutputFiles: true, failIfNotNew: true, pattern: '**/build/test-results/**/*.xml', skipNoTestFiles: false, stopProcessingIfError: true)]
+                                }
+                            }
+                        }
+                        stage('SCA') {
+                            steps {
+                                container('dependency-check') {
+                                    dir(env.APP_PATH) {
+                                        sh """
+                                            /usr/share/dependency-check/bin/dependency-check.sh --failOnCVSS=${config.dependencyCheck.properties.failBuildOnCVSS} --kevURL=${config.dependencyCheck.properties.kevUrl} --retireJsUrl=${config.dependencyCheck.properties.retireJsUrl} --disableOssIndex --nodePackageSkipDevDependencies --nvdValidForHours 48 --hostedSuppressionsValidForHours 48 --noupdate --suppression sca-suppression.xml --proxyserver b2b-http.dhl.com --proxyport 8080 --nonProxyHosts '*.dhl.com' -f JSON -f HTML -s .
+                                        """
+                                    }
+                                }
+                            }
+                            post {
+                                always {
+                                    archiveArtifacts artifacts: 'cli/dependency-check-report.*'
+                                }
+                            }
+                        }
+                        stage('SAST') {
+                            environment {
+                                HOME = "/opt/fortify"
+                                PATH = "/opt/fortify/bin:/opt/fortifyApps/bin/:$PATH"
+                                SCA_VM_OPTS = "-Xmx1337M"
+                                // This should be 2/3 of your memory limit for the fortify container
+                                JAVA_TOOL_OPTIONS = "-Duser.home=/opt/fortify"
+                            }
+                            steps {
+                                container('fortify') {
+                                    dir(env.APP_PATH) {
+                                        // translate code for scan
+                                        sh "sourceanalyzer -version -b ${env.RELEASE_NAME_FORTIFY} -logfile build/fortify/sca-translate.log -cp './build/libs/*.jar' 'src/main/**/*.kt'"
+                                        // show files
+                                        sh "sourceanalyzer -b ${env.RELEASE_NAME_FORTIFY} -show-files"
+                                        // scan for vulnerabilities
+                                        sh "sourceanalyzer -b ${env.RELEASE_NAME_FORTIFY} -scan -f ${env.RELEASE_NAME_FORTIFY}.fpr -build-project ${env.RELEASE_NAME_FORTIFY} -build-version ${env.RELEASE_NAME_FORTIFY} -filter fortify_filter.txt"
+                                        // list issues
+                                        sh "FPRUtility -information -listIssues -search -queryAll -outputFormat CSV -project ${env.RELEASE_NAME_FORTIFY}.fpr"
+                                        // create report
+                                        sh "BIRTReportGenerator -template 'Developer Workbook' -source ${env.RELEASE_NAME_FORTIFY}.fpr -format PDF -output fortify_${env.RELEASE_NAME_FORTIFY}.pdf"
+                                        //build breaker for high and critical findings
+                                        script {
+                                            def elevatedFindings = sh script: "FPRUtility -information -listIssues -project ${env.RELEASE_NAME_FORTIFY}.fpr -search -query '[fortify priority order]:critical OR [fortify priority order]:high'", returnStdout: true
+                                            if (elevatedFindings.contains("No issues matched search query.")) {
+                                                echo "No critical or high findings found, good job!"
+                                            } else {
+                                                error "Critical or high findings have been found, pipeline will be aborted. Check your report and either fix the findings or filter false-positives.\n$elevatedFindings"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            post {
+                                always {
+                                    dir(env.APP_PATH) {
+                                        archiveArtifacts artifacts: "${env.RELEASE_NAME_FORTIFY}.fpr, fortify_${env.RELEASE_NAME_FORTIFY}.pdf"
+                                    }
+                                }
+                            }
+                        }
+                        stage('EDGE CASES') {
+                            agent {
+                                kubernetes {
+                                    cloud 'prod-prg'
+                                    inheritFrom 'jenkins-slave-prg'
+                                    customWorkspace "jobs/${env.BUILD_NUMBER}"
+                                    yaml """
+spec:
+  containers:
+    - name: cdlib-cli
+      image: docker.artifactory.dhl.com/${container_config.registry.path}/${container_config.image.name}:${CONTAINER_TAG}
+      tty: true
+      command:
+        - cat
+      resources:
+        requests:
+          cpu: 50m
+          memory: 100Mi
+        limits:
+          cpu: 250m
+          memory: 512Mi
+      imagePullPolicy: Always
+      workingDir: '/var/lib/jenkins' """
+                                }
+                            }
+                            steps {
+                                container('cdlib-cli') {
+                                    script {
+                                        echo "cdlib-cli - Version Printing Test"
+                                        def regexes = [
+                                            '.*"cdlibVersion"\\s*:\\s*".*?".*',
+                                            '.*"cliReleaseVersion"\\s*:\\s*".*?".*',
+                                            '.*"cliContainerTag"\\s*:\\s*".*?".*'
+                                        ]
+
+                                        def commands = [
+                                            [cmd: "cdlib --help"],
+                                            [cmd: "cdlib --XYZ || echo error"]
+                                        ]
+
+                                        for(command in commands)  {
+                                            def output = sh script: command.cmd, returnStdout: true
+
+                                            echo "Command: ${command.cmd}"
+                                            echo "Output: ${output}"
+
+                                            for(regex in regexes) {
+                                                if (!(output =~ regex)) {
+                                                    error("Output of command '${command.cmd}' does not match regex '${regex}'")
+                                                }
+                                            }
+                                        }
+                                    }
+                                    //archive upload docs and test
+                                    //tag::cli-au[]
+                                    withCredentials([string(credentialsId: config.cdlibCli.artifactoryITS.credentialsId, variable: 'ARTIFACTORY_ITS_IDENTITY_TOKEN')]) {
+                                        sh "cdlib archive upload --artifactory-its-instance --artifactory-identity-token $ARTIFACTORY_ITS_IDENTITY_TOKEN --repo-name ${config.cdlibCli.artifactoryITS.repoName} --type build -f '**/*CDlib_logo*.png'"
+                                    }
+                                    //end::cli-au[]
+                                    lock('CDLIB Changemanagement UAT') {
+                                        withCredentials([string(credentialsId: config.cdlibCli.changeManagement.credentialsId, variable: 'JIRA_TOKEN')]) {
+                                            // gitops
+                                            sh "cdlib change create --gitops --no-oslc --no-webapproval --no-tqs --jira-token '$JIRA_TOKEN' --commercial-reference 5296 --debug --test --skip-approval-wait"
+                                            sh "cdlib change close --gitops --jira-token '$JIRA_TOKEN' --commercial-reference 5296 --status ${currentBuild.currentResult} --debug --test"
+                                            //change without release management, resume only last one, close first one
+                                            sh "cdlib change create --no-oslc --no-webapproval --no-tqs --jira-token '$JIRA_TOKEN' --commercial-reference 5296 --debug --test --skip-approval-wait"
+                                            sh "cdlib change create --no-oslc --no-webapproval --no-tqs --jira-token '$JIRA_TOKEN' --commercial-reference 5296 --debug --test --skip-approval-wait"
+                                            // change create --resume test and archive urls file
+                                            sh "cdlib change create --no-oslc --no-webapproval --no-tqs --jira-token '$JIRA_TOKEN' --commercial-reference 5296 --resume true --debug --test --skip-approval-wait --output-urls-file cdlib-urls.json"
+                                            archiveArtifacts artifacts: 'cdlib-urls.json', allowEmptyArchive: false
+                                            sh "cdlib change close --jira-token '$JIRA_TOKEN' --commercial-reference 5296 --status ${currentBuild.currentResult} --debug --test"
+                                            // change in frozen zone
+                                            script {
+                                                if(sh(returnStatus: true, script: "cdlib change create --no-oslc --no-webapproval --no-tqs --jira-token '$JIRA_TOKEN' --commercial-reference 5296 --debug --test --skip-approval-wait --enforce-frozen-zone") != 0) {
+                                                    echo 'Successfully tested frozen zone.'
+                                                } else {
+                                                    error 'Failed to test frozen zone'
+                                                }
+                                            }
+                                            // change customise with time window, skipping approval wait and custom interval
+                                            sh """\
+                                                cdlib change create --no-oslc --no-webapproval --no-tqs --jira-token '$JIRA_TOKEN' \
+                                                --commercial-reference 5296 --debug --test --skip-approval-wait \
+                                                --start \$(date --iso-8601=s) --end \$(date --iso-8601=s -d '+4 hours') \
+                                                --category HOUSEKEEPING --summary custom --description custom \
+                                                --approval-interval-in-minutes 1 \
+                                                --impact-class NONE --impact custom --target custom --fallback custom \
+                                                --implementation-risk custom --omission-risk custom --urgency LOW \
+                                            """.stripIndent()
+                                            sh "cdlib change close --jira-token '$JIRA_TOKEN' --commercial-reference 5296 --status ${currentBuild.currentResult} --debug --test"
+                                            // change create and close with comment
+                                            sh "cdlib change create --comment 'Comment on creation' --no-oslc --no-webapproval --no-tqs --jira-token '$JIRA_TOKEN' --commercial-reference 5296 --debug --test --skip-approval-wait"
+                                            sh "cdlib change close --comment 'Comment on close' --jira-token '$JIRA_TOKEN' --commercial-reference 5296 --status ${currentBuild.currentResult} --debug --test"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        stage('SOCKSHOP-FRONTEND') {
+                            steps {
+                                withCredentials([string(credentialsId: 'github-token', variable: 'GH_ENTERPRISE_TOKEN')]) {
+                                    script {
+                                        //should I use master or the feature branch?
+                                        String showCaseBranch = ""
+                                        container('cdlib-cli') {
+                                            String branchContent = sh(returnStdout: true, script: "gh repo view https://git.dhl.com/SockShop/front-end --branch ${CDLIB_EFFECTIVE_BRANCH_NAME}")
+                                            if (branchContent.contains("Front-end app")) {
+                                                echo "using branch ${CDLIB_EFFECTIVE_BRANCH_NAME} of https://git.dhl.com/SockShop/front-end directly, since there is no PR for it"
+                                                showCaseBranch = "${CDLIB_EFFECTIVE_BRANCH_NAME}"
+                                            } else {
+                                                echo "could not find branch ${CDLIB_EFFECTIVE_BRANCH_NAME} for https://git.dhl.com/SockShop/front-end, using default branch master"
+                                                showCaseBranch = "master"
+                                            }
+                                        }
+                                        container('java') {
+                                            withCredentials([string(credentialsId: 'cloudbees-jenkins-api-token-srv_cdlib', variable: 'TOKEN')]) {
+                                                sh "curl -L --user srv_cdlib:$TOKEN https://jenkins-core-prg.dhl.com/sdm/jnlpJars/jenkins-cli.jar -o jenkins-cli-front-end.jar"
+                                                sh "/opt/java/openjdk/bin/java -jar jenkins-cli-front-end.jar -auth srv_cdlib:$TOKEN -s https://jenkins-core-prg.dhl.com/sdm/ build 'root-folder/sockshop-frontend/${showCaseBranch}' -s -v -p cdlibGroovy=${CDLIB_EFFECTIVE_BRANCH_NAME} -p cdlibTag=${CDLIB_CONTAINER_TAG} -p waitOnDeploy=true"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        stage('PAF-PARROT') {
+                            steps {
+                                withCredentials([
+                                    string(credentialsId: 'azureDevOpsPAT', variable: 'AZURE_DEVOPS_EXT_PAT'),
+                                    string(credentialsId: 'github-token', variable: 'GH_ENTERPRISE_TOKEN')
+                                ]) {
+                                    script {
+                                        //should I use master or the feature branch?
+                                        String showCaseBranch = ""
+                                        container('helm') {
+                                            String branchList = sh(returnStdout: true, script: "az repos ref list --org 'https://dev.azure.com/sw-zustellung-31b3183' --project ICTO-3339_SDM --repository phippyandfriends")
+                                            if (branchList.contains("${CDLIB_EFFECTIVE_BRANCH_NAME}")) {
+                                                echo "using branch ${CDLIB_EFFECTIVE_BRANCH_NAME} of https://git.dhl.com/CDLib/phippyandfriends"
+                                                showCaseBranch = "${CDLIB_EFFECTIVE_BRANCH_NAME}"
+                                            } else {
+                                                echo "could not find branch ${CDLIB_EFFECTIVE_BRANCH_NAME} for https://dev.azure.com/sw-zustellung-31b3183/ICTO-3339_SDM/phippyandfriends, using default branch master"
+                                                showCaseBranch = "master"
+                                            }
+                                            //trigger build and fetch buildid
+                                            String buildid = sh(returnStdout: true, script: "az pipelines run --branch ${showCaseBranch} --id 701 --org https://dev.azure.com/sw-zustellung-31b3183/ --project ICTO-3339_SDM --parameters 'cdlibCLIVersion=${env.CDLIB_CONTAINER_TAG}' 'performAllSteps=true' --query id").trim()
+                                            //tag build as integration test
+                                            sh "az pipelines build tag add --org https://dev.azure.com/sw-zustellung-31b3183/ --project ICTO-3339_SDM --build-id ${buildid} --tags integration-test"
+                                            String status = ""
+                                            timeout(unit: 'MINUTES', time: 30) {
+                                                while (!status.contains("completed")) {
+                                                    //get status for buildid and wait 30s if not completed until timeout is reached
+                                                    status = sh(returnStdout: true, script: "az pipelines runs show --org https://dev.azure.com/sw-zustellung-31b3183/ --project ICTO-3339_SDM --query status --id ${buildid}").trim()
+                                                    echo "Build ${buildid} is in state ${status}, check it here: https://dev.azure.com/sw-zustellung-31b3183/ICTO-3339_SDM/_build/results?buildId=${buildid}&view=results"
+                                                    echo "Waiting for 30 seconds to query status again"
+                                                    sleep(30)
+                                                }
+                                            }
+                                            if (status.contains("completed")) {
+                                                result = sh(returnStdout: true, script: "az pipelines runs show --org https://dev.azure.com/sw-zustellung-31b3183/ --project ICTO-3339_SDM --query result --id ${buildid}").trim()
+                                                if (!result.contains("succeeded")) {
+                                                    //if the triggered build didn't succeed, fail the integration test
+                                                    error "PAF-parrot failed"
+                                                }
+                                            } else {
+                                                //if the triggered build didn't complete in time, fail the integration test
+                                                error "PAF-parrot timed out"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        stage('PAF-NODEBRADY') {
+                            steps {
+                                withCredentials([
+                                    string(credentialsId: 'azureDevOpsPAT', variable: 'AZURE_DEVOPS_EXT_PAT'),
+                                    string(credentialsId: 'github-token', variable: 'GH_ENTERPRISE_TOKEN')
+                                ]) {
+                                    script {
+                                        //should I use master or the feature branch?
+                                        String showCaseBranch = ""
+                                        container('helm') {
+                                            String branchList = sh(returnStdout: true, script: "az repos ref list --org 'https://dev.azure.com/sw-zustellung-31b3183' --project ICTO-3339_SDM --repository phippyandfriends")
+                                            if (branchList.contains("${CDLIB_EFFECTIVE_BRANCH_NAME}")) {
+                                                echo "using branch ${CDLIB_EFFECTIVE_BRANCH_NAME} of https://git.dhl.com/CDLib/phippyandfriends"
+                                                showCaseBranch = "${CDLIB_EFFECTIVE_BRANCH_NAME}"
+                                            } else {
+                                                echo "could not find branch ${CDLIB_EFFECTIVE_BRANCH_NAME} for https://dev.azure.com/sw-zustellung-31b3183/ICTO-3339_SDM/phippyandfriends, using default branch master"
+                                                showCaseBranch = "master"
+                                            }
+                                            //trigger build and fetch buildid
+                                            String buildid = sh(returnStdout: true, script: "az pipelines run --branch ${showCaseBranch} --id 700 --org https://dev.azure.com/sw-zustellung-31b3183/ --project ICTO-3339_SDM --parameters 'cdlibCLIVersion=${env.CDLIB_CONTAINER_TAG}' 'performAllSteps=true' --query id").trim()
+                                            //tag build as integration test
+                                            sh "az pipelines build tag add --org https://dev.azure.com/sw-zustellung-31b3183/ --project ICTO-3339_SDM --build-id ${buildid} --tags integration-test"
+                                            String status = ""
+                                            timeout(unit: 'MINUTES', time: 30) {
+                                                while (!status.contains("completed")) {
+                                                    //get status for buildid and wait 30s if not completed until timeout is reached
+                                                    status = sh(returnStdout: true, script: "az pipelines runs show --org https://dev.azure.com/sw-zustellung-31b3183/ --project ICTO-3339_SDM --query status --id ${buildid}").trim()
+                                                    echo "Build ${buildid} is in state ${status}, check it here: https://dev.azure.com/sw-zustellung-31b3183/ICTO-3339_SDM/_build/results?buildId=${buildid}&view=results"
+                                                    echo "Waiting for 30 seconds to query status again"
+                                                    sleep(30)
+                                                }
+                                            }
+                                            if (status.contains("completed")) {
+                                                result = sh(returnStdout: true, script: "az pipelines runs show --org https://dev.azure.com/sw-zustellung-31b3183/ --project ICTO-3339_SDM --query result --id ${buildid}").trim()
+                                                if (!result.contains("succeeded")) {
+                                                    //if the triggered build didn't succeed, fail the integration test
+                                                    error "PAF-nodebrady failed"
+                                                }
+                                            } else {
+                                                //if the triggered build didn't complete in time, fail the integration test
+                                                error "PAF-nodebrady timed out"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                stage('APPROVAL') {
+                    when {
+                        branch 'master'
+                        expression { params.cdlibVersion != '0.0.0-SNAPSHOT' }
+                    }
+                    options {
+                        timeout(time: 120)
+                    }
+                    steps {
+                        input(message: 'RAUS DAMIT', ok: 'JAWOHL', submitter: config.chm.approval.user)
+                    }
+                }
+                stage('PROD') {
+                    when {
+                        branch 'master'
+                        expression { params.cdlibVersion != '0.0.0-SNAPSHOT' }
+                    }
+                    environment {
+                        NO_PROXY = ".dhl.com,.deutschepost.de,storage92883127161539717.blob.core.windows.net,storage49600688799754973.blob.core.windows.net"
+                    }
+                    steps {
+                        script {
+                            String currentImage = "${container_config.registry.url}/${container_config.registry.path}/${container_config.image.name}:${CONTAINER_TAG}"
+                            //IT-S Artifactory
+                            withCredentials([usernamePassword(credentialsId: container_config.registry.credentialsId, usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                                String latestImage = "${container_config.registry.url}/${container_config.registry.path}/${container_config.image.name}:6.latest"
+                                sh """
+                                    podman login -u $USERNAME -p $PASSWORD ${container_config.registry.url}
+                                    podman pull $currentImage
+                                    podman tag $currentImage $latestImage
+                                    podman push $latestImage
+                                """
+                            }
+                            //CSS QHCR
+                            withCredentials([usernamePassword(credentialsId: container_config.registryCSS.credentialsId, usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                                String latestImage = "${container_config.registryCSS.url}/${container_config.registryCSS.path}/${container_config.image.name}:6.latest"
+                                retry(3) {
+                                    sh """
+                                        podman tag $currentImage $latestImage
+                                        podman login -u $USERNAME -p $PASSWORD ${container_config.registryCSS.url}
+                                        podman push $latestImage
+                                    """
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            post {
+                success {
+                    monitorJira('Close Issue', 'SDM-138')
+                }
+                unstable {
+                    monitorJira('Close Issue', 'SDM-138')
+                }
+                failure {
+                    monitorJira('Reopen Issue', 'SDM-138')
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
+    <suppress>
+        <notes><![CDATA[
+   FP because they refrer to the server or Jenkins plugin and not the Java client
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.jfrog\.artifactory\.client/artifactory\-java\-client\-.*@.*$
+        </packageUrl>
+        <cve>CVE-2016-10036</cve>
+        <cve>CVE-2016-6501</cve>
+        <cve>CVE-2018-1000424</cve>
+        <cve>CVE-2019-10321</cve>
+        <cve>CVE-2019-10322</cve>
+        <cve>CVE-2019-10323</cve>
+        <cve>CVE-2019-10324</cve>
+        <cve>CVE-2019-17444</cve>
+        <cve>CVE-2019-19937</cve>
+        <cve>CVE-2020-2164</cve>
+        <cve>CVE-2020-2165</cve>
+        <cve>CVE-2020-7931</cve>
+        <cve>CVE-2021-3860</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+        This is a FP from a python dependency. We do not use python.
+   file name: jakarta.annotation-api-2.0.0.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/jakarta\.annotation/jakarta\.annotation\-api@.*$</packageUrl>
+        <cve>CVE-2022-31569</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+    file name: cli-0.2.tar: snakeyaml-1.33.jar
+    ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.yaml/snakeyaml@.*$</packageUrl>
+        <cve>CVE-2022-3064</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   Only hutool and json-java is affected. These packages here are FPs
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/com\.fasterxml\.jackson\.core/jackson\-core@.*$</packageUrl>
+        <cve>CVE-2022-45688</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   Only hutool and json-java is affected. These packages here are FPs
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/net\.minidev/json\-smart@.*$</packageUrl>
+        <cve>CVE-2022-45688</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   Only hutool and json-java is affected. These packages here are FPs
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/net\.minidev/accessors\-smart@.*$</packageUrl>
+        <cve>CVE-2022-45688</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: cli-0.2.tar: accessors-smart-2.4.9.jar
+   This library is only used by Azure Identity.
+   Parsing a json array with to many opening brackets can crash the software.
+   This not an attack vector for us, because Microsoft API is the only one who could attack the cli during OSLC Sharepoint interactions.
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/net\.minidev/accessors\-smart@.*$</packageUrl>
+        <cpe>cpe:/a:json-smart_project:json-smart</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: cli-0.2.tar: woodstox-core-6.5.0.jar (shaded: com.sun.xml.bind.jaxb:isorelax:20090621)
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/com\.sun\.xml\.bind\.jaxb/isorelax@.*$</packageUrl>
+        <cve>CVE-2023-34411</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: cli-0.2.tar: jackson-databind-2.14.2.jar
+   Possible DOS for untrusted sources. We have no untrusted sources.
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/com\.fasterxml\.jackson\.core/jackson\-databind@.*$</packageUrl>
+        <cpe>cpe:/a:fasterxml:jackson-databind</cpe>
+    </suppress>
+
+    <suppress>
+        <notes><![CDATA[
+   file name: cli-0.2.tar: azure-core-1.41.0.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/com\.azure/azure\-core@.*$</packageUrl>
+        <cve>CVE-2023-36052</cve>
+    </suppress>
+
+    <suppress>
+        <notes><![CDATA[
+   file name: cli-0.2.tar: azure-core-http-netty-1.13.5.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/com\.azure/azure\-core\-http\-netty@.*$</packageUrl>
+        <cve>CVE-2023-36052</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: cli-0.2.tar: azure-identity-1.9.2.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/com\.azure/azure\-identity@.*$</packageUrl>
+        <cve>CVE-2023-36052</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: cli-0.2.tar: azure-json-1.0.1.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/com\.azure/azure\-json@.*$</packageUrl>
+        <cve>CVE-2023-36052</cve>
+    </suppress>
+
+    <suppress>
+        <notes><![CDATA[
+   file name: cli-0.2.tar: azure-identity-1.9.2.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/com\.azure/azure\-identity@.*$</packageUrl>
+        <cve>CVE-2023-36415</cve>
+    </suppress>
+
+    <suppress>
+        <notes><![CDATA[
+   file name: cli-0.2.tar: azure-identity-1.9.2.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/com\.azure/azure\-identity@.*$</packageUrl>
+        <cve>CVE-2023-36414</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   This is a CVE in the azure cli. We don't have azure cli.
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/com\.azure/azure-xml@.*$</packageUrl>
+        <cve>CVE-2023-36052</cve>
+        <cve>CVE-2024-43591</cve>
+    </suppress>
+</suppressions>

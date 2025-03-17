@@ -1,0 +1,1 @@
+¯ 2kotlinXAhrCsrc/test/kotlin/de/deutschepost/sdm/cdlib/names/NamesCommandTest.kt

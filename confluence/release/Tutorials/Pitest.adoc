@@ -1,0 +1,49 @@
+= PIT
+:url-project: https://pitest.org
+:url-docs: https://https://pitest.org/quickstart/
+:url-faq: https://pitest.org/faq/
+:url-maven: https://pitest.org/quickstart/maven/
+:url-gradle: http://gradle-pitest-plugin.solidsoft.info/
+:url-junit5: https://github.com/pitest/pitest-junit5-plugin
+:url-kotlin: https://docs.arcmutate.com/docs/kotlin.html
+:url-kotest-extension: https://kotest.io/docs/extensions/pitest.html
+:url-stryker: https://stryker-mutator.io/
+
+{url-project}[Pitest] is a state of the art mutation testing system, providing gold standard test coverage for Java and the jvm. It's fast, scalable and integrates with modern test and build tooling.
+
+In this procedure, artificial mutations (changes) are deliberately made to the system's source code in order to test how well the system's test cases respond to these mutations. The goal is to identify potential vulnerabilities in the test cases and ensure that they are sufficiently robust.
+
+== Preconditions
+
+Pitest primarily works on Java. As of now, either JUnit 4 or JUnit 5 is supported, but not both mixed.
+
+Plugins for easy integration exist for {url-maven}[Maven] and {url-gradle}[Gradle].
+
+Kotlin seems to be supported using an {url-kotest-extension}[extension module for Kotest], or using a {url-kotlin}[commercially available plugin]. This has not been tested in P&P showcases though, contributions are very welcome.
+
+== Usage
+
+Pitest can be run using one of the build plugins above. Remember to include compilation of unit tests before starting Pitest:
+
+> **HINT:** In case of JUnit5 include the {url-junit5}[pitest-junit5-plugin]
+
+Add this to the build / plugins section of your pom.xml (specifying your package path prefix in the plugin configuration):
+
+[source,xml]
+----
+include::../../../carts/pom.xml[tags=pi-test, indent=0]
+----
+
+In your Jenkinsfile:
+
+[source,groovy]
+----
+include::../../../carts/JenkinsfileBuild[tags=pitest, indent=0]
+----
+
+If execution was successful, you can download / view the reports from your pipeline (cf. {url-jenkins-reports}[example reports from SockShop carts]).
+In case of issues, also consult the {url-faq}[Pitest FAQ].
+
+== Further reads
+
+In order to apply mutation testing to other technologies and programming languages, different tools have to be evaluated. E.g. see {url-stryker}[Stryker Mutator] for JavaScript, C# and Scala support. Again, any real-life feedback, examples or showcase PR contribution for additional tech stacks is welcome!

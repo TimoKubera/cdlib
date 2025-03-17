@@ -1,0 +1,7 @@
+= Continuous Delivery
+:toc:
+:keywords: latest
+
+If you want to know where to start with your Continuous Delivery journey, Andy Schulz created a nice checklist for you:
+
+image:img/FromAgileDevelopmentToContinuousDeployment.png[overview]

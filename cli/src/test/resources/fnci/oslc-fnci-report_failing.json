@@ -1,0 +1,2395 @@
+{
+    "fnciProjectInfo": {
+        "id": 184,
+        "name": "19C2_ICTO-3339_SDM_SockShop",
+        "policyProfileName": "Non-Distribution insecure"
+    },
+    "fnciProjectInventory": [
+        {
+            "name": "accepts 1.3.8 (MIT)",
+            "inventoryReviewStatus": "Draft",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/accepts/package.json"
+            ]
+        },
+        {
+            "name": "accessors-smart 2.4.8 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/accessors-smart-2.4.8.jar",
+                "fnciScan_184/libraries/accessors-smart-2.4.8.jar"
+            ]
+        },
+        {
+            "name": "ajv (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/ajv/dist/ajv.min.js"
+            ]
+        },
+        {
+            "name": "ajv 6.12.6 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/ajv/package.json"
+            ]
+        },
+        {
+            "name": "amqp-client 5.13.1 (GPL-2.0 or Mozilla Public License or GPL-3.0 or Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/amqp-client-5.13.1.jar"
+            ]
+        },
+        {
+            "name": "array-flatten 1.1.1 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/array-flatten/package.json"
+            ]
+        },
+        {
+            "name": "asm 9.1 (BSD-3-Clause)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "BSD-3-Clause",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/asm-9.1.jar",
+                "fnciScan_184/libraries/asm-9.1.jar"
+            ]
+        },
+        {
+            "name": "asn1 0.2.3 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/asn1/package.json"
+            ]
+        },
+        {
+            "name": "assert-plus 1.0.0 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/assert-plus/package.json"
+            ]
+        },
+        {
+            "name": "async 1.5.2 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/async/package.json"
+            ]
+        },
+        {
+            "name": "asynckit 0.4.0 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/asynckit/package.json"
+            ]
+        },
+        {
+            "name": "aws4 1.12.0 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/aws4/package.json"
+            ]
+        },
+        {
+            "name": "base64-url 1.3.3 (ISC)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "ISC License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/base64-url/package.json"
+            ]
+        },
+        {
+            "name": "basic-auth 1.0.4 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/basic-auth/package.json"
+            ]
+        },
+        {
+            "name": "bcprov-jdk15on 1.55.0 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": []
+        },
+        {
+            "name": "bcrypt-pbkdf 1.0.0 (BSD-4-Clause)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "BSD 4-Clause \"Original\" or \"Old\" License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/bcrypt-pbkdf/package.json"
+            ]
+        },
+        {
+            "name": "bestiejs-punycode.js 1.4.1 (MIT or MIT License or GPL-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/psl/dist/psl.js"
+            ]
+        },
+        {
+            "name": "bestiejs-punycode.js 2.1.0 (MIT or GPL-2.0-only)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/ajv/dist/ajv.bundle.js",
+                "fnciScan_184/node_modules/punycode/punycode.es6.js",
+                "fnciScan_184/node_modules/punycode/punycode.js",
+                "fnciScan_184/node_modules/uri-js/dist/es5/uri.all.js",
+                "fnciScan_184/node_modules/uri-js/dist/es5/uri.all.js.map",
+                "fnciScan_184/node_modules/uri-js/dist/es5/uri.all.min.js.map"
+            ]
+        },
+        {
+            "name": "bintree (MIT License)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT-Style License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/bintrees/dist/bintree.min.js"
+            ]
+        },
+        {
+            "name": "bintrees 1.0.1 (MIT License)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT-Style License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/bintrees/package.json"
+            ]
+        },
+        {
+            "name": "bintrees 1.0.1 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/bintrees/package.json"
+            ]
+        },
+        {
+            "name": "body-parser 1.20.1 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/express/node_modules/body-parser/package.json"
+            ]
+        },
+        {
+            "name": "body-parser 1.20.1 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/body-parser/package.json"
+            ]
+        },
+        {
+            "name": "bootstrap (Apache-2.0 or MIT License)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/src/public/css/bootstrap-theme.css",
+                "fnciScan_184/src/public/css/bootstrap-theme.css.map",
+                "fnciScan_184/src/public/css/bootstrap-theme.min.css",
+                "fnciScan_184/src/public/css/bootstrap-theme.min.css.map",
+                "fnciScan_184/src/public/css/bootstrap.css",
+                "fnciScan_184/src/public/css/bootstrap.css.map",
+                "fnciScan_184/src/public/css/bootstrap.min.css",
+                "fnciScan_184/src/public/css/bootstrap.min.css.map",
+                "fnciScan_184/src/public/js/bootstrap.min.js"
+            ]
+        },
+        {
+            "name": "bson 4.4.2 (Artistic-1.0-Perl or Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/libraries/bson-4.4.2.jar"
+            ]
+        },
+        {
+            "name": "bytes 3.1.2 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/bytes/package.json"
+            ]
+        },
+        {
+            "name": "call-bind 1.0.2 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/call-bind/package.json"
+            ]
+        },
+        {
+            "name": "carts 2.6.7 ",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "N/A",
+            "type": "Work in Progress",
+            "filePaths": [
+                "fnciScan_184/pom.xml"
+            ]
+        },
+        {
+            "name": "classmate 1.5.1 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/libraries/classmate-1.5.1.jar"
+            ]
+        },
+        {
+            "name": "combined-stream 1.0.8 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/combined-stream/package.json",
+                "fnciScan_184/node_modules/combined-stream/yarn.lock"
+            ]
+        },
+        {
+            "name": "connect-redis 3.4.2 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/connect-redis/package.json"
+            ]
+        },
+        {
+            "name": "content-disposition 0.5.4 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/content-disposition/package.json"
+            ]
+        },
+        {
+            "name": "content-type 1.0.5 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/content-type/package.json"
+            ]
+        },
+        {
+            "name": "cookie 0.3.1 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/cookie/package.json"
+            ]
+        },
+        {
+            "name": "cookie 0.5.0 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/express/node_modules/cookie/package.json"
+            ]
+        },
+        {
+            "name": "cookie-parser 1.4.3 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/cookie-parser/package.json"
+            ]
+        },
+        {
+            "name": "cookie-signature 1.0.6 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/cookie-signature/package.json"
+            ]
+        },
+        {
+            "name": "crc 3.4.1 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/crc/package.json"
+            ]
+        },
+        {
+            "name": "dashdash 1.14.1 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/dashdash/package.json"
+            ]
+        },
+        {
+            "name": "debug 2.6.9 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/body-parser/node_modules/debug/package.json",
+                "fnciScan_184/node_modules/express/node_modules/debug/package.json",
+                "fnciScan_184/node_modules/send/node_modules/debug/package.json"
+            ]
+        },
+        {
+            "name": "debug 4.1.1 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/connect-redis/node_modules/debug/package.json"
+            ]
+        },
+        {
+            "name": "delayed-stream 1.0.0 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/delayed-stream/package.json"
+            ]
+        },
+        {
+            "name": "depd 1.1.0 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/express-session/node_modules/depd/package.json",
+                "fnciScan_184/node_modules/morgan/node_modules/depd/package.json",
+                "fnciScan_184/node_modules/serve-static/node_modules/depd/package.json"
+            ]
+        },
+        {
+            "name": "depd 2.0.0 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/depd/package.json"
+            ]
+        },
+        {
+            "name": "destroy 1.0.4 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/serve-static/node_modules/destroy/package.json"
+            ]
+        },
+        {
+            "name": "destroy 1.2.0 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/destroy/package.json"
+            ]
+        },
+        {
+            "name": "double-ended-queue 2.1.0-0 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/double-ended-queue/package.json"
+            ]
+        },
+        {
+            "name": "ecc-jsbn 0.1.1 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/ecc-jsbn/package.json"
+            ]
+        },
+        {
+            "name": "ee-first 1.1.1 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/ee-first/package.json"
+            ]
+        },
+        {
+            "name": "encodeurl 1.0.1 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/serve-static/node_modules/encodeurl/package.json"
+            ]
+        },
+        {
+            "name": "encodeurl 1.0.2 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/encodeurl/package.json"
+            ]
+        },
+        {
+            "name": "es-shims-es5-shim (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/src/public/js/modernizr.js"
+            ]
+        },
+        {
+            "name": "escape-html 1.0.3 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/escape-html/package.json"
+            ]
+        },
+        {
+            "name": "etag 1.7.0 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/serve-static/node_modules/etag/package.json"
+            ]
+        },
+        {
+            "name": "etag 1.8.1 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/etag/package.json"
+            ]
+        },
+        {
+            "name": "evo-inflector 1.3 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/evo-inflector-1.3.jar",
+                "fnciScan_184/libraries/evo-inflector-1.3.jar"
+            ]
+        },
+        {
+            "name": "express 4.18.2 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/express/package.json"
+            ]
+        },
+        {
+            "name": "express-session 1.14.2 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/express-session/package.json"
+            ]
+        },
+        {
+            "name": "extend 3.0.2 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/extend/package.json"
+            ]
+        },
+        {
+            "name": "extsprintf 1.0.2 (MIT License)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT-Style License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/extsprintf/package.json"
+            ]
+        },
+        {
+            "name": "extsprintf 1.0.2 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/extsprintf/package.json"
+            ]
+        },
+        {
+            "name": "fast-deep-equal 3.1.3 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/fast-deep-equal/package.json"
+            ]
+        },
+        {
+            "name": "fast-json-stable-stringify 2.1.0 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/fast-json-stable-stringify/package.json"
+            ]
+        },
+        {
+            "name": "finalhandler 0.4.1 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/finalhandler/package.json"
+            ]
+        },
+        {
+            "name": "finalhandler 1.2.0 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/express/node_modules/finalhandler/package.json"
+            ]
+        },
+        {
+            "name": "forever-agent 0.6.1 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/forever-agent/package.json"
+            ]
+        },
+        {
+            "name": "form-data 2.3.3 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/form-data/package.json",
+                "fnciScan_184/node_modules/form-data/yarn.lock"
+            ]
+        },
+        {
+            "name": "forwarded 0.2.0 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/forwarded/package.json"
+            ]
+        },
+        {
+            "name": "fresh 0.3.0 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/serve-static/node_modules/fresh/package.json"
+            ]
+        },
+        {
+            "name": "fresh 0.5.2 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/fresh/package.json"
+            ]
+        },
+        {
+            "name": "function-bind 1.1.1 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/function-bind/package.json"
+            ]
+        },
+        {
+            "name": "get-intrinsic 1.2.0 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/get-intrinsic/package.json"
+            ]
+        },
+        {
+            "name": "getpass 0.1.6 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/getpass/package.json"
+            ]
+        },
+        {
+            "name": "har-schema 2.0.0 (ISC)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "ISC License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/har-schema/package.json"
+            ]
+        },
+        {
+            "name": "har-validator 5.1.5 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/har-validator/package.json"
+            ]
+        },
+        {
+            "name": "has 1.0.3 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/has/package.json"
+            ]
+        },
+        {
+            "name": "has-symbols 1.0.3 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/get-intrinsic/node_modules/has-symbols/package.json"
+            ]
+        },
+        {
+            "name": "hdrhistogram 2.1.12 (BSD-2-Clause)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "BSD 2-Clause \"Simplified\" License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/HdrHistogram-2.1.12.jar"
+            ]
+        },
+        {
+            "name": "hibernate-validator 6.2.3.Final (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/libraries/hibernate-validator-6.2.3.Final.jar"
+            ]
+        },
+        {
+            "name": "http-errors 1.5.1 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/serve-static/node_modules/http-errors/package.json"
+            ]
+        },
+        {
+            "name": "http-errors 2.0.0 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/http-errors/package.json"
+            ]
+        },
+        {
+            "name": "http-signature 1.2.0 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/http-signature/package.json"
+            ]
+        },
+        {
+            "name": "iconv-lite 0.4.24 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/iconv-lite/package.json"
+            ]
+        },
+        {
+            "name": "inherits 2.0.3 (ISC)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "ISC License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/inherits/package.json"
+            ]
+        },
+        {
+            "name": "inherits 2.0.4 (ISC)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "ISC License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/http-errors/node_modules/inherits/package.json"
+            ]
+        },
+        {
+            "name": "ipaddr.js 1.9.1 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/ipaddr.js/package.json"
+            ]
+        },
+        {
+            "name": "is-typedarray 1.0.0 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/is-typedarray/package.json"
+            ]
+        },
+        {
+            "name": "isstream 0.1.2 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/isstream/package.json"
+            ]
+        },
+        {
+            "name": "jackson-annotations 2.13.2 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/jackson-annotations-2.13.2.jar",
+                "fnciScan_184/libraries/jackson-annotations-2.13.2.jar"
+            ]
+        },
+        {
+            "name": "jackson-core 2.13.2 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/jackson-core-2.13.2.jar",
+                "fnciScan_184/libraries/jackson-core-2.13.2.jar"
+            ]
+        },
+        {
+            "name": "jackson-databind 2.13.2.1 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/jackson-databind-2.13.2.1.jar",
+                "fnciScan_184/libraries/jackson-databind-2.13.2.1.jar"
+            ]
+        },
+        {
+            "name": "jackson-datatype-jdk8 2.13.2 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/jackson-datatype-jdk8-2.13.2.jar",
+                "fnciScan_184/libraries/jackson-datatype-jdk8-2.13.2.jar"
+            ]
+        },
+        {
+            "name": "jackson-datatype-jsr310 2.13.2 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/jackson-datatype-jsr310-2.13.2.jar",
+                "fnciScan_184/libraries/jackson-datatype-jsr310-2.13.2.jar"
+            ]
+        },
+        {
+            "name": "jackson-module-parameter-names 2.13.2 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/jackson-module-parameter-names-2.13.2.jar",
+                "fnciScan_184/libraries/jackson-module-parameter-names-2.13.2.jar"
+            ]
+        },
+        {
+            "name": "jakarta.annotation-api 1.3.5 (EPL-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Eclipse Public License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/jakarta.annotation-api-1.3.5.jar",
+                "fnciScan_184/libraries/jakarta.annotation-api-1.3.5.jar"
+            ]
+        },
+        {
+            "name": "jakarta.validation-api 2.0.2 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/libraries/jakarta.validation-api-2.0.2.jar"
+            ]
+        },
+        {
+            "name": "jashkenas-underscore 1.4.4  [Bundled with spring-data-rest-hal-browser 3.3.9.RELEASE ] (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/spring-data-rest-hal-browser-3.3.9.RELEASE.jar",
+                "fnciScan_184/libraries/spring-data-rest-hal-browser-3.3.9.RELEASE.jar"
+            ]
+        },
+        {
+            "name": "jboss-logging 3.4.3.Final (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/libraries/jboss-logging-3.4.3.Final.jar"
+            ]
+        },
+        {
+            "name": "jodid25519 1.0.2 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/jodid25519/package.json"
+            ]
+        },
+        {
+            "name": "joyent-node-assert-plus (MIT or MIT License)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/assert-plus/assert.js"
+            ]
+        },
+        {
+            "name": "joyent-node-assert-plus (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/assert-plus/assert.js"
+            ]
+        },
+        {
+            "name": "jquery 1.10.2  [Bundled with spring-data-rest-hal-browser 3.3.9.RELEASE ] (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/spring-data-rest-hal-browser-3.3.9.RELEASE.jar",
+                "fnciScan_184/libraries/spring-data-rest-hal-browser-3.3.9.RELEASE.jar"
+            ]
+        },
+        {
+            "name": "jQuery 1.11.0 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/src/public/js/jquery-1.11.0.min.js"
+            ]
+        },
+        {
+            "name": "jquery.cookie (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/src/public/js/jquery.cookie.js"
+            ]
+        },
+        {
+            "name": "jquery.cookie (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT-Style License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/src/public/js/jquery.cookie.js"
+            ]
+        },
+        {
+            "name": "jsbn 0.1.0 (BSD or MIT License)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/jsbn/package.json"
+            ]
+        },
+        {
+            "name": "jsbn 0.1.0 (BSD)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "BSD-Style License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/jsbn/package.json"
+            ]
+        },
+        {
+            "name": "json-path 2.6.0 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/json-path-2.6.0.jar",
+                "fnciScan_184/libraries/json-path-2.6.0.jar"
+            ]
+        },
+        {
+            "name": "json-schema 0.2.3 (BSD or AFL-2.1)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/json-schema/package.json"
+            ]
+        },
+        {
+            "name": "json-schema-traverse 0.4.1 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/json-schema-traverse/package.json"
+            ]
+        },
+        {
+            "name": "json-smart 2.4.8 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/json-smart-2.4.8.jar",
+                "fnciScan_184/libraries/json-smart-2.4.8.jar"
+            ]
+        },
+        {
+            "name": "json-stringify-safe 5.0.1 (ISC)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "ISC License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/json-stringify-safe/package.json"
+            ]
+        },
+        {
+            "name": "jsoneditor 0.7.21  [Bundled with spring-data-rest-hal-browser 3.3.9.RELEASE ] (GPL-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "GNU General Public License v2.0 only",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/spring-data-rest-hal-browser-3.3.9.RELEASE.jar",
+                "fnciScan_184/libraries/spring-data-rest-hal-browser-3.3.9.RELEASE.jar"
+            ]
+        },
+        {
+            "name": "jsprim 1.3.1 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/jsprim/package.json"
+            ]
+        },
+        {
+            "name": "jul-to-slf4j 1.7.36 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/jul-to-slf4j-1.7.36.jar",
+                "fnciScan_184/libraries/jul-to-slf4j-1.7.36.jar"
+            ]
+        },
+        {
+            "name": "latencyutils 2.0.3 (Creative Commons CC0 1.0 Universal Public Domain Dedication )",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Creative Commons CC0 1.0 Universal Public Domain Dedication ",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/LatencyUtils-2.0.3.jar"
+            ]
+        },
+        {
+            "name": "ljharb-qs 6.5.3 (BSD-3-Clause)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "BSD-3-Clause",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/request/node_modules/qs/bower.json"
+            ]
+        },
+        {
+            "name": "log4j-api 2.17.2 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/log4j-api-2.17.2.jar",
+                "fnciScan_184/libraries/log4j-api-2.17.2.jar"
+            ]
+        },
+        {
+            "name": "log4j-to-slf4j 2.17.2 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/log4j-to-slf4j-2.17.2.jar",
+                "fnciScan_184/libraries/log4j-to-slf4j-2.17.2.jar"
+            ]
+        },
+        {
+            "name": "logback-classic 1.2.11 (EPL-1.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Eclipse Public License 1.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/logback-classic-1.2.11.jar",
+                "fnciScan_184/libraries/logback-classic-1.2.11.jar"
+            ]
+        },
+        {
+            "name": "logback-core 1.2.11 (EPL-1.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Eclipse Public License 1.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/logback-core-1.2.11.jar",
+                "fnciScan_184/libraries/logback-core-1.2.11.jar"
+            ]
+        },
+        {
+            "name": "media-typer 0.3.0 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/media-typer/package.json"
+            ]
+        },
+        {
+            "name": "merge-descriptors 1.0.1 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/merge-descriptors/package.json"
+            ]
+        },
+        {
+            "name": "methods 1.1.2 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/methods/package.json"
+            ]
+        },
+        {
+            "name": "micrometer-core 1.8.5 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/micrometer-core-1.8.5.jar"
+            ]
+        },
+        {
+            "name": "mime 1.3.4 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/serve-static/node_modules/mime/package.json"
+            ]
+        },
+        {
+            "name": "mime 1.6.0 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/mime/package.json"
+            ]
+        },
+        {
+            "name": "mime-db 1.25.0 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/form-data/node_modules/mime-db/package.json"
+            ]
+        },
+        {
+            "name": "mime-db 1.52.0 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/mime-db/package.json"
+            ]
+        },
+        {
+            "name": "mime-types 2.1.13 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/mime-types/package.json"
+            ]
+        },
+        {
+            "name": "mime-types 2.1.13 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/form-data/node_modules/mime-types/package.json"
+            ]
+        },
+        {
+            "name": "modernizr-modernizr 2.8.2 (MIT License)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT-Style License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/src/public/js/modernizr.js"
+            ]
+        },
+        {
+            "name": "modernizr-modernizr 2.8.2 (MIT or MIT-Style)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/src/public/js/modernizr.js"
+            ]
+        },
+        {
+            "name": "mongodb-driver-core 4.4.2 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/libraries/mongodb-driver-core-4.4.2.jar"
+            ]
+        },
+        {
+            "name": "mongodb-driver-legacy 3.12.10 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/libraries/mongodb-driver-legacy-3.12.10.jar"
+            ]
+        },
+        {
+            "name": "mongodb-driver-sync 4.4.2 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/libraries/mongodb-driver-sync-4.4.2.jar"
+            ]
+        },
+        {
+            "name": "morgan 1.7.0 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/morgan/package.json"
+            ]
+        },
+        {
+            "name": "ms 0.7.1 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/debug/node_modules/ms/package.json",
+                "fnciScan_184/node_modules/serve-static/node_modules/ms/package.json"
+            ]
+        },
+        {
+            "name": "ms 2.0.0 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/body-parser/node_modules/ms/package.json",
+                "fnciScan_184/node_modules/express/node_modules/ms/package.json",
+                "fnciScan_184/node_modules/send/node_modules/debug/node_modules/ms/package.json"
+            ]
+        },
+        {
+            "name": "ms 2.1.2 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/ms/package.json"
+            ]
+        },
+        {
+            "name": "ms 2.1.3 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/send/node_modules/ms/package.json"
+            ]
+        },
+        {
+            "name": "negotiator 0.6.3 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/negotiator/package.json"
+            ]
+        },
+        {
+            "name": "object-inspect 1.12.3 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/object-inspect/package.json"
+            ]
+        },
+        {
+            "name": "on-finished 2.3.0 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/finalhandler/node_modules/on-finished/package.json",
+                "fnciScan_184/node_modules/morgan/node_modules/on-finished/package.json",
+                "fnciScan_184/node_modules/serve-static/node_modules/on-finished/package.json"
+            ]
+        },
+        {
+            "name": "on-finished 2.3.0 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/on-finished/package.json"
+            ]
+        },
+        {
+            "name": "on-headers 1.0.1 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/on-headers/package.json"
+            ]
+        },
+        {
+            "name": "parseurl 1.3.1 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/express-session/node_modules/parseurl/package.json",
+                "fnciScan_184/node_modules/serve-static/node_modules/parseurl/package.json"
+            ]
+        },
+        {
+            "name": "parseurl 1.3.3 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/parseurl/package.json"
+            ]
+        },
+        {
+            "name": "path-to-regexp 0.1.7 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/path-to-regexp/package.json"
+            ]
+        },
+        {
+            "name": "performance-now 2.1.0 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/performance-now/package.json"
+            ]
+        },
+        {
+            "name": "prom-client 6.3.0 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/prom-client/package.json"
+            ]
+        },
+        {
+            "name": "proxy-addr 2.0.7 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/proxy-addr/package.json"
+            ]
+        },
+        {
+            "name": "psl (MPL-1.1)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Mozilla Public License 1.1",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/psl/dist/psl.min.js"
+            ]
+        },
+        {
+            "name": "psl 1.9.0 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/psl/package.json"
+            ]
+        },
+        {
+            "name": "punycode 2.3.0 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/punycode/package.json"
+            ]
+        },
+        {
+            "name": "qs 6.11.0 (BSD-3-Clause)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "BSD-3-Clause",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/qs/package.json"
+            ]
+        },
+        {
+            "name": "qs 6.3.0 (BSD-3-Clause)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "BSD-3-Clause",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/request/node_modules/qs/package.json"
+            ]
+        },
+        {
+            "name": "random-bytes 1.0.0 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/random-bytes/package.json"
+            ]
+        },
+        {
+            "name": "range-parser 1.2.0 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/serve-static/node_modules/range-parser/package.json"
+            ]
+        },
+        {
+            "name": "range-parser 1.2.1 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/range-parser/package.json"
+            ]
+        },
+        {
+            "name": "raw-body 2.5.1 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/express/node_modules/raw-body/package.json"
+            ]
+        },
+        {
+            "name": "raw-body 2.5.2 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/raw-body/package.json"
+            ]
+        },
+        {
+            "name": "redis 2.8.0 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/redis/package.json"
+            ]
+        },
+        {
+            "name": "redis-commands 1.5.0 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/redis-commands/package.json"
+            ]
+        },
+        {
+            "name": "redis-parser 2.6.0 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/redis-parser/package.json"
+            ]
+        },
+        {
+            "name": "request-request 0.12.0 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/caseless/package.json"
+            ]
+        },
+        {
+            "name": "request-request 0.6.0 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/tunnel-agent/package.json"
+            ]
+        },
+        {
+            "name": "request-request 0.6.1 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/forever-agent/package.json"
+            ]
+        },
+        {
+            "name": "request-request 0.6.1 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/forever-agent/package.json"
+            ]
+        },
+        {
+            "name": "request-request 0.9.0 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/oauth-sign/package.json"
+            ]
+        },
+        {
+            "name": "request-request-0.7.0(Apache License 2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/aws-sign2/package.json"
+            ]
+        },
+        {
+            "name": "request-request-2.88.2(Apache License 2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/request/package.json",
+                "fnciScan_184/node_modules/request/request.js"
+            ]
+        },
+        {
+            "name": "Respond 1.4.2 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT-Style License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/src/public/js/respond.min.js"
+            ]
+        },
+        {
+            "name": "rxjs/internal-compatibility [Bundled with sonar-javascript-plugin 6.2.1.12157 ]",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "N/A",
+            "type": "Work in Progress",
+            "filePaths": []
+        },
+        {
+            "name": "safe-buffer 5.2.0 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/tunnel-agent/node_modules/safe-buffer/package.json"
+            ]
+        },
+        {
+            "name": "safe-buffer 5.2.1 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/content-disposition/node_modules/safe-buffer/package.json",
+                "fnciScan_184/node_modules/express/node_modules/safe-buffer/package.json",
+                "fnciScan_184/node_modules/request/node_modules/safe-buffer/package.json"
+            ]
+        },
+        {
+            "name": "safer-buffer 2.1.2 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/safer-buffer/package.json"
+            ]
+        },
+        {
+            "name": "send 0.14.1 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/serve-static/node_modules/send/package.json"
+            ]
+        },
+        {
+            "name": "send 0.18.0 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/send/package.json"
+            ]
+        },
+        {
+            "name": "serve-static 1.11.1 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/serve-static/package.json"
+            ]
+        },
+        {
+            "name": "serve-static 1.15.0 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/express/node_modules/serve-static/package.json"
+            ]
+        },
+        {
+            "name": "setprototypeof 1.0.2 (ISC)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "ISC License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/serve-static/node_modules/setprototypeof/package.json"
+            ]
+        },
+        {
+            "name": "setprototypeof 1.2.0 (ISC)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "ISC License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/setprototypeof/package.json"
+            ]
+        },
+        {
+            "name": "shipping 1.4.0.RELEASE (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build.gradle"
+            ]
+        },
+        {
+            "name": "side-channel 1.0.4 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/side-channel/package.json"
+            ]
+        },
+        {
+            "name": "simpleclient 0.12.0 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/libraries/simpleclient-0.12.0.jar"
+            ]
+        },
+        {
+            "name": "simpleclient_common 0.12.0 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/libraries/simpleclient_common-0.12.0.jar"
+            ]
+        },
+        {
+            "name": "simpleclient_hotspot 0.0.21 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/libraries/simpleclient_hotspot-0.0.21.jar"
+            ]
+        },
+        {
+            "name": "simpleclient_servlet 0.0.21 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/libraries/simpleclient_servlet-0.0.21.jar"
+            ]
+        },
+        {
+            "name": "simpleclient_spring_boot 0.0.21 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/libraries/simpleclient_spring_boot-0.0.21.jar"
+            ]
+        },
+        {
+            "name": "simpleclient_tracer_common 0.12.0 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/libraries/simpleclient_tracer_common-0.12.0.jar"
+            ]
+        },
+        {
+            "name": "simpleclient_tracer_otel 0.12.0 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/libraries/simpleclient_tracer_otel-0.12.0.jar"
+            ]
+        },
+        {
+            "name": "simpleclient_tracer_otel_agent 0.12.0 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/libraries/simpleclient_tracer_otel_agent-0.12.0.jar"
+            ]
+        },
+        {
+            "name": "Sizzle 1.9.2 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/src/public/js/jquery-1.11.0.min.js"
+            ]
+        },
+        {
+            "name": "slf4j-api 1.7.36 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/slf4j-api-1.7.36.jar",
+                "fnciScan_184/libraries/slf4j-api-1.7.36.jar"
+            ]
+        },
+        {
+            "name": "snakeyaml 1.29 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/snakeyaml-1.29.jar",
+                "fnciScan_184/libraries/snakeyaml-1.29.jar"
+            ]
+        },
+        {
+            "name": "spring-amqp 2.4.4 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/spring-amqp-2.4.4.jar"
+            ]
+        },
+        {
+            "name": "spring-aop 5.3.19 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/spring-aop-5.3.19.jar",
+                "fnciScan_184/libraries/spring-aop-5.3.19.jar"
+            ]
+        },
+        {
+            "name": "spring-beans 5.3.19 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/spring-beans-5.3.19.jar",
+                "fnciScan_184/libraries/spring-beans-5.3.19.jar"
+            ]
+        },
+        {
+            "name": "spring-boot 2.6.7 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/spring-boot-2.6.7.jar",
+                "fnciScan_184/libraries/spring-boot-2.6.7.jar"
+            ]
+        },
+        {
+            "name": "spring-boot-actuator 2.6.7 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/spring-boot-actuator-2.6.7.jar",
+                "fnciScan_184/libraries/spring-boot-actuator-2.6.7.jar"
+            ]
+        },
+        {
+            "name": "spring-boot-actuator-autoconfigure 2.6.7 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/spring-boot-actuator-autoconfigure-2.6.7.jar"
+            ]
+        },
+        {
+            "name": "spring-boot-autoconfigure 2.6.7 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/spring-boot-autoconfigure-2.6.7.jar",
+                "fnciScan_184/libraries/spring-boot-autoconfigure-2.6.7.jar"
+            ]
+        },
+        {
+            "name": "spring-boot-starter 2.6.7 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/spring-boot-starter-2.6.7.jar",
+                "fnciScan_184/libraries/spring-boot-starter-2.6.7.jar"
+            ]
+        },
+        {
+            "name": "spring-boot-starter-actuator 2.6.7 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/spring-boot-starter-actuator-2.6.7.jar"
+            ]
+        },
+        {
+            "name": "spring-boot-starter-amqp 2.6.7 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/spring-boot-starter-amqp-2.6.7.jar"
+            ]
+        },
+        {
+            "name": "spring-boot-starter-data-mongodb 2.6.7 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/libraries/spring-boot-starter-data-mongodb-2.6.7.jar"
+            ]
+        },
+        {
+            "name": "spring-boot-starter-data-rest 2.6.7 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/spring-boot-starter-data-rest-2.6.7.jar",
+                "fnciScan_184/libraries/spring-boot-starter-data-rest-2.6.7.jar"
+            ]
+        },
+        {
+            "name": "spring-boot-starter-json 2.6.7 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/spring-boot-starter-json-2.6.7.jar",
+                "fnciScan_184/libraries/spring-boot-starter-json-2.6.7.jar"
+            ]
+        },
+        {
+            "name": "spring-boot-starter-logging 2.6.7 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/spring-boot-starter-logging-2.6.7.jar",
+                "fnciScan_184/libraries/spring-boot-starter-logging-2.6.7.jar"
+            ]
+        },
+        {
+            "name": "spring-boot-starter-tomcat 2.6.7 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/spring-boot-starter-tomcat-2.6.7.jar",
+                "fnciScan_184/libraries/spring-boot-starter-tomcat-2.6.7.jar"
+            ]
+        },
+        {
+            "name": "spring-boot-starter-validation 2.7.0 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/libraries/spring-boot-starter-validation-2.7.0.jar"
+            ]
+        },
+        {
+            "name": "spring-boot-starter-web 2.6.7 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/spring-boot-starter-web-2.6.7.jar",
+                "fnciScan_184/libraries/spring-boot-starter-web-2.6.7.jar"
+            ]
+        },
+        {
+            "name": "spring-context 5.3.19 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/spring-context-5.3.19.jar",
+                "fnciScan_184/libraries/spring-context-5.3.19.jar"
+            ]
+        },
+        {
+            "name": "spring-core 5.3.19 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/spring-core-5.3.19.jar",
+                "fnciScan_184/libraries/spring-core-5.3.19.jar"
+            ]
+        },
+        {
+            "name": "spring-data-commons 2.6.4 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/spring-data-commons-2.6.4.jar",
+                "fnciScan_184/libraries/spring-data-commons-2.6.4.jar"
+            ]
+        },
+        {
+            "name": "spring-data-mongodb 3.3.4 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/libraries/spring-data-mongodb-3.3.4.jar"
+            ]
+        },
+        {
+            "name": "spring-data-rest-core 3.6.4 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/spring-data-rest-core-3.6.4.jar",
+                "fnciScan_184/libraries/spring-data-rest-core-3.6.4.jar"
+            ]
+        },
+        {
+            "name": "spring-data-rest-hal-browser 3.3.9.RELEASE (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/spring-data-rest-hal-browser-3.3.9.RELEASE.jar",
+                "fnciScan_184/libraries/spring-data-rest-hal-browser-3.3.9.RELEASE.jar"
+            ]
+        },
+        {
+            "name": "spring-data-rest-webmvc 3.6.4 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/spring-data-rest-webmvc-3.6.4.jar",
+                "fnciScan_184/libraries/spring-data-rest-webmvc-3.6.4.jar"
+            ]
+        },
+        {
+            "name": "spring-expression 5.3.19 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/spring-expression-5.3.19.jar",
+                "fnciScan_184/libraries/spring-expression-5.3.19.jar"
+            ]
+        },
+        {
+            "name": "spring-hateoas 1.4.2 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/spring-hateoas-1.4.2.jar",
+                "fnciScan_184/libraries/spring-hateoas-1.4.2.jar"
+            ]
+        },
+        {
+            "name": "spring-jcl 5.3.19 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/spring-jcl-5.3.19.jar",
+                "fnciScan_184/libraries/spring-jcl-5.3.19.jar"
+            ]
+        },
+        {
+            "name": "spring-messaging 5.3.19 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/spring-messaging-5.3.19.jar"
+            ]
+        },
+        {
+            "name": "spring-plugin-core 1.2.0.RELEASE (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": []
+        },
+        {
+            "name": "spring-plugin-core 2.0.0.RELEASE (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/spring-plugin-core-2.0.0.RELEASE.jar",
+                "fnciScan_184/libraries/spring-plugin-core-2.0.0.RELEASE.jar"
+            ]
+        },
+        {
+            "name": "spring-rabbit 2.4.4 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/spring-rabbit-2.4.4.jar"
+            ]
+        },
+        {
+            "name": "spring-retry ${revision}  [Bundled with spring-retry 1.3.3 ] (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/spring-retry-1.3.3.jar"
+            ]
+        },
+        {
+            "name": "spring-retry 1.3.3 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/spring-retry-1.3.3.jar"
+            ]
+        },
+        {
+            "name": "spring-tx 5.3.19 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/spring-tx-5.3.19.jar",
+                "fnciScan_184/libraries/spring-tx-5.3.19.jar"
+            ]
+        },
+        {
+            "name": "spring-web 5.3.19 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/spring-web-5.3.19.jar",
+                "fnciScan_184/libraries/spring-web-5.3.19.jar"
+            ]
+        },
+        {
+            "name": "spring-webmvc 5.3.19 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/spring-webmvc-5.3.19.jar",
+                "fnciScan_184/libraries/spring-webmvc-5.3.19.jar"
+            ]
+        },
+        {
+            "name": "sshpk 1.10.1 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/sshpk/package.json"
+            ]
+        },
+        {
+            "name": "statuses 1.3.1 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/serve-static/node_modules/statuses/package.json"
+            ]
+        },
+        {
+            "name": "statuses 2.0.1 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/statuses/package.json"
+            ]
+        },
+        {
+            "name": "tdigest 0.1.1 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/tdigest/package.json"
+            ]
+        },
+        {
+            "name": "toidentifier 1.0.1 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/toidentifier/package.json"
+            ]
+        },
+        {
+            "name": "tomcat-embed-core 9.0.62 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/tomcat-embed-core-9.0.62.jar",
+                "fnciScan_184/libraries/tomcat-embed-core-9.0.62.jar"
+            ]
+        },
+        {
+            "name": "tomcat-embed-el 9.0.62 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/tomcat-embed-el-9.0.62.jar",
+                "fnciScan_184/libraries/tomcat-embed-el-9.0.62.jar"
+            ]
+        },
+        {
+            "name": "tomcat-embed-websocket 9.0.62 (Apache-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "Apache License 2.0",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/tomcat-embed-websocket-9.0.62.jar",
+                "fnciScan_184/libraries/tomcat-embed-websocket-9.0.62.jar"
+            ]
+        },
+        {
+            "name": "tough-cookie 2.5.0 (BSD-3-Clause)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "BSD-3-Clause",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/tough-cookie/package.json"
+            ]
+        },
+        {
+            "name": "tweetnacl 0.14.5 (Unlicense)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "The Unlicense",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/tweetnacl/package.json"
+            ]
+        },
+        {
+            "name": "type-is 1.6.18 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/type-is/package.json"
+            ]
+        },
+        {
+            "name": "uid-safe 2.1.3 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/uid-safe/package.json"
+            ]
+        },
+        {
+            "name": "unpipe 1.0.0 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/unpipe/package.json"
+            ]
+        },
+        {
+            "name": "uri 1.14.1  [Bundled with spring-data-rest-hal-browser 3.3.9.RELEASE ] (GPL-3.0 or GPL-2.0)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/build/dependencyLibs/spring-data-rest-hal-browser-3.3.9.RELEASE.jar",
+                "fnciScan_184/libraries/spring-data-rest-hal-browser-3.3.9.RELEASE.jar"
+            ]
+        },
+        {
+            "name": "uri-js 4.4.1 (BSD-2-Clause)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "BSD 2-Clause \"Simplified\" License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/uri-js/package.json",
+                "fnciScan_184/node_modules/uri-js/yarn.lock"
+            ]
+        },
+        {
+            "name": "uri.all 4.4.1 ",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "N/A",
+            "type": "Work in Progress",
+            "filePaths": [
+                "fnciScan_184/node_modules/uri-js/dist/es5/uri.all.min.js"
+            ]
+        },
+        {
+            "name": "util-extend 1.0.3 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/util-extend/package.json"
+            ]
+        },
+        {
+            "name": "utils-merge 1.0.0 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/utils-merge/package.json"
+            ]
+        },
+        {
+            "name": "utils-merge 1.0.1 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/express/node_modules/utils-merge/package.json"
+            ]
+        },
+        {
+            "name": "uuid 3.4.0 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/uuid/package.json"
+            ]
+        },
+        {
+            "name": "vary 1.1.2 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "I don't know",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/vary/package.json"
+            ]
+        },
+        {
+            "name": "verror 1.3.6 (MIT License)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT-Style License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/verror/package.json"
+            ]
+        },
+        {
+            "name": "verror 1.3.6 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/verror/package.json"
+            ]
+        },
+        {
+            "name": "visionmedia-debug (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/debug/bower.json"
+            ]
+        },
+        {
+            "name": "visionmedia-debug 2.2.0 (MIT)",
+            "inventoryReviewStatus": "Approved",
+            "selectedLicenseName": "MIT License",
+            "type": "Component",
+            "filePaths": [
+                "fnciScan_184/node_modules/debug/bower.json"
+            ]
+        }
+    ]
+}

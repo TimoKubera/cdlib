@@ -1,0 +1,6 @@
+applicationType: cli
+defaultPackage: de.deutschepost.sdm.cdlib
+testFramework: kotest5
+sourceLanguage: kotlin
+buildTool: gradle_kotlin
+features: [ annotation-api, app-name, gradle, http-client, jib, kotest5, kotlin, logback, picocli, picocli-kotest, picocli-kotlin-application, readme, shade, yaml ]

@@ -1,0 +1,1 @@
+ 2kotlinX“hrJsrc/main/kotlin/de/deutschepost/sdm/cdlib/artifactory/ArtifactoryClient.kt

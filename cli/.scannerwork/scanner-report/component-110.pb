@@ -1,0 +1,1 @@
+n 2kotlinXLhrasrc/main/kotlin/de/deutschepost/sdm/cdlib/release/report/external/fortify/FortifyVulnerability.kt

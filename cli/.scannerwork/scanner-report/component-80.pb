@@ -1,0 +1,1 @@
+P 2kotlinX#hrUsrc/main/kotlin/de/deutschepost/sdm/cdlib/mixins/artifactory/ArtifactoryMixinLight.kt

@@ -1,0 +1,14 @@
+#!groovy
+[
+        git        : [
+                credentialsId: 'SDM-git.dhl.com-Access'
+        ],
+        artifactory: [
+                credentialsId: 'artifactoryToken',
+        ],
+        confluence: [
+                ancestorIDTEST: '276751391',
+                ancestorIDRELEASE: '281717447',
+                ancestorIDLATEST: '268610373'
+        ]
+]

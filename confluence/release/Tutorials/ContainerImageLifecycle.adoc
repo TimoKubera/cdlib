@@ -1,0 +1,109 @@
+= Container Image Lifecycle
+:toc:
+:keywords: latest
+
+This tutorial explains how to handle containers inside CI/CD pipelines.
+
+== Jenkins
+The following chapters explain how to perform the relevant container operations inside https://devsecops.dhl.com/services/build/jenkins-cloudbees/[IT-S Cloudbees Jenkins], although any other Jenkins capable of running xref:KubernetesAsJenkinsAgent.adoc[Kubernetes Agents] will be sufficient too.
+Of course you can also use Jenkins without Kubernetes, but we won't explain how, since this is not our style.
+
+=== Agent
+First of all you need to get xref:KubernetesAsJenkinsAgent.adoc[an agent on Openshift]:
+[source,groovy]
+----
+include::../../../carts/JenkinsfileBuild[tags=agent, indent=0] #TODO update
+----
+
+> you can remove the containers you don't need :)
+
+
+=== Preparation
+With the agent running we can xref:JenkinsPipelineConfig.adoc[load the necessary configuration] and derive environment variables `CONTAINER_TAG` and `APP_NAME` with our xref:../CLI.adoc[cli] :
+[source,groovy]
+----
+include::../../../carts/JenkinsfileBuild[tags=setup, indent=0]
+----
+
+https://git.dhl.com/SockShop/carts/blob/master/config.jenkins[Our configuration] looks like this and will look differently for you:
+[source]
+----
+include::../../../carts/config.jenkins[tags=css, indent=0]
+----
+
+Now you are ready to actually build and push your image.
+
+=== Container Tool
+There are 4 default options (of course there are more) to build a container on https://devsecops.dhl.com/services/build/jenkins-cloudbees/[IT-S Cloudbees Jenkins].
+You could use `podman` which is the native container tool on Openshift 4.
+You can also use `docker`, which is actually not docker, but a script triggering podman.
+In case podman is too slow for your build, due to the use of the crio overlay filesystem, you could try xref:Buildkit.adoc[buildkit].
+Lastly you could try `jib`.
+Here we will explain `podman` since we use that.
+
+==== Podman
+You can add the container build with podman like this:
+
+[source,groovy]
+----
+include::../../../carts/JenkinsfileBuild[tags=docker, indent=0]
+----
+
+First you can perform a scan with xref:LintingContainerSpecification.adoc[hadolint], or don't.
+Next we store the complete path and name of the `image` for easier re-use inside the pipeline.
+Now you have to fetch the credentials of your xref:ToolAuthentication.adoc#_it_s_tools[Service-Account] from xref:ToolAuthentication.adoc#_jenkins[Jenkins credential store].
+Lastly we actually use podman to login into the registry, build the image and push it into IT-S Artifactory.
+
+> podman builds OCI images, which may not run on older docker versions, to avoid this, update or specify `--format docker`
+
+== Azure DevOps Pipelines P&P
+The following chapter explains how to perform a container build and push the image to IT-S Artifactory via xref:ManagedDevOpsPools.adoc[Managed DevOps Pools].
+
+=== Building The Image
+Below, you can see how we add the build of the dockerfile to the pipeline with our template.
+To push our image later we need to get the credentials of the xref:ToolAuthentication.adoc#_it_s_tools[service account for IT-S Artifactory] from xref:SecretsAzureKeyVault.adoc[Azure Keyvault].
+In case you want to fetch the dependencies via https://devsecops.dhl.com/services/build/artifactory/get-started[Artifactory] we will also need to get the token and provide it for the build.
+Every container needs a tag, use the environment variable `CONTAINER_TAG` provided by our xref:../CLI.adoc[cli] as shown in the sample below.
+
+[source,yaml]
+----
+include::../../../cdaas/ado/container-job-templates/containerbuildpush-artifactory.yaml[indent=0]
+----
+
+=== Dockerfiles
+
+The approach described above will work for every `dockerfile` you throw at it.
+In the following subsections you will find some samples for working multi-stage dockerfiles with different build tools.
+
+For the build you will need two stages inside the `Dockerfile`.
+The first stage will gather all the necessary preconditions incl. dependencies to build your application.
+The second stage will use a minimal base image and copy your application from the first stage.
+This is great because your image won't contain any code or build artifacts, but just the absolute minimum, which is better for security and performance.
+
+==== Multi-Stage Dockerfile for NPM
+
+[source,yaml]
+----
+include::../../../cdaas-template-npm/Dockerfile[indent=0]
+----
+
+===== Multi-Stage Dockerfile for Gradle
+
+[source,yaml]
+----
+include::../../../cdaas-template-gradle/Dockerfile[indent=0]
+----
+
+===== Multi-Stage Dockerfile for Maven
+
+[source,yaml]
+----
+include::../../../cdaas-template-maven/Dockerfile[indent=0]
+----
+
+== GitHub Actions
+
+Within our template repository you can find a working example on how to build and push a container image to IT-S Artifactory.
+Dockerfile: https://git.dhl.com/CDLib/cdaas-template-maven/blob/main/Dockerfile
+Pipeline: https://git.dhl.com/CDLib/cdaas-template-maven/blob/8b57829877c879b8754c7170252a74febfc0bfcd/.github/workflows/pipeline.yaml#L22 
+Workflow: https://git.dhl.com/CDLib/cdaas-workflows/blob/main/.github/workflows/containerbuild.yaml

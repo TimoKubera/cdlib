@@ -1,0 +1,1 @@
+  2kotlinXhrPsrc/main/kotlin/de/deutschepost/sdm/cdlib/artifactory/ArtifactoryFolderSuffix.kt

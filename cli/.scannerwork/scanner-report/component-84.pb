@@ -1,0 +1,1 @@
+T 2kotlinX0hrHsrc/main/kotlin/de/deutschepost/sdm/cdlib/mixins/sharepoint/OslcMixin.kt

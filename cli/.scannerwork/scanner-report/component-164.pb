@@ -1,0 +1,1 @@
+¤ 2kotlinXxhr^src/test/kotlin/de/deutschepost/sdm/cdlib/change/sharepoint/SharepointClientIntegrationTest.kt

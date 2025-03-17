@@ -1,0 +1,135 @@
+= Software Composition Analysis (Dependency Check)
+:toc:
+:keywords: latest
+
+The majority of your applications code base is most probably not written by you, but taken from other developers/vendors as frameworks, libraries, utilities, etc.
+Those code inclusions are called dependencies, because without them your application cannot work.
+Since your typical pipeline scans, like xref:Sonarqube.adoc[Sonarqube] or xref:ItsFortify.adoc[Fortify], don't cover these dependencies they can bare a huge risk.
+Usually this is drastically underestimated and mostly unknown to teams and risk owners.
+
+There are actually three kinds of risks associated with dependencies:
+
+1. Your dependency uses a license that requires you to do certain things, like open sourcing your application, which is in conflict with our groupwide Open Source License Compliance policy. 
+2. Your dependency has a know security vulnerability (CVE) that compromises the security of your application.
+3. Your dependency is outdated (there are updates available) so in case you encounter any problems, it is most likely that there is nobody to fix it in your version. You can update then as it maybe was already fixed, but most often the jump is too big (some times multiple major versions), so the risk of it not working anymore is high (due to breaking changes) and you spend much effort on debugging and adopting your application.
+
+For the first risk you should run a scan with xref:OpenSourceLicenseComplianceScan.adoc[a OSLC scanner].
+This tutorial will describe how to scan for CVEs and updates via Jenkins or Azure Pipelines.
+
+== Analyzers
+Depending on the found source files Dependency Check will use different analyzers.
+You can disable/enable them in case you feel that the automatic detection is wrong, check the https://jeremylong.github.io/DependencyCheck/dependency-check-cli/arguments.html[cli command flags here].
+
+The https://jeremylong.github.io/DependencyCheck/analyzers/node-audit-analyzer.html[Node Audit Analyzer] requires an internet connection to https://registry.npmjs.org/.
+
+In order to use the xref:IntegratedWebApproval.adoc[Integrated Webapproval] you must not disable it unless you have no javascript dependencies at all - open your firewall if needed.
+
+You may encounter availability problems with `search.maven.org`, you can use `central.sonatype.com` instead.
+
+== Jenkins
+We have described the Dependency-Check with Jenkins for different build tools in the following chapters.
+In order for the following steps to work, you need to make sure that you are using xref:KubernetesAsJenkinsAgent.adoc[Kubernetes Agents].
+
+=== Maven
+
+We can use the `dependency-check` cli to perform the scan.
+
+> we could also use the maven-plugin, but it would require us to fetch the list of CVEs from NVD every time, since our agents are ephemeral, which can take hours - instead we use a public centrally daily pre-populated image - you could also setup a dedicated database, which to us seems like more effort
+
+For this you need to add the `dependency-check` agent to your `Jenkinsfile`.
+Our sample shows an infile definition (you can also put it in a separate agent.yaml if you like) and the full agent, you will only need containers `dependency-check` and probably also `maven`
+
+[source,groovy]
+----
+include::../../../carts/JenkinsfileBuild[tags=agent, indent=0]
+----
+
+You have to add the following section to `config.jenkins` to configure some parameters:
+[source,groovy]
+----
+include::../../../carts/config.jenkins[tags=dependencyCheck, indent=0]
+----
+
+Finally, add the dependency-check itself to your `Jenkinsfile`:
+[source,groovy]
+----
+include::../../../carts/JenkinsfileBuild[tags=dependencyCheck, indent=0]
+----
+
+Then Jenkins will display a HTML reports (on build level) showing the latest dependency-check results.
+
+[#npm]
+==== NPM
+We use the `dependency-check` cli, like described in our maven-section.
+
+> You have to add `--nodeAuditSkipDevDependencies` and `--nodePackageSkipDevDependencies`
+
+[#gradle]
+=== Gradle
+Although there is a Gradle-Plugin, it cannot be used since you cannot exclude it from the proxy setting, which is necessary for the Node Audit Analyzer.
+Therefore we use the `dependency-check` cli, like described in our maven-section.
+
+[#go]
+=== Go
+To scan for CVEs you can use the `dependency-check` cli, but be aware that the go-analyzers are experimental!
+We use the `dependency-check` cli, like described in our maven-section.
+
+> You have to add the `--go=${env.WORKSPACE}` to the `dependency-check.sh` command!
+
+== Azure Pipelines
+We use the https://jeremylong.github.io/DependencyCheck/dependency-check-cli/arguments.html[dependency-check-cli] inside Azure Pipelines, as it works for all kinds of build tools.
+
+We use our xref:ManagedDevOpsPools.adoc[agent] to launch the dependency-check-cli based on an https://github.com/dependency-check/DependencyCheck_Builder[image with prebuilt CVE database] that highly reduces the scan time.
+
+You can then add the check to your pipeline using our template file:
+
+[source,yaml]
+----
+include::../../../phippyandfriends/nodebrady/nodebrady.yaml[tags=odc,indent=0]
+----
+
+Let's have a look behind the hood to see what the template does:
+
+[source,yaml]
+----
+include::../../../cdaas/ado/container-job-templates/dependencycheck.yaml[indent=0]
+----
+
+Before the actual scan is executed you have to provide the checkout from git and then fetch/get/install the dependencies for your scan.
+This will be different depending on your build tool, in our case it is npm and we only fetch the production relevant dependencies with this template:
+
+[source,yaml]
+----
+- script: npm ci --omit=dev --registry=https://artifactory.dhl.com/api/npm/npm/
+  displayName: FETCH PROD NODE_MODULES
+----
+
+You can also use this template for `gradle assemble`:
+
+[source,yaml]
+----
+- bash: ./gradlew --no-daemon -g $(Build.SourcesDirectory) assemble
+  displayName: GRADLE ASSEMBLE
+----
+
+Or this for `maven compile`:
+
+[source,yaml]
+----
+- bash: ./mvnw -B compile -Dmaven.repo.local=$(Build.SourcesDirectory) -s settings.xml
+  displayName: MAVEN COMPILE
+----
+
+Then the scan is executed with the fitting set of analyzers and a build breaker in case of any high or critical findings (CVSS=>7).
+Then we rename the reports to easily spot the version that was scanned, using the xref:../CLI.adoc[release name provided by create names]. and archive them.
+
+> HINT: find out more about the https://jeremylong.github.io/DependencyCheck/dependency-check-cli/arguments.html[cli command flags]
+
+To handle false positives you can suppress issues with such a https://jeremylong.github.io/DependencyCheck/general/suppression.html[suppression file]
+
+> HINT: you can easily create the entries via the report, just click on `suppress` for the relevant finding
+
+=== GitHub Actions
+Within our template repository you can find a working example on how to scan your application with OWASP Dependency-Check.
+Pipeline: https://git.dhl.com/CDLib/cdaas-template-maven/blob/8b57829877c879b8754c7170252a74febfc0bfcd/.github/workflows/pipeline.yaml#L45
+Workflow: https://git.dhl.com/CDLib/cdaas-workflows/blob/main/.github/workflows/dependencycheck.yaml

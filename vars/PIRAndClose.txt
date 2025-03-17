@@ -1,0 +1,40 @@
+<body><p>Only for <strong>GSNLib Service</strong><br />
+Creates a Post Incident Report(PIR) and closes the change request. Updates the task <code>updateCtask</code> and the change request <code>updateChangeRequest</code> with the result based on the <code>rollback</code> flag.
+Uses <code>withGSN</code> for creating a GSNWebService Object for use in the various operation. The operations of PIRAndClose are provided as closure to <code>withGSN</code>.</p><p>For more information regarding this step and its integration, please have a look at our <a href="../tutorials/ItsGSN.md">GSN User documentation</a> here.</p><h3>Parameter</h3><table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>change</td><td>Change</td><td>Information about the change request including its tasks</td></tr><tr class="intellij-row-even"><td>hostname</td><td>String</td><td>Hostname of the GSN Portal</td></tr><tr><td>credential</td><td>String</td><td>Credentials for the GSN Portal</td></tr><tr class="intellij-row-even"><td>rollback</td><td>boolean</td><td>Defaults to <code>false</code></td></tr><tr><td>manualPIR</td><td>boolean</td><td>Defaults to <code>true</code></td></tr></tbody></table><h3>Example Code</h3><h4>Pipeline</h4><pre><code class="language-groovy">post {
+   always {
+        //close Change
+        PIRAndClose(change, config.gsn.url, config.gsn.credential, rollback)
+    }
+}
+</code></pre><h4>Config</h4><pre><code class="language-groovy">gsn: [
+        templaterfc: 'RFC1283950',
+        requestor: 'ab6jg8',
+        group: 'GLOBAL-CI.SUPPORT',
+        subject: 'CDLib GSN Initial Testing',
+        approver: 'ab6jg8',
+        url: 'https://servicenow-uat.dhl.com',
+        credential: 'gsn_uat'
+],
+</code></pre><h4>Result</h4><pre><code>[Pipeline] stage
+[Pipeline] { (Declarative: Post Actions)
+[Pipeline] httpRequest
+15:27:26  HttpMethod: POST
+15:27:26  URL: https://servicenow-uat.dhl.com/change_task.do?hierarchical=true&amp;SOAP
+15:27:26  SOAPAction: urn:get
+15:27:26  Content-Type: text/xml;charset=UTF-8
+15:27:26  Using authentication: gsn_uat
+15:27:26  Sending request to url: https://servicenow-uat.dhl.com/change_task.do?hierarchical=true&amp;SOAP
+15:27:26  Response Code: HTTP/1.1 200 OK
+15:27:26  Response: 
+15:27:26  &lt;&quot;Response Data in XML Format&quot;&gt;
+15:27:26  Success code from [200‥200]
+[Pipeline] input
+15:27:27  Input requested
+15:27:39  Approved by Werner,M.,SNL IT P&amp;P,Abt.4210,DD,External, external
+..
+.. 2 more Http Request are done successfully ..
+..
+[Pipeline] echo
+15:27:41  ########################################
+15:27:41  Closed RFC: RFC1404548
+</code></pre></body>

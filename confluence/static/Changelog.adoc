@@ -1,0 +1,870 @@
+= Changelog
+:toc:
+:keywords: latest
+
+All notable changes to this project will be documented in this file.
+The format is based on http://keepachangelog.com/en/1.0.0/[Keep a Changelog]
+and this product adheres to http://semver.org/spec/v2.0.0.html[Semantic Versioning].
+
+Unreleased features are listed under 0.0.0-SNAPSHOT, but already usable.
+
+== 0.0.0-SNAPSHOT
+=== Added
+* https://lcm.deutschepost.de/confluence1/display/SDM/Managed+DevOps+Pools+as+Azure+Pipeline+Agents[Managed DevOps Pools] as dynamic Azure Pipeline Agents with supported container integration
+* added GitHub Actions to all tutorials as our future CI/CD platform
+* added Headlamp as Kubernetes dashboard, especially, but not only, for https://lcm.deutschepost.de/confluence1/display/SDM/GitOps[GitOps]
+* added --artifactory-its-instance flag to enable the usage of the IT-S Artifactory for report upload and change creation
+
+=== Changed
+* overhauled Terraform tutorial completely, now using Terraform Cloud and federated credentials
+* sunset CSS, use IT-S Artifactory
+* using https://github.com/dependency-check/DependencyCheck_Builder[publicly provided dependency-check image with prebuilt NVD] instead of our own
+* Using new lcm jira instance https://jira1.lcm.deutschepost.de/jira1 for https://lcm.deutschepost.de/confluence1/display/SDM/Integrated+Change+Management[Integrated Change Management]
+* Integrated Change Management is now uploading and reading Release Information to/from CosmosDB instead of Artifactory
+* https://lcm.deutschepost.de/confluence1/display/SDM/GitOps[GitOps with Flux] updated to use webhooks to trigger reconcilations and alerts for commit status updates to query the reconcilation status, leading to a true GitOps approach with no admin access to the cluster - also prevents the timing problem that the kustomization is not yet available for reconcilation, if it isn't already created by flux when we call it
+* Fortify Image updated to v24.2 now supporting Java 21
+* Updated URL to https://lcm.deutschepost.de/confluence1/pages/viewpage.action?pageId=394363465#OpenSourceLicenseComplianceScan(OSLC)-oslc-maven-plugin-guideOSLC-Maven-PluginGuide[oslc-maven-plugin], due to migration by TQS team
+* Integrated Webapproval doesn't check whether repo is immutable anymore in preparation to migration from LCM Artifactory to IT-S Artifactory
+* updated ZAP to reflect new owner: https://www.zaproxy.org/blog/2024-09-24-zap-has-joined-forces-with-checkmarx/
+* moved our legacy Azure pipelines keda agent helm chart from CSS to IT-S Artifactory sdm-proj-prg-oci.artifactory.dhl.com/cdlib/kedaagent incl. that now all images are pulled from IT-S Artifactory. Also uses Azure Pipelines agent v4 now under sdm-proj-prg-oci.artifactory.dhl.com/cdlib/azure-pipelines-agent:latest (not 3.latest anymore). Due to the changes, helm chart version is now 3.0.0
+
+=== Removed
+* remove Weave Dashboard from GitOps tutorial, use headlamp
+* Podman and Kubernetes as Azure Pipelines Agent, use Managed DevOps Pools
+* LCM Jenkins, use modern CI tool or IT-S Cloudbees Jenkins (requires questionnaire)
+* cdlib-cli command `archive upload`
+* custom dependency-check image (docker.artifactory.dhl.com/cdlib/dependency-check:latest, dpdhl.css-qhcr-pi.azure.deutschepost.de/cdlib/dependency-check:latest and dpdhl.css-thcr-pi.azure.deutschepost.de/cdlib/dependency-check:latest) - use docker.artifactory.dhl.com/owasp/dependency-check-action:latest, to not break any pipelines we have replaced our own build with a pull/push of the new one
+
+== 6.6 - 2024-06-17
+=== Added
+* https://lcm.deutschepost.de/confluence1/display/SDM/Renovate+Bot[Renovate for Automated Dependency Updates] provided as new tutorial
+
+=== Changed
+* Deprecated `--tqs` flag for change create and `--report-prefix-tqs` in report upload due to unsupported plugin and measurements. These flags have no effect anymore and can be removed. They will be completely removed in the next major release, then resulting in an error if used.
+* Renamed Integrated Release Management to Integrated Open Source License Compliance Verification and removed relevant documentation, as the process is now handled directly inside IT-S Sonarqube.
+* preferred Jenkins is now IT-S Cloudbees Jenkins thanks to configurability, central agents and enterprise support and due to sunset of open-source IT-S Jenkins
+* cdlib names create env CDLIB_RELEASE_NAME_HELM logic adapted so it takes the last part of the sanitized branch name, if it starts with renovate, to avoid duplication
+
+== 6.5 - 2024-03-21
+=== Added
+* `change create --approval-interval-in-minutes` to customize polling interval for change approval (doesn't change the 30 minutes timeout and cannot be less than a minute) https://lcm.deutschepost.de/jira1/browse/SDM-218[SDM-218]
+* `change create --skip-approval-wait` flag that takes true or false, (defaults to false), skips the approval wait intervals entirely, useful for integration test scenarios, where no manual approval is required (preauthorized changes)
+
+=== Changed
+* LCM team migrates their Artifactory instance from THB to Azure and will contact you once your repos are ready - to use your new repos on Azure, you need to tell cdlib to use the new instance witch flag `--artifactory-azure-instance` for `report upload` and `change create/close`, don't forget to also create a new token and to use identity-tokens instead of api-tokens, which require the flag `--artifactory-identity-token` https://lcm.deutschepost.de/jira1/browse/SDM-185[SDM-185]
+* https://lcm.deutschepost.de/confluence1/pages/viewpage.action?pageId=281729582[Software Composition Analysis (OWASP Dependency-Check)] was updated to version 9, which changes the way the CVEs are fetched from NIST, as https://nvd.nist.gov/General/News/change-timeline[NIST will stop providing the old data feeds on December 15th this year] - therefore Dependency-Check 8 and older are useless from that point of time. To avoid longer scan times and more errors and the need to register for an API-key, we provide a custom dependency-check image with an up-to-date and pre-populated NVD via `dpdhl.css-thcr-pi.azure.deutschepost.de/cdlib/dependency-check:latest`. Be aware that switching to version 9 might break your pipeline, as the cli has new flags, especially `--cveValidForHours` is now `--nvdValidForHours` and `--cveUrlModified` / `--cveUrlBase` don't exist anymore. Using build tool plugins is not supported by CDlib, as it cannot use pre-populated database and we have no API key and don't want to waste ressources. Nevertheless you can use our image just as a database source and keep your own integration.
+* fixed a bug where cdlib-cli would fail change creation if the appname deviates between build and release (DAST) reports https://lcm.deutschepost.de/jira1/browse/SDM-288[SDM-288]
+* https://lcm.deutschepost.de/confluence1/display/SDM/Linting+Container+Specification[Linting Container Specification] deprecated, use https://lcm.deutschepost.de/confluence1/display/SDM/Security+Scan+with+ITS+Fortify[IT-S Fortify] instead
+
+== 6.4 - 2023-11-13
+=== Added
+* switching our default deployment method for kubernetes from a scripted helm install/upgrade to a https://lcm.deutschepost.de/confluence1/display/SDM/GitOps[declarative GitOps approach with FluxCD] https://git.dhl.com/CDLib/CDlib/issues/1023[#1023]
+* added tutorial for mutation testing via https://lcm.deutschepost.de/confluence1/display/SDM/PIT[PIT] https://git.dhl.com/CDLib/CDlib/issues/1476[#1476]
+
+=== Changed
+* support channels https://lcm.deutschepost.de/jira1/secure/CreateIssue.jspa?pid=14900&issuetype=1[centralized via Jira], which doesn't require authorization - GitHub issues and Teams channels will be discontinued
+
+== 6.3 - 2023-07-20
+=== Added
+* enhanced release management process for OSLC to also accept reports created via oslc-npm-plugin https://git.dhl.com/CDLib/CDlib/issues/1194[#1194]
+* provide mechanism to overwrite and accept license information during report check/upload (and change create) https://git.dhl.com/CDLib/CDlib/issues/1313[#1313]
+* added https://lcm.deutschepost.de/confluence1/display/SDM/CDaaS[CDaaS alpha feature description] https://git.dhl.com/CDLib/CDlib/issues/1401[#1401]
+* Every cdlib command displays the cdlib version info https://git.dhl.com/CDLib/CDlib/issues/1335[#1335]
+
+=== Changed
+* updated https://lcm.deutschepost.de/confluence1/display/SDM/Security+Scan+with+ITS+Fortify[IT-S Fortify] to version 23.1 that now supports dotnet translation within our own image and thus no longer requires a windows host, but BIRTReportGenerator now resides in /opt/fortifyApps/bin - added dotnet 7 to the image to conveniently restore project dependencies prior translation
+* updated https://lcm.deutschepost.de/confluence1/display/SDM/Kubernetes+As+Azure+DevOps+Pipelines+Agent[Kubernetes as Azure Pipelines Agent] to use new fortify image as `Keda Agent v2.4`
+* updated https://lcm.deutschepost.de/confluence1/display/SDM/Tool+Authentication+via+Technical+Users[Tool Authentication] tutorial regarding technical users for tools connected to azure active directory (no personal user tokens anymore!)
+* uses Microsoft Graph API for connecting with TQS Sharepoint https://git.dhl.com/CDLib/CDlib/issues/1110[#1110]
+
+== 6.2 - 2023-05-10
+=== Added
+* enhanced release management process for OSLC to also accept reports created via oslc-gradle-plugin https://git.dhl.com/CDLib/CDlib/issues/1193[#1193]
+* `change create/close` flag `--gitops` that uses the `CDLIB_PM_GIT_ORIGIN` environment variable to identify the associate change in Jira https://git.dhl.com/CDLib/CDlib/issues/1131[#1131]
+
+=== Changed
+* CDlib documentation now provided via https://lcm.deutschepost.de/confluence1/display/SDM/CDlib[LCM Confluence] because we want more interaction with you, which is encouraged with the comment and like features. Additionally the searchability is better and it can be accessed anonymously so more teams should be able to use it. Furthermore it allows us to analyze usage of the tutorials to get better insights.
+* parameter `--artifactory-api-key` of cdlib-cli https://jfrog.com/knowledge-base/platform-api-key-deprecation-and-the-new-reference-tokens/[deprecated by JFrog], use `--artifactory-identity-token` instead https://git.dhl.com/CDLib/CDlib/issues/1327[#1327]
+* extended tutorial `Octane Test Management` with description for Acceptance tests inside Azure DevOps https://git.dhl.com/CDLib/CDlib/issues/745[#745]
+* `Kubernetes as Azure Pipelines Agent` tutorial extended to support the P&P test framework by providing a pod with gradle, selenium and chrome (`Keda Agent v2.1`)
+* `Kubernetes as Azure Pipelines Agent` tutorial bumped to version 3 as https://learn.microsoft.com/en-us/azure/devops/pipelines/agents/v3-agent?view=azure-devops[version 2 is sunset] (`Keda Agent v2.2`) https://git.dhl.com/CDLib/CDlib/issues/1301[#1301]
+* fixed environment variable CDLIB_EFFECTIVE_BRANCH_NAME created by cdlib-cli names create for Azure DevOps Pipelines based on Azure Repos that contained the wrong information for Pull Request runs
+
+
+=== Removed
+* tutorial https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/ActiveDirectoryGroups.md[AD groups] as we only use IT-S Github which doesn't support them
+
+== 6.1 - 2023-04-06
+
+=== Added
+
+* added options to https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/IntegratedChangeManagement.md#custom-change-details[customize the change details with `change create`] https://git.dhl.com/CDLib/CDlib/issues/906[#906]
+* enhanced https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/IntegratedReleaseManagement.md#oslc[release management process for OSLC] to also accept reports created via https://lcm.deutschepost.de/confluence1/display/TOOL/oslc-maven-plugin[oslc-maven-plugin] https://git.dhl.com/CDLib/CDlib/issues/893[#893]
+* added flag `--output-urls-file` to `change create` to export generated urls as json file https://git.dhl.com/CDLib/CDlib/issues/1290[#1290]
+
+
+=== Changed
+
+* extended tutorial https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/MFOctane.md[Octane Test Management] with description for Azure DevOps https://git.dhl.com/CDLib/CDlib/issues/745[#745]
+* changes are now only pre-authorized for supported versions of CDlib https://git.dhl.com/CDLib/CDlib/issues/964[#964]
+* added https://git.dhl.com/GB19-CCP/CSS-Registry/blob/main/tutorials/basic-image-signing-cosign.md[link to cosign tutorial of CSS-team] to Container Lifecycle Tutorial and Helm Tutorial
+* `cdlib change create` and `close` uses Jira Test Project _SMCHMONB_ on the production Jira instance when `--test` flag is applied https://git.dhl.com/CDLib/CDlib/issues/1156[#1156]
+* new flag `--comment` for commands `change create` and `change close` allows you to add a comment while opening or closing a change
+* `cdlib change create --webapproval` now allows multiple release folders https://git.dhl.com/CDLib/CDlib/issues/1157[#1157]
+* https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/PickingTheRightCICDTool.md[focusing support] on Jenkins and Azure DevOps as CI/CD tools, with the latter being our default pick
+
+== 6.0 - 2023-02-28
+
+=== Added
+
+* new tutorial for https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/IntegratedReleaseManagement.md[Integrated Release Management]
+* new xref:dashboard.md[Dashboard for DORA via PowerBI] https://git.dhl.com/CDLib/CDlib/issues/714[#714]
+* new command `cdlib report upload` to check and upload relevant report files in a single step, which is also now a precondition for https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/IntegratedWebApproval.md[Integrated Webapproval]
+* new command https://git.dhl.com/CDLib/CDlib/blob/master/cli#report-fetch[`cdlib report fetch fnci`] to fetch OSLC scan results from Revenera Code Insights https://git.dhl.com/CDLib/CDlib/issues/1109[#1109]
+* new option to resume a change after a failed deployment with `change create --resume true` to avoid re-authorization during frozen zone or for critical systems outside office hours https://git.dhl.com/CDLib/CDlib/issues/1009[#1009]
+* `cdlib change close` calculates, logs and reports Deployment Lead Time based on creation time of last build report https://git.dhl.com/CDLib/CDlib/issues/521[#521]
+* `cdlib change close` uses new backend in Azure for publishing metrics https://git.dhl.com/CDLib/CDlib/issues/865[#865]
+* new tutorial to https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/MFOctane.md[manage tests via Microfocus Octane]
+* https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/SoftwareCompositionAnalysis.md[Dependency Check] provides a new Analyzer `Known Exploited Vulnerability` based on CISA, make sure to open your firewall accordingly or use provided IT-S Artifactory mirror
+
+=== Changed
+
+* https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/IntegradetWebApproval.md[Integrated Web Approval] now uses new Webapproval Sharepoint (https://itm.prg-dc.dhl.com/) instead of iShare, due to sudden sundown https://git.dhl.com/CDLib/CDlib/issues/967[#967]
+* IT-S toolset should only be used by IT-S teams, all others please use LCM or Azure DevOps
+* `cdlib change create --tqs` checks existence and validity of https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/Sonarqube.md[Sonarqube] report and reports release to TQS Teams Sharepoint according to https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/IntegratedReleaseManagement.md[Integrated Release Management]
+* `cdlib change create --oslc` checks existence and validity of https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/OpenSourceLicenseComplianceScan.md[FNCI OSLC] report and reports release to License Management OSLC Teams Sharepoint according to https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/IntegratedReleaseManagement.md[Integrated Release Management] https://git.dhl.com/CDLib/CDlib/issues/874[#874]
+* https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/OpenSourceLicenseComplianceScan.md[FNCI for OSLC] is now also allowed to be used in case of a distributed application
+* `cdlib change create` defaults to `--webapproval`, `--tqs` and `--oslc` which can be disabled if they are not required with `--no-webapproval`, `--no-tqs` and `--no-oslc`
+* `cdlib change create --webapproval` checks for previously processed report files (via `cdlib report upload`) to avoid duplicate processing https://git.dhl.com/CDLib/CDlib/issues/898[#898]
+* `cdlib change create` will close all pending changes for the pipeline unless `--resume true` is specified, which will keep the last one instead of opening a new one https://git.dhl.com/CDLib/CDlib/issues/1009[#1009]
+* `cdlib change create` checks for an active frozen zone and skips pre-authorization and request major change approval instead - use flag `--resume` to avoid re-authorization after failed deployments https://git.dhl.com/CDLib/CDlib/issues/1012[#1012]
+* customize your change window with `cdlib change create --start` and `cdlib change create --end` instead of using the default change window (now + 4h) https://git.dhl.com/CDLib/CDlib/issues/1010[#1010]
+* `cdlib change close` won't close a change after a failed deployment to make it resumable https://git.dhl.com/CDLib/CDlib/issues/1009[#1009]
+* https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/KubernetesAsADPAgent.md[Kubernetes as Azure Pipelines Agent] improved by leveraging lifecycle hooks to avoid downscaling of active agents and keda demands to scale image specific agents to avoid ephemeral containers (and risk of having too many per agent) https://git.dhl.com/CDLib/Images/pull/20[PR]
+* `cdlib change create --webapproval` reports vulnerabilities and suppressions to webapproval Sharepoint https://git.dhl.com/CDLib/CDlib/issues/821[#821]
+* fix problems when parsing a fortify project file with findings without snippets https://git.dhl.com/CDLib/CDlib/issues/1069[#1069]
+* The default timeout for `cdlib report fetch css` was increased to 10 minutes and can be configured with the parameter `--timeout-in-minutes`
+* enhanced `cdlib report check` to verify scan results provided by `cdlib report fetch fnci` https://git.dhl.com/CDLib/CDlib/issues/875[#875]
+* added Gitlab CI to CI/CD tool overview, contact us for a pilot
+
+=== Removed
+
+* xref:PolicyChangeRequests.md[Change Management P&amp;P] certification process, use https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/IntegratedChangeManagement.md[Integrated Change Management]
+* `cdlib webapproval verify` and `cdlib webapproval record` removed as it is now integrated into `cdlib change create --webapproval` https://git.dhl.com/CDLib/CDlib/issues/898[#898]
+* Removed `cdlib change close` parameters `almId` and `product` use `cdlib change close --commercial-reference` instead (https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/IntegratedChangeManagement.md[Integrated Change Management])
+* Removed `publishTQSReport` Jenkins step use `cdlib change create --tqs` instead https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/IntegratedReleaseManagement.md[Integrated Release Management]
+* Removed `teamforgeDocumentUpload` Jenkins step use curl for teamforge or `cdlib archive upload` for Artifactory instead
+* Replaced Legacy DevOps Dashboard with Azure CosmosDB: https://git.dhl.com/CDLib/CDlib/issues/new?assignees=ab6jg8%2C+omh9ote011&labels=%3Afire%3A+%3Akey%3A+Firewall&template=firewall-request.md&title=firewall+request+XYZ[Request Firewall Clearance]
+* Removed Azure DevOps Agent setup with Docker tutorial and description of Azure DevOps Container Jobs usage due to incompliance of Docker usage, use xref:PodmanAsADPAgent.md[Podman] or xref:KubernetesAdADPAgent.md[Kubernetes]
+
+== 5.2 - 2022-10-12
+
+=== Added
+
+* new tutorial explaining how to use https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/IntegratedChangeManagement.md[Integrated Change Management] https://git.dhl.com/CDLib/CDlib/issues/455[#455]
+* new tutorial explaining how to use https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/KubernetesAsADPAgent.md[Kubernetes as Azure Pipelines Agent] https://git.dhl.com/CDLib/CDlib/issues/942[#942]
+* new tutorial explaining how to use https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/PodmanAsADPAgent.md[Podman as Azure Pipelines Agent]
+* https://git.dhl.com/CDLib/CDlib/blob/master/cli#change-create[`cdlib change create`] extended to approve the change automatically or wait for manual approval depending on business critcality of the application https://git.dhl.com/CDLib/CDlib/issues/591[#591]
+* described https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/ToolAuthentication.md[how to authenticate with IT-S Github] from Jenkins https://git.dhl.com/CDLib/CDlib/issues/933[#933]
+* https://git.dhl.com/CDLib/CDlib/blob/master/cli#report-fetch-eg-from-css[`cdlib report fetch css`] to fetch trivy scan results from CSS Harbor https://git.dhl.com/CDLib/CDlib/issues/720[#720]
+* tutorial for https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/ContainerCompositionAnalysis.md[Container Composition Analysis with CSS] for Jenkins and Azure Pipelines https://git.dhl.com/CDLib/CDlib/issues/720[#720]
+* https://git.dhl.com/CDLib/CDlib/blob/master/cli#webapproval-record-record-webapproval-in-sharepoint-of-it-security[`cdlib change create --webapproval`] validates webapproval certification https://git.dhl.com/CDLib/CDlib/issues/947[#947]
+* new environment variable `CDLIB_CHART_VERSION_OCI` to be used when pushing OCI helm charts into CSS Harbor https://git.dhl.com/CDLib/CDlib/issues/983[#983]
+* add kubelogin to our helm image and extend aks showcase in helm tutorial to use it https://git.dhl.com/CDLib/CDlib/issues/995[#995]
+
+=== Changed
+
+* deprecated https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/PolicyChangeRequests.md[change management workaround] - use https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/IntegratedChangeManagement.md[Integrated Change Management]
+* enhanced `cdlib report check` to verify scan results provided by `cdlib report fetch css` https://git.dhl.com/CDLib/CDlib/issues/683[#683]
+* tutorial for https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/ContainerImageSecurityScan.md[Container Image Security Scan] deprecated, use https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/ContainerCompositionAnalysis.md[Container Composition Analysis with CSS]
+* added flag `--skip-cca` to `cdlib webapproval verify` to exempt trivy scan results from build breaker, since it is optional for webapproval https://git.dhl.com/CDLib/CDlib/issues/683[#683]
+* tutorial for https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/Helm.md[Helm] updated to describe deployment to AKS instead of CaaS for Azure Pipelines and use new helm image from CSS registry containing az-cli https://git.dhl.com/CDLib/CDlib/issues/941[#941]
+* updated tutorial for https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/ContainerImageLifecycle.md[Container Image Lifecycle] to use buildkit for with Azure Pipelines - currently no image signing possible without docker, waiting on cosign
+* https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/SoftwareCompositionAnalysis.md[Software Composition Analysis (SCA) with OWASP Dependency-Check]
+* doesn't require OSS Index Analyzer anymore
+* added NVD update to our daily docker build to speed up dependency-check execution via cli, use `dpdhl.css-thcr-pi.azure.deutschepost.de/cdlib/dependency-check:latest` (IT-S Jenkins currently cannot pull from CSS, so use `docker.artifactory.dhl.com/cdlib/dependency-check:latest`), remove volume mount from Jenkins agent or `--data` option from Azure DevOps and make sure you set the 2 options `--cveValidForHours 48 --noupdate` as well
+* helm is now using OCI based registry in CSS instead of chart museum https://git.dhl.com/CDLib/CDlib/issues/852[#852]https://git.dhl.com/CDLib/CDlib/issues/843[#843]
+* fixed `cdlib names create` empty CDLIB_PM_GIT_LINK environment variable for non Github Enterprise repositories
+* adapted all tutorials to the fact, that Azure DevOps Pipelines can reach IT-S Github directly
+* fixed `cdlib webapproval verify` special characters missing after copying to immutable directory https://git.dhl.com/CDLib/CDlib/issues/975[#975]
+* deprecating https://lcm.deutschepost.de/confluence1/display/TOOL/mOS+als+Azure+Pipelines+Agent[Azure Pipelines Agent Setup] and AzurePipelinesContainerAgent.md because Docker is not conforming to TZA - use xref:KubernetesAsADPAgent.md[Kubernetes as Azure Pipelines Agent]
+* https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/SoftwareCompositionAnalysis.md[Sonarqube Tutorial] adapted to use Kubernetes Agents for Azure Pipelines incl. discontinuation of our own sonarqube image, since we can use the original one now
+* https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/ItsFortify.md[Fortify Tutorial] adapted to use Kubernetes Agents for Azure Pipelines and now image taken from CSS Harbor
+* https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/DynamicApplicationSecurityTestWithZAP.md[Dynamic Application Security Test With OWASP ZAP Tutorial] adapted to use Kubernetes Agents for Azure Pipelines, thus removing support for Azure Container Agents in our image and providing it via CSS Harbor
+* https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/OpenSourceLicenseComplianceScan.md[OSLC with FNCI] adapted to use Kubernetes Agents for Azure Pipelines and providing image via CSS Harbor
+* https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/SoftwareCompositionAnalysis.md[Software Composition Analysis (SCA) with OWASP Dependency-Check for Azure Pipelines] adapted to use Kubernetes Agents and providing image via CSS Harbor
+* added chapter on how to manage the risk of unchecked vulnerabilities for https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/IntegradetWebApproval.md[Integrated Web Approval]
+
+== 5.1 - 2022-06-21
+
+=== Added
+
+* `cdlib names create --override-origin` option to override the origin URL if it's not set in git https://git.dhl.com/CDLib/CDlib/issues/888[#888]
+
+=== Changed
+
+* https://git.dhl.com/CDLib/CDlib/blob/master/vars/nodeContainer.groovy[nodeContainer-step] uses Openshift 4 https://git.dhl.com/CDLib/CDlib/pull/896[#896]
+* https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/Sonarqube.md[Sonarqube Tutorial] now also covers usage of maven-plugin to work with Sonarqube 9.x https://git.dhl.com/SockShop/carts/pull/58[#58]
+* https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/DynamicApplicationSecurityTestWithZAP.md[Dynamic Application Security Test With OWASP ZAP Tutorial] migrated to new ZAP Automation Framework for Jenkins https://git.dhl.com/CDLib/CDlib/issues/830[#830]
+
+== 5.0 - 2022-04-27
+
+=== Added
+
+* tutorial for https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/IntegradetWebApproval.md[Integrated Web Approval] for Jenkins and Azure Pipelines https://git.dhl.com/CDLib/CDlib/issues/504[#504] https://git.dhl.com/CDLib/CDlib/issues/590[#590]
+* https://git.dhl.com/CDLib/CDlib/tree/master/cli#change-close[`cdlib change close`] to replace publishMetrics-Jenkins-Step and make it available for all CI/CD tools https://git.dhl.com/CDLib/CDlib/issues/512[#512]
+* completely rewritten tutorial for https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/ContainerImageLifecycle.md[Container Image Lifecycle]
+* now based on podman and Openshift 4, so we don't need Skopeo anymore https://git.dhl.com/CDLib/CDlib/issues/540[#540]
+* now using CSS Registry https://git.dhl.com/CDLib/CDlib/issues/844[#844]
+* described how to https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/ToolAuthentication.md[create a token for Fortify SSC] https://git.dhl.com/CDLib/CDlib/issues/772[#772]
+* new environment variable `CDLIB_RELEASE_NAME_UNIQUE` created by `cdlib names create`. This is `CDLIB_RELEASE_NAME` + the current timestamp. It used by `cdlib webapproval record` for the folder creation in the immutable repository https://git.dhl.com/CDLib/CDlib/issues/794[#794]
+* tutorial for using https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/Buildkit.md[BuildKit on IT-S Jenkins] as a faster alternative to podman
+
+=== Changed
+
+* tutorial for https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/Helm.md[Helm] updated to describe usage of CSS Registry https://git.dhl.com/CDLib/CDlib/issues/845[#845]
+* https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/ItsFortify.md[Fortify Tutorial]
+* fix build breaker, use OR instead of &amp; to search for either high or critical findings https://git.dhl.com/CDLib/CDlib/issues/778[#778]
+* added chapter explaining how to upload report for SSC https://git.dhl.com/CDLib/CDlib/issues/772[#772]
+* remove remote scan as it was discontinued at then end of 2021 https://git.dhl.com/CDLib/CDlib/issues/772[#772]
+* fix gopath for Azure Pipelines, needs to be absolute, not relative and can't vary between builds/agents https://git.dhl.com/CDLib/CDlib/issues/775[#775]
+* extended for .NET with Azure Pipelines https://git.dhl.com/CDLib/CDlib/issues/550[#550]
+* extended for .NET with IT-S Jenkins https://git.dhl.com/CDLib/CDlib/issues/546[#546]
+* updated to Fortify SCA 21.2.3 with Log4j 2.17.1 https://git.dhl.com/CDLib/CDlib/issues/785[#785]
+* https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/DynamicApplicationSecurityTestWithZAP.md[Dynamic Application Security Test With OWASP ZAP Tutorial]
+* hardened to use full scan https://git.dhl.com/CDLib/CDlib/issues/584[#584] for Jenkins https://git.dhl.com/CDLib/CDlib/issues/752[#752] and Azure Pipelines https://git.dhl.com/CDLib/CDlib/issues/753[#753] showcases
+* use build breaker from cdlib-cli to avoid breaks on low findings https://git.dhl.com/CDLib/CDlib/issues/846[#846]
+* use Python for authentication script https://git.dhl.com/CDLib/CDlib/issues/827[#827]
+* updated `cdlib archive upload` and `cdlib webapproval record` to add and validate `archiveType` property of Artifactory directories, exactly one of type "release" and at least one of type "build" https://git.dhl.com/CDLib/CDlib/issues/707[#707]
+* improved usage of `cdlib webapproval record`
+* to check .fpr (Fortify SAST reports) for high and critical vulnerabilities and suppressions https://git.dhl.com/CDLib/CDlib/issues/677[#677]
+* better error message if the connection to iShare fails due to connectivity or credentials https://git.dhl.com/CDLib/CDlib/issues/793[#793]
+* using environment variable `CDLIB_RELEASE_NAME_UNIQUE` if `--release-name` option is not specified. Fallback is environment variable `RELEASE_NAME` https://git.dhl.com/CDLib/CDlib/issues/792[#792]
+* validation of https://isharenew.dhl.com/sites/ITRM/webapproval/request/Approval%20Documents/Forms/AllItems.aspx[Approval Documents in iShare] https://git.dhl.com/CDLib/CDlib/issues/612[#612]
+* improved usage of https://git.dhl.com/CDLib/CDlib/tree/master/cli#azure-devops-pipelines-1[`cdlib names create` for Azure Pipelines]
+* by fixing git envs, removing stash and providing sample pipelines https://git.dhl.com/CDLib/CDlib/issues/593[#593]
+* using `Build.BuildID` instead of `Build.BuildNumber` for `CDLIB_BUILD_NUMBER` and related environment variables https://git.dhl.com/CDLib/CDlib/issues/796[#796]
+* updated https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/AzurePipelinesGithubCheckout.md[Github Checkout with Azure Pipelines]
+* to use create names templates https://git.dhl.com/CDLib/CDlib/issues/593[#593]
+* to also explain the integrated checkout method with https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/ItsGithub.md[IT-S Github]
+* updated https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/Build.md[Build for Azure Pipelines] to use create names vars https://git.dhl.com/CDLib/CDlib/issues/593[#593] and also provide samples for npm and gradle
+* updated https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/Build.md[Helm for Azure Pipelines] to use create names vars https://git.dhl.com/CDLib/CDlib/issues/593[#593]
+* https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/SoftwareCompositionAnalysis.md[Software Composition Analysis (SCA) with OWASP Dependency-Check for Azure Pipelines]
+* updated to use create names vars https://git.dhl.com/CDLib/CDlib/issues/593[#593]
+* switched retirejs download URL to IT-S provided source
+* https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/ContainerImageSecurityScan.md[Container Composition Analysis (CCA) with Trivy] pinned to v0.22 as v0.23 breaks current usage, https://git.dhl.com/CDLib/CDlib/issues/720[migration to Harbor CSS in progress]
+* https://git.dhl.com/CDLib/CDlib/blob/master/vars/README.md#setartifactoryproperty[setArtifactoryProperty step] allows usage of Artifactory API-Key as a SecretText credential https://git.dhl.com/CDLib/CDlib/issues/711[#711]
+* https://git.dhl.com/CDLib/helm_cli[helm-cli-image] updated to openshift client (oc) v4 and kubectl v1.19 https://git.dhl.com/CDLib/CDlib/issues/540[#540]
+* allow custom override for https://git.dhl.com/CDLib/CDlib/blob/master/vars/beforeProd.groovy[GSN change description] https://git.dhl.com/CDLib/CDlib/pull/800[#800]
+* tutorial for https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/AcceptanceTestsWithSeleniumWebdriverAndItsSeleniumGrid.md[Acceptance Tests with Selenium] changed from Selenium Grid to Chrome headless https://git.dhl.com/CDLib/CDlib/issues/540[#540]
+* https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/DynamicApplicationSecurityTestWithZAP.md[Dynamic Application Security Test With OWASP ZAP Tutorial] adapted path to new log for archiving in Azure DevOps
+* https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/ItsJenkins.adoc[IT-S Jenkins] now based on Openshift 4 and requiring NAT to communicate with T-Systems Managed Azure Cloud https://git.dhl.com/CDLib/CDlib/issues/540[#540]
+* https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/OpenSourceLicenseComplianceScan.md#checking-and-approving-findings[OSLC with FNCI] can ignore CVEs in case you also use OWASP Dependency-Check
+
+=== Removed
+
+* old license check
+* old build tool wrapper
+* tutorials
+* CaaS
+* Lighthouse
+* DevOps Security Guideline
+* Dynatrace Openshift
+* Performance Signature
+* Pipeline User Stories
+* Jenkins library steps
+* buildRemoteDemoproject
+* buildRemoteJob
+* *checkoutSCM*
+* *createNames*
+* curlDownload
+* exec
+* findArtifact
+* getTokenFromUsernamePassword
+* *publishMetrics*
+* replaceFileContent
+* *setArtifactoryProperty*
+* *setBuildName*
+* setupLocalGit
+* *scanWithFortify*
+* *staticSecurityAnalysis*
+* validateMail
+* withAzureCredentials
+
+== [4.10.0] - 2021-12-16
+
+=== Added
+
+* detail page about https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/LCMArtifactory.md[LCM Artifactory] https://git.dhl.com/CDLib/CDlib/issues/614[#614]
+* detail page about https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/LCMSonarqube.md[LCM Sonarqube] https://git.dhl.com/CDLib/CDlib/issues/755[#755]
+
+=== Changed
+
+* `cdlib webapproval record` extended to
+* store the security reports immutably inside another repo, that is accessible by security department by default https://git.dhl.com/CDLib/CDlib/issues/614[#614]
+* check provided ZAP DAST security test reports for high and critical findings https://git.dhl.com/CDLib/CDlib/issues/681[#681]
+* check provided ODC SCA security test reports
+** for high and critical findings https://git.dhl.com/CDLib/CDlib/issues/679[#679]
+** whether a current NVD database is used https://git.dhl.com/CDLib/CDlib/issues/736[#736]
+* break the pipeline in case any of the checks above fail https://git.dhl.com/CDLib/CDlib/issues/685[#685]
+* `cdlib archive upload` extended to optionally check the reports prior upload for security clearance (same check that `cdlib webapproval record` performs) https://git.dhl.com/CDLib/CDlib/issues/706[#706]
+* https://git.dhl.com/CDLib/CDlib/tree/master/cli#names-create-create-names[`cdlib names create`] extended to be used inside Jenkins https://git.dhl.com/CDLib/CDlib/issues/593[#593]
+* with `withCdlibCliNamesCreate` that converts output from `cdlib names create` to Jenkins environment variables https://git.dhl.com/CDLib/CDlib/issues/593[#593]
+* deprecated `createNames`, will be removed with next major release, use https://git.dhl.com/CDLib/CDlib/tree/master/cli#names-create-create-names[`cdlib names create`] instead https://git.dhl.com/CDLib/CDlib/issues/593[#593]
+* https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/SoftwareCompositionAnalysis.md[Software Composition Analysis (SCA) with OWASP Dependency-Check] hardened to use OSSIndex-Analyzer (in case of Gradle, you need to switch to CLI), RetireJS, NPMAudit and also create a json report, to be used for `cdlib webapproval record` https://git.dhl.com/CDLib/CDlib/issues/585[#585]
+* https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/ItsFortify.md[Fortify Tutorial]
+* setting the `-Xmx` option in containerized environments to prevent out-of-memory problems, allowing us to reduce the needed agent resources up to 80%, please adapt your config too https://git.dhl.com/DSSFortify-10072/FortifyCloudScanClientImage/issues/6[#6]
+* hardened to break also for high findings, list scanned files and detected issues - also added a better description how to manage false-positives with Jenkins https://git.dhl.com/CDLib/CDlib/issues/583[#583]
+* update to Fortify 21.1.2 https://git.dhl.com/CDLib/CDlib/issues/705[#705]
+* Azure DevOps Pipeline Agents now based on mOS (instead of MCOS) - moved documentation to https://lcm.deutschepost.de/confluence1/display/TOOL/mOS+als+Azure+Pipelines+Agent[Azure DevOps Confluence]
+* https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/Sonarqube.md[Sonarqube Tutorial]
+* now also covers LCM Sonarqube https://git.dhl.com/CDLib/CDlib/issues/756[#756]
+* reduced to only showcase scan via cli to reduce maintenance efforts
+* removed unnecessary withCredential block, quality gate check and branch magic for PRs, as it works out of the box now
+* https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/DynamicApplicationSecurityTestWithZAP.md[Dynamic Application Security Test With OWASP ZAP Tutorial] extended to give more guidance on how to interact with user interface, e. g. to create context file
+* https://git.dhl.com/CDLib/CDlib/tree/master/vars#staticsecurityanalysis[staticSecurityAnalysis step] updated to use new MMS Fortify URL https://sec-scan.t-systems-mms.com/ as default
+
+== [4.9.0] - 2021-11-05
+
+=== Added
+
+* introducing the new https://git.dhl.com/CDLib/CDlib/blob/master/cli/README.md[CDlib-CLI] providing
+* `cdlib archive upload` to upload files to LCM-Artifactory, as part of ISHP and integrated web approval https://git.dhl.com/CDLib/CDlib/issues/503[#503]
+* `cdlib names create` a command to create environment variables, e.g. to be used for container tags, helm chart versions or build report release names for Azure DevOps Pipelines https://git.dhl.com/CDLib/CDlib/issues/593[#593]
+* `cdlib webapproval record` to record production deployments inside security`s iShare. https://git.dhl.com/CDLib/CDlib/issues/613[#613]
+
+=== Changed
+
+* https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/SoftwareCompositionAnalysis.md[Software Composition Analysis (SCA) with OWASP Dependency-Check]
+* change NVD proxy configuration to always have the latest database - PLEASE UPDATE ACCORDINGLY IMMEDIATELY TO AVOID SECURITY RISKS https://git.dhl.com/CDLib/CDlib/issues/585[#585]
+* extended to showcase usage inside Azure Pipelines https://git.dhl.com/CDLib/CDlib/issues/655[#655]
+* extended to showcase usage for Golang inside Jenkins https://git.dhl.com/CDLib/CDlib/issues/380[#380]
+* https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/ContainerImageSecurityScan.md[Container Composition Analysis (CCA) with Trivy] can now be used again with versions higher than 0.16 with option `--vuln-type os` to skip internet check of maven central
+* https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/DynamicApplicationSecurityTestWithZAP.md[Dynamic Application Security Test With OWASP ZAP Tutorial] extended to showcase
+* usage inside Azure Pipelines https://git.dhl.com/CDLib/CDlib/issues/518[#518]
+* handling false-positives https://git.dhl.com/CDLib/CDlib/issues/662[#662]
+* adding a build breaker https://git.dhl.com/CDLib/CDlib/issues/652[#652]
+* https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/Terraform.md[Terraform] extended to showcase usage inside Azure Pipelines https://git.dhl.com/CDLib/CDlib/issues/285[#285]
+* https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/OpenSourceLicenseComplianceScan.md[Opensource License Compliance] extended to showcase usage inside Azure Pipelines https://git.dhl.com/CDLib/CDlib/issues/280[#280]
+* https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/ItsFortify.md[Fortify Tutorial] for Azure Pipelines fixed src-parameter which would always be ignored https://git.dhl.com/CDLib/CDlib/issues/717[#717]
+* https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/AzurePipelinesGithubCheckout.md[Github Checkout with Azure Pipelines] improved to not have concurrency problem https://git.dhl.com/CDLib/CDlib/issues/729[#729]
+
+== [4.8.0] - 2021-08-13
+
+=== Changed
+
+* https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/ItsFortify.md[Fortify Tutorial] now also covers Azure Pipelines and local scan option can filter false-positives
+* https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/Sonarqube.md[Sonarqube Tutorial] now also covers Azure Pipelines
+* https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/DynamicApplicationSecurityTestWithZAP.md[Dynamic Application Security Test With OWASP ZAP Tutorial] extended to showcase authentication and how to use a proxy for scanning
+* removed `${env.JOB_NAME}` from the customWorkspace in the agent configuration as it lead to multiple errors with git flow. https://git.dhl.com/CDLib/CDlib/issues/625[related issue #625]
+
+== [4.7.0] - 2021-06-03
+
+=== Changed
+
+* added section about using Azure blob storage for https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/Terraform.md[Terraform] remote state instead of using Artifactory, so it is encrypted and lockable
+* improve https://git.dhl.com/CDLib/CDlib/tree/master/vars#publishmetrics[publishMetrics step] to accept an ITR number as ICTO parameter
+* link to CVE database provided by NIST for https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/DependencyCheck.md[Dependency Check] has changed, since the old proxy in artifactory didn't always catch the latest version (which is bad for CVEs)
+* fix code inclusion from sample config.jenkins for https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/Sonarqube.md#go[Sonarqube scan of GO with Jenkins]
+
+== [4.6.0] - 2021-05-14
+
+=== Added
+
+* tutorial: https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/DynamicApplicationSecurityTestWithZAP.md[Dynamic Application Security Test With OWASP ZAP] for Jenkins
+* tutorial: https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/AzurePipelinesGithubCheckout.md[Github Checkout] with Azure Pipelines
+* tutorial: https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/AzurePipelinesContainerAgent.md[Using Containers as Agent with Azure Pipelines]
+
+=== Changed
+
+* enhanced tutorial: https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/Helm.md[Helm] modernized for Jenkins and enhanced for Azure Pipelines in combination with CaaS
+* enhanced tutorial: https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/Terraform.md[Terraform] added Terraform blue-green deployment with Jenkins and merged with formerly separate IaC tutorial
+* https://git.dhl.com/CDLib/CDlib/tree/master/vars#createNames[createNames] creates an additional env.RELEASE_NAME_HELM to be used for helm releases, since their name can only be 53 characters long
+* updated tutorial https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/ActiveDirectoryGroups.md[AD groups] to use RequestIT Nextgen - to migrate your group just open a ticket via RequestIT for `MDS` and assign it to `Lars Harzer`
+* https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/ContainerImageLifecycle.md#using-other-registries-on-it-s-jenkins[explain how to use Skopeo] to use other registries besides IT-S Artifactory inside IT-S Jenkins Openshift v3 agents
+* improved tutorial https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/ToolAuthentication.md[Tool Authentication] to describe how to handle secrets inside Azure Pipelines
+
+== [4.5.0] - 2021-03-24
+
+=== Added
+
+* tutorial: https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/IaCdeploymentVerifactionWithInspec.md[Deployment Verification with Inspec]
+
+=== Changed
+
+* tutorial: upgrade to https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/ItsFortify.md[Fortify] v20.1 so we no longer require a rule update, so local scan doesn't require connection to SSC anymore
+
+== [4.4.0] - 2021-03-12
+
+=== Added
+
+* tutorial: https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/ContainerImageSecurityScan.md[Container Image Security Scan with Trivy]
+
+=== Changed
+
+* added an overview graphic to our https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/KubernetesAsJenkinsAgent.md[Kubernetes Jenkins Agent tutorial]
+* tutorial: https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/ItsFortify.md[Fortify] enhanced with GO sample and fixed build breaker
+* tutorial: https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/Sonarqube.md[Sonarqube] enhanced with build breaker and Github Pull Request decorators
+* improve GSN steps https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/ItsGSN.md[Change Management via IT-S GSN]
+* added LCM tooling as viable options for pipelines regarding the https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/PolicyChangeRequests.md[change management policy]
+* tutorial: https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/OpenSourceLicenseComplianceScan.md[OSLC] and
+ https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/FlexNetCodeInsight.md[FNCI] updated with new FNCI project
+ structure (scan alias), scan exclusions and NPM example
+
+== [4.3.0] - 2021-01-12
+
+=== Changed
+
+* enhanced https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/PipelineTypes.md[Pipeline Types overview] with infrastructure pipeline
+* updated https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/TerraformQualityChecks.md[Quality Checks for Terraform] with Azure Security Center
+* https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/ItsFortify.md[Fortify] add information how to create more detailed reports
+* improved publishTQSReport step when running on a Jenkins Agent. Doesn't need to download publisher jar from git anymore.
+
+== [4.2.0] - 2020-11-30
+
+=== Added
+
+* Info page: https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/AzureDevOpsPipelines.md[Azure DevOps Pipelines]
+* Decision Guide: https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/PickingTheRightCICDTool.md[Picking The Right CI/CD Tool]
+* tutorial: https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/ItsOpenshift.md[IT-S Openshift]
+* tutorial: https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/TsystemsCaaS.md[T-Systems Container as a Service (CaaS)]
+* tutorial: https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/TsystemsAzureI.md[T-Systems Azure I]
+* tutorial: https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/InfrastructureasCode.md[Infrastructure as Code]
+* tutorial: https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/GettingStarted.md[Getting Started]
+
+=== Changed
+
+* https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/Unittest.adoc[Unit Test] tutorial now also covers `Azure DevOps Pipelines` with unit test execution as part of multi-stage container build and `Golang`
+* https://git.dhl.com/CDLib/CDlib/tree/master/vars#publishmetrics[publishMetrics] marks builds as `keep forever` in case they performed a deployment to production, so the audit trail won't be lost
+* https://git.dhl.com/CDLib/CDlib/tree/master/vars#publishmetrics[publishMetrics] now reports the CI/CD tool being used, in this case `Jenkins`
+* tutorial: https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/Terraform.md[Terraform] updated
+* https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/Build.md[Build] tutorial now also covers `Azure DevOps Pipelines` with multi-stage container builds and `Golang`
+* https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/ItsFortify.md[Fortify] is now independent of (IT-S) Jenkins and simplified with local scanning option
+
+== [4.1.1] - 2020-10-30
+
+=== Changed
+
+* createNames escape double quotes for publishMetrics reporting
+
+== [4.1.0] - 2020-10-29
+
+=== Added
+
+* https://devops.deutschepost.de/app/kibana#/dashboard/a97dba00-f1c2-11ea-b978-731ef3e245e6[MOD Dashboard: _PROD Deployments last 8 days_]
+
+=== Changed
+
+* Tutorial: https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/KubernetesAsJenkinsAgent.md[Jenkins Agent Kubernetes]
+* createNames creates additional environment variables based on your last commit like author, commit message and link to origin
+* publishMetrics reports additional information about the last git commit
+
+== [4.0.0] - 2020-09-22
+
+=== Added
+
+* Tutorial: https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/TerraformQualityChecks.md[Quality Checks for Terraform]
+* Tutorial: https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/SecretsAzureKeyVault.md[Usage of secrets via Azure Key Vault]
+* Tutorial: https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/SelfHostedMCOSAgentADP.md[Deploy self-hosted MCOS Agents for Azure DevOps Pipeline]
+* Tutorial: https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/DependencyCheck.md[Dependency Check]
+* Tutorial: https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/AcceptanceTestsWithSeleniumWebdriverAndItsSeleniumGrid.md[Acceptance Tests with Selenium Webdriver and IT-S Selenium Grid]
+* Tutorial: https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/LintingContainerSpecification.md[Linting Container Specification]
+* Tutorial: https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/Terraform.md[Infrastructure as Code with Terraform]
+* Link to Tutorial: https://git.dhl.com/DevOpsCoaches/simplenodeapp#welcome-to-the-cicd-basics-tutorial[Learn how to build your first pipeline interactively]
+
+=== Changed
+
+* createNames steps config takes a `path` parameter which should point to the directory where your build file is located
+* add build breaker for https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/OpenSourceLicenseComplianceScan.md[OSLC with FNCI]
+* enhance https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/ItsFortify.md[Fortify tutorial] with `yarn` and `gradle` samples and provide simple scan option
+* createNames exposes `env.TERRAFORM_PREFIX` for usage in terraform pipelines
+
+=== Removed
+
+* OpenShift classes
+* Maven class
+* Gradle class
+* buildToolWrapper step
+* compile step
+* runBuildCommand step
+* unitTest step
+* openSourceLicenseCheck step, use https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/OpenSourceLicenseComplianceScan.md[Open Source License Compliance Scan with FlexNet Code Insights] instead
+* find step, use official https://www.jenkins.io/doc/pipeline/steps/pipeline-utility-steps/#findfiles-find-files-in-the-workspace[findFiles step] instead
+* gitBranch, gitCommit, gitPush, gitTag, withGit steps, use setupLocalGit step and git cli
+* initialize step, use createNames step instead
+* newPromoteVersion step
+* promoteContainerImage step
+* promoteHelmChart step
+* deleteHelmLifeCycleChart step
+* execRemote step
+* updateDefaultBranch step
+* installHelm step, use https://git.dhl.com/CDLib/helm_cli[Helm cli] instead
+* codeDiff step
+
+== [3.13.0] - 2020-07-29
+
+=== Added
+
+* Tutorial: https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/OpenSourceLicenseComplianceScan.md[Open Source License Compliance Scan with FlexNet Code Insights]
+* Tutorial: https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/WebVitalityTestWithGoogleLighthouse.md[Web Vitality Test with Google Lighthouse]
+* Tutorial: https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/DynatraceItsOpenshift.md[Dynatrace on IT-S Openshift]
+* Tutorial: https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/PerformanceSignatureWithDynatrace.md[Performance Signature with Dynatrace] (https://git.dhl.com/CDLib/CDlib/issues/41[#41])
+
+=== Changed
+
+* https://git.dhl.com/CDLib/CDlib/blob/master/vars/README.md#createnames[createNames step] env.EFFECTIVE_BRANCH_NAME and env.SANITIZED_BRANCH_NAME for usage in https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/Helm.md[Helm]
+* https://git.dhl.com/CDLib/CDlib/blob/master/vars/README.md#createnames[createNames step] env.RELEASE_NAME_FORTIFY for usage with https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/ItsFortify.md[IT-S Fortify]
+* improve tutorial for https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/ItsGSN.md[Change Management via IT-S GSN]
+* publishMetrics now adds a timestamp to the ID so you can deploy the same version multiple times without it failing your build and overwriting the statistics (https://git.dhl.com/CDLib/CDlib/blob/master/https://git.dhl.com/CDLib/CDlib/issues/330[#330])
+
+== [3.12.0] - 2020-05-15
+
+=== Added
+
+* https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/ContainerImageLifecycle.md[Container Image Lifecycle Guide]
+* `setArtifactoryProperty` step
+* `scanWithFortify` step
+* `getTokenFromUsernamePassword` step
+* `findArtifact` step
+* tutorial: https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/ItsFortify.md[Security Scan with ITS Fortify]
+* tutorial: https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/ItsArtifactory.md[IT-S managed Artifactory]
+* tutorial: https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/ItsSonarqube.md[IT-S managed Sonarqube]
+* tutorial: https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/ItsGithub.md[IT-S managed Github]
+* tutorial: https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/ToolAuthentication.md[Integrating tools with technical user authentication]
+* tutorial: https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/Sonarqube.md[Static Code Analysis With IT-S Sonarqube]
+* tutorial: https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/JenkinsPipelineConfig.md[Jenkins Pipeline Configuration]
+* tutorial: https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/UnitTest.md[Unit Testing]
+* tutorial: https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/Build.md[Build]
+* tutorial: https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/ActiveDirectoryGroups.md[Active Directory Groups]
+* https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/DevopsSecurityGuideline.md[DevOps Security Guidelines]
+
+=== Changed
+
+* createNames exposes `env.CONTAINER_TAG` for usage in container image creation
+* using Maven shell command for SonarQube Code Analysis instead of Maven class method
+* xref:6.1/Tutorials/Helm.md[Helm Chart Lifecycle Guide] integrated with Starter Guide
+* xref:6.1/Tutorials/ContainerImageLifecycle.md[Container Image Lifecycle Guide] updated
+* promoteHelmChart and promoteContainerImage step is now deprecated - use xref:6.1/Tutorials/Helm.md[2 different virtual helm repositories] and our new xref:vars/README.md#setartifactoryproperty[setArtifactoryProperty step]
+* xref:6.1/Tutorials/KubernetesAsJenkinsAgent.md[Kubernetes as Jenkins Agent] updated
+* Maven class is now deprecated - use cli as shown in how-to, like xref:6.1/Tutorials/Sonarqube.md[sonarqube]
+* Gradle class is now deprecated - use cli as shown in how-to, like xref:6.1/Tutorials/Sonarqube.md[sonarqube]
+* Openshift class is now deprecated - use xref:6.1/Tutorials/Helm.md[helm]
+* initialize step is now deprecated - use xref:../vars/README.md#createnames[createNames step]
+* cleanup READMEs for better browsability
+
+=== Removed
+
+* templates - mandatory steps (P&amp;P only) now just a https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/PolicyChangeRequests.md[list]
+
+== [3.11.0] - 2020-01-23
+
+=== Added
+
+* https://git.dhl.com/CDLib/CDlib/tree/master/template#policy-change-requests-bu-pp-only[requirements] to fulfill policy "Change Requests" (BU P&amp;P only) added
+* https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/ItsJenkins.adoc[How-To for centrally managed IT-S Jenkins]
+
+=== Changed
+
+* fixes Maven `uploadToNexus` on Jenkins Agent #138
+* createNames adds `BRANCH_NAME` to `CHART_NAME` #128
+* publishMetrics now replaces special characters in RELEASE_NAME to underscore #139
+
+== [3.10.1] - 2019-12-06
+
+=== Changed
+
+* createNames now also prints the generated env.CHART_VERSION #129
+
+== [3.10.0] - 2019-12-03
+
+=== Added
+
+* https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/HelmStarterGuide.md[Helm Starter Guide]
+* how-to for https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/KubernetesAsJenkinsAgent.md[Kubernetes as Jenkins Agent]
+* https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/Pipeline.md[template user stories] to create pipelines with CDLib
+* step `nodeContainer` from former multicontainer library
+* step `buildRemoteJob` to build a Job on another Jenkins via SSH
+
+=== Changed
+
+* publishMetrics can now be overwritten to recognize a deployment to production #101
+* createNames updated to create build variables from Build RELEASE_NAME for Split Pipeline #114
+* deprecated Openshift integration, use https://git.dhl.com/CDLib/CDlib/blob/master/tutorials/HelmStarterGuide.md[Helm] instead
+* deprecated the steps `withGit`, `gitCommit`, `gitBranch`, `gitPush`, `gitTag` use git cli with `setupLocalGit`
+
+== [3.9.0] - 2019-11-01
+
+=== Added
+
+* promoteHelmChart step
+* setupLocalGit step that leverages using jenkins credentials store with git cli
+* Maven build config parameters mavenExecutable and mavenContainer to support execution in kubernetes
+
+=== Changed
+
+* Maven dependencyCheck build breaker can be optionally disabled with the config variable `buildBreaker`
+* openSourceLicenseCheck build breaker can be optionally disabled with the config variable `buildBreaker`
+* createNames fixed bug with wrong `APP_NAME` in Github organizations
+* createNames exposes `env.CHART_VERSION` for usage in helm package or `promoteHelmChart`
+
+== [3.8.2] - 2019-09-26
+
+=== Added
+
+* environment variable `DeployedToProduction` in publishMetrics #45
+
+=== Changed
+
+* environment variable `SuccessfullyDeployedToProduction` additionally reflects the build status (as the name implies) #45
+
+== [3.8.1] - 2019-09-18
+
+=== Changed
+
+* fix unitTest() step not properly aborting build on unit test error count over thresholds
+
+== [3.8.0] - 2019-09-17
+
+=== Added
+
+* environment variable `SuccessfullyDeployedToProduction` in publishMetrics #45
+
+=== Changed
+
+* publishMetrics doesn't need credentials anymore and outputs response log
+* devops.deutschepost.de dashboards are now public #32
+* improved error handling with Maven
+
+== [3.7.0] - 2019-09-02
+
+=== Added
+
+* template for split pipelines
+* GSNLib integrated into CDLib
+
+=== Changed
+
+* installHelm step installs Helm v3
+* publishTQS to use short filenames #30
+
+== [3.6.2] - 2019-08-16
+
+=== Changed
+
+* fix NonCPSException in Maven during openSourceLicenseCheck
+
+== [3.6.1] - 2019-08-01
+
+=== Changed
+
+* publishMetrics ignores ssl errors
+* teamforgeDocumentUpload checkouts teamforgeUploader jar if it is not present (e.g. in a kubernetes pod)
+
+== [3.6.0] - 2019-07-30
+
+=== Added
+
+* teamforgeDocumentUpload step
+
+=== Changed
+
+* PipelineComplexity removed warning as it can trigger a _NotSerializableException_
+
+== [3.5.0] - 2019-07-15
+
+=== Added
+
+* validateMail step
+
+=== Changed
+
+* PipelineComplexity handles empty or absent loaded files with proper warning now
+* openSourceLicenseCheck fixed bug with `updateSnapshots` settings
+* OpenShift `create` and `apply` method has an optional `waitReadyDelayInSeconds`
+
+== [3.4.0] - 2019-06-18
+
+=== Changed
+
+* publishMetrics improved error checking of environment and configuration
+* publishMetrics added configuration option _prodStageName_ which defaults to *"PROD"*
+* MavenTest rewritten to use JenkinsSpock
+
+== [3.3.0] - 2019-05-02
+
+=== Added
+
+* installHelm step
+* runBuildCommand step
+* updateDefaultBranch step
+
+=== Changed
+
+* createNames can use a timestamp as version and creates additional environment variables
+* publishMetrics provides stack trace of the error in Console Log and error added to the notification mail
+
+== [3.2.0] - 2019-03-29
+
+=== Added
+
+* withAzureCredentials step
+
+=== Changed
+
+* codeDiff is now optional in the openSourceLicenseCheck step. default: false
+
+== [3.1.0] - 2019-03-13
+
+=== Added
+
+* openSourceLicenseCheck support for Gradle
+
+=== Changed
+
+* implicit parameter licenseInformationProvider for openSourceLicenseCheck
+
+== [3.0.0] - 2019-03-04
+
+=== Added
+
+* publishMetrics reports the pipeline complexity
+* Artifactory support for Maven
+* offline mode for Maven
+* additional configuration options for openSourceLicenseCheck step that are delegated to the build tool
+* maven profiles can be used in `staticCodeAnalysisSonar()` method
+
+=== Changed
+
+* removing change management from template (publishMetrics is more versatile)
+* publishTQSReport is now integrated in publishMetrics, no need to call it explicitly anymore
+
+____
+
+You need to adapt your config.jenkins! Move the config of tqs section to the metrics section and rename `credentialsId` (of former tqs section) to `lcmCredentialsId`). Furthermore you also need to rename `credentialsId` (of former metrics section) to `metricsCredentialsId`. Lastly you need to call publishMetrics with the whole config, not just config.metrics.
+
+____
+
+* template introduces sequential sub-stages for an even better status overview
+* LicenseInformationProvider interface takes a Map as input parameter
+
+=== Removed
+
+* deprecated static helper class OLSC - no change in the `openSourceLicenseCheck step`
+* `sendMail` and `handleError`, use `mail` step instead as shown in xref:code/git/projects.testfactory_infrastruktur/scm.tf_cd_standardbibliothek/file/template/Jenkinsfile[template], xref:code/git/projects.testfactory_infrastruktur/scm.tf_cd_demoprojekt/file/Jenkinsfile[petclinic], xref:code/git/projects.testfactory_infrastruktur/scm.Dinoclinic/file/Jenkinsfile[dinoclinic] or https://jenkins.io/doc/pipeline/tour/post/#email[here]
+
+____
+
+You need to adapt your config.jenkins! Rename the section `mail` to `approval` and edit like shown in our xref:code/git/projects.testfactory_infrastruktur/scm.tf_cd_standardbibliothek/file/template/Jenkinsfile[template].
+
+____
+
+* rm step
+
+== [2.3.0] - 2018-12-21
+
+=== Added
+
+* initialize step which detects and initializes the build tool and some environment variables
+* compile step which executes the `build` method on the detected build tool
+* unitTest step which executes the `unitTest` method on the detected build tool
+* pipeline durability hint to Jenkinsfile template
+* initial Gradle support
+* env.RELEASE_VERSION that is created by initialize/createNames step to be used as e.g. docker tag
+* major latest tag additionally to minor latest tag (use tag `2.Latest`)
+
+=== Changed
+
+* createNames uses the initialize steps environment variables to detect the version
+* publishMetrics now accepts a proxy, has a default timeout of 30s, reports all builds and reports the ICTO
+* XUnit defaults `skipNoTestFiles` to false
+
+== [2.2.0] - 2018-09-28
+
+=== Added
+
+* dependencyCheck() method additionally checks for available dependency updates
+* implicit stash/unstash for the TQSReport
+* OpenShift apply method
+* OpenShift createGreyStacks for setting up miscellaneous things
+
+=== Changed
+
+* OpenShift checks for branch and revision in waitForBuilds() method
+* staticSecurityAnalysis step uses new Plugin and has slightly changed configuration
+
+=== Removed
+
+* directory path from archived artifacts in Jenkins artifact view
+
+== [2.1.0] - 2018-08-29
+
+=== Added
+
+* createNames (to easily derive releasenames)
+* default parameter –update-snapshots in Maven class
+* dependencyCheck() method to Maven class
+* publishMetrics step (for reporting)
+
+=== Removed
+
+* operational approval ("BFR") from template
+
+== [2.0.0] - 2018-06-29
+
+=== Added
+
+* staticSecurityAnalysis step (Fortify support)
+* withGit step
+* gitBranch step
+* gitCommit step
+* gitPush step
+* replaceFileContent step
+
+=== Changed
+
+* Renamed createGitTag step &rarr; gitTag step
+
+=== Removed
+
+* CheckMarx_MMS class (not supported anymore)
+* loadConfig step
+
+== [1.2.0] - 2018-05-31
+
+=== Added
+
+* Add OpenShift DSL
+
+== [1.1.0] - 2018-03-29
+
+=== Added
+
+* codeDiff step
+* openSourceLicenseCheck step
+
+== [1.0.0] - 2018-02-01
+
+=== Added
+
+* declarative pipeline template
+* find step
+* getResources step (for internal usage)
+* publishTQSReport step
+* rm step
+* sendMail step
+* Panther pipeline plugin dependency (needed for CheckMarx)
+
+=== Changed
+
+* default constructor for Maven and CheckMarx class
+* CheckMarx uses the panther pipeline plugin and a new configuration format
+* Maven has a new default directory, codeCoverage is enabled per default
+
+=== Removed
+
+* addJobLinkToSidebar step (deprecated by Blue Ocean)
+* sidebar link plugin dependency
+* stage view plugin dependency (superseded by Blue Ocean)
+* folder plugin dependency (not supported in Blue Ocean)
+* findFiles step (is superseded by the find step)
+* printDebug step (was nowhere used)

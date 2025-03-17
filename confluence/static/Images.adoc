@@ -1,0 +1,69 @@
+= Images
+:toc:
+:keywords: latest
+
+We provide a few images to be used inside a CI/CD pipeline where no official image exists or the official image lacks some capabilities.
+
+Each image is built, tested as Azure Pipeline Container (Kubernetes, Podman and Docker) and as Jenkins Kubernetes Agent and released automatically every day.
+
+The pipelines can be found https://dev.azure.com/sw-zustellung-31b3183/ICTO-3339_SDM/_build?definitionScope=%5CImages[inside Azure Pipelines].
+
+The dockerfiles can be found https://dev.azure.com/sw-zustellung-31b3183/ICTO-3339_SDM/_git/Images[inside Azure Repos].
+
+== List of Images
+
+|===
+| Image | Ingredients | Pull
+
+| azure-pipelines-agent
+| azure-pipelines-agent to be used inside kubernetes, e.g. with KEDA
+| dpdhl.css-thcr-pi.azure.deutschepost.de/cdlib/azure-pipelines-agent:3.latest
+
+| Dependency-Check
+| dependency-check
+| dpdhl.css-thcr-pi.azure.deutschepost.de/cdlib/dependency-check:latest
+
+| fnci
+| Revenera (former FlexNet) Code Insights
+| dpdhl.css-thcr-pi.azure.deutschepost.de/cdlib/fnci:latest
+
+| fortify
+| Fortify SCA Toolset, copied from https://git.dhl.com/DSSFortify-10072/FortifyCloudScanClientImage[IT-S Fortify Image]
+| dpdhl.css-thcr-pi.azure.deutschepost.de/cdlib/fortify:latest
+
+| helm
+a|
+* helm3 with plugins
+** artifactory
+** chart-museum (css harbor legacy)
+** helm-secrets
+* kubectl
+* azure-cli with az-devops-extension
+* rancher-cli (caas)
+* openshift-cli
+* jq
+* fluxcd
+* cosign
+| dpdhl.css-thcr-pi.azure.deutschepost.de/cdlib/helm:latest
+
+| octane
+| Micro Focus toolset for ALM Octane test reporting https://github.com/MicroFocus/bdd2octane[bdd2octane.jar] and https://github.com/MicroFocus/octane-collection-tool[test-result-collection-tool.jar]
+| dpdhl.css-thcr-pi.azure.deutschepost.de/cdlib/octane:latest
+
+| terraform
+a|
+* terraform
+* ansible
+| dpdhl.css-thcr-pi.azure.deutschepost.de/cdlib/terraform:latest
+
+| ZAP
+| zap-stable with jython-plugin
+| dpdhl.css-thcr-pi.azure.deutschepost.de/cdlib/zap:latest
+
+| ZAP Alpha
+| zap-stable with jython-plugin, alpha and beta rules for active and passive scanners
+| dpdhl.css-thcr-pi.azure.deutschepost.de/cdlib/zap-alpha:latest
+|===
+
+
+> With CDlib 6 we still also provide the images via IT-S Artifactory, just replace the URL with docker.artifactory.dhl.com.

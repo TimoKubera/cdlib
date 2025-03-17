@@ -1,0 +1,82 @@
+{
+    "dependencies": [
+        {
+            "moduleName": "org.edge.case:caseBase",
+            "moduleVersion": "1.2.11",
+            "moduleUrls": [
+                ""
+            ],
+            "moduleLicenses": [
+                {
+                    "moduleLicense": "ALLADIN",
+                    "moduleLicenseUrl": ""
+                }
+            ]
+        },
+        {
+            "moduleName": "org.edge.case:caseBase2",
+            "moduleVersion": "1.2.11",
+            "moduleUrls": [
+                ""
+            ],
+            "moduleLicenses": [
+                {
+                    "moduleLicense": "Apache License, Version 2.0",
+                    "moduleLicenseUrl": "https://www.apache.org/licenses/LICENSE-2.0"
+                }
+            ]
+        },
+        {
+            "moduleName": "org.edge.case:caseOne",
+            "moduleVersion": "1.2.11",
+            "moduleUrls": [
+                ""
+            ],
+            "moduleLicenses": [
+                {
+                    "moduleLicense": "ALLADIN",
+                    "moduleLicenseUrl": ""
+                }
+            ]
+        },
+        {
+            "moduleName": "org.edge.case:caseTwo",
+            "moduleVersion": "1.2.11",
+            "moduleUrls": [
+                ""
+            ],
+            "moduleLicenses": [
+                {
+                    "moduleLicense": "ALLADIN",
+                    "moduleLicenseUrl": ""
+                }
+            ]
+        },
+        {
+            "moduleName": "org.edge.case:caseThree",
+            "moduleVersion": "1.2.11",
+            "moduleUrls": [
+                ""
+            ],
+            "moduleLicenses": [
+                {
+                    "moduleLicense": "ALLADIN",
+                    "moduleLicenseUrl": ""
+                }
+            ]
+        },
+        {
+            "moduleName": "org.edge.case:caseFive",
+            "moduleVersion": "1.2.11",
+            "moduleUrls": [
+                ""
+            ],
+            "moduleLicenses": [
+                {
+                    "moduleLicense": "UNKNOWN",
+                    "moduleLicenseUrl": ""
+                }
+            ]
+        }
+    ]
+}

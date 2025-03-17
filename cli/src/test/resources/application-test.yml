@@ -1,0 +1,3 @@
+cdlib-version: 0.0.0-INTEGRATION-TEST
+cli-release-version: INTEGRATION-TEST-RV
+cli-container-tag: INTEGRATION-TEST-CT

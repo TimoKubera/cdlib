@@ -1,0 +1,120 @@
+= Terraform Quality Checks
+:toc:
+:keywords: latest
+
+Terraform is a tool to build, change and version infrastructure direct from code. The Terraform workflow (Init -> Plan -> Apply) is suitable for integrating it into CI/CD pipelines.
+
+Automated code quality & security checks are helping you to build resilient and secure infrastructure and detect respective issues in an early stage.
+This tutorial will give you an overview over the CDLib integrated approach regarding quality checks and how to execute it atomically in your pipeline.
+
+== Validate the code with Terraform Validate
+This basic check is provided by `Terraform` itself.
+
+An in-build way to check the quality of terraform scripts is the https://www.terraform.io/docs/commands/validate.html[terraform validate] command.
+`Terraform validate` is a subcommand in Terraform that will only address structure and coherence, by checking the code before execution without initializing any secrets or other sensitive data.
+The validation includes a basic check of syntax as well as checking that all variables declared in the configuration are syntactical correct.
+Furthermore, it checks if the code is internally consistent without activating any remote service or provider API.
+
+You execute `terraform validate` before the `terraform plan` command to validate the Terraform files in a directory to identify possible syntax errors and improve the quality of re-usable modules.
+
+The possible detected problems by validation are for example:
+
+* `terraform init` command was not executed before the validation in case to install required plugins/modules
+* There is a bad version of Terraform installed in the machine where you run the quality check
+* There is a request to a bad resource in your scripts
+* There are a typo in a variable
+
+CDLib is configured to use the option `-json` to produce output in a machine-readable JSON format, suitable for use in text editor integrations and other automated systems.
+
+The code to validate your terraform scripts using `terraform validate` command can be used as this shown example:
+
+[source,groovy]
+----
+include::../../../phippyandfriends/pipeline-templates/unused-or-deprecated/JenkinsfileInfra[tags=terraformCheck, indent=0]
+----
+
+> **Important note:** `terraform validate` command is configured to function as a build breaker in case of any errors. Details can be found in the console output / jenkins log.
+
+== Security Check with TFsec
+
+For our customers it is important to ensure that the infrastructure code is secure before it is deployed to production.
+`Tfsec` will help you as DevOps Team to detect security related issues automatically in an early stage.
+`Tfsec` works for Terraform on AWS, Azure and GCP and you can find it at https://github.com/liamg/tfsec[tfsec github].
+
+`Tfsec` uses static analysis of your terraform templates to spot potential security issues.
+`Tfsec` performs static checks focusing more on security issues and is positioned very early in the process.
+
+The futures of this tool are:
+
+- checks for sensitive data inclusion across all providers
+- checks for violations of AWS, Azure and GCP security best practice recommendations
+- scans modules (currently only local modules are supported)
+- evaluates expressions as well as literal values
+- evaluates Terraform functions e.g. concat()
+
+Execution of `tfsec` is based on rules named `checks` and is simply run using `tfsec` CLI command.
+Currently, `checks` are mostly limited to AWS/Azure/GCP resources, but there are also checks which are provider agnostic.
+The list of all checks can be found in the https://github.com/liamg/tfsec/wiki[tfsec wiki].
+
+`Tfsec` results can be reported as JSON, CSV, Checkstyle, JUnit or just plain text. Use the `--format` flag to specify your desired format.
+
+To integrate this `Tfsec` in your pipeline you need to make some adjustments described below.
+
+Add a configuration for a `tfsec` container to your `agent.yaml` to be able to use `tfsec` cli:
+[source,groovy]
+----
+include::../../../phippyandfriends/pipeline-templates/unused-or-deprecated/agent.yml[tags=tfsec, indent=0]
+----
+
+> learn more about xref:KubernetesAsJenkinsAgent.adoc[Kubernetes as Jenkins Agent]
+
+Then configure the agent in your `Jenkinsfile`:
+[source,groovy]
+----
+include::../../../acceptance-test/Jenkinsfile[tags=AT-agent, indent=0]
+----
+
+The code to run the security scan using `tfsec` cli can be used as an example:
+
+[source,groovy]
+----
+include::../../../phippyandfriends/pipeline-templates/unused-or-deprecated/JenkinsfileInfra[tags=tfsec, indent=0]
+----
+
+**Important note:** `Tfsec` command is configured to function as a build breaker in case of any errors. Details can be found in the console output / jenkins log.
+
+== Static Code Quality with TFlint
+
+https://github.com/terraform-linters/tflint[Tflint] analyzes your code to check if it is valid.
+`TFlint` is an addition to terraform validate check. TFLint focuses on errors and best practices while checking against a public available [ruleset](https://github.com/terraform-linters/tflint). 
+
+`TFlint` investigates already declared variables and checks if the type and description were provided.
+
+Integration of `TFlint` is similar like `TFsec`.
+
+The first thing you need is a configuration for a `tflint` container inside your `agent.yaml` to be able to use `tflint` cli:
+[source,groovy]
+----
+include::../../../phippyandfriends/pipeline-templates/unused-or-deprecated/agent.yml[tags=tflint, indent=0]
+----
+
+Then configure the agent in your `Jenkinsfile`:
+[source,groovy]
+----
+include::../../../acceptance-test/Jenkinsfile[tags=AT-agent, indent=0]
+----
+
+The code to run the code quality scan using `tflint` cli can be used as an example:
+
+[source,groovy]
+----
+include::../../../phippyandfriends/pipeline-templates/unused-or-deprecated/JenkinsfileInfra[tags=tflint, indent=0]
+----
+
+`tflint` command can return 3 exit statuses as a result:
+
+- 0: No issues found
+- 2: Errors occurred
+- 3: No errors occurred, but issues found
+
+**Important note:** `TFLint` command is configured to function as a build breaker for case 2 and 3. Details can be found in the console output / jenkins log.

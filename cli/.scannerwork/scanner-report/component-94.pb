@@ -1,0 +1,1 @@
+^ 2kotlinX9hrDsrc/main/kotlin/de/deutschepost/sdm/cdlib/names/NameResolverAzure.kt

@@ -1,0 +1,35 @@
+@startuml release
+database "app:featurex"
+database "app:master"
+control "Release"
+database "Artifactory"
+database "gitops:npi"
+database "LCM-Jira"
+database "gitops:prod"
+entity "flux"
+collections "npi:master"
+collections "prod:master"
+database "CDlib-Dashboard"
+
+"app:featurex " -> "app:master " : merge or commit
+group UAT
+"app:master " -> "Release" : trigger
+"Release" -> "Artifactory" : push container
+"Release" -> "gitops:npi " : render helm template and push cluster/service/master/master.yaml 
+"Release" -> "flux" : trigger webhook
+"flux" -> "npi:master" : deploy/update resources
+"flux" -> "gitops:npi" : set commit status
+"Release" -> "gitops:npi" : query reconcilation status
+"Release" -> "npi:master " : perform dynamic tests
+end
+group PROD
+"Release" -> "LCM-Jira" : verify release and create change
+"Release" -> "gitops:prod " : render helm template and push cluster/service/master/master.yaml 
+"Release" -> "flux" : trigger webhook
+"flux" -> "prod:master" : deploy/update resources
+"flux" -> "gitops:prod" : set commit status
+"Release" -> "gitops:prod" : query reconcilation status
+"Release" -> "LCM-Jira" : close change
+"Release" -> "CDlib-Dashboard" : report metrics
+end
+@enduml

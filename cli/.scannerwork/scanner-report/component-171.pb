@@ -1,0 +1,1 @@
+« 2kotlinXøhrHsrc/test/kotlin/de/deutschepost/sdm/cdlib/names/NameResolverAzureTest.kt

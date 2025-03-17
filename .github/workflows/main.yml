@@ -1,0 +1,17 @@
+name: manual
+
+on:
+  workflow_dispatch:
+
+jobs:
+  docker:
+    runs-on: [ arc-medium-container ]
+    steps:
+    - name: dogger
+      shell: bash
+      run: |
+        if [ -f /.dockerenv ]; then
+            echo "Running inside a Docker container"
+        else
+            echo "Not running inside a Docker container"
+        fi

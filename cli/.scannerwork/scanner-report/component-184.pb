@@ -1,0 +1,1 @@
+¸ 2kotlinX'hrPsrc/test/kotlin/de/deutschepost/sdm/cdlib/release/report/TestResultParserTest.kt

@@ -1,0 +1,1 @@
+s 2kotlinX;hr\src/main/kotlin/de/deutschepost/sdm/cdlib/release/report/external/OslcNPMPluginTestResult.kt

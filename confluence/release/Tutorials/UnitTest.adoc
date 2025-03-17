@@ -1,0 +1,246 @@
+= Unit Testing
+:toc:
+:keywords: latest
+
+CI/CD Pipelines enables devops teams to receive early and fast feedback about the changes which are applied to the code.
+Unit tests provide a high level of insight about the functional confidentiality and should be implemented in the earliest stages of the pipeline.
+
+> **Pro Tip:** measure the code coverage and analyze it as part of the xref:Sonarqube.adoc[static code analysis].
+
+Due to the importance of unit testing as part of the pipeline, these tests should roughly cover 80% of your code.
+This is illustrated in the following testing pyramid:
+
+image:img/testingpyramid.jpg[pyramid]
+
+> https://www.symbio.com/solutions/quality-assurance/test-automation/[Source]
+
+== Preconditions
+In order for the following steps to work, you need to make sure that:
+
+|===
+|Jenkins | Azure DevOps| GitHub Actions
+
+|you are running on https://devsecops.dhl.com/services/build/jenkins-cloudbees/[IT-S Cloudbees Jenkins] |you are running on xref:AzureDevOps.adoc[Azure DevOps]|you are using https://devsecops.dhl.com/services/build/github-actions[IT-S GitHub Actions]
+|you are using xref:KubernetesAsJenkinsAgent.adoc[Kubernetes Agents] |you are using xref:ManagedDevOpsPools.adoc[Managed DevOps Pools]|you are using https://devsecops.dhl.com/services/build/github-actions[IT-S GitHub Actions]
+a|you are using our pipeline xref:JenkinsPipelineConfig.adoc[config mechanism] and you have added the following section to your `config.jenkins`:
+
+[source,groovy]
+----
+include::../../../carts/config.jenkins[tags=unittest, indent=0]
+----
+
+| |
+|===
+
+== Jenkins
+
+=== Maven with Jenkins
+==== Config
+You can use the `mvn` cli to perform the scan.
+For this you need to add a `maven` agent to your `agent.yaml`:
+[source,yaml]
+----
+include::../../../carts/JenkinsfileBuild[tags=maven, indent=0]
+----
+
+> **HINT:** please click the link for xref:KubernetesAsJenkinsAgent.adoc[more information about dynamic agents]
+
+Then add the agent to your `Jenkinsfile`:
+[source,groovy]
+----
+include::../../../carts/JenkinsfileBuild[tags=agent, indent=0]
+----
+
+Finally add the unit tests itself to your `Jenkinsfile`:
+[source,groovy]
+----
+include::../../../carts/JenkinsfileBuild[tags=unittest, indent=0]
+----
+[source,groovy]
+----
+include::../../../carts/JenkinsfileBuild[tags=post, indent=0]
+----
+
+> **HINT 1:** Jacoco will display a small graph with the test results
+
+> **HINT 2:** xUnit will check the results for the specified thresholds and break the build in case they are violated
+
+> **HINT 3:** JUnit will archive the report 
+
+==== Sample
+Please have a look at the configuration in our Showcase **Sockshop**.
+
+- go to https://git.dhl.com/SockShop/carts/blob/master/JenkinsfileBuild[Jenkinsfile]
+- go to https://git.dhl.com/SockShop/carts/blob/master/config.jenkins[config.jenkins]
+- go to https://git.dhl.com/SockShop/carts/blob/master/agent.yaml[agent.yaml]
+
+==== Troubleshooting
+
+* Recheck all xref:preconditions[preconditions].
+* https://git.dhl.com/CDLib/CDlib/issues/new?assignees=ab6jg8&labels=%3Araising_hand%3A+help+wanted&template=help-me-please-.md&title=[Ask for help], we are there for you!
+
+=== Yarn with Jenkins
+==== Config
+You can use the `yarn` cli to perform the scan.
+For this you need to add a `node` agent to your `agent.yaml`:
+[source,yaml]
+----
+include::../../../frontend/JenkinsfileBuild[tags=yarn-agent, indent=0]
+----
+
+> **HINT:** click the link for xref:KubernetesAsJenkinsAgent.adoc[more information about dynamic agents]
+
+Then add the agent to your `Jenkinsfile`:
+[source,groovy]
+----
+include::../../../frontend/JenkinsfileBuild[tags=agent, indent=0]
+----
+
+Then add the unit test itself to your `Jenkinsfile`:
+[source,groovy]
+----
+include::../../../frontend/JenkinsfileBuild[tags=npm-build, indent=0]
+----
+[source,groovy]
+----
+include::../../../frontend/JenkinsfileBuild[tags=npm-unittest, indent=0]
+----
+
+For the `post-block` to work you will need to add https://www.npmjs.com/package/mochawesome[mochawesome] as a dependency to your `package.json`.
+Then Jenkins will display a HTML page under `Test Report` (on job, not build level) showing the latest test results.
+
+Finally you can configure the build breaker for `yarn test` based on the code coverage by adding a `nyc.config.js` file with the following content:
+[source,js]
+----
+include::../../../frontend/src/nyc.config.js[indent=0]
+----
+
+> **HINT:** of course you can use other thresholds
+
+==== Sample
+Please have a look at the configuration in our Showcase **Sockshop**.
+
+- go to https://git.dhl.com/SockShop/front-end/blob/master/JenkinsfileBuild[Jenkinsfile]
+- go to https://git.dhl.com/SockShop/front-end/blob/master/agent.yaml[agent.yaml]
+- go to https://git.dhl.com/SockShop/front-end/blob/master/package.json[package.json]
+- go to https://git.dhl.com/SockShop/front-end/blob/master/nyc.config.js[nyc.config.js]
+
+==== Troubleshooting
+
+* Recheck all xref:preconditions[preconditions].
+* https://git.dhl.com/CDLib/CDlib/issues/new?assignees=ab6jg8&labels=%3Araising_hand%3A+help+wanted&template=help-me-please-.md&title=[Ask for help], we are there for you!
+
+=== Gradle with Jenkins
+==== Config
+You can use the `gradlew` cli to perform the scan.
+For this you need to add a `java` agent to your `agent.yaml`:
+[source,yaml]
+----
+include::../../../shipping/JenkinsfileBuild[tags=agent, indent=0]
+----
+
+> **HINT:** click the link for [more information about dynamic agents](KubernetesAsJenkinsAgent.adoc)
+
+Then add the the agent to your `Jenkinsfile`:
+[source,groovy]
+----
+include::../../../shipping/JenkinsfileBuild[tags=agent, indent=0]
+----
+
+Finally add the unit test itself to your `Jenkinsfile`:
+[source,groovy]
+----
+include::../../../shipping/JenkinsfileBuild[tags=gradle-xunit, indent=0]
+----
+
+> **HINT 1:** Jacoco will display a small graph showing the test results
+
+> **HINT 2:** xUnit will check the results for the specified thresholds and break the build in case they are violated
+
+> **HINT 3:** JUnit will archive the report 
+
+==== Sample
+Please have a look at the configuration in our Showcase **Sockshop**.
+
+- go to https://git.dhl.com/SockShop/shipping/blob/master/JenkinsfileBuild[Jenkinsfile]
+- go to https://git.dhl.com/SockShop/shipping/blob/master/config.jenkins[config.jenkins]
+- go to https://git.dhl.com/SockShop/shipping/blob/master/agent.yaml[agent.yaml]
+
+==== Troubleshooting
+
+* Recheck all xref:preconditions[preconditions].
+* https://git.dhl.com/CDLib/CDlib/issues/new?assignees=ab6jg8&labels=%3Araising_hand%3A+help+wanted&template=help-me-please-.md&title=[Ask for help], we are there for you!
+
+=== Go with Jenkins
+==== Config
+You can use the `go-toolset` cli to perform the scan.
+For this you need to add a `go-toolset` agent to your `agent.yaml`:
+[source,yaml]
+----
+include::../../../payment/agent.yaml[tags=go, indent=0]
+----
+
+> **HINT:** click the link for [more information about dynamic agents](KubernetesAsJenkinsAgent.adoc)
+
+Then add the the agent to your `Jenkinsfile`:
+[source,groovy]
+----
+include::../../../payment/JenkinsfileBuild[tags=agent, indent=0]
+----
+
+Set the necessary environment variables:
+[source,groovy]
+----
+include::../../../payment/JenkinsfileBuild[tags=env, indent=0]
+----
+
+Finally add the unit test itself to your `Jenkinsfile`:
+[source,groovy]
+----
+include::../../../payment/JenkinsfileBuild[tags=build, indent=0]
+----
+[source,groovy]
+----
+include::../../../payment/JenkinsfileBuild[tags=go-unittest, indent=0]
+----
+
+> **ATTENTION:** you will need to replace `payment` with the name of your service
+
+==== Sample
+Please have a look at the configuration in our Showcase **Sockshop**.
+
+- go to https://git.dhl.com/SockShop/payment/blob/master/JenkinsfileBuild[Jenkinsfile]
+- go to https://git.dhl.com/SockShop/payment/blob/master/agent.yaml[agent.yaml]
+
+==== Troubleshooting
+
+* Recheck all xref:preconditions[preconditions].
+* https://git.dhl.com/CDLib/CDlib/issues/new?assignees=ab6jg8&labels=%3Araising_hand%3A+help+wanted&template=help-me-please-.md&title=[Ask for help], we are there for you!
+
+== Azure DevOps
+To conduct the unit test we need to perform 5 steps explained for `npm` and `golang` but easily adaptable:
+
+. First of all we perform a checkout.
+. Then we start a suiting container (learn more about xref:ManagedDevOpsPools.adoc[agents here]) to prepare (in this case fetching the dependencies) and ideally also run the test.
+. Now we can perform the unit test.
+. Then we publish the test results directly to Azure Pipelines.
+. Lastly we publish the coverage data needed for the xref:Sonarqube.adoc[code quality analysis].
+
+You can see a full example below:
+[source,yaml]
+----
+include::../../../phippyandfriends/nodebrady/nodebrady.yaml[tags=unittest, indent=0]
+----
+
+The approach looks quite similar for Golang, but we also need to fetch the artifactory token:
+
+[source,yaml]
+----
+include::../../../phippyandfriends/captainkube/captainkube.yaml[tags=unittest, indent=0]
+----
+
+== GitHub Actions
+
+Within our template repository you can find a working example on how to run your unit tests.
+Pipeline: https://git.dhl.com/CDLib/cdaas-template-maven/blob/9a4670ea12f3fa2f3e2b84f3c39b372051d33d04/.github/workflows/pipeline.yaml#L25
+Workflow: https://git.dhl.com/CDLib/cdaas-workflows/blob/main/.github/workflows/unittest-mvn.yaml

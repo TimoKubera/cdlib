@@ -1,0 +1,431 @@
+{
+    "@version": "2.11.1",
+    "@generated": "Wed, 30 Mar 2022 10:12:42",
+    "site": [
+        {
+            "@name": "https://front-end-i836-test-zap.apps.czchooct002.dhl.com",
+            "@host": "front-end-i836-test-zap.apps.czchooct002.dhl.com",
+            "@port": "443",
+            "@ssl": "true",
+            "alerts": [
+                {
+                    "pluginid": "10202",
+                    "alertRef": "10202",
+                    "alert": "Absence of Anti-CSRF Tokens",
+                    "name": "Absence of Anti-CSRF Tokens",
+                    "riskcode": "1",
+                    "confidence": "2",
+                    "riskdesc": "Low (Medium)",
+                    "desc": "<p>No Anti-CSRF tokens were found in a HTML submission form.</p><p>A cross-site request forgery is an attack that involves forcing a victim to send an HTTP request to a target destination without their knowledge or intent in order to perform an action as the victim. The underlying cause is application functionality using predictable URL/form actions in a repeatable way. The nature of the attack is that CSRF exploits the trust that a web site has for a user. By contrast, cross-site scripting (XSS) exploits the trust that a user has for a web site. Like XSS, CSRF attacks are not necessarily cross-site, but they can be. Cross-site request forgery is also known as CSRF, XSRF, one-click attack, session riding, confused deputy, and sea surf.</p><p></p><p>CSRF attacks are effective in a number of situations, including:</p><p>    * The victim has an active session on the target site.</p><p>    * The victim is authenticated via HTTP auth on the target site.</p><p>    * The victim is on the same local network as the target site.</p><p></p><p>CSRF has primarily been used to perform an action against a target site using the victim's privileges, but recent techniques have been discovered to disclose information by gaining access to the response. The risk of information disclosure is dramatically increased when the target site is vulnerable to XSS, because XSS can be used as a platform for CSRF, allowing the attack to operate within the bounds of the same-origin policy.</p>",
+                    "instances": [
+                        {
+                            "uri": "https://front-end-i836-test-zap.apps.czchooct002.dhl.com/category.html",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "<form id=\"filters-form\">"
+                        },
+                        {
+                            "uri": "https://front-end-i836-test-zap.apps.czchooct002.dhl.com/category.html",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "<form class=\"form-inline\">"
+                        },
+                        {
+                            "uri": "https://front-end-i836-test-zap.apps.czchooct002.dhl.com/category.html?sort-by=Name",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "<form id=\"filters-form\">"
+                        },
+                        {
+                            "uri": "https://front-end-i836-test-zap.apps.czchooct002.dhl.com/category.html?sort-by=Name",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "<form class=\"form-inline\">"
+                        }
+                    ],
+                    "count": "4",
+                    "solution": "<p>Phase: Architecture and Design</p><p>Use a vetted library or framework that does not allow this weakness to occur or provides constructs that make this weakness easier to avoid.</p><p>For example, use anti-CSRF packages such as the OWASP CSRFGuard.</p><p></p><p>Phase: Implementation</p><p>Ensure that your application is free of cross-site scripting issues, because most CSRF defenses can be bypassed using attacker-controlled script.</p><p></p><p>Phase: Architecture and Design</p><p>Generate a unique nonce for each form, place the nonce into the form, and verify the nonce upon receipt of the form. Be sure that the nonce is not predictable (CWE-330).</p><p>Note that this can be bypassed using XSS.</p><p></p><p>Identify especially dangerous operations. When the user performs a dangerous operation, send a separate confirmation request to ensure that the user intended to perform that operation.</p><p>Note that this can be bypassed using XSS.</p><p></p><p>Use the ESAPI Session Management control.</p><p>This control includes a component for CSRF.</p><p></p><p>Do not use the GET method for any request that triggers a state change.</p><p></p><p>Phase: Implementation</p><p>Check the HTTP Referer header to see if the request originated from an expected page. This could break legitimate functionality, because users or proxies may have disabled sending the Referer for privacy reasons.</p>",
+                    "otherinfo": "<p>No known Anti-CSRF token [anticsrf, CSRFToken, __RequestVerificationToken, csrfmiddlewaretoken, authenticity_token, OWASP_CSRFTOKEN, anoncsrf, csrf_token, _csrf, _csrfSecret, __csrf_magic, CSRF, _token, _csrf_token] was found in the following HTML form: [Form 1: \"\" ].</p>",
+                    "reference": "<p>http://projects.webappsec.org/Cross-Site-Request-Forgery</p><p>http://cwe.mitre.org/data/definitions/352.html</p>",
+                    "cweid": "352",
+                    "wascid": "9",
+                    "sourceid": "72"
+                },
+                {
+                    "pluginid": "10027",
+                    "alertRef": "10027",
+                    "alert": "Information Disclosure - Suspicious Comments",
+                    "name": "Information Disclosure - Suspicious Comments",
+                    "riskcode": "0",
+                    "confidence": "1",
+                    "riskdesc": "Informational (Low)",
+                    "desc": "<p>The response appears to contain suspicious comments which may help an attacker. Note: Matches made within script blocks or files are against the entire content not only comments.</p>",
+                    "instances": [
+                        {
+                            "uri": "https://front-end-i836-test-zap.apps.czchooct002.dhl.com",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "query"
+                        },
+                        {
+                            "uri": "https://front-end-i836-test-zap.apps.czchooct002.dhl.com/",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "query"
+                        },
+                        {
+                            "uri": "https://front-end-i836-test-zap.apps.czchooct002.dhl.com/detail.html?id='%20+%20element.id%20+%20'",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "query"
+                        },
+                        {
+                            "uri": "https://front-end-i836-test-zap.apps.czchooct002.dhl.com/detail.html?id=6d62d909-f957-430e-8689-b5129c0bb75e",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "query"
+                        },
+                        {
+                            "uri": "https://front-end-i836-test-zap.apps.czchooct002.dhl.com/js/client.js",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "query"
+                        },
+                        {
+                            "uri": "https://front-end-i836-test-zap.apps.czchooct002.dhl.com/js/client.js",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "user"
+                        },
+                        {
+                            "uri": "https://front-end-i836-test-zap.apps.czchooct002.dhl.com/js/client.js",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "username"
+                        },
+                        {
+                            "uri": "https://front-end-i836-test-zap.apps.czchooct002.dhl.com/js/jquery-1.11.0.min.js",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "db"
+                        },
+                        {
+                            "uri": "https://front-end-i836-test-zap.apps.czchooct002.dhl.com/js/jquery-1.11.0.min.js",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "username"
+                        },
+                        {
+                            "uri": "https://front-end-i836-test-zap.apps.czchooct002.dhl.com/js/modernizr.js",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "bug"
+                        },
+                        {
+                            "uri": "https://front-end-i836-test-zap.apps.czchooct002.dhl.com/js/modernizr.js",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "DB"
+                        },
+                        {
+                            "uri": "https://front-end-i836-test-zap.apps.czchooct002.dhl.com/js/modernizr.js",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "FIXME"
+                        },
+                        {
+                            "uri": "https://front-end-i836-test-zap.apps.czchooct002.dhl.com/js/modernizr.js",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "from"
+                        },
+                        {
+                            "uri": "https://front-end-i836-test-zap.apps.czchooct002.dhl.com/js/modernizr.js",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "later"
+                        },
+                        {
+                            "uri": "https://front-end-i836-test-zap.apps.czchooct002.dhl.com/js/modernizr.js",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "query"
+                        },
+                        {
+                            "uri": "https://front-end-i836-test-zap.apps.czchooct002.dhl.com/js/modernizr.js",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "select"
+                        },
+                        {
+                            "uri": "https://front-end-i836-test-zap.apps.czchooct002.dhl.com/js/modernizr.js",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "TODO"
+                        },
+                        {
+                            "uri": "https://front-end-i836-test-zap.apps.czchooct002.dhl.com/js/modernizr.js",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "user"
+                        },
+                        {
+                            "uri": "https://front-end-i836-test-zap.apps.czchooct002.dhl.com/js/respond.min.js",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "query"
+                        }
+                    ],
+                    "count": "19",
+                    "solution": "<p>Remove all comments that return information that may help an attacker and fix any underlying problems they refer to.</p>",
+                    "otherinfo": "<p>The following pattern was used: \\bQUERY\\b and was detected in the element starting with: \"<script src=\"js/jquery.query-object.js\"></script>\", see evidence field for the suspicious comment/snippet.</p>",
+                    "reference": "",
+                    "cweid": "200",
+                    "wascid": "13",
+                    "sourceid": "9"
+                },
+                {
+                    "pluginid": "10202",
+                    "alertRef": "10202",
+                    "alert": "Absence of Anti-CSRF Tokens",
+                    "name": "Absence of Anti-CSRF Tokens",
+                    "riskcode": "1",
+                    "confidence": "0",
+                    "riskdesc": "Low (False Positive)",
+                    "desc": "<p>No Anti-CSRF tokens were found in a HTML submission form.</p><p>A cross-site request forgery is an attack that involves forcing a victim to send an HTTP request to a target destination without their knowledge or intent in order to perform an action as the victim. The underlying cause is application functionality using predictable URL/form actions in a repeatable way. The nature of the attack is that CSRF exploits the trust that a web site has for a user. By contrast, cross-site scripting (XSS) exploits the trust that a user has for a web site. Like XSS, CSRF attacks are not necessarily cross-site, but they can be. Cross-site request forgery is also known as CSRF, XSRF, one-click attack, session riding, confused deputy, and sea surf.</p><p></p><p>CSRF attacks are effective in a number of situations, including:</p><p>    * The victim has an active session on the target site.</p><p>    * The victim is authenticated via HTTP auth on the target site.</p><p>    * The victim is on the same local network as the target site.</p><p></p><p>CSRF has primarily been used to perform an action against a target site using the victim's privileges, but recent techniques have been discovered to disclose information by gaining access to the response. The risk of information disclosure is dramatically increased when the target site is vulnerable to XSS, because XSS can be used as a platform for CSRF, allowing the attack to operate within the bounds of the same-origin policy.</p>",
+                    "instances": [
+                        {
+                            "uri": "https://front-end-i836-test-zap.apps.czchooct002.dhl.com/category.html",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "<form id=\"filters-form\">"
+                        },
+                        {
+                            "uri": "https://front-end-i836-test-zap.apps.czchooct002.dhl.com/category.html",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "<form class=\"form-inline\">"
+                        },
+                        {
+                            "uri": "https://front-end-i836-test-zap.apps.czchooct002.dhl.com/category.html?sort-by=Name",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "<form id=\"filters-form\">"
+                        },
+                        {
+                            "uri": "https://front-end-i836-test-zap.apps.czchooct002.dhl.com/category.html?sort-by=Name",
+                            "method": "GET",
+                            "param": "",
+                            "attack": "",
+                            "evidence": "<form class=\"form-inline\">"
+                        }
+                    ],
+                    "count": "4",
+                    "solution": "<p>Phase: Architecture and Design</p><p>Use a vetted library or framework that does not allow this weakness to occur or provides constructs that make this weakness easier to avoid.</p><p>For example, use anti-CSRF packages such as the OWASP CSRFGuard.</p><p></p><p>Phase: Implementation</p><p>Ensure that your application is free of cross-site scripting issues, because most CSRF defenses can be bypassed using attacker-controlled script.</p><p></p><p>Phase: Architecture and Design</p><p>Generate a unique nonce for each form, place the nonce into the form, and verify the nonce upon receipt of the form. Be sure that the nonce is not predictable (CWE-330).</p><p>Note that this can be bypassed using XSS.</p><p></p><p>Identify especially dangerous operations. When the user performs a dangerous operation, send a separate confirmation request to ensure that the user intended to perform that operation.</p><p>Note that this can be bypassed using XSS.</p><p></p><p>Use the ESAPI Session Management control.</p><p>This control includes a component for CSRF.</p><p></p><p>Do not use the GET method for any request that triggers a state change.</p><p></p><p>Phase: Implementation</p><p>Check the HTTP Referer header to see if the request originated from an expected page. This could break legitimate functionality, because users or proxies may have disabled sending the Referer for privacy reasons.</p>",
+                    "otherinfo": "<p>No known Anti-CSRF token [anticsrf, CSRFToken, __RequestVerificationToken, csrfmiddlewaretoken, authenticity_token, OWASP_CSRFTOKEN, anoncsrf, csrf_token, _csrf, _csrfSecret, __csrf_magic, CSRF, _token, _csrf_token] was found in the following HTML form: [Form 1: \"\" ].</p>",
+                    "reference": "<p>http://projects.webappsec.org/Cross-Site-Request-Forgery</p><p>http://cwe.mitre.org/data/definitions/352.html</p>",
+                    "cweid": "352",
+                    "wascid": "9",
+                    "sourceid": "75"
+                },
+                {
+                    "pluginid": "10055",
+                    "alertRef": "10055",
+                    "alert": "CSP: Wildcard Directive",
+                    "name": "CSP: Wildcard Directive",
+                    "riskcode": "2",
+                    "confidence": "0",
+                    "riskdesc": "Medium (False Positive)",
+                    "desc": "<p>The following directives either allow wildcard sources (or ancestors), are not defined, or are overly broadly defined: </p><p>frame-ancestors, form-action</p><p></p><p>The directive(s): frame-ancestors, form-action are among the directives that do not fallback to default-src, missing/excluding them is the same as allowing anything.</p>",
+                    "instances": [
+                    ],
+                    "count": "0",
+                    "solution": "<p>Ensure that your web server, application server, load balancer, etc. is properly configured to set the Content-Security-Policy header.</p>",
+                    "otherinfo": "",
+                    "reference": "<p>http://www.w3.org/TR/CSP2/</p><p>http://www.w3.org/TR/CSP/</p><p>http://caniuse.com/#search=content+security+policy</p><p>http://content-security-policy.com/</p><p>https://github.com/shapesecurity/salvation</p><p>https://developers.google.com/web/fundamentals/security/csp#policy_applies_to_a_wide_variety_of_resources</p>",
+                    "cweid": "693",
+                    "wascid": "15",
+                    "sourceid": "86"
+                },
+                {
+                    "pluginid": "10054",
+                    "alertRef": "10054",
+                    "alert": "Cookie with SameSite Attribute None",
+                    "name": "Cookie with SameSite Attribute None",
+                    "riskcode": "1",
+                    "confidence": "0",
+                    "riskdesc": "Low (False Positive)",
+                    "desc": "<p>A cookie has been set with its SameSite attribute set to \"none\", which means that the cookie can be sent as a result of a 'cross-site' request. The SameSite attribute is an effective counter measure to cross-site request forgery, cross-site script inclusion, and timing attacks.</p>",
+                    "instances": [
+                    ],
+                    "count": "0",
+                    "solution": "<p>Ensure that the SameSite attribute is set to either 'lax' or ideally 'strict' for all cookies.</p>",
+                    "otherinfo": "",
+                    "reference": "<p>https://tools.ietf.org/html/draft-ietf-httpbis-cookie-same-site</p>",
+                    "cweid": "1275",
+                    "wascid": "13",
+                    "sourceid": "1"
+                },
+                {
+                    "pluginid": "10054",
+                    "alertRef": "10054",
+                    "alert": "Cookie without SameSite Attribute",
+                    "name": "Cookie without SameSite Attribute",
+                    "riskcode": "1",
+                    "confidence": "0",
+                    "riskdesc": "Low (False Positive)",
+                    "desc": "<p>A cookie has been set without the SameSite attribute, which means that the cookie can be sent as a result of a 'cross-site' request. The SameSite attribute is an effective counter measure to cross-site request forgery, cross-site script inclusion, and timing attacks.</p>",
+                    "instances": [
+                    ],
+                    "count": "0",
+                    "solution": "<p>Ensure that the SameSite attribute is set to either 'lax' or ideally 'strict' for all cookies.</p>",
+                    "otherinfo": "",
+                    "reference": "<p>https://tools.ietf.org/html/draft-ietf-httpbis-cookie-same-site</p>",
+                    "cweid": "1275",
+                    "wascid": "13",
+                    "sourceid": "1"
+                },
+                {
+                    "pluginid": "10015",
+                    "alertRef": "10015",
+                    "alert": "Incomplete or No Cache-control Header Set",
+                    "name": "Incomplete or No Cache-control Header Set",
+                    "riskcode": "1",
+                    "confidence": "0",
+                    "riskdesc": "Low (False Positive)",
+                    "desc": "<p>The cache-control header has not been set properly or is missing, allowing the browser and proxies to cache content.</p>",
+                    "instances": [
+                    ],
+                    "count": "0",
+                    "solution": "<p>Whenever possible ensure the cache-control HTTP header is set with no-cache, no-store, must-revalidate.</p>",
+                    "otherinfo": "",
+                    "reference": "<p>https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html#web-content-caching</p><p>https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control</p>",
+                    "cweid": "525",
+                    "wascid": "13",
+                    "sourceid": "9"
+                },
+                {
+                    "pluginid": "10020",
+                    "alertRef": "10020",
+                    "alert": "Missing Anti-clickjacking Header",
+                    "name": "Missing Anti-clickjacking Header",
+                    "riskcode": "2",
+                    "confidence": "0",
+                    "riskdesc": "Medium (False Positive)",
+                    "desc": "<p>The response does not include either Content-Security-Policy with 'frame-ancestors' directive or X-Frame-Options to protect against 'ClickJacking' attacks.</p>",
+                    "instances": [
+                    ],
+                    "count": "0",
+                    "solution": "<p>Modern Web browsers support the Content-Security-Policy and X-Frame-Options HTTP headers. Ensure one of them is set on all web pages returned by your site/app.</p><p>If you expect the page to be framed only by pages on your server (e.g. it's part of a FRAMESET) then you'll want to use SAMEORIGIN, otherwise if you never expect the page to be framed, you should use DENY. Alternatively consider implementing Content Security Policy's \"frame-ancestors\" directive.</p>",
+                    "otherinfo": "",
+                    "reference": "<p>https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options</p>",
+                    "cweid": "1021",
+                    "wascid": "15",
+                    "sourceid": "9"
+                },
+                {
+                    "pluginid": "10037",
+                    "alertRef": "10037",
+                    "alert": "Server Leaks Information via \"X-Powered-By\" HTTP Response Header Field(s)",
+                    "name": "Server Leaks Information via \"X-Powered-By\" HTTP Response Header Field(s)",
+                    "riskcode": "1",
+                    "confidence": "0",
+                    "riskdesc": "Low (False Positive)",
+                    "desc": "<p>The web/application server is leaking information via one or more \"X-Powered-By\" HTTP response headers. Access to such information may facilitate attackers identifying other frameworks/components your web application is reliant upon and the vulnerabilities such components may be subject to.</p>",
+                    "instances": [
+                    ],
+                    "count": "0",
+                    "solution": "<p>Ensure that your web server, application server, load balancer, etc. is configured to suppress \"X-Powered-By\" headers.</p>",
+                    "otherinfo": "",
+                    "reference": "<p>http://blogs.msdn.com/b/varunm/archive/2013/04/23/remove-unwanted-http-response-headers.aspx</p><p>http://www.troyhunt.com/2012/02/shhh-dont-let-your-response-headers.html</p>",
+                    "cweid": "200",
+                    "wascid": "13",
+                    "sourceid": "9"
+                },
+                {
+                    "pluginid": "10096",
+                    "alertRef": "10096",
+                    "alert": "Timestamp Disclosure - Unix",
+                    "name": "Timestamp Disclosure - Unix",
+                    "riskcode": "1",
+                    "confidence": "0",
+                    "riskdesc": "Low (False Positive)",
+                    "desc": "<p>A timestamp was disclosed by the application/web server - Unix</p>",
+                    "instances": [
+                    ],
+                    "count": "0",
+                    "solution": "<p>Manually confirm that the timestamp data is not sensitive, and that the data cannot be aggregated to disclose exploitable patterns.</p>",
+                    "otherinfo": "<p>33333333, which evaluates to: 1971-01-21 19:15:33</p>",
+                    "reference": "<p>http://projects.webappsec.org/w/page/13246936/Information%20Leakage</p>",
+                    "cweid": "200",
+                    "wascid": "13",
+                    "sourceid": "47"
+                },
+                {
+                    "pluginid": "10003",
+                    "alertRef": "10003",
+                    "alert": "Vulnerable JS Library",
+                    "name": "Vulnerable JS Library",
+                    "riskcode": "2",
+                    "confidence": "0",
+                    "riskdesc": "Medium (False Positive)",
+                    "desc": "<p>The identified library bootstrap, version 3.3.7 is vulnerable.</p>",
+                    "instances": [
+                    ],
+                    "count": "0",
+                    "solution": "<p>Please upgrade to the latest version of bootstrap.</p>",
+                    "otherinfo": "<p>CVE-2019-8331</p><p>CVE-2018-14041</p><p>CVE-2018-14040</p><p>CVE-2018-14042</p><p> CVE-2016-10735</p><p></p>",
+                    "reference": "<p>https://github.com/twbs/bootstrap/issues/28236</p><p>https://github.com/twbs/bootstrap/issues/20184</p><p>https://github.com/advisories/GHSA-4p24-vmcr-4gqj</p><p></p>",
+                    "cweid": "829",
+                    "wascid": "-1",
+                    "sourceid": "57"
+                },
+                {
+                    "pluginid": "10021",
+                    "alertRef": "10021",
+                    "alert": "X-Content-Type-Options Header Missing",
+                    "name": "X-Content-Type-Options Header Missing",
+                    "riskcode": "1",
+                    "confidence": "0",
+                    "riskdesc": "Low (False Positive)",
+                    "desc": "<p>The Anti-MIME-Sniffing header X-Content-Type-Options was not set to 'nosniff'. This allows older versions of Internet Explorer and Chrome to perform MIME-sniffing on the response body, potentially causing the response body to be interpreted and displayed as a content type other than the declared content type. Current (early 2014) and legacy versions of Firefox will use the declared content type (if one is set), rather than performing MIME-sniffing.</p>",
+                    "instances": [
+                    ],
+                    "count": "0",
+                    "solution": "<p>Ensure that the application/web server sets the Content-Type header appropriately, and that it sets the X-Content-Type-Options header to 'nosniff' for all web pages.</p><p>If possible, ensure that the end user uses a standards-compliant and modern web browser that does not perform MIME-sniffing at all, or that can be directed by the web application/web server to not perform MIME-sniffing.</p>",
+                    "otherinfo": "<p>This issue still applies to error type pages (401, 403, 500, etc.) as those pages are often still affected by injection issues, in which case there is still concern for browsers sniffing pages away from their actual content type.</p><p>At \"High\" threshold this scan rule will not alert on client or server error responses.</p>",
+                    "reference": "<p>http://msdn.microsoft.com/en-us/library/ie/gg622941%28v=vs.85%29.aspx</p><p>https://owasp.org/www-community/Security_Headers</p>",
+                    "cweid": "693",
+                    "wascid": "15",
+                    "sourceid": "9"
+                }
+            ]
+        }
+    ]
+}

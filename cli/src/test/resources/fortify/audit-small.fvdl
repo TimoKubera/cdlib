@@ -1,0 +1,529 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE FVDL [
+    <!ELEMENT FVDL (CreatedTS|WriteDate|UUID|Build|Vulnerabilities|ContextPool|UnifiedNodePool|Description|Snippets|ProgramData|EngineData)*>
+    <!ATTLIST FVDL
+        xmlns CDATA #REQUIRED
+        xmlns:xsi CDATA #REQUIRED
+        version CDATA #REQUIRED
+        xsi:type CDATA #REQUIRED>
+    <!ELEMENT CreatedTS (#PCDATA)>
+    <!ATTLIST CreatedTS
+        date CDATA #REQUIRED
+        time CDATA #REQUIRED>
+    <!ELEMENT WriteDate (#PCDATA)>
+    <!ATTLIST WriteDate
+        date CDATA #REQUIRED
+        time CDATA #REQUIRED>
+    <!ELEMENT UUID (#PCDATA)>
+    <!ELEMENT Build (Project|Version|BuildID|NumberFiles|LOC|SourceBasePath|SourceFiles|ScanTime)*>
+    <!ELEMENT Project (#PCDATA)>
+    <!ELEMENT Version (#PCDATA)>
+    <!ELEMENT BuildID (#PCDATA)>
+    <!ELEMENT NumberFiles (#PCDATA)>
+    <!ELEMENT LOC (#PCDATA)>
+    <!ATTLIST LOC
+        type CDATA #REQUIRED>
+    <!ELEMENT SourceBasePath (#PCDATA)>
+    <!ELEMENT SourceFiles (File)*>
+    <!ELEMENT File (Name|LOC)*>
+    <!ATTLIST File
+        encoding CDATA #IMPLIED
+        loc CDATA #IMPLIED
+        size CDATA #IMPLIED
+        timestamp CDATA #IMPLIED
+        type CDATA #IMPLIED>
+    <!ELEMENT Name (#PCDATA)>
+    <!ELEMENT ScanTime (#PCDATA)>
+    <!ATTLIST ScanTime
+        value CDATA #REQUIRED>
+    <!ELEMENT Vulnerabilities (Vulnerability)*>
+    <!ELEMENT Vulnerability (ClassInfo|InstanceInfo|AnalysisInfo)*>
+    <!ELEMENT ClassInfo (ClassID|Kingdom|Type|AnalyzerName|DefaultSeverity|Subtype)*>
+    <!ELEMENT ClassID (#PCDATA)>
+    <!ELEMENT Kingdom (#PCDATA)>
+    <!ELEMENT Type (#PCDATA)>
+    <!ELEMENT AnalyzerName (#PCDATA)>
+    <!ELEMENT DefaultSeverity (#PCDATA)>
+    <!ELEMENT InstanceInfo (InstanceID|InstanceSeverity|Confidence)*>
+    <!ELEMENT InstanceID (#PCDATA)>
+    <!ELEMENT InstanceSeverity (#PCDATA)>
+    <!ELEMENT Confidence (#PCDATA)>
+    <!ELEMENT AnalysisInfo (Unified)*>
+    <!ELEMENT Unified (Context|ReplacementDefinitions|Trace)*>
+    <!ELEMENT Context (Function|FunctionDeclarationSourceLocation)*>
+    <!ATTLIST Context
+        id CDATA #IMPLIED>
+    <!ELEMENT ReplacementDefinitions (Def)*>
+    <!ELEMENT Def (#PCDATA)>
+    <!ATTLIST Def
+        key CDATA #REQUIRED
+        value CDATA #REQUIRED>
+    <!ELEMENT Trace (Primary)*>
+    <!ELEMENT Primary (Entry)*>
+    <!ELEMENT Entry (Node|NodeRef)*>
+    <!ELEMENT Node (SourceLocation|Knowledge|Action|Reason)*>
+    <!ATTLIST Node
+        id CDATA #IMPLIED
+        isDefault CDATA #IMPLIED
+        label CDATA #IMPLIED>
+    <!ELEMENT SourceLocation (#PCDATA)>
+    <!ATTLIST SourceLocation
+        colEnd CDATA #REQUIRED
+        colStart CDATA #REQUIRED
+        contextId CDATA #IMPLIED
+        line CDATA #REQUIRED
+        lineEnd CDATA #REQUIRED
+        path CDATA #REQUIRED
+        snippet CDATA #IMPLIED>
+    <!ELEMENT Subtype (#PCDATA)>
+    <!ELEMENT Function (#PCDATA)>
+    <!ATTLIST Function
+        enclosingClass CDATA #IMPLIED
+        name CDATA #REQUIRED>
+    <!ELEMENT FunctionDeclarationSourceLocation (#PCDATA)>
+    <!ATTLIST FunctionDeclarationSourceLocation
+        colEnd CDATA #REQUIRED
+        colStart CDATA #REQUIRED
+        line CDATA #REQUIRED
+        lineEnd CDATA #REQUIRED
+        path CDATA #REQUIRED>
+    <!ELEMENT Knowledge (Fact)*>
+    <!ELEMENT Fact (#PCDATA)>
+    <!ATTLIST Fact
+        primary CDATA #REQUIRED
+        type CDATA #IMPLIED>
+    <!ELEMENT NodeRef (#PCDATA)>
+    <!ATTLIST NodeRef
+        id CDATA #REQUIRED>
+    <!ELEMENT Action (#PCDATA)>
+    <!ATTLIST Action
+        type CDATA #REQUIRED>
+    <!ELEMENT Reason (Rule)*>
+    <!ELEMENT Rule (MetaInfo)*>
+    <!ATTLIST Rule
+        id CDATA #IMPLIED
+        ruleID CDATA #IMPLIED>
+    <!ELEMENT ContextPool (Context)*>
+    <!ELEMENT UnifiedNodePool (Node)*>
+    <!ELEMENT Description (Abstract|Explanation|Recommendations|References|Tips)*>
+    <!ATTLIST Description
+        classID CDATA #REQUIRED
+        contentType CDATA #REQUIRED>
+    <!ELEMENT Abstract (#PCDATA)>
+    <!ELEMENT Explanation (#PCDATA)>
+    <!ELEMENT Recommendations (#PCDATA)>
+    <!ELEMENT References (Reference)*>
+    <!ELEMENT Reference (Title|Author|Source)*>
+    <!ELEMENT Title (#PCDATA)>
+    <!ELEMENT Author (#PCDATA)>
+    <!ELEMENT Source (#PCDATA)>
+    <!ELEMENT Tips (Tip)*>
+    <!ELEMENT Tip (#PCDATA)>
+    <!ELEMENT Snippets (Snippet)*>
+    <!ELEMENT Snippet (File|StartLine|EndLine|Text)*>
+    <!ATTLIST Snippet
+        id CDATA #REQUIRED>
+    <!ELEMENT StartLine (#PCDATA)>
+    <!ELEMENT EndLine (#PCDATA)>
+    <!ELEMENT Text (#PCDATA)>
+    <!ELEMENT ProgramData (Sources|Sinks|CalledWithNoDef)*>
+    <!ELEMENT Sources (SourceInstance)*>
+    <!ELEMENT SourceInstance (SourceLocation|TaintFlags|FunctionEntry|FunctionCall)*>
+    <!ATTLIST SourceInstance
+        ruleID CDATA #REQUIRED>
+    <!ELEMENT TaintFlags (TaintFlag)*>
+    <!ELEMENT TaintFlag (#PCDATA)>
+    <!ATTLIST TaintFlag
+        name CDATA #REQUIRED>
+    <!ELEMENT FunctionEntry (SourceLocation|Function)*>
+    <!ELEMENT FunctionCall (SourceLocation|Function)*>
+    <!ELEMENT Sinks (SinkInstance)*>
+    <!ELEMENT SinkInstance (FunctionCall|SourceLocation)*>
+    <!ATTLIST SinkInstance
+        ruleID CDATA #REQUIRED>
+    <!ELEMENT CalledWithNoDef (Function)*>
+    <!ELEMENT EngineData (EngineVersion|RulePacks|Properties|CommandLine|Errors|MachineInfo|FilterResult|RuleInfo|LicenseInfo)*>
+    <!ELEMENT EngineVersion (#PCDATA)>
+    <!ELEMENT RulePacks (RulePack)*>
+    <!ELEMENT RulePack (RulePackID|SKU|Name|Version|MAC)*>
+    <!ELEMENT RulePackID (#PCDATA)>
+    <!ELEMENT SKU (#PCDATA)>
+    <!ELEMENT MAC (#PCDATA)>
+    <!ELEMENT Properties (Property)*>
+    <!ATTLIST Properties
+        type CDATA #REQUIRED>
+    <!ELEMENT Property (name|value)*>
+    <!ELEMENT name (#PCDATA)>
+    <!ELEMENT value (#PCDATA)>
+    <!ELEMENT CommandLine (Argument)*>
+    <!ELEMENT Argument (#PCDATA)>
+    <!ELEMENT Errors (#PCDATA)>
+    <!ELEMENT MachineInfo (Hostname|Username|Platform)*>
+    <!ELEMENT Hostname (#PCDATA)>
+    <!ELEMENT Username (#PCDATA)>
+    <!ELEMENT Platform (#PCDATA)>
+    <!ELEMENT FilterResult (#PCDATA)>
+    <!ELEMENT RuleInfo (Rule)*>
+    <!ELEMENT MetaInfo (Group)*>
+    <!ELEMENT Group (#PCDATA)>
+    <!ATTLIST Group
+        name CDATA #REQUIRED>
+    <!ELEMENT LicenseInfo (Metadata|Capability)*>
+    <!ELEMENT Metadata (name|value)*>
+    <!ELEMENT Capability (Name|Expiration|Attribute)*>
+    <!ELEMENT Expiration (#PCDATA)>
+    <!ELEMENT Attribute (name|value)*>
+    ]>
+<FVDL xmlns="xmlns://www.fortifysoftware.com/schema/fvdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.12"  xsi:type="FVDL">
+    <CreatedTS date="2022-01-31" time="10:48:23"/>
+    <WriteDate date="2022-01-31" time="10:48:23.584Z"/>
+    <UUID>776b9bc3-0cc8-4b29-a9ea-b30c468f965b</UUID>
+    <Build>
+        <Project>front_end_20220131_1140_57_86_898a337</Project>
+        <Version>front_end_20220131_1140_57_86_898a337</Version>
+        <BuildID>front_end_20220131_1140_57_86_898a337</BuildID>
+        <NumberFiles>48</NumberFiles>
+        <LOC type="Fortify">2707</LOC>
+        <LOC type="Line Count">2942</LOC>
+        <LOC type="Function Declarations">1829</LOC>
+        <LOC type="Function Definitions">941</LOC>
+        <SourceBasePath>/var/lib/jenkins/jobs/86/src</SourceBasePath>
+        <SourceFiles>
+            <File size="4818" timestamp="1643625626877" loc="76" type="typescript" encoding="UTF-8">
+                <Name>public/js/js.cookie.js</Name>
+                <LOC type="Fortify">76</LOC>
+                <LOC type="Line Count">93</LOC>
+            </File>
+            <File size="462" timestamp="1643625626877" loc="2" type="typescript" encoding="UTF-8">
+                <Name>public/js/main.js</Name>
+                <LOC type="Fortify">2</LOC>
+                <LOC type="Line Count">2</LOC>
+            </File>
+            <File size="1508" timestamp="1643625808187" type="secondary" encoding="UTF-8">
+                <Name>/opt/fortify/.fortify/sca21.2/build/front_end_20220131_1140_57_86_898a337/extracted/javascript/var/lib/jenkins/jobs/86/src/public/checkout1.html.js</Name>
+            </File>
+            <File size="724" timestamp="1643625625678" loc="18" type="typescript" encoding="UTF-8">
+                <Name>api/catalogue/index.js</Name>
+                <LOC type="Fortify">18</LOC>
+                <LOC type="Line Count">18</LOC>
+            </File>
+            <File size="5397" timestamp="1643625625678" loc="97" type="typescript" encoding="UTF-8">
+                <Name>api/orders/index.js</Name>
+                <LOC type="Fortify">97</LOC>
+                <LOC type="Line Count">107</LOC>
+            </File>
+            <File size="1515" timestamp="1643625807404" type="secondary" encoding="UTF-8">
+                <Name>/opt/fortify/.fortify/sca21.2/build/front_end_20220131_1140_57_86_898a337/extracted/javascript/var/lib/jenkins/jobs/86/src/public/customer-account.html.js</Name>
+            </File>
+            <File size="4102" timestamp="1643625626876" loc="104" type="typescript" encoding="UTF-8">
+                <Name>public/js/front.js</Name>
+                <LOC type="Fortify">104</LOC>
+                <LOC type="Line Count">108</LOC>
+            </File>
+            <File size="3044" timestamp="1643625625679" loc="43" type="typescript" encoding="UTF-8">
+                <Name>helpers/index.js</Name>
+                <LOC type="Fortify">43</LOC>
+                <LOC type="Line Count">44</LOC>
+            </File>
+            <File size="32974" timestamp="1643625625680" loc="18" type="html" encoding="US-ASCII">
+                <Name>public/checkout1.html</Name>
+                <LOC type="Fortify">18</LOC>
+                <LOC type="Line Count">19</LOC>
+            </File>
+            <File size="31190" timestamp="1643625625680" loc="18" type="html" encoding="US-ASCII">
+                <Name>public/checkout4.html</Name>
+                <LOC type="Fortify">18</LOC>
+                <LOC type="Line Count">19</LOC>
+            </File>
+            <File size="1508" timestamp="1643625807696" type="secondary" encoding="UTF-8">
+                <Name>/opt/fortify/.fortify/sca21.2/build/front_end_20220131_1140_57_86_898a337/extracted/javascript/var/lib/jenkins/jobs/86/src/public/checkout3.html.js</Name>
+            </File>
+            <File size="124" timestamp="1643625625679" loc="8" type="typescript" encoding="UTF-8">
+                <Name>nyc.config.js</Name>
+                <LOC type="Fortify">8</LOC>
+                <LOC type="Line Count">8</LOC>
+            </File>
+            <File size="51909" timestamp="1643625626877" loc="646" type="typescript" encoding="UTF-8">
+                <Name>public/js/jquery.flexslider.js</Name>
+                <LOC type="Fortify">646</LOC>
+                <LOC type="Line Count">694</LOC>
+            </File>
+            <File size="8930" timestamp="1643625626876" loc="168" type="typescript" encoding="UTF-8">
+                <Name>public/js/client.js</Name>
+                <LOC type="Fortify">168</LOC>
+                <LOC type="Line Count">171</LOC>
+            </File>
+            <File size="1508" timestamp="1643625807477" type="secondary" encoding="UTF-8">
+                <Name>/opt/fortify/.fortify/sca21.2/build/front_end_20220131_1140_57_86_898a337/extracted/javascript/var/lib/jenkins/jobs/86/src/public/checkout2.html.js</Name>
+            </File>
+            <File size="1308" timestamp="1643625808181" type="secondary" encoding="UTF-8">
+                <Name>/opt/fortify/.fortify/sca21.2/build/front_end_20220131_1140_57_86_898a337/extracted/javascript/var/lib/jenkins/jobs/86/src/public/register.html.js</Name>
+            </File>
+            <File size="46685" timestamp="1643625625782" loc="18" type="html" encoding="US-ASCII">
+                <Name>public/customer-wishlist.html</Name>
+                <LOC type="Fortify">18</LOC>
+                <LOC type="Line Count">19</LOC>
+            </File>
+            <File size="10728" timestamp="1643625626878" type="html" encoding="US-ASCII">
+                <Name>public/navbar.html</Name>
+            </File>
+            <File size="30476" timestamp="1643625625680" loc="18" type="html" encoding="US-ASCII">
+                <Name>public/checkout3.html</Name>
+                <LOC type="Fortify">18</LOC>
+                <LOC type="Line Count">19</LOC>
+            </File>
+            <File size="51351" timestamp="1643625626878" loc="406" type="typescript" encoding="UTF-8">
+                <Name>public/js/modernizr.js</Name>
+                <LOC type="Fortify">406</LOC>
+                <LOC type="Line Count">458</LOC>
+            </File>
+            <File size="1508" timestamp="1643625808178" type="secondary" encoding="UTF-8">
+                <Name>/opt/fortify/.fortify/sca21.2/build/front_end_20220131_1140_57_86_898a337/extracted/javascript/var/lib/jenkins/jobs/86/src/public/checkout4.html.js</Name>
+            </File>
+            <File size="1516" timestamp="1643625808184" type="secondary" encoding="UTF-8">
+                <Name>/opt/fortify/.fortify/sca21.2/build/front_end_20220131_1140_57_86_898a337/extracted/javascript/var/lib/jenkins/jobs/86/src/public/customer-wishlist.html.js</Name>
+            </File>
+            <File size="3177" timestamp="1643625625784" type="html" encoding="US-ASCII">
+                <Name>public/footer.html</Name>
+            </File>
+            <File size="4805" timestamp="1643625807619" type="secondary" encoding="UTF-8">
+                <Name>/opt/fortify/.fortify/sca21.2/build/front_end_20220131_1140_57_86_898a337/extracted/javascript/var/lib/jenkins/jobs/86/src/public/customer-order.html.js</Name>
+            </File>
+            <File size="33547" timestamp="1643625625781" loc="18" type="html" encoding="US-ASCII">
+                <Name>public/customer-account.html</Name>
+                <LOC type="Fortify">18</LOC>
+                <LOC type="Line Count">19</LOC>
+            </File>
+            <File size="10261" timestamp="1643625808175" type="secondary" encoding="UTF-8">
+                <Name>/opt/fortify/.fortify/sca21.2/build/front_end_20220131_1140_57_86_898a337/extracted/javascript/var/lib/jenkins/jobs/86/src/public/basket.html.js</Name>
+            </File>
+            <File size="4955" timestamp="1643625807788" type="secondary" encoding="UTF-8">
+                <Name>/opt/fortify/.fortify/sca21.2/build/front_end_20220131_1140_57_86_898a337/extracted/javascript/var/lib/jenkins/jobs/86/src/public/detail.html.js</Name>
+            </File>
+            <File size="30696" timestamp="1643625625680" loc="18" type="html" encoding="US-ASCII">
+                <Name>public/checkout2.html</Name>
+                <LOC type="Fortify">18</LOC>
+                <LOC type="Line Count">19</LOC>
+            </File>
+            <File size="4246" timestamp="1643625807693" type="secondary" encoding="UTF-8">
+                <Name>/opt/fortify/.fortify/sca21.2/build/front_end_20220131_1140_57_86_898a337/extracted/javascript/var/lib/jenkins/jobs/86/src/public/index.html.js</Name>
+            </File>
+            <File size="8649" timestamp="1643625626875" loc="46" type="html" encoding="US-ASCII">
+                <Name>public/index.html</Name>
+                <LOC type="Fortify">46</LOC>
+                <LOC type="Line Count">48</LOC>
+            </File>
+            <File size="930" timestamp="1643625625678" loc="17" type="typescript" encoding="UTF-8">
+                <Name>api/endpoints.js</Name>
+                <LOC type="Fortify">17</LOC>
+                <LOC type="Line Count">20</LOC>
+            </File>
+            <File size="6579" timestamp="1643625626878" type="html" encoding="US-ASCII">
+                <Name>public/topbar.html</Name>
+            </File>
+            <File size="1621" timestamp="1643625626879" loc="41" type="typescript" encoding="UTF-8">
+                <Name>server.js</Name>
+                <LOC type="Fortify">41</LOC>
+                <LOC type="Line Count">44</LOC>
+            </File>
+            <File size="1485" timestamp="1643625625678" loc="32" type="typescript" encoding="UTF-8">
+                <Name>api/metrics/index.js</Name>
+                <LOC type="Fortify">32</LOC>
+                <LOC type="Line Count">32</LOC>
+            </File>
+            <File size="11433" timestamp="1643625625679" loc="201" type="typescript" encoding="UTF-8">
+                <Name>api/user/index.js</Name>
+                <LOC type="Fortify">201</LOC>
+                <LOC type="Line Count">216</LOC>
+            </File>
+            <File size="28349" timestamp="1643625626878" loc="16" type="html" encoding="US-ASCII">
+                <Name>public/register.html</Name>
+                <LOC type="Fortify">16</LOC>
+                <LOC type="Line Count">17</LOC>
+            </File>
+            <File size="3121" timestamp="1643625626877" loc="53" type="typescript" encoding="UTF-8">
+                <Name>public/js/jquery.cookie.js</Name>
+                <LOC type="Fortify">53</LOC>
+                <LOC type="Line Count">57</LOC>
+            </File>
+            <File size="10364" timestamp="1643625625782" loc="46" type="html" encoding="US-ASCII">
+                <Name>public/detail.html</Name>
+                <LOC type="Fortify">46</LOC>
+                <LOC type="Line Count">50</LOC>
+            </File>
+            <File size="6945" timestamp="1643625807590" type="secondary" encoding="UTF-8">
+                <Name>/opt/fortify/.fortify/sca21.2/build/front_end_20220131_1140_57_86_898a337/extracted/javascript/var/lib/jenkins/jobs/86/src/public/category.html.js</Name>
+            </File>
+            <File size="23388" timestamp="1643625625679" loc="113" type="html" encoding="US-ASCII">
+                <Name>public/basket.html</Name>
+                <LOC type="Fortify">113</LOC>
+                <LOC type="Line Count">124</LOC>
+            </File>
+            <File size="2592" timestamp="1643625807793" type="secondary" encoding="UTF-8">
+                <Name>/opt/fortify/.fortify/sca21.2/build/front_end_20220131_1140_57_86_898a337/extracted/javascript/var/lib/jenkins/jobs/86/src/public/customer-orders.html.js</Name>
+            </File>
+            <File size="477" timestamp="1643625625679" loc="17" type="typescript" encoding="UTF-8">
+                <Name>config.js</Name>
+                <LOC type="Fortify">17</LOC>
+                <LOC type="Line Count">17</LOC>
+            </File>
+            <File size="11518" timestamp="1643625625679" loc="64" type="html" encoding="US-ASCII">
+                <Name>public/category.html</Name>
+                <LOC type="Fortify">64</LOC>
+                <LOC type="Line Count">72</LOC>
+            </File>
+            <File size="5245" timestamp="1643625625678" loc="97" type="typescript" encoding="UTF-8">
+                <Name>api/cart/index.js</Name>
+                <LOC type="Fortify">97</LOC>
+                <LOC type="Line Count">106</LOC>
+            </File>
+            <File size="6383" timestamp="1643625625782" loc="29" type="html" encoding="US-ASCII">
+                <Name>public/customer-orders.html</Name>
+                <LOC type="Fortify">29</LOC>
+                <LOC type="Line Count">31</LOC>
+            </File>
+            <File size="10179" timestamp="1643625625782" loc="62" type="html" encoding="US-ASCII">
+                <Name>public/customer-order.html</Name>
+                <LOC type="Fortify">62</LOC>
+                <LOC type="Line Count">64</LOC>
+            </File>
+            <File size="3424" timestamp="1643625626875" loc="53" type="typescript" encoding="UTF-8">
+                <Name>public/js/bootstrap-hover-dropdown.js</Name>
+                <LOC type="Fortify">53</LOC>
+                <LOC type="Line Count">57</LOC>
+            </File>
+            <File size="9974" timestamp="1643625626877" loc="144" type="typescript" encoding="UTF-8">
+                <Name>public/js/jquery.query-object.js</Name>
+                <LOC type="Fortify">144</LOC>
+                <LOC type="Line Count">170</LOC>
+            </File>
+        </SourceFiles>
+        <ScanTime value="228"/>
+    </Build>
+    <Vulnerabilities>
+        <Vulnerability>
+            <ClassInfo>
+                <ClassID>114E5A67-3446-4DD5-B578-D0E6FDBB304E</ClassID>
+                <Kingdom>Encapsulation</Kingdom>
+                <Type>Cross-Site Request Forgery</Type>
+                <AnalyzerName>structural</AnalyzerName>
+                <DefaultSeverity>2.0</DefaultSeverity>
+            </ClassInfo>
+            <InstanceInfo>
+                <InstanceID>B0BE998B3DEF07E151FAC64685E77F6B</InstanceID>
+                <InstanceSeverity>2.0</InstanceSeverity>
+                <Confidence>5.0</Confidence>
+            </InstanceInfo>
+            <AnalysisInfo>
+                <Unified>
+                    <Context>
+                        <Function name="lambda"/>
+                        <FunctionDeclarationSourceLocation path="public/basket.html" line="359" lineEnd="488" colStart="32" colEnd="0"/>
+                    </Context>
+                    <ReplacementDefinitions>
+                        <Def key="PrimaryLocation.file" value="basket.html"/>
+                        <Def key="PrimaryLocation.line" value="364"/>
+                    </ReplacementDefinitions>
+                    <Trace>
+                        <Primary>
+                            <Entry>
+                                <Node label="FunctionPointerCall: getJSON" isDefault="true">
+                                    <SourceLocation line="364" lineEnd="364" colStart="18" colEnd="0"
+                                                    snippet="8B66D8EFFD64C6A6BE99F2E1FA6D4650#public/basket.html:364:364"/>
+                                    <Knowledge>
+                                        <Fact primary="false">Name: ~JS_Generic.getJSON</Fact>
+                                    </Knowledge>
+                                </Node>
+                            </Entry>
+                        </Primary>
+                    </Trace>
+                </Unified>
+            </AnalysisInfo>
+        </Vulnerability>
+        <Vulnerability>
+            <ClassInfo>
+                <ClassID>78E0700E-56FE-45A2-A11B-6A560F730576</ClassID>
+                <Kingdom>Encapsulation</Kingdom>
+                <Type>Cross-Site Request Forgery</Type>
+                <AnalyzerName>content</AnalyzerName>
+                <DefaultSeverity>2.0</DefaultSeverity>
+            </ClassInfo>
+            <InstanceInfo>
+                <InstanceID>B3270C865BCBE8E240036E2D24CE297E</InstanceID>
+                <InstanceSeverity>2.0</InstanceSeverity>
+                <Confidence>5.0</Confidence>
+            </InstanceInfo>
+            <AnalysisInfo>
+                <Unified>
+                    <Context/>
+                    <ReplacementDefinitions>
+                        <Def key="PrimaryLocation.file" value="basket.html"/>
+                        <Def key="PrimaryLocation.line" value="67"/>
+                    </ReplacementDefinitions>
+                    <Trace>
+                        <Primary>
+                            <Entry>
+                                <Node isDefault="true">
+                                    <SourceLocation path="public/basket.html" line="67" lineEnd="111" colStart="21"
+                                                    colEnd="0"/>
+                                </Node>
+                            </Entry>
+                        </Primary>
+                    </Trace>
+                </Unified>
+            </AnalysisInfo>
+        </Vulnerability>
+        <Vulnerability>
+            <ClassInfo>
+                <ClassID>78E0700E-56FE-45A2-A11B-6A560F730576</ClassID>
+                <Kingdom>Encapsulation</Kingdom>
+                <Type>Cross-Site Request Forgery</Type>
+                <AnalyzerName>content</AnalyzerName>
+                <DefaultSeverity>2.0</DefaultSeverity>
+            </ClassInfo>
+            <InstanceInfo>
+                <InstanceID>B3270C865BCBE8E240036E2D24CE297F</InstanceID>
+                <InstanceSeverity>2.0</InstanceSeverity>
+                <Confidence>5.0</Confidence>
+            </InstanceInfo>
+            <AnalysisInfo>
+                <Unified>
+                    <Context/>
+                    <ReplacementDefinitions>
+                        <Def key="PrimaryLocation.file" value="basket.html"/>
+                        <Def key="PrimaryLocation.line" value="136"/>
+                    </ReplacementDefinitions>
+                    <Trace>
+                        <Primary>
+                            <Entry>
+                                <Node isDefault="true">
+                                    <SourceLocation path="public/basket.html" line="136" lineEnd="162" colStart="45" colEnd="0" snippet="A402B4F58FA4BDEF6687B635B045A329#public/basket.html:136:162"/>
+                                </Node>
+                            </Entry>
+                        </Primary>
+                    </Trace>
+                </Unified>
+            </AnalysisInfo>
+        </Vulnerability>
+    </Vulnerabilities>
+    <EngineData>
+        <EngineVersion>21.2.3.0005</EngineVersion>
+        <RuleInfo>
+            <Rule id="114E5A67-3446-4DD5-B578-D0E6FDBB304E">
+                <MetaInfo>
+                    <Group name="package">JavaScript jQuery</Group>
+                    <Group name="Accuracy">1.0</Group>
+                    <Group name="Impact">2.0</Group>
+                    <Group name="Probability">2.0</Group>
+                    <Group name="PrimaryAudience">security</Group>
+                    <Group name="ImpactBias">Integrity</Group>
+                    <Group name="ConfidentialityImpact">Complete</Group>
+                    <Group name="IntegrityImpact">Complete</Group>
+                    <Group name="AvailabilityImpact">None</Group>
+                    <Group name="RemediationEffort">12.0</Group>
+                    <Group name="audience">broad</Group>
+                </MetaInfo>
+            </Rule>
+        </RuleInfo>
+    </EngineData>
+</FVDL>

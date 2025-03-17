@@ -1,0 +1,3 @@
+sonar.projectKey=de.deutschepost.sdm.cdlib.cli
+sonar.host.url=http://localhost:9000
+sonar.login=squ_fa268613484c5b9735cfaab3ff2520b7fb864048

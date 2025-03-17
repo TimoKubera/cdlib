@@ -1,0 +1,238 @@
+<body><p>Only for <strong>scripted pipelines</strong> on jenkins.dhl.com, for declarative pipelines please check <a href="../tutorials/KubernetesAsJenkinsAgent.md">this guide for kubernetes agents</a><br />
+Create a node running the containers mentioned as images (instances of the <a href="../src/dhl/multicontainer/Image.md">Image class</a>) used in the multicontainer approach.</p><h3>Parameter</h3><table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td>images</td><td>list of images</td></tr></tbody></table><h3>Example Code</h3><h4>Pipeline</h4><pre><code class="language-groovy">nodeContainer([
+    image(alias: 'helm', alwaysPull: true, imageName: &quot;${config.docker.registry.url}/${config.docker.runImages.helm}&quot;),
+    image(alias: 'maven', alwaysPull: true, imageName: &quot;${config.docker.registry.url}/${config.docker.runImages.maven}&quot;)
+]){
+    container('maven') {
+        sh &quot;mvn --version&quot;
+    }
+    container('helm') {
+        sh &quot;helm version&quot;
+    }
+}
+</code></pre><h4>Config</h4><pre><code class="language-groovy">[
+    docker: [
+        registry: [
+            url: 'docker.artifactory.dhl.com',
+            credentialsId: 'artifactory'
+        ],
+        runImages: [
+            maven: 'maven:3.6-jdk-8',
+            helm: 'tools/helm3:v3.0.0'
+        ]
+    ]
+]
+</code></pre><h4>Result</h4><pre><code>[Pipeline] withCredentials
+Masking supported pattern matches of $token
+[Pipeline] {
+[Pipeline] httpRequest
+[Pipeline] }
+[Pipeline] // withCredentials
+[Pipeline] readJSON
+[Pipeline] withCredentials
+Masking supported pattern matches of $token
+[Pipeline] {
+[Pipeline] httpRequest
+[Pipeline] }
+[Pipeline] // withCredentials
+[Pipeline] readJSON
+[Pipeline] podTemplate
+[Pipeline] {
+[Pipeline] node
+Still waiting to schedule task
+All nodes of label ‘mypod-e72e6eba-8495-4ab3-a664-23fb09ab5124’ are offline
+Agent jenkins-slave-prg-multi-xwnts-1x5wq is provisioned from template Kubernetes Pod Template
+---
+apiVersion: &quot;v1&quot;
+kind: &quot;Pod&quot;
+metadata:
+  annotations:
+    buildUrl: &quot;https://jenkins.dhl.com/job/Sock%20Shop/job/carts/job/i12-multicontainer/6/&quot;
+  labels:
+    jenkins: &quot;slave&quot;
+    jenkins/mypod-e72e6eba-8495-4ab3-a664-23fb09ab5124: &quot;true&quot;
+  name: &quot;jenkins-slave-prg-multi-xwnts-1x5wq&quot;
+spec:
+  containers:
+  - command:
+    - &quot;cat&quot;
+    env:
+    - name: &quot;HOME&quot;
+      value: &quot;/home/multicontainer&quot;
+    image: &quot;docker.artifactory.dhl.com/maven:3.6-jdk-8&quot;
+    imagePullPolicy: &quot;Always&quot;
+    name: &quot;maven&quot;
+    resources:
+      limits:
+        memory: &quot;8Gi&quot;
+        cpu: &quot;4&quot;
+      requests:
+        memory: &quot;100Mi&quot;
+        cpu: &quot;50m&quot;
+    securityContext:
+      privileged: false
+    tty: true
+    volumeMounts:
+    - mountPath: &quot;/home/multicontainer&quot;
+      name: &quot;volume-0&quot;
+      readOnly: false
+    - mountPath: &quot;/etc/localtime&quot;
+      name: &quot;volume-2&quot;
+      readOnly: false
+    - mountPath: &quot;/var/run/docker.sock&quot;
+      name: &quot;volume-1&quot;
+      readOnly: false
+    - mountPath: &quot;/data&quot;
+      name: &quot;volume-3&quot;
+      readOnly: false
+    - mountPath: &quot;/var/lib/jenkins&quot;
+      name: &quot;workspace-volume&quot;
+      readOnly: false
+    workingDir: &quot;/var/lib/jenkins&quot;
+  - args:
+    - &quot;********&quot;
+    - &quot;jenkins-slave-prg-multi-xwnts-1x5wq&quot;
+    env:
+    - name: &quot;JENKINS_SECRET&quot;
+      value: &quot;********&quot;
+    - name: &quot;no_proxy&quot;
+      value: &quot;.dhl.com,.deutschepost.de&quot;
+    - name: &quot;http_proxy&quot;
+      value: &quot;http://b2b-http.dhl.com:8080&quot;
+    - name: &quot;NO_PROXY&quot;
+      value: &quot;.dhl.com,.deutschepost.de&quot;
+    - name: &quot;https_proxy&quot;
+      value: &quot;http://b2b-http.dhl.com:8080&quot;
+    - name: &quot;TZ&quot;
+      value: &quot;Europe/Prague&quot;
+    - name: &quot;JENKINS_AGENT_WORKDIR&quot;
+      value: &quot;/var/lib/jenkins&quot;
+    - name: &quot;LANG&quot;
+      value: &quot;en_US.UTF-8&quot;
+    - name: &quot;ANDROID_HOME&quot;
+      value: &quot;/var/lib/jenkins/tools/android-sdk&quot;
+    - name: &quot;JENKINS_AGENT_NAME&quot;
+      value: &quot;jenkins-slave-prg-multi-xwnts-1x5wq&quot;
+    - name: &quot;JAVA_TOOL_OPTIONS&quot;
+      value: &quot;-XX:+UnlockExperimentalVMOptions -Dsun.zip.disableMemoryMapping=true&quot;
+    - name: &quot;JENKINS_NAME&quot;
+      value: &quot;jenkins-slave-prg-multi-xwnts-1x5wq&quot;
+    - name: &quot;JENKINS_URL&quot;
+      value: &quot;https://jenkins.dhl.com/&quot;
+    - name: &quot;HOME&quot;
+      value: &quot;/home/jenkins&quot;
+    image: &quot;docker.artifactory.dhl.com/jenkins/slave:latest&quot;
+    imagePullPolicy: &quot;IfNotPresent&quot;
+    name: &quot;jnlp&quot;
+    resources:
+      limits:
+        memory: &quot;6Gi&quot;
+        cpu: &quot;2&quot;
+      requests:
+        memory: &quot;1Gi&quot;
+        cpu: &quot;500m&quot;
+    securityContext:
+      privileged: true
+    tty: false
+    volumeMounts:
+    - mountPath: &quot;/home/multicontainer&quot;
+      name: &quot;volume-0&quot;
+      readOnly: false
+    - mountPath: &quot;/etc/localtime&quot;
+      name: &quot;volume-2&quot;
+      readOnly: false
+    - mountPath: &quot;/var/run/docker.sock&quot;
+      name: &quot;volume-1&quot;
+      readOnly: false
+    - mountPath: &quot;/data&quot;
+      name: &quot;volume-3&quot;
+      readOnly: false
+    - mountPath: &quot;/var/lib/jenkins&quot;
+      name: &quot;workspace-volume&quot;
+      readOnly: false
+    workingDir: &quot;/var/lib/jenkins&quot;
+  - command:
+    - &quot;cat&quot;
+    env:
+    - name: &quot;HOME&quot;
+      value: &quot;/home/multicontainer&quot;
+    image: &quot;docker.artifactory.dhl.com/tools/helm3:v3.0.0&quot;
+    imagePullPolicy: &quot;Always&quot;
+    name: &quot;helm&quot;
+    resources:
+      limits:
+        memory: &quot;8Gi&quot;
+        cpu: &quot;4&quot;
+      requests:
+        memory: &quot;100Mi&quot;
+        cpu: &quot;50m&quot;
+    securityContext:
+      privileged: false
+    tty: true
+    volumeMounts:
+    - mountPath: &quot;/home/multicontainer&quot;
+      name: &quot;volume-0&quot;
+      readOnly: false
+    - mountPath: &quot;/etc/localtime&quot;
+      name: &quot;volume-2&quot;
+      readOnly: false
+    - mountPath: &quot;/var/run/docker.sock&quot;
+      name: &quot;volume-1&quot;
+      readOnly: false
+    - mountPath: &quot;/data&quot;
+      name: &quot;volume-3&quot;
+      readOnly: false
+    - mountPath: &quot;/var/lib/jenkins&quot;
+      name: &quot;workspace-volume&quot;
+      readOnly: false
+    workingDir: &quot;/var/lib/jenkins&quot;
+  hostNetwork: false
+  imagePullSecrets:
+  - name: &quot;artifactory&quot;
+  - name: &quot;internal&quot;
+  nodeSelector:
+    beta.kubernetes.io/os: &quot;linux&quot;
+  restartPolicy: &quot;Never&quot;
+  securityContext: {}
+  volumes:
+  - emptyDir:
+      medium: &quot;&quot;
+    name: &quot;volume-0&quot;
+  - hostPath:
+      path: &quot;/etc/localtime&quot;
+    name: &quot;volume-2&quot;
+  - hostPath:
+      path: &quot;/var/run/docker.sock&quot;
+    name: &quot;volume-1&quot;
+  - emptyDir:
+      medium: &quot;&quot;
+    name: &quot;workspace-volume&quot;
+  - name: &quot;volume-3&quot;
+    persistentVolumeClaim:
+      claimName: &quot;jenkins-cache&quot;
+      readOnly: false
+Running on jenkins-slave-prg-multi-xwnts-1x5wq in /var/lib/jenkins/workspace/ck_Shop_carts_i12-multicontainer
+[Pipeline] {
+[Pipeline] container
+[Pipeline] {
+[Pipeline] sh
++ mvn --version
+Apache Maven 3.6.2 (40f52333136460af0dc0d7232c0dc0bcf0d9e117; 2019-08-27T15:06:16Z)
+Maven home: /usr/share/maven
+Java version: 1.8.0_232, vendor: Oracle Corporation, runtime: /usr/local/openjdk-8/jre
+Default locale: en, platform encoding: UTF-8
+OS name: &quot;linux&quot;, version: &quot;3.10.0-1062.4.1.el7.x86_64&quot;, arch: &quot;amd64&quot;, family: &quot;unix&quot;
+[Pipeline] }
+[Pipeline] // container
+[Pipeline] container
+[Pipeline] {
+[Pipeline] sh
++ helm version
+version.BuildInfo{Version:&quot;v3.0.0&quot;, GitCommit:&quot;e29ce2a54e96cd02ccfce88bee4f58bb6e2a28b6&quot;, GitTreeState:&quot;clean&quot;, GoVersion:&quot;go1.13.4&quot;}
+[Pipeline] }
+[Pipeline] // container
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] }
+[Pipeline] // podTemplate
+</code></pre></body>

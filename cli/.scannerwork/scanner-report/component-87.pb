@@ -1,0 +1,1 @@
+W 2kotlinX!hrDsrc/main/kotlin/de/deutschepost/sdm/cdlib/names/git/GitRepository.kt

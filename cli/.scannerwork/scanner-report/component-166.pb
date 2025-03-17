@@ -1,0 +1,1 @@
+¦ 2kotlinX*hrcsrc/test/kotlin/de/deutschepost/sdm/cdlib/mixins/artifactory/ArtifactoryMixinFullIntegrationTest.kt

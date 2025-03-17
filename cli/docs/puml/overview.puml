@@ -1,0 +1,63 @@
+@startuml
+class CliCommand <<Command>>
+
+package names {
+    CliCommand --> NamesCommand
+    class NamesCommand <<SubCommand>> {
+        +create()
+    }
+}
+
+'package build {
+'    CliCommand --> BuildCommand
+'    class BuildCommand <<SubCommand>> {
+'
+'    }
+'}
+
+'package release {
+'    class ReleaseCommand <<SubCommand>>
+'    CliCommand --> ReleaseCommand
+'}
+
+package webapproval <<replace with release>> {
+    class WebapprovalCommand <<SubCommand>> {
+        +verify()
+        +record()
+    }
+    CliCommand --> WebapprovalCommand
+}
+
+package change {
+    class ChangeCommand <<SubCommand>> {
+        +close()
+    }
+    CliCommand --> ChangeCommand
+}
+
+package archive {
+    class ArchiveCommand  <<SubCommand>> {
+        +build()
+        +upload()
+    }
+    CliCommand -> ArchiveCommand
+}
+
+package service {
+    package artifactory {
+        class ArtifactoryClient
+
+        ArtifactoryClient "uses" <.. ArchiveCommand
+        ArtifactoryClient "uses" <.. WebapprovalCommand
+    }
+    package jira {
+    }
+    package sharepoint {
+        class SharepointClient
+
+        SharepointClient "uses" <.. WebapprovalCommand
+        SharepointClient "uses" <.. ChangeCommand
+    }
+}
+hide empty members
+@enduml

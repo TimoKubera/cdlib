@@ -1,0 +1,50 @@
+{
+    "date": "2023-03-20T16:00:39.059389616Z",
+    "name": "cli",
+    "test": {
+        "tool": {
+            "name": "P&P OSLC Profile",
+            "version": "0.3",
+            "vendor": "",
+            "ruleVersion": ""
+        },
+        "uri": "oslc-maven-plugin-report.json",
+        "date": "2023-03-20T16:00:39.059133544Z",
+        "reportType": "OSLC",
+        "uniqueLicenses": [
+            "Apache License 2.0",
+            "Apache License, Version 2.0",
+            "Apache License, version 2.0",
+            "BSD-3-Clause",
+            "EPL 2.0",
+            "Eclipse Public License - v 1.0",
+            "GNU Lesser General Public License",
+            "GPL2 w/ CPE",
+            "MIT License",
+            "The Apache License, Version 2.0",
+            "The Apache Software License, Version 2.0"
+        ],
+        "projectName": "carts",
+        "projectId": 0,
+        "depth": "libs",
+        "policyProfile": "Non-Distribution insecure",
+        "unapprovedItems": {},
+        "totalArtifactCount": 68,
+        "complianceStatus": "GREEN",
+        "valid": true
+    },
+    "testHash": "2cd2f14b3650f548684005b7944c75da67c7acc75263eb0cf1955ad81ed25077",
+    "lastCommit": {
+        "authorMail": "integration-test-git-mail",
+        "authorName": "integration-test-git-author",
+        "id": "integration-test-git-id",
+        "link": "integration-test-git-link",
+        "message": "integration-test-git-message",
+        "repository": "integration-test-git-origin"
+    },
+    "pipeline": {
+        "name": "integration-test-platform",
+        "instance": "https://integration-test-url.jenkuns.example.com",
+        "url": "https://integration-test-url.jenkuns.example.com/foo/bar/job/1337"
+    }
+}

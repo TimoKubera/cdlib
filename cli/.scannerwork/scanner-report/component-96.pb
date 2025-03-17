@@ -1,0 +1,1 @@
+` 2kotlinX4hrFsrc/main/kotlin/de/deutschepost/sdm/cdlib/names/NameResolverJenkins.kt

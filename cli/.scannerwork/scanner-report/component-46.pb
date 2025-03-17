@@ -1,0 +1,1 @@
+. 2kotlinXchrVsrc/main/kotlin/de/deutschepost/sdm/cdlib/change/changemanagement/model/GetItSystem.kt

@@ -1,0 +1,1 @@
+i 2kotlinXfhrRsrc/main/kotlin/de/deutschepost/sdm/cdlib/release/report/external/CcaTestResult.kt
