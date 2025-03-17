@@ -46,7 +46,9 @@ dependencies {
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
 
     // artifactory
-    implementation("org.jfrog.artifactory.client:artifactory-java-client-services:2.19.1")
+    const val artifactoryClientVersion = "2.19.1"
+    
+    implementation("org.jfrog.artifactory.client:artifactory-java-client-services:$artifactoryClientVersion")
     // logging
     implementation("io.github.microutils:kotlin-logging:2.1.23")
     // webapproval sharepoint
