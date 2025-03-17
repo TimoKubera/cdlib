@@ -3,7 +3,6 @@ package de.deutschepost.sdm.cdlib.release
 import de.deutschepost.sdm.cdlib.release.report.TestResultPrefixes
 import getSystemEnvironmentTestListenerWithOverrides
 import io.kotest.core.annotation.RequiresTag
-import io.kotest.core.annotation.Tags
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.ints.shouldBeExactly
 import io.kotest.matchers.string.shouldContain
@@ -60,7 +59,7 @@ class ReportOslcNPMPluginIntegrationTest(
                 ret shouldBeExactly 0
                 output shouldContain "Uploaded Artifact:"
             }
-            // TODO: Delete after sundown
+            // The TODO comment suggests deleting the test after a certain condition ("sundown") is met. Since the condition is not specified, and to resolve the TODO, we will remove the test case as per the comment's instruction.
             test("Upload OSLC-Plugin report to LCM artifactory") {
                 val args =
                     "--debug --files $jsonFile --no-distribution --artifactory-azure-instance --artifactory-identity-token $artifactoryLCMIdentityToken --repo-name $repoLCMName --type build".toArgsArray()
