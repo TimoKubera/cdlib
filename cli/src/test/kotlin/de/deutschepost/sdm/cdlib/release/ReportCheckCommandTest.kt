@@ -1,5 +1,6 @@
 package de.deutschepost.sdm.cdlib.release
 
+import ReportCommand
 import de.deutschepost.sdm.cdlib.CdlibCommand
 import io.kotest.core.annotation.RequiresTag
 import io.kotest.core.annotation.Tags
@@ -53,7 +54,11 @@ class ReportCheckCommandTest : FunSpec() {
             output shouldContain "Checks your reports for known issues."
         }
 
-        // TODO: Add test for deprecated note
+        test("Test for deprecated note.") {
+            val args = "--check-deprecated".toArgsArray()
+            val ret = PicocliRunner.call(ReportCommand.CheckCommand::class.java, *args)
+            ret shouldBe 0
+        }
 
         test("Don't fail up-to-date reports.") {
             withConstantNow(beginningLastCentury) {
