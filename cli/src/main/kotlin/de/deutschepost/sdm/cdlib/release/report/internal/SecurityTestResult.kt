@@ -153,7 +153,7 @@ fun List<SecurityTestResult>.securityTestsVerify(
             ReportType.CCA -> { /* No action needed for CCA */ }
             // Adding a comment to indicate that this case is intentionally left empty
             ReportType.OTHER -> { /* No action needed for OTHER */ }
-            ReportType.OSLC -> {}
+            { /* No action needed for OSLC */ }
             ReportType.OSLC_PRE -> {}
         }
     }
