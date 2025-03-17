@@ -2,7 +2,6 @@ package de.deutschepost.sdm.cdlib.names
 
 import de.deutschepost.sdm.cdlib.CdlibCommand
 import io.kotest.core.annotation.RequiresTag
-import io.kotest.core.annotation.Tags
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.string.shouldContain
 import io.micronaut.configuration.picocli.PicocliRunner
@@ -18,7 +17,9 @@ class NamesCommandTest : DescribeSpec({
                 val args = "names -h".toArgsArray()
                 PicocliRunner.run(CdlibCommand::class.java, *args)
             }
-            it("should display help") {
+            const val HELP_MESSAGE = "should display help"
+
+            it(HELP_MESSAGE) {
                 output shouldContain "Contains subcommands for automatic name and ID creation in pipeline"
             }
         }
@@ -29,7 +30,7 @@ class NamesCommandTest : DescribeSpec({
                 PicocliRunner.run(CdlibCommand::class.java, *args)
             }
 
-            it("should display help") {
+            it(HELP_MESSAGE) {
                 output shouldContain "Create canonical set of standard names and IDs"
                 output shouldContain "Name of optional output file"
                 output shouldContain "Release name to use for derived name creation"
@@ -43,7 +44,7 @@ class NamesCommandTest : DescribeSpec({
                 PicocliRunner.run(CdlibCommand::class.java, *args)
             }
 
-            it("should display help") {
+            it(HELP_MESSAGE) {
                 output shouldContain "Dumps the list of environment variables"
                 output shouldContain "Name of optional output file"
             }
