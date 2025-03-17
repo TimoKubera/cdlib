@@ -58,37 +58,39 @@ class ReportOslcNPMPluginIntegrationTest(
                     PicocliRunner.call(ReportCommand.UploadCommand::class.java, *args)
                 }
                 ret shouldBeExactly 0
-                output shouldContain "Uploaded Artifact:"
-            }
-            // TODO: Delete after sundown
-            test("Upload OSLC-Plugin report to LCM artifactory") {
-                val args =
-                    "--debug --files $jsonFile --no-distribution --artifactory-azure-instance --artifactory-identity-token $artifactoryLCMIdentityToken --repo-name $repoLCMName --type build".toArgsArray()
-                val (ret, output) = withStandardOutput {
-                    PicocliRunner.call(ReportCommand.UploadCommand::class.java, *args)
+                const val UPLOADED_ARTIFACT_MESSAGE = "Uploaded Artifact:"
+                
+                output shouldContain UPLOADED_ARTIFACT_MESSAGE
                 }
-                ret shouldBeExactly 0
-                output shouldContain "Uploaded Artifact:"
-            }
-
-            test("Check OSLC-Plugin report locally should fail due to distribution flag") {
-                val args = "--debug --files $jsonFailingFile --distribution".toArgsArray()
-                val (ret, output) = withStandardOutput {
-                    PicocliRunner.call(ReportCommand.CheckCommand::class.java, *args)
+                // TODO: Delete after sundown
+                test("Upload OSLC-Plugin report to LCM artifactory") {
+                    val args =
+                        "--debug --files $jsonFile --no-distribution --artifactory-azure-instance --artifactory-identity-token $artifactoryLCMIdentityToken --repo-name $repoLCMName --type build".toArgsArray()
+                    val (ret, output) = withStandardOutput {
+                        PicocliRunner.call(ReportCommand.UploadCommand::class.java, *args)
+                    }
+                    ret shouldBeExactly 0
+                    output shouldContain UPLOADED_ARTIFACT_MESSAGE
                 }
-                ret shouldBeExactly -1
-                output shouldContain "Policy Profile: Distribution"
-            }
-
-            test("Trying to upload failing OSLC-Plugin report to artifactory should missing") {
-
-                val args =
-                    "--debug --files $jsonFailingFile --distribution --artifactory-its-instance --artifactory-identity-token $artifactoryIdentityToken --repo-name $repoName --type build".toArgsArray()
-                val (ret, output) = withStandardOutput {
-                    PicocliRunner.call(ReportCommand.UploadCommand::class.java, *args)
+                
+                test("Check OSLC-Plugin report locally should fail due to distribution flag") {
+                    val args = "--debug --files $jsonFailingFile --distribution".toArgsArray()
+                    val (ret, output) = withStandardOutput {
+                        PicocliRunner.call(ReportCommand.CheckCommand::class.java, *args)
+                    }
+                    ret shouldBeExactly -1
+                    output shouldContain "Policy Profile: Distribution"
                 }
-                ret shouldBeExactly -1
-                output shouldNotContain "Uploaded Artifact:"
+                
+                test("Trying to upload failing OSLC-Plugin report to artifactory should missing") {
+                
+                    val args =
+                        "--debug --files $jsonFailingFile --distribution --artifactory-its-instance --artifactory-identity-token $artifactoryIdentityToken --repo-name $repoName --type build".toArgsArray()
+                    val (ret, output) = withStandardOutput {
+                        PicocliRunner.call(ReportCommand.UploadCommand::class.java, *args)
+                    }
+                    ret shouldBeExactly -1
+                    output shouldNotContain UPLOADED_ARTIFACT_MESSAGE
             }
         }
     }
