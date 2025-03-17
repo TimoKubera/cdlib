@@ -2,12 +2,10 @@ package de.deutschepost.sdm.cdlib.change
 
 import de.deutschepost.sdm.cdlib.SubcommandWithHelp
 import de.deutschepost.sdm.cdlib.artifactory.ArtifactoryClient
-import de.deutschepost.sdm.cdlib.artifactory.ArtifactoryInstanceSection
 import de.deutschepost.sdm.cdlib.change.changemanagement.api.ChangeHandler
 import de.deutschepost.sdm.cdlib.change.changemanagement.api.ChangeManagementRepository
 import de.deutschepost.sdm.cdlib.change.changemanagement.model.*
 import de.deutschepost.sdm.cdlib.change.changemanagement.model.JiraConstants.ChangePhaseId.*
-import de.deutschepost.sdm.cdlib.change.changemanagement.model.JiraConstants.Labels
 import de.deutschepost.sdm.cdlib.change.metrics.client.CosmosDashboardRepository
 import de.deutschepost.sdm.cdlib.change.metrics.model.*
 import de.deutschepost.sdm.cdlib.mixins.CheckMixin
@@ -27,10 +25,8 @@ import mu.KLogging
 import picocli.CommandLine.*
 import picocli.CommandLine.Model.CommandSpec
 import java.io.File
-import java.time.Duration
 import java.time.ZonedDateTime
 import java.util.concurrent.Callable
-import kotlin.time.toKotlinDuration
 
 
 @Command(
@@ -371,171 +367,82 @@ class ChangeCommand : SubcommandWithHelp() {
         override fun call(): Int {
             enableDebugIfOptionIsSet()
             val originalArgs = spec.commandLine().parseResult.originalArgs()
-
+        
             val versionInfo = cosmosDashboardRepository.versionInfo
+            checkVersionInfo(versionInfo)
+        
+            val reportUrl = handleReleaseVerification(originalArgs)
+        
+            logger.debug { "CDLib version: $versionInfo" }
+            handleChangeManagementProcess()
+        
+            val webapprovalUrl = handleWebApproval(reportUrl)
+        
+            handleTqsSection()
+        
+            val oslcURls = handleOslcSection()
+        
+            writeOutputUrlsFile(reportUrl, webapprovalUrl, oslcURls)
+        
+            return 0
+        }
+        
+        private fun checkVersionInfo(versionInfo: VersionInfo) {
             if (!versionInfo.isSupported) {
                 logger.warn { "CDLib version ${cosmosDashboardRepository.getCdlibVersionViewModel().cdlib} is not supported anymore. Please update to a newer version. Pre-authorization is not possible." }
             }
             if (!versionInfo.isLatest) {
                 logger.info { "A new version of CDLib is available" }
             }
-
-            val reportUrl =
-                if (webApprovalSection.performWebapproval or oslcSection.performOslc) {
-                    logger.info { "Starting release verification..." }
-                    if (isTest) {
-                        logger.info { "Test run!" }
-                    }
-                    runCatching {
-                        if (oslcSection.performOslc) {
-                            logger.info { "Flag --oslc found." }
-                            logger.info { "Checking for '--distribution' flag..." }
-                            require(originalArgs.any { it.contains("--distribution") or it.contains("--no-distribution") }) {
-                                "'--[no-]distribution' is required when running OSLC verification!"
-                            }
-                            logger.debug { "Flag is set!" }
-                        }
-                        logger.info { "Verifying reports..." }
-                        val nameToAllReports = artifactoryMixinFull.artifactoryReports.also {
-                            logger.debug { "Downloaded reports: $it" }
-                        }.groupBy { it.name }
-                        val nameToBuildReports = artifactoryMixinFull.artifactoryReports.filterNot {
-                            it.test.reportType == ReportType.DAST
-                        }.groupBy { it.name }
-
-                        if (webApprovalSection.performWebapproval) {
-                            logger.info { "Flag --webapproval found." }
-                            var hasInvalidReports = false
-                            var hasMissingBuildReports = false
-                            var hasDastReport = false
-                            var hasScaReport = false
-                            var hasSastReport = false
-
-                            nameToAllReports.forEach { (name, reports) ->
-                                val verificationResult = checkMixin.checkSecurityReports(reports).also {
-                                    logger.info { "Verification result for App $name: $it" }
-                                }
-                                if (verificationResult.hasInvalidReport) {
-                                    hasInvalidReports = true
-                                    logger.error { "App $name has invalid report(s)!" }
-                                }
-                                if (!verificationResult.hasSAST && (!verificationResult.hasDAST or (verificationResult.hasDAST and verificationResult.hasSCA))) {
-                                    hasMissingBuildReports = true
-                                    logger.error { "App $name is missing SAST report!" }
-                                }
-                                if (!verificationResult.hasSCA && (!verificationResult.hasDAST or (verificationResult.hasDAST and verificationResult.hasSAST))) {
-                                    hasMissingBuildReports = true
-                                    logger.error { "App $name is missing SCA report!" }
-                                }
-                                if (verificationResult.hasDAST) {
-                                    hasDastReport = true
-                                    logger.info { "Found DAST report for App $name." }
-                                }
-                                if (verificationResult.hasSCA) {
-                                    hasScaReport = true
-                                }
-                                if (verificationResult.hasSAST) {
-                                    hasSastReport = true
-                                }
-                            }
-                            if (!hasDastReport) {
-                                hasMissingBuildReports = true
-                                logger.error { "No DAST report found!" }
-                            }
-                            if (!hasScaReport) {
-                                hasMissingBuildReports = true
-                                logger.error { "No SCA report found!" }
-                            }
-                            if (!hasSastReport) {
-                                hasMissingBuildReports = true
-                                logger.error { "No SAST report found!" }
-                            }
-
-                            check(!hasInvalidReports) {
-                                "Invalid report(s)!"
-                            }
-                            check(!hasMissingBuildReports) {
-                                "Missing reports!"
-                            }
-                            logger.info { "Verifying pipeline approval configuration..." }
-                            check(webapprovalMixin.isConfigurationApproved()) {
-                                "Failed to validate approval configuration."
-                            }
-                        }
-
-                        if (tqsSection.performTqs) {
-                            logger.info { "Flag --tqs found. Deprecated due to unsupported plugin and measurements. This flag has no effect and can be removed." }
-                        }
-
-                        if (oslcSection.performOslc) {
-                            val oslcReportAppNames = artifactoryMixinFull.oslcReports.map(Report::name)
-
-                            var hasMissingOSLCReport = false
-                            var hasComplianceIssues = false
-                            nameToBuildReports.forEach { (name, reports) ->
-                                if (name !in oslcReportAppNames) {
-                                    hasMissingOSLCReport = true
-                                    logger.error { "App $name is missing OSLC report!" }
-                                } else {
-                                    val oslcReportsForApp = artifactoryMixinFull.oslcReports
-                                        .filter { report -> report.name == name }
-                                    if (oslcReportsForApp.size > 1) {
-                                        logger.warn { "Found multiple OSLC reports for $name" }
-                                    }
-                                    oslcReportsForApp.forEach { report ->
-                                        when (report.test.tool.name) {
-                                            Tool.OSLC_FNCI_NAME -> logger.info { "Found OSLC-Report from FNCI for $name" }
-                                            Tool.OSLC_MAVEN_PLUGIN_NAME -> logger.info { "Found OSLC-Report from OSLC-Maven-Plugin for $name" }
-                                            Tool.OSLC_GRADLE_PLUGIN_NAME -> logger.info { "Found OSLC-Report from OSLC-Gradle-Plugin for $name" }
-                                            Tool.OSLC_NPM_PLUGIN_NAME -> logger.info { "Found OSLC-Report from OSLC-NPM-Plugin for $name" }
-                                            else -> logger.warn { "Found OSLC-Report from from unkown tool for $name" }
-                                        }
-                                    }
-                                }
-
-                                runCatching {
-                                    checkMixin.checkOslcCompliance(name, reports, oslcSection.isDistribution)
-                                }.onFailure {
-                                    hasComplianceIssues = true
-                                    logger.error { it.message }
-                                    logger.error { "App $name has compliance issues!" }
-                                }
-                            }
-
-                            check(!hasMissingOSLCReport) {
-                                "Missing OSLC reports!"
-                            }
-
-                            check(!hasComplianceIssues) {
-                                "There are OSLC compliance issues!"
-                            }
-                        }
-
-                        logger.info { "Generating and copying immutable artifacts..." }
-                        val reportFolderUrl = artifactoryMixinFull.copyFiles()
-                        val reports = nameToAllReports.flatMap { it.value }
-                        artifactoryMixinFull.uploadSuppressions(reports.map(Report::test).securityTestsSuppressions())
-                        cosmosDashboardRepository.addRelease(
-                            Release(
-                                test = reports.firstOrNull { it.test.reportType == ReportType.DAST },
-                                builds = reports.filter { it.test.reportType != ReportType.DAST },
-                                reportFolderUrl = reportFolderUrl,
-                                cdlibVersionViewModel = cosmosDashboardRepository.getCdlibVersionViewModel()
-                            ), isTest
-                        )
-                        logger.info { "Release verification succeeded!" }
-                        reportFolderUrl
-                    }.getOrElse {
-                        logger.error { "Release verification failed." }
-                        it.klogSelf(logger)
-                        return -1
-                    }
-                } else {
-                    logger.info { "Skipping release verification." }
-                    null
+        }
+        
+        private fun handleReleaseVerification(originalArgs: List<String>): String? {
+            return if (webApprovalSection.performWebapproval or oslcSection.performOslc) {
+                logger.info { "Starting release verification..." }
+                if (isTest) {
+                    logger.info { "Test run!" }
                 }
-
-            logger.debug { "CDLib version: $versionInfo" }
+                runCatching {
+                    verifyOslcSection(originalArgs)
+                    val nameToAllReports = groupReportsByName(artifactoryMixinFull.artifactoryReports)
+                    val nameToBuildReports = filterAndGroupBuildReports(artifactoryMixinFull.artifactoryReports)
+        
+                    if (webApprovalSection.performWebapproval) {
+                        verifyWebApprovalSection(nameToAllReports)
+                    }
+        
+                    handleTqsSection()
+        
+                    if (oslcSection.performOslc) {
+                        verifyOslcReports(nameToBuildReports)
+                    }
+        
+                    logger.info { "Generating and copying immutable artifacts..." }
+                    val reportFolderUrl = artifactoryMixinFull.copyFiles()
+                    val reports = nameToAllReports.flatMap { it.value }
+                    artifactoryMixinFull.uploadSuppressions(reports.map(Report::test).securityTestsSuppressions())
+                    cosmosDashboardRepository.addRelease(
+                        Release(
+                            test = reports.firstOrNull { it.test.reportType == ReportType.DAST },
+                            builds = reports.filter { it.test.reportType != ReportType.DAST },
+                            reportFolderUrl = reportFolderUrl,
+                            cdlibVersionViewModel = cosmosDashboardRepository.getCdlibVersionViewModel()
+                        ), isTest
+                    )
+                    logger.info { "Release verification succeeded!" }
+                    reportFolderUrl
+                }.getOrElse {
+                    logger.error { "Release verification failed." }
+                    it.klogSelf(logger)
+                    return null
+                }
+            } else {
+                logger.info { "Skipping release verification." }
+                null
+            }
+        }
+        
+        private fun handleChangeManagementProcess() {
             runCatching {
                 logger.info { "Starting Change Management process." }
                 changeHandler
@@ -550,7 +457,7 @@ class ChangeCommand : SubcommandWithHelp() {
                     )
                     .findItSystem(changeManagementSection.commercialReference)
                     .findExisting()
-
+        
                 if (changeManagementSection.resume) {
                     changeHandler
                         .findResumable()
@@ -570,10 +477,12 @@ class ChangeCommand : SubcommandWithHelp() {
                 logger.info { "Finishing Change Management process." }
             }.onFailure {
                 it.klogSelf(logger)
-                return -1
-            }.getOrThrow()
-
-            val webapprovalUrl = if (webApprovalSection.performWebapproval) {
+                throw it
+            }
+        }
+        
+        private fun handleWebApproval(reportUrl: String?): String? {
+            return if (webApprovalSection.performWebapproval) {
                 logger.info { "Flag --webapproval found. Adding Sharepoint entry." }
                 runCatching {
                     checkNotNull(reportUrl)
@@ -583,18 +492,22 @@ class ChangeCommand : SubcommandWithHelp() {
                 }.getOrElse {
                     logger.error { "Failed publishing Webapproval to Sharepoint." }
                     it.klogSelf(logger)
-                    return -1
+                    return null
                 }
             } else {
                 logger.info { "Flag --webapproval not found. Skipping Sharepoint entry." }
                 null
             }
-
+        }
+        
+        private fun handleTqsSection() {
             if (tqsSection.performTqs) {
                 logger.info { "Flag --tqs found. Deprecated due to unsupported plugin and measurements. This flag has no effect and can be removed." }
             }
-
-            val oslcURls = if (oslcSection.performOslc) {
+        }
+        
+        private fun handleOslcSection(): List<String> {
+            return if (oslcSection.performOslc) {
                 logger.info { "Flag --oslc found. Adding OSLC entry." }
                 runCatching {
                     oslcMixin.addEntries(
@@ -606,16 +519,166 @@ class ChangeCommand : SubcommandWithHelp() {
                 }.getOrElse {
                     logger.error { "Failed publishing OSLC Reports to Sharepoint" }
                     it.klogSelf(logger)
-                    return -1
+                    return emptyList()
                 }
             } else {
                 logger.info { "Flag --oslc not found. Skipping OSLC entry." }
                 emptyList()
             }
-
+        }
+        
+        private fun writeOutputUrlsFile(reportUrl: String?, webapprovalUrl: String?, oslcURls: List<String>) {
             changeManagementSection.outputUrlsFile?.let { outputUrlFile ->
                 val file = File(outputUrlFile)
                 if (file.exists()) {
+                    logger.warn { "File $outputUrlFile already exists and will be overriden." }
+                }
+                logger.info { "Writing generated URLs during change creation to file: ${file.absolutePath}" }
+                val urlInfo = ChangeUrlFile(
+                    cdlibChangeJiraUrl = changeHandler.getUrl(),
+                    cdlibChangeImmutableRepoUrl = reportUrl,
+                    cdlibChangeWebapprovalEntryUrl = webapprovalUrl,
+                    cdlibChangeOslcEntryUrls = oslcURls,
+                    cdlibChangeTqsEntryUrls = emptyList() // TODO: Left here to not break sharepoint model. Remove in 7.0 or find way to include cdlib-external sonar url?
+                )
+                runCatching {
+                    defaultObjectMapper.writeValue(file, urlInfo)
+                }.onSuccess {
+                    logger.info { "Write successful." }
+                }.onFailure {
+                    logger.error { "Failed to write file!" }
+                    it.klogSelf(logger)
+                    throw it
+                }
+            }
+        }
+        
+        private fun verifyOslcSection(originalArgs: List<String>) {
+            if (oslcSection.performOslc) {
+                logger.info { "Flag --oslc found." }
+                logger.info { "Checking for '--distribution' flag..." }
+                require(originalArgs.any { it.contains("--distribution") or it.contains("--no-distribution") }) {
+                    "'--[no-]distribution' is required when running OSLC verification!"
+                }
+                logger.debug { "Flag is set!" }
+            }
+        }
+        
+        private fun groupReportsByName(reports: List<Report>): Map<String, List<Report>> {
+            return reports.also {
+                logger.debug { "Downloaded reports: $it" }
+            }.groupBy { it.name }
+        }
+        
+        private fun filterAndGroupBuildReports(reports: List<Report>): Map<String, List<Report>> {
+            return reports.filterNot {
+                it.test.reportType == ReportType.DAST
+            }.groupBy { it.name }
+        }
+        
+        private fun verifyWebApprovalSection(nameToAllReports: Map<String, List<Report>>) {
+            logger.info { "Flag --webapproval found." }
+            var hasInvalidReports = false
+            var hasMissingBuildReports = false
+            var hasDastReport = false
+            var hasScaReport = false
+            var hasSastReport = false
+        
+            nameToAllReports.forEach { (name, reports) ->
+                val verificationResult = checkMixin.checkSecurityReports(reports).also {
+                    logger.info { "Verification result for App $name: $it" }
+                }
+                if (verificationResult.hasInvalidReport) {
+                    hasInvalidReports = true
+                    logger.error { "App $name has invalid report(s)!" }
+                }
+                if (!verificationResult.hasSAST && (!verificationResult.hasDAST or (verificationResult.hasDAST and verificationResult.hasSCA))) {
+                    hasMissingBuildReports = true
+                    logger.error { "App $name is missing SAST report!" }
+                }
+                if (!verificationResult.hasSCA && (!verificationResult.hasDAST or (verificationResult.hasDAST and verificationResult.hasSAST))) {
+                    hasMissingBuildReports = true
+                    logger.error { "App $name is missing SCA report!" }
+                }
+                if (verificationResult.hasDAST) {
+                    hasDastReport = true
+                    logger.info { "Found DAST report for App $name." }
+                }
+                if (verificationResult.hasSCA) {
+                    hasScaReport = true
+                }
+                if (verificationResult.hasSAST) {
+                    hasSastReport = true
+                }
+            }
+            if (!hasDastReport) {
+                hasMissingBuildReports = true
+                logger.error { "No DAST report found!" }
+            }
+            if (!hasScaReport) {
+                hasMissingBuildReports = true
+                logger.error { "No SCA report found!" }
+            }
+            if (!hasSastReport) {
+                hasMissingBuildReports = true
+                logger.error { "No SAST report found!" }
+            }
+        
+            check(!hasInvalidReports) {
+                "Invalid report(s)!"
+            }
+            check(!hasMissingBuildReports) {
+                "Missing reports!"
+            }
+            logger.info { "Verifying pipeline approval configuration..." }
+            check(webapprovalMixin.isConfigurationApproved()) {
+                "Failed to validate approval configuration."
+            }
+        }
+        
+        private fun verifyOslcReports(nameToBuildReports: Map<String, List<Report>>) {
+            val oslcReportAppNames = artifactoryMixinFull.oslcReports.map(Report::name)
+        
+            var hasMissingOSLCReport = false
+            var hasComplianceIssues = false
+            nameToBuildReports.forEach { (name, reports) ->
+                if (name !in oslcReportAppNames) {
+                    hasMissingOSLCReport = true
+                    logger.error { "App $name is missing OSLC report!" }
+                } else {
+                    val oslcReportsForApp = artifactoryMixinFull.oslcReports
+                        .filter { report -> report.name == name }
+                    if (oslcReportsForApp.size > 1) {
+                        logger.warn { "Found multiple OSLC reports for $name" }
+                    }
+                    oslcReportsForApp.forEach { report ->
+                        when (report.test.tool.name) {
+                            Tool.OSLC_FNCI_NAME -> logger.info { "Found OSLC-Report from FNCI for $name" }
+                            Tool.OSLC_MAVEN_PLUGIN_NAME -> logger.info { "Found OSLC-Report from OSLC-Maven-Plugin for $name" }
+                            Tool.OSLC_GRADLE_PLUGIN_NAME -> logger.info { "Found OSLC-Report from OSLC-Gradle-Plugin for $name" }
+                            Tool.OSLC_NPM_PLUGIN_NAME -> logger.info { "Found OSLC-Report from OSLC-NPM-Plugin for $name" }
+                            else -> logger.warn { "Found OSLC-Report from from unkown tool for $name" }
+                        }
+                    }
+                }
+        
+                runCatching {
+                    checkMixin.checkOslcCompliance(name, reports, oslcSection.isDistribution)
+                }.onFailure {
+                    hasComplianceIssues = true
+                    logger.error { it.message }
+                    logger.error { "App $name has compliance issues!" }
+                }
+            }
+        
+            check(!hasMissingOSLCReport) {
+                "Missing OSLC reports!"
+            }
+        
+            check(!hasComplianceIssues) {
+                "There are OSLC compliance issues!"
+            }
+        }
                     logger.warn { "File $outputUrlFile already exists and will be overriden." }
                 }
                 logger.info { "Writing generated URLs during change creation to file: ${file.absolutePath}" }
