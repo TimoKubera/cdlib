@@ -64,7 +64,11 @@ class ChangeWebapprovalIntegrationTest(
             declaredField.isAccessible = true
             declaredField.get(artifactoryClient) as Artifactory
         }
-    @Value("\${sharepoint.password}") val sp_password: String,
+    private val artifactory by lazy {
+        val declaredField = artifactoryClient.javaClass.getDeclaredField("artifactory")
+        declaredField.isAccessible = true
+        declaredField.get(artifactoryClient) as Artifactory
+    }
     @Value("\${artifactory-its-identity-token}") val artifactoryIdentityToken: String,
     private val cosmosDashboardRepository: CosmosDashboardRepository
 ) : FunSpec() {
