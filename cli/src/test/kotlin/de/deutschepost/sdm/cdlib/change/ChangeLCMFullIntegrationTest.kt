@@ -1,5 +1,6 @@
 package de.deutschepost.sdm.cdlib.change
 
+import de.deutschepost.sdm.cdlib.artifactory.Artifactory
 import de.deutschepost.sdm.cdlib.CdlibCommand
 import de.deutschepost.sdm.cdlib.artifactory.AZURE_ARTIFACTORY_URL
 import de.deutschepost.sdm.cdlib.artifactory.ArtifactoryClient
@@ -58,7 +59,7 @@ class ChangeLCMFullIntegrationTest(
         private val artifactory by lazy {
             val declaredField = artifactoryClient.javaClass.getDeclaredField("artifactory")
             declaredField.isAccessible = true
-    @Value("\${sharepoint.password}") val sp_password: String,
+    private val artifactory = declaredField.get(artifactoryClient) as Artifactory
     @Value("\${artifactory-azure-identity-token}") val artifactoryLCMIdentityToken: String,
     private val changeTestHelper: ChangeTestHelper,
     private val changeHandler: ChangeHandler,
