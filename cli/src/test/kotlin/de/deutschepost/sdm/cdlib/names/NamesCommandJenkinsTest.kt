@@ -11,7 +11,45 @@ import io.kotest.extensions.system.SystemEnvironmentTestListener
 import io.kotest.matchers.comparables.shouldBeEqualComparingTo
 import io.kotest.matchers.string.shouldContainIgnoringCase
 import io.micronaut.configuration.picocli.PicocliRunner
+package de.deutschepost.sdm.cdlib.names
+
+import de.deutschepost.sdm.cdlib.CdlibCommand
+import de.deutschepost.sdm.cdlib.names.git.GitRepository
+import de.deutschepost.sdm.cdlib.names.git.GitRevision
+import io.kotest.core.annotation.RequiresTag
+import io.kotest.core.annotation.Tags
+import io.kotest.core.spec.style.AnnotationSpec
+import io.kotest.extensions.system.OverrideMode
+import io.kotest.extensions.system.SystemEnvironmentTestListener
+import io.kotest.matchers.comparables.shouldBeEqualComparingTo
+import io.kotest.matchers.string.shouldContainIgnoringCase
+import io.micronaut.configuration.picocli.PicocliRunner
 import io.micronaut.test.extensions.kotest5.annotation.MicronautTest
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.mockkObject
+import org.eclipse.jgit.lib.Repository
+import toArgsArray
+import withStandardOutput
+
+@RequiresTag("UnitTest")
+@Tags("UnitTest")
+class NamesCommandJenkinsTest : AnnotationSpec() {
+
+    override fun listeners() = listOf(
+        SystemEnvironmentTestListener(
+            mapOf(
+                "JOB_NAME" to "SDM/cli/i593-cli-createnames",
+                "BRANCH_NAME" to "i593-cli-createnames",
+                "GIT_BRANCH" to "i593-cli-createnames",
+                "BUILD_NUMBER" to "25",
+                "GIT_COMMIT" to "a5c5bc3ce1907e844490697b9aa22c4196c5d781",
+                "JOB_URL" to "https://jenkins.dhl.com/job/SDM/job/cli/job/i613-record-webapproval/",
+                "RUN_DISPLAY_URL" to "https://jenkins.dhl.com/job/SDM/job/cli/job/i613-record-webapproval/26/display/redirect",
+                "JOB_DISPLAY_URL" to "https://jenkins.dhl.com/job/SDM/job/cli/job/i613-record-webapproval",
+                // Explicit set / reset var. relevant for platform detection
+                "JENKINS_HOME" to "/var/lib/jenkins",
+                "TF_BUILD" to "",
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject
