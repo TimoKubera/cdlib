@@ -1,5 +1,6 @@
 package de.deutschepost.sdm.cdlib.artifactory
 
+import mu.KLogging
 import io.micronaut.http.HttpHeaders
 import mu.KLogging
 import org.jfrog.artifactory.client.Artifactory
@@ -362,6 +363,11 @@ class ArtifactoryClient(
         }
 
     private fun RepositoryHandle.fileAndCheck(path: String): ItemHandle =
+        file(path).also {
+            check(it.exists()) {
+                logger.error { "Could not find file: $path." }
+            }
+        }
         file(path).also {
             check(it.exists()) {
                 logger.error { "Could not find file: $path." }
