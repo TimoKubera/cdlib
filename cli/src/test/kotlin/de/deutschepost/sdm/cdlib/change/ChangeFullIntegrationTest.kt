@@ -9,20 +9,13 @@ import de.deutschepost.sdm.cdlib.change.changemanagement.api.ChangeHandler
 import de.deutschepost.sdm.cdlib.change.changemanagement.model.JiraConstants
 import de.deutschepost.sdm.cdlib.change.metrics.client.CosmosDashboardRepository
 import de.deutschepost.sdm.cdlib.change.metrics.model.ChangeUrlFile
-import de.deutschepost.sdm.cdlib.names.Names
 import de.deutschepost.sdm.cdlib.utils.*
 import exists
 import getSystemEnvironmentTestListenerWithOverrides
 import io.kotest.assertions.throwables.shouldNotThrowAny
 import io.kotest.assertions.withClue
 import io.kotest.core.annotation.RequiresTag
-import io.kotest.core.annotation.Tags
-import io.kotest.core.spec.Spec
 import io.kotest.core.spec.style.FunSpec
-import io.kotest.core.test.TestCase
-import io.kotest.matchers.ints.shouldBeGreaterThanOrEqual
-import io.kotest.matchers.shouldBe
-import io.kotest.matchers.shouldNotBe
 import io.kotest.matchers.string.shouldContain
 import io.micronaut.configuration.picocli.PicocliRunner
 import io.micronaut.context.annotation.Value
@@ -41,7 +34,35 @@ import java.time.temporal.ChronoUnit
 @MicronautTest
 class ChangeFullIntegrationTest(
     @Value("\${change-management-token}") val token: String,
-    @Value("\${sharepoint.username}") val sp_username: String,
+    @MicronautTest
+    class ChangeFullIntegrationTest(
+        @Value("\${change-management-token}") val token: String,
+        @Value("\${sharepoint.username}") val spUsername: String,  // Renamed from sp_username
+        @Value("\${sharepoint.password}") val spPassword: String,  // Renamed from sp_password
+        @Value("\${artifactory-its-identity-token}") val artifactoryIdentityToken: String,
+        private val changeTestHelper: ChangeTestHelper,
+        private val changeHandler: ChangeHandler,
+        private val cosmosDashboardRepository: CosmosDashboardRepository
+    ) : FunSpec() {
+        private val timestamp =
+            DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(ZonedDateTime.now().truncatedTo(ChronoUnit.SECONDS))
+        private val appName = "cli"
+        private val releaseName = "$appName-Integration-Release"
+        private val releaseNameUnique = "${releaseName}_$timestamp"
+        private var owaspName = "Integration-owasp-$timestamp"
+        private var fortifyName = "Integration-fortify-$timestamp"
+        private var zapName = "Integration-zap-$timestamp"
+        private var genericReportName = "Integration-generic-$timestamp"
+        private var ccaName = "Integration-cca-$timestamp"
+        private var oslcName = "Integration-oslc-$timestamp"
+        private val repoName = "sdm-proj-prg-cdlib-cli-appimage"
+        private val immutableRepoName = "sdm-proj-prg-cdlib-cli-appimage"
+        private val artifactoryClient = ArtifactoryClient(artifactoryIdentityToken, ITS_ARTIFACTORY_URL)
+        private val cdlibApplicationId = 5
+        private val jenkinsJobUrl = "https://integration-test-url.jenkuns.example.com/foo/bar/job/1337"
+        private val artifactory by lazy {
+            val declaredField = artifactoryClient.javaClass.getDeclaredField("artifactory")
+            declaredField.isAccessible = true
     @Value("\${sharepoint.password}") val sp_password: String,
     @Value("\${artifactory-its-identity-token}") val artifactoryIdentityToken: String,
     private val changeTestHelper: ChangeTestHelper,
