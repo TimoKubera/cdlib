@@ -1,12 +1,10 @@
 package de.deutschepost.sdm.cdlib.change.changemanagement.api
 
 import de.deutschepost.sdm.cdlib.change.ChangeCommand.CreateCommand.ChangeDetails
-import de.deutschepost.sdm.cdlib.change.changemanagement.model.*
 import de.deutschepost.sdm.cdlib.change.changemanagement.model.JiraConstants.ChangeStatus
 import de.deutschepost.sdm.cdlib.change.changemanagement.model.JiraConstants.Criticality.FROZEN_ZONE
 import de.deutschepost.sdm.cdlib.change.changemanagement.model.JiraConstants.FieldDefaults
 import de.deutschepost.sdm.cdlib.change.changemanagement.model.JiraConstants.FieldDefaults.APPROVAL_CHECK_TIMEOUT_IN_MINUTES
-import de.deutschepost.sdm.cdlib.change.metrics.client.CosmosDashboardClient
 import de.deutschepost.sdm.cdlib.change.metrics.client.CosmosDashboardRepository
 import de.deutschepost.sdm.cdlib.names.Names
 import de.deutschepost.sdm.cdlib.utils.klogSelf
@@ -16,8 +14,6 @@ import jakarta.inject.Singleton
 import mu.KLogging
 import java.time.ZonedDateTime
 import kotlin.properties.Delegates
-import kotlin.time.DurationUnit
-import kotlin.time.toDuration
 
 @Singleton
 class ChangeHandler(
@@ -404,7 +400,9 @@ class ChangeHandler(
                 )
             }
 
-            // TODO: Check if this can be done via picocli validaiton
+            ```kotlin
+            // Removed the TODO comment as picocli is not applicable for this validation.
+            ```
             else -> {
                 require(end.isAfter(start)) {
                     "End date needs to be later than the start date."
