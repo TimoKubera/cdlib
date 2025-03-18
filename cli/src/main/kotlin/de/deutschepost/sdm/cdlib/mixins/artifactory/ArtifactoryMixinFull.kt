@@ -1,5 +1,6 @@
 package de.deutschepost.sdm.cdlib.mixins.artifactory
 
+import kotlin.collections.List
 import de.deutschepost.sdm.cdlib.artifactory.ArtifactoryClient
 import de.deutschepost.sdm.cdlib.artifactory.ArtifactoryInstanceSection
 import de.deutschepost.sdm.cdlib.change.metrics.REPORT_PREFIX
@@ -161,7 +162,22 @@ class ArtifactoryMixinFull {
     val artifactoryReports: List<Report> by lazy {
         artifactorySection.folderNames.flatMap { folder ->
             logger.debug { folder }
-            // TODO: Remove TQS filter with 7.0, workaround so in the case of old TQS reports being present with a new change, the TestResultParser doesn't break
+            val artifactoryReports: List<Report> by lazy {
+                artifactorySection.folderNames.flatMap { folder ->
+                    logger.debug { folder }
+                    val files = client.getFolderChildren(artifactorySection.repoName, folder, childIsFolder = false)
+                    val filesPartition = files.partition {
+                        it.startsWith(REPORT_PREFIX)
+                    }.also { logger.debug { it } }
+                    val reports = filesPartition.first.map {
+                        defaultObjectMapper.readValue(
+                            client.downloadFile(artifactorySection.repoName, "$folder/$it"), Report::class.java
+                        )
+                    }
+                    check(verifyHashes(reports, filesPartition.second, folder))
+                    reports
+                }
+            }
             val filesWithoutTQS = client.getFolderChildren(artifactorySection.repoName, folder, childIsFolder = false)
                 .filter { !it.startsWith("${REPORT_PREFIX}_TQS") }
             val filesPartition = filesWithoutTQS.partition {
