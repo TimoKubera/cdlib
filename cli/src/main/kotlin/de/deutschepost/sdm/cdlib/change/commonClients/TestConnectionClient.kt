@@ -1,5 +1,7 @@
 package de.deutschepost.sdm.cdlib.change.commonClients
 
+import io.micronaut.http.client.exceptions.HttpClientResponseException
+import io.micronaut.http.client.annotation.Client
 import io.micronaut.context.annotation.Bean
 import io.micronaut.context.annotation.Factory
 import io.micronaut.core.type.Argument
@@ -27,7 +29,43 @@ class TestConnectionClientFactory(
 
 class TestConnectionClient(val config: HttpClientConfiguration) {
 
-    // TODO remove accessToken after TQS refactor
+    @Factory
+    class TestConnectionClientFactory(
+        private val defaultConfig: HttpClientConfiguration,
+        private val o365Config: O365Configuration
+    ) {
+        @get:Bean
+        @get:Named("default")
+        val default = TestConnectionClient(defaultConfig)
+    
+        @get:Bean
+        @get:Named("o365")
+        val o365 = TestConnectionClient(o365Config)
+    }
+    
+    class TestConnectionClient(val config: HttpClientConfiguration) {
+    
+        fun testConnection(url: String): Boolean {
+            config.isFollowRedirects = false
+            val client = HttpClient.create(null, config)
+    
+            logger.info { "Testing connection to $url" }
+    
+            val httpGet = HttpRequest.GET<Any>(url)
+    
+            return try {
+                val response = client.toBlocking().exchange(httpGet, Argument.STRING, Argument.STRING)
+                (response.status in setOf(
+                    HttpStatus.FOUND,
+                    HttpStatus.OK,
+                    HttpStatus.UNAUTHORIZED,
+                    HttpStatus.MOVED_PERMANENTLY
+                )).also {
+                    if (it) {
+                        logger.info { "Connection successful established to $url." }
+                    } else {
+                        logger.error {
+                            """|Cannot connect to $url.
     fun testConnection(url: String, accessToken: String? = null): Boolean {
         config.isFollowRedirects = false
         val client = HttpClient.create(null, config)
