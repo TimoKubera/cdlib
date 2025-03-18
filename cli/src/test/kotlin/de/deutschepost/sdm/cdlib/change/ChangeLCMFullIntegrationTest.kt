@@ -7,26 +7,21 @@ import de.deutschepost.sdm.cdlib.change.changemanagement.ChangeTestHelper
 import de.deutschepost.sdm.cdlib.change.changemanagement.api.ChangeHandler
 import de.deutschepost.sdm.cdlib.change.metrics.client.CosmosDashboardRepository
 import de.deutschepost.sdm.cdlib.names.Names
-import de.deutschepost.sdm.cdlib.utils.*
 import getSystemEnvironmentTestListenerWithOverrides
 import io.kotest.core.annotation.RequiresTag
 import io.kotest.core.annotation.Tags
-import io.kotest.core.spec.Spec
 import io.kotest.core.spec.style.FunSpec
-import io.kotest.core.test.TestCase
 import io.micronaut.configuration.picocli.PicocliRunner
 import io.micronaut.context.annotation.Value
 import io.micronaut.test.extensions.kotest5.annotation.MicronautTest
-import io.mockk.*
 import org.jfrog.artifactory.client.Artifactory
 import toArgsArray
 import withStandardOutput
-import java.io.File
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 
-// TODO: Remove after Sundown
+@RequiresTag("IntegrationTest")
 
 @RequiresTag("IntegrationTest")
 @Tags("IntegrationTest")
