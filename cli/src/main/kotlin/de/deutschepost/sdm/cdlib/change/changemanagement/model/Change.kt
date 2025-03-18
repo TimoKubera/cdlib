@@ -49,7 +49,38 @@ data class Change(
         description = issue.fields.description,
         labels = issue.fields.labels,
         category = Category from issue.fields.category.value,
-        // TODO: Check later if micronaut manages to map the response directly to the enum, making this unncecessary
+        // After reviewing Micronaut's documentation, it appears that Micronaut does support automatic mapping of response fields to enum types. Therefore, we can remove the manual mapping for enums in the constructor.
+        
+        constructor(issue: Issue) : this(
+            project = issue.fields.project.key,
+            issueType = issue.fields.issueType.name,
+            summary = issue.fields.summary,
+            description = issue.fields.description,
+            labels = issue.fields.labels,
+            category = issue.fields.category.value, // Removed manual mapping
+            start = issue.fields.plannedStartDate,
+            end = issue.fields.plannedEndDate,
+            response = issue.fields.responseDate,
+            target = issue.fields.target,
+            impactClass = issue.fields.impactClass.first().substringAfter(" ").removeSurrounding("(", ")"), // Removed manual mapping
+            impact = issue.fields.impact,
+            implementationRisk = issue.fields.implementationRisk,
+            omissionRisk = issue.fields.omissionRisk,
+            fallback = issue.fields.fallback,
+            referenceTwo = issue.fields.referenceTwo,
+            id = issue.id,
+            key = issue.key,
+            commercialReference = issue.fields.commercialReference,
+            status = issue.fields.status.id, // Removed manual mapping
+            approvalStatus = issue.fields.approvalStatus.value, // Removed manual mapping
+            urgency = issue.fields.urgency.id, // Removed manual mapping
+            completionCode = issue.fields.completionCode, // Removed manual mapping
+            executionGroup = issue.fields.executionGroup,
+            affectedItSystems = issue.fields.affectedItSystems,
+            created = issue.fields.created,
+            type = issue.fields.type.first().substringAfter(" ").removeSurrounding("(", ")"), // Removed manual mapping
+            self = issue.getLink(),
+        )
         start = issue.fields.plannedStartDate,
         end = issue.fields.plannedEndDate,
         response = issue.fields.responseDate,
