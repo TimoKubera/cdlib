@@ -1,5 +1,6 @@
 package de.deutschepost.sdm.cdlib.change
 
+import com.fasterxml.jackson.annotation.JsonUnwrapped
 import de.deutschepost.sdm.cdlib.change.changemanagement.ChangeTestHelper
 import de.deutschepost.sdm.cdlib.change.changemanagement.model.ItSystem
 import de.deutschepost.sdm.cdlib.change.changemanagement.model.JiraConstants
@@ -98,7 +99,10 @@ class DeploymentTest(
 //        test("!Deployment should be deserializable") {
 //            /**
 //             * This test cannot work in the current implementation because of JsonUnwrapped.
-//             * TODO: Make deployment parseable again
+// Investigate the Deployment class to understand how JsonUnwrapped is used and why it causes issues with serialization/deserialization.
+// Modify the Deployment class or the serialization logic to handle JsonUnwrapped correctly. This might involve changing the way fields are annotated or processed during serialization.
+// Update the test to remove the TODO comment and ensure it runs successfully by verifying that the deployment object can be serialized and deserialized as expected.
+// Run the test to confirm that the changes fix the issue and that the deployment object is correctly parsed.
 //             */
 //            val deployment = Deployment(
 //                cdlibVersionConfig = cdlibVersionConfig,
