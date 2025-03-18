@@ -1,5 +1,6 @@
 package de.deutschepost.sdm.cdlib.change
 
+import mu.KLogging
 import de.deutschepost.sdm.cdlib.SubcommandWithHelp
 import de.deutschepost.sdm.cdlib.artifactory.ArtifactoryClient
 import de.deutschepost.sdm.cdlib.artifactory.ArtifactoryInstanceSection
@@ -767,8 +768,10 @@ class ChangeCommand : SubcommandWithHelp() {
                 Labels.CHANGE_OSLC
             )
 
-            if (labels.any { label -> label in artifactoryRequiredLabels }) {
-                if (immutableRepoName.isEmpty() || artifactoryIdentityToken.isEmpty()) {
+            if (labels.any { label -> label in artifactoryRequiredLabels } && (immutableRepoName.isEmpty() || artifactoryIdentityToken.isEmpty())) {
+                logger.error { "The change for this pipeline has at least one of the following labels: webapproval, oslc. Therefore it is mandatory to supply the parameters: --artifactory-identity-token and --immutable-repo-name" }
+                return -1
+            }
                     logger.error { "The change for this pipeline has at least one of the following labels: webapproval, oslc. Therefore it is mandatory to supply the parameters: --artifactory-identity-token and --immutable-repo-name" }
                     return -1
                 }
