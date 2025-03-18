@@ -1,5 +1,6 @@
 package de.deutschepost.sdm.cdlib.release.report
 
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.core.JsonParseException
 import com.fasterxml.jackson.module.kotlin.readValue
 import de.deutschepost.sdm.cdlib.release.report.external.*
@@ -104,7 +105,7 @@ object TestResultParser : KLogging() {
                     (this in substitutes) and endsWith(".json") -> {
                         permissiveObjectMapper.readValue(
                             file,
-                            SecurityTestResult::class.java //TODO Deprecated with CDlib7???
+                            permissiveObjectMapper.readValue(file, NewSecurityTestResult::class.java).copy(uri = file.name, pregenerated = true)
                         ).copy(uri = file.name, pregenerated = true)
                     }
 
