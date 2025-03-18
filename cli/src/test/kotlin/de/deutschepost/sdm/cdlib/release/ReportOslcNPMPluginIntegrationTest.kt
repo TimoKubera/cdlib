@@ -1,9 +1,9 @@
 package de.deutschepost.sdm.cdlib.release
 
+import ReportCommand
 import de.deutschepost.sdm.cdlib.release.report.TestResultPrefixes
 import getSystemEnvironmentTestListenerWithOverrides
 import io.kotest.core.annotation.RequiresTag
-import io.kotest.core.annotation.Tags
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.ints.shouldBeExactly
 import io.kotest.matchers.string.shouldContain
@@ -60,7 +60,18 @@ class ReportOslcNPMPluginIntegrationTest(
                 ret shouldBeExactly 0
                 output shouldContain "Uploaded Artifact:"
             }
-            // TODO: Delete after sundown
+            ```kotlin
+                        // TODO: Delete after sundown - Check with team if the condition for removal has been met
+                        test("Upload OSLC-Plugin report to LCM artifactory") {
+                            val args =
+                                "--debug --files $jsonFile --no-distribution --artifactory-azure-instance --artifactory-identity-token $artifactoryLCMIdentityToken --repo-name $repoLCMName --type build".toArgsArray()
+                            val (ret, output) = withStandardOutput {
+                                PicocliRunner.call(ReportCommand.UploadCommand::class.java, *args)
+                            }
+                            ret shouldBeExactly 0
+                            output shouldContain "Uploaded Artifact:"
+                        }
+            ```
             test("Upload OSLC-Plugin report to LCM artifactory") {
                 val args =
                     "--debug --files $jsonFile --no-distribution --artifactory-azure-instance --artifactory-identity-token $artifactoryLCMIdentityToken --repo-name $repoLCMName --type build".toArgsArray()
