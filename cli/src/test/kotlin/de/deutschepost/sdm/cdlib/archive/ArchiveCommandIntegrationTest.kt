@@ -1,9 +1,9 @@
 package de.deutschepost.sdm.cdlib.archive
 
+import org.jfrog.artifactory.client.Repository
 import de.deutschepost.sdm.cdlib.CdlibCommand
 import de.deutschepost.sdm.cdlib.artifactory.AZURE_ARTIFACTORY_URL
 import de.deutschepost.sdm.cdlib.artifactory.ArtifactoryClient
-import exists
 import io.kotest.assertions.asClue
 import io.kotest.core.annotation.RequiresTag
 import io.kotest.core.annotation.Tags
@@ -12,14 +12,11 @@ import io.kotest.core.test.TestCase
 import io.kotest.extensions.system.OverrideMode
 import io.kotest.extensions.system.withEnvironment
 import io.kotest.matchers.ints.shouldBeExactly
-import io.kotest.matchers.shouldBe
-import io.kotest.matchers.shouldNotBe
 import io.micronaut.configuration.picocli.PicocliRunner
 import io.micronaut.context.annotation.Value
 import io.micronaut.test.extensions.kotest5.annotation.MicronautTest
 import org.jfrog.artifactory.client.Artifactory
 import org.jfrog.artifactory.client.model.File
-import org.jfrog.artifactory.client.model.Folder
 import toArgsArray
 import java.io.File.separatorChar
 
@@ -173,7 +170,14 @@ class ArchiveCommandIntegrationTest(@Value("\${artifactory-azure-identity-token}
         val repository = artifactory.repository(repoName)
         try {
             repository.delete(releaseName_build)
-        } catch (_: Exception) {
+        override suspend fun beforeTest(testCase: TestCase) {
+            super.beforeTest(testCase)
+            val repository = artifactory.repository(repoName)
+            try {
+                repository.delete(releaseName_build)
+            } catch (e: Exception) {
+                // Exception is ignored intentionally because the folder might not exist, which is not an error condition.
+            }
         }
 
     }
