@@ -183,7 +183,10 @@ fun List<SecurityTestResult>.securityTestsVerify(
                 ReportType.OSLC_PRE -> {}
             }
             ```
-            ReportType.OSLC_PRE -> {}
+            ```kotlin
+            ReportType.OSLC_PRE -> { // No action needed for OSLC_PRE report type
+            }
+            ```
         }
     }
     return securityReportVerificationResult
