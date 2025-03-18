@@ -63,7 +63,7 @@ class ChangeFullIntegrationTest(
         private val artifactory by lazy {
             val declaredField = artifactoryClient.javaClass.getDeclaredField("artifactory")
             declaredField.isAccessible = true
-    @Value("\${sharepoint.password}") val sp_password: String,
+    @Value("\${sharepoint.password}") val spPassword: String,
     @Value("\${artifactory-its-identity-token}") val artifactoryIdentityToken: String,
     private val changeTestHelper: ChangeTestHelper,
     private val changeHandler: ChangeHandler,
