@@ -1,5 +1,7 @@
 package de.deutschepost.sdm.cdlib.change.metrics.model
 
+import java.time.ZonedDateTime
+import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import de.deutschepost.sdm.cdlib.change.changemanagement.model.Change
@@ -13,7 +15,35 @@ import mu.KLogging
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
-//TODO: include missing information from deployment schema
+data class Deployment(
+    val id: String,
+    val app: String,
+    @JsonProperty("icto")
+    val almId: String,
+    @JsonProperty("product")
+    val itSystem: String,
+    val deploymentType: String,
+    val deployedToProduction: Boolean,
+    val release: Release?,
+    val cdlibData: CdlibVersionViewModel,
+    val status: String,
+    val date: ZonedDateTime = ZonedDateTime.now(),
+    val tool: PipelineToolData,
+    val url: String,
+    val webapproval: Webapproval?,
+    val deploymentLeadTimeInSeconds: Long?,
+    val hasWebapproval: Boolean,
+    val hasTqs: Boolean,
+    val hasOslc: Boolean,
+    val change: DeploymentChangeViewModel,
+    @JsonProperty("environment")
+    val environment: String?,
+    @JsonProperty("version")
+    val version: String?
+) : Jsonable {
+    constructor(
+        cdlibData: CdlibVersionViewModel,
+        deploymentType: String,
 data class Deployment(
     val id: String,
     val app: String,
