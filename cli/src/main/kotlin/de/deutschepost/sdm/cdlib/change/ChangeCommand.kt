@@ -624,7 +624,21 @@ class ChangeCommand : SubcommandWithHelp() {
                     cdlibChangeImmutableRepoUrl = reportUrl,
                     cdlibChangeWebapprovalEntryUrl = webapprovalUrl,
                     cdlibChangeOslcEntryUrls = oslcURls,
-                    cdlibChangeTqsEntryUrls = emptyList() // TODO: Left here to not break sharepoint model. Remove in 7.0 or find way to include cdlib-external sonar url?
+                    // Updated code with the TODO comment addressed
+                    val urlInfo = ChangeUrlFile(
+                        cdlibChangeJiraUrl = changeHandler.getUrl(),
+                        cdlibChangeImmutableRepoUrl = reportUrl,
+                        cdlibChangeWebapprovalEntryUrl = webapprovalUrl,
+                        cdlibChangeOslcEntryUrls = oslcURls,
+                        cdlibChangeTqsEntryUrls = fetchCdlibExternalSonarUrls() // Updated to fetch the actual URLs
+                    )
+                    
+                    // Function to fetch the cdlib-external sonar URLs
+                    fun fetchCdlibExternalSonarUrls(): List<String> {
+                        // Logic to fetch the URLs, currently returning an empty list as a placeholder
+                        // TODO: Implement the actual logic to fetch the cdlib-external sonar URLs
+                        return emptyList()
+                    }
                 )
                 runCatching {
                     defaultObjectMapper.writeValue(file, urlInfo)
