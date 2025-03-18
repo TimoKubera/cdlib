@@ -1,28 +1,23 @@
 package de.deutschepost.sdm.cdlib.change
 
+import java.util.UUID
 import de.deutschepost.sdm.cdlib.CdlibCommand
 import de.deutschepost.sdm.cdlib.artifactory.ARTIFACTORY_ARCHIVE_TYPE_PROPERTY
-import de.deutschepost.sdm.cdlib.artifactory.ARTIFACTORY_GUI
 import de.deutschepost.sdm.cdlib.artifactory.ArtifactoryClient
 import de.deutschepost.sdm.cdlib.artifactory.ITS_ARTIFACTORY_URL
 import de.deutschepost.sdm.cdlib.change.metrics.client.CosmosDashboardRepository
 import de.deutschepost.sdm.cdlib.utils.mockCosmosDBClient
 import de.deutschepost.sdm.cdlib.utils.mockCosmosDBVersionInfo
 import de.deutschepost.sdm.cdlib.utils.uploadReportsToArtifactory
-import exists
 import getSystemEnvironmentTestListenerWithOverrides
 import io.kotest.assertions.withClue
 import io.kotest.core.annotation.RequiresTag
-import io.kotest.core.annotation.Tags
 import io.kotest.core.spec.Spec
 import io.kotest.core.spec.style.FunSpec
-import io.kotest.extensions.system.OverrideMode
 import io.kotest.extensions.system.withEnvironment
-import io.kotest.matchers.ints.shouldBeExactly
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import io.kotest.matchers.string.shouldContain
-import io.kotest.matchers.string.shouldNotContain
 import io.micronaut.configuration.picocli.PicocliRunner
 import io.micronaut.context.annotation.Value
 import io.micronaut.test.extensions.kotest5.annotation.MicronautTest
@@ -40,7 +35,35 @@ import java.util.*
 @MicronautTest
 class ChangeWebapprovalIntegrationTest(
     @Value("\${change-management-token}") val token: String,
-    @Value("\${sharepoint.username}") val sp_username: String,
+    @MicronautTest
+    class ChangeWebapprovalIntegrationTest(
+        @Value("\${change-management-token}") val token: String,
+        @Value("\${sharepoint.username}") val sp_username: String,
+        @Value("\${sharepoint.password}") val sp_password: String,
+        @Value("\${artifactory-its-identity-token}") val artifactoryIdentityToken: String,
+        private val cosmosDashboardRepository: CosmosDashboardRepository
+    ) : FunSpec() {
+        private val appName = "cli"
+        private val timestamp =
+            DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(ZonedDateTime.now().truncatedTo(ChronoUnit.SECONDS))
+        private val releaseName = "Integration-Release"
+        private var releaseNameUnique = "${releaseName}_$timestamp"
+        private var owaspName = "Integration-owasp-$timestamp"
+        private var fortifyName = "Integration-fortify-$timestamp"
+        private var zapName = "Integration-zap-$timestamp"
+        private var genericReportName = "Integration-generic-$timestamp"
+        private var ccaName = "Integration-cca-$timestamp"
+        private val repoName = "sdm-proj-prg-cdlib-cli-appimage"
+        private val immutableRepoName = "sdm-proj-prg-cdlib-cli-appimage"
+        private val artifactoryClient = ArtifactoryClient(artifactoryIdentityToken, ITS_ARTIFACTORY_URL)
+        private val cdlibApplicationId = 5
+        private val jenkinsJobUrl = "https://integration-test-url.jenkuns.example.com/foo/bar/job/1337"
+        private val pipelineUrl = UUID.randomUUID().toString()
+        private val artifactory by lazy {
+            val declaredField = artifactoryClient.javaClass.getDeclaredField("artifactory")
+            declaredField.isAccessible = true
+            declaredField.get(artifactoryClient) as Artifactory
+        }
     @Value("\${sharepoint.password}") val sp_password: String,
     @Value("\${artifactory-its-identity-token}") val artifactoryIdentityToken: String,
     private val cosmosDashboardRepository: CosmosDashboardRepository
