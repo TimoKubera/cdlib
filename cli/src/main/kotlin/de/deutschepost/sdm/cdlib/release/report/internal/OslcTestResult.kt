@@ -1,5 +1,6 @@
 package de.deutschepost.sdm.cdlib.release.report.internal
 
+import java.util.List
 import com.fasterxml.jackson.annotation.JsonIgnore
 import mu.KLogging
 import java.time.ZonedDateTime
@@ -104,8 +105,7 @@ fun List<OslcTestResult>.oslcTestsVerify(appName: String, isDistribution: Boolea
         ) {
             issues.add("We have found one or multiple licenses that are not allowed by default. After talking to legal, you might be permitted to mark them as accepted according to this tutorial: https://lcm.deutschepost.de/confluence1/display/SDM/Open+Source+License+Compliance+Scan")
         }
-        if (test.policyProfile != OslcTestResult.PROFILE_PLUGIN) {
-            if (isDistribution != (!test.policyProfile.startsWith(OslcTestResult.PROFILE_NON_DISTRIBUTION))) {
+        if (test.tool.name !in listOf(Tool.OSLC_MAVEN_PLUGIN_NAME, Tool.OSLC_FNCI_NAME) && test.complianceStatus != OslcComplianceStatus.GREEN) {
                 issues.add("$appName has policy profile $isDistribution but TestResult has ${test.policyProfile}!")
             }
         }
