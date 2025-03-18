@@ -149,7 +149,18 @@ fun List<SecurityTestResult>.securityTestsVerify(
             ReportType.DAST -> securityReportVerificationResult.hasDAST = true
             ReportType.SCA -> securityReportVerificationResult.hasSCA = true
             ReportType.SAST -> securityReportVerificationResult.hasSAST = true
-            ReportType.CCA -> {}
+            ```kotlin
+            when (testResult.reportType) {
+                ReportType.DAST -> securityReportVerificationResult.hasDAST = true
+                ReportType.SCA -> securityReportVerificationResult.hasSCA = true
+                ReportType.SAST -> securityReportVerificationResult.hasSAST = true
+                ReportType.CCA -> { // No action needed for CCA report type
+                }
+                ReportType.OTHER -> {}
+                ReportType.OSLC -> {}
+                ReportType.OSLC_PRE -> {}
+            }
+            ```
             ReportType.OTHER -> {}
             ReportType.OSLC -> {}
             ReportType.OSLC_PRE -> {}
