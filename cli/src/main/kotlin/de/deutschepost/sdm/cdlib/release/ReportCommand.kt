@@ -145,7 +145,11 @@ class ReportCommand : SubcommandWithHelp() {
 
             return runCatching {
                 var reports = reportMixin.reports
-                if (reports.isEmpty()) { //TODO DEPRECATED: only for TQS soft remove reasons
+                ```kotlin
+                if (reports.isEmpty()) {
+                    return 0
+                }
+                ```
                     return 0
                 }
                 if (checkMixin.checkSecurityReports(reports).hasInvalidReport) return -1
