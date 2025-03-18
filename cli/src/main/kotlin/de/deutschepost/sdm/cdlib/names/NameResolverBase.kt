@@ -1,6 +1,6 @@
 package de.deutschepost.sdm.cdlib.names
 
-import de.deutschepost.sdm.cdlib.names.NameResolver.Companion.logger
+import de.deutschepost.sdm.cdlib.names.Names
 import de.deutschepost.sdm.cdlib.names.git.GitRepository
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -125,7 +125,21 @@ abstract class NameResolverBase(private val namesConfigWithDefault: NamesConfigW
             }
 
             origin.contains("dev.azure.com") -> "$origin/commit/$gitId"
-            // TODO add gitlab when the time has come
+            open fun createGitLink(): String {
+                val origin = get(Names.CDLIB_PM_GIT_ORIGIN)
+                val gitId = get(Names.CDLIB_PM_GIT_ID)
+                return when {
+                    origin.contains("git.dhl.com") -> {
+                        "${origin.substringBefore(".git")}/commit/$gitId"
+                    }
+            
+                    origin.contains("dev.azure.com") -> "$origin/commit/$gitId"
+            
+                    origin.contains("gitlab.com") -> "${origin.substringBefore(".git")}/-/commit/$gitId"
+            
+                    else -> origin
+                }
+            }
             else -> origin
         }
     }
