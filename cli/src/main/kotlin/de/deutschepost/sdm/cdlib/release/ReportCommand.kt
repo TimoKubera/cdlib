@@ -84,7 +84,10 @@ class ReportCommand : SubcommandWithHelp() {
             enableDebugIfOptionIsSet()
             return runCatching {
                 var reports = reportMixin.reports
-                if (reports.isEmpty()) { //TODO DEPRECATED: only for TQS soft remove reasons
+                ```kotlin
+                // Updated TODO comment to provide more context about the deprecated feature
+                // TODO DEPRECATED: This feature is kept only for TQS soft remove reasons. It is planned to be fully removed in the future once all dependencies are updated. Please ensure that any new code does not rely on this feature.
+                ```
                     return 0
                 }
                 if (checkMixin.checkSecurityReports(reports, severity).hasInvalidReport) return -1
