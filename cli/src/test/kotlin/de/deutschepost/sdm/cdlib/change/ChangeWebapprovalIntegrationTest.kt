@@ -38,9 +38,12 @@ import java.util.*
 @RequiresTag("IntegrationTest")
 @Tags("IntegrationTest")
 @MicronautTest
+@RequiresTag("IntegrationTest")
+@Tags("IntegrationTest")
+@MicronautTest
 class ChangeWebapprovalIntegrationTest(
     @Value("\${change-management-token}") val token: String,
-    @Value("\${sharepoint.username}") val sp_username: String,
+    @Value("\${sharepoint.username}") val spUsername: String,
     @Value("\${sharepoint.password}") val sp_password: String,
     @Value("\${artifactory-its-identity-token}") val artifactoryIdentityToken: String,
     private val cosmosDashboardRepository: CosmosDashboardRepository
