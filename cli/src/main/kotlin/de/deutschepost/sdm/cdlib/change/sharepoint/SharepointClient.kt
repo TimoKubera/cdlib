@@ -85,10 +85,13 @@ open class SharepointClient(private val user: String, private val password: Stri
         val httpEntity = EntityBuilder.create().apply {
             text = permissiveObjectMapper.writeValueAsString(approvalsListItem)
         }.build()
+        val httpEntity = EntityBuilder.create().apply {
+            text = permissiveObjectMapper.writeValueAsString(approvalsListItem)
+        }.build()
         val httpPost = HttpPost("$ISHARE_WEBAPPROVAL_BASE_URL/_api/web/lists/GetByTitle('$listName')/items").apply {
-            addHeader("Accept", "application/json;odata=verbose")
+            addHeader("Accept", CONTENT_TYPE_JSON_ODATA_VERBOSE)
             addHeader("X-RequestDigest", digest)
-            addHeader("Content-Type", "application/json;odata=verbose")
+            addHeader("Content-Type", CONTENT_TYPE_JSON_ODATA_VERBOSE)
             entity = httpEntity
         }
 
@@ -157,7 +160,7 @@ open class SharepointClient(private val user: String, private val password: Stri
     private fun getSharepointApprovalConfigurations(): SharepointApprovalConfigurations {
         val httpGet =
             HttpGet("$ISHARE_WEBAPPROVAL_BASE_URL/_api/web/lists/GetByTitle('Pipeline%20Approval%20Configuration')/items").apply {
-                addHeader("Accept", "application/json;odata=verbose")
+                addHeader("Accept", CONTENT_TYPE_JSON_ODATA_VERBOSE)
             }
         client.execute(httpGet).use { response ->
             logger.info { "Executed request ${httpGet.requestLine} --- ${response.statusLine}" }
@@ -173,6 +176,10 @@ open class SharepointClient(private val user: String, private val password: Stri
         const val ISHARE_WEBAPPROVAL_BASE_URL = "${ISHARE_BASE_URL}/sites/it-sec"
         const val ISHARE_PROD_LIST = "Pipeline%20Approvals"
         const val ISHARE_TEST_LIST = "Pipeline%20Approvals%20TEST"
+        const val ISHARE_WEBAPPLICATION_BY_ID_URL =
+            "https://itm.prg-dc.dhl.com/sites/it-sec/Lists/Pipeline%20Approval%20Configuration/DispForm.aspx?ID="
+        const val CONTENT_TYPE_JSON_ODATA_VERBOSE = "application/json;odata=verbose"
+    }
         const val ISHARE_WEBAPPLICATION_BY_ID_URL =
             "https://itm.prg-dc.dhl.com/sites/it-sec/Lists/Pipeline%20Approval%20Configuration/DispForm.aspx?ID="
     }
