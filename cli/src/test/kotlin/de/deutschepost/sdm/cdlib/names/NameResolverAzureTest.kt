@@ -35,156 +35,169 @@ class NameResolverAzureTest(
     override fun listeners() = listOf(
         SystemEnvironmentTestListener(
             mapOf(
-                "BUILD_BUILDID" to "12657",
-                "BUILD_DEFINITIONNAME" to "ICTO-3339_SDM-phippyandfriends",
-                "BUILD_SOURCEBRANCHNAME" to "i593_test",
-                "SYSTEM_COLLECTIONURI" to "https://dev.azure.com/sw-zustellung-31b3183/",
-                "SYSTEM_TEAMPROJECT" to "ICTO-3339_SDM",
-                "TF_BUILD" to "True",
-                "SYSTEM_DEFINITIONID" to "912345",
-                "SYSTEM_PULLREQUEST_SOURCEBRANCH" to "i593_test"
-            ),
-            OverrideMode.SetOrOverride
-        )
-    )
-
-    @BeforeAll
-    fun initMocks() {
-        mockkObject(GitRepository)
-        every { GitRepository.getRemoteUrl(any()) } returns "https://git.dhl.com/CDLib/CDLib.git"
-        every { GitRepository.lastBranchCommit(any()) } returns GitRevision(
-            id = "a5c5bc3ce1907e844490697b9aa22c4196c5d781",
-            longMessage = "Dummy \"Commit\"",
-            shortMessage = "Dummy \$Commit",
-            authorName = "Firstname Author",
-            authorEmail = "f.a@dhl.com",
-            committerName = "Firstname Committer",
-            committerEmail = "f.c@dhl.com"
-        )
-    }
-
-    @Test
-    fun testCreate_sanitizedTruncated() {
-        withEnvironment(
-            mapOf(
-                "BUILD_SOURCEBRANCHNAME" to "feature/THIS-is-a-very-long-branch-name-that-needs-to-be-truncated",
-                "CDLIB_EFFECTIVE_BRANCH_NAME" to "feature/THIS-is-a-very-long-branch-name-that-needs-to-be-truncated"
-            ), OverrideMode.SetOrOverride
-        ) {
-            val newResolver = NameResolverAzure(namesConfigWithDefault)
-            newResolver[Names.CDLIB_RELEASE_NAME_HELM] shouldBe "icto-3339_sdm-phippyandfriends-feature-this-is-a-very"
-            newResolver[Names.CDLIB_RELEASE_NAME_HELM].length shouldBe 53
-        }
-        withEnvironment(
-            mapOf(
-                "BUILD_SOURCEBRANCHNAME" to "renovate/THIS-is-a-very-long-branch-name-that-needs-to-be-truncated",
-                "CDLIB_EFFECTIVE_BRANCH_NAME" to "renovate/THIS-is-a-very-long-branch-name-that-needs-to-be-truncated"
-            ), OverrideMode.SetOrOverride
-        ) {
-            val newResolver = NameResolverAzure(namesConfigWithDefault)
-            newResolver[Names.CDLIB_RELEASE_NAME_HELM] shouldBe "icto-3339_sdm-phippyandfriends--needs-to-be-truncated"
-            newResolver[Names.CDLIB_RELEASE_NAME_HELM].length shouldBe 53
-        }
-        withEnvironment(
-            mapOf(
-                "BUILD_DEFINITIONNAME" to "ICTO-3339_SDM-phippyandfriends-very-long-app-name-that-needs-to-be-truncated",
-                "BUILD_SOURCEBRANCHNAME" to "renovate/this-is-a-very-long-branch-name-that-needs-to-be-truncated",
-                "CDLIB_EFFECTIVE_BRANCH_NAME" to "renovate/this-is-a-very-long-branch-name-that-needs-to-be-truncated"
-            ), OverrideMode.SetOrOverride
-        ) {
-            val newResolver = NameResolverAzure(namesConfigWithDefault)
-            newResolver[Names.CDLIB_RELEASE_NAME_HELM] shouldBe "icto-3339_sdm-phippyandfriends-very-long-app-name-tha"
-            newResolver[Names.CDLIB_RELEASE_NAME_HELM].length shouldBe 53
-        }
-    }
-
-    @Test
-    fun testCreate_APP_NAME() {
-        resolver[Names.CDLIB_APP_NAME] shouldBeEqualComparingTo "ICTO-3339_SDM-phippyandfriends"
-    }
-
-    @Test
-    fun testCreate_APP_VERSION() {
-        withConstantNow(ZonedDateTime.of(2022, 1, 1, 0, 2, 4, 4, ZoneId.systemDefault())) {
-            resolver[Names.CDLIB_APP_VERSION] shouldBe "20220101.2.4"
-        }
-    }
-
-    @Test
-    fun testCreate_CHART_VERSION() {
-        resolver[Names.CDLIB_CHART_VERSION] shouldHaveMaxLength 35
-        resolver[Names.CDLIB_CHART_VERSION] shouldContain "-i593"
-    }
-
-    @Test
-    fun testCreate_CHART_VERSION_OCI() {
-        resolver[Names.CDLIB_CHART_VERSION_OCI] shouldHaveMaxLength 35
-        resolver[Names.CDLIB_CHART_VERSION_OCI] shouldContain "-i593"
-        resolver[Names.CDLIB_CHART_VERSION_OCI] shouldEndWith "-helm"
-    }
-
-    @Test
-    fun testCreate_CONTAINER_TAG() {
-        resolver[Names.CDLIB_CONTAINER_TAG] shouldHaveMaxLength 35
-        resolver[Names.CDLIB_CONTAINER_TAG] shouldContain "-i593"
-    }
-
-    @Test
-    fun testCreate_EFFECTIVE_BRANCH_NAME() {
-        resolver[Names.CDLIB_EFFECTIVE_BRANCH_NAME] shouldBeEqualIgnoringCase "i593_test"
-    }
-
-    @Test
-    fun testCreate_JOB_URL() {
-        resolver[Names.CDLIB_JOB_URL] shouldContainIgnoringCase "https://dev.azure.com/sw-zustellung-31b3183/ICTO-3339_SDM/_build/results?buildId=12657"
-    }
-
-    @Test
-    fun testCreate_PIPELINE_URL_pullRequestSourceBranchName() {
-        withEnvironment(
-            mapOf(
-                "BUILD_SOURCEBRANCHNAME" to "merge",
-                "SYSTEM_PULLREQUEST_SOURCEBRANCH" to "i593_test"
-            ),
-            OverrideMode.SetOrOverride
-        ) {
-            resolver[Names.CDLIB_PIPELINE_URL] shouldContainIgnoringCase "912345"
-            resolver[Names.CDLIB_PIPELINE_URL] shouldContainIgnoringCase "i593_test"
-            resolver[Names.CDLIB_PIPELINE_URL] shouldNotContainIgnoringCase "merge"
-        }
-    }
-
-    @Test
-    fun testCreate_PIPELINE_URL_sourceBranchName() {
-        withEnvironment(
-            mapOf(
-                "BUILD_SOURCEBRANCHNAME" to "i593_test"
-            ), OverrideMode.SetOrOverride
-        ) {
-            resolver[Names.CDLIB_PIPELINE_URL] shouldContainIgnoringCase "912345"
-            resolver[Names.CDLIB_PIPELINE_URL] shouldContainIgnoringCase "i593_test"
-        }
-    }
-
-    @Test
-    fun testCreate_PM_VALUES() {
-        resolver[Names.CDLIB_PM_GIT_ID] shouldBeEqualIgnoringCase "a5c5bc3ce1907e844490697b9aa22c4196c5d781"
-        resolver[Names.CDLIB_PM_GIT_MAIL] shouldBeEqualIgnoringCase "f.c@dhl.com"
-        resolver[Names.CDLIB_PM_GIT_MESSAGE] shouldBeEqualIgnoringCase "Dummy Commit"
-        resolver[Names.CDLIB_PM_GIT_NAME] shouldBeEqualIgnoringCase "Firstname Committer"
-        resolver[Names.CDLIB_PM_GIT_ORIGIN] shouldBeEqualIgnoringCase "https://git.dhl.com/CDLib/CDlib.git"
-        resolver[Names.CDLIB_PM_GIT_LINK] shouldBeEqualIgnoringCase "https://git.dhl.com/CDLib/CDlib/commit/a5c5bc3ce1907e844490697b9aa22c4196c5d781"
-    }
-
-    @Test
-    fun testCreate_RELEASE_VERSION() {
-        resolver[Names.CDLIB_RELEASE_VERSION] shouldContainIgnoringCase "_12657_a5c5bc3"
-    }
-
-    @Test
-    fun testCreate_RELEASE_NAME() {
-        resolver[Names.CDLIB_RELEASE_NAME] shouldContainIgnoringCase "_12657_a5c5bc3"
-        resolver[Names.CDLIB_RELEASE_NAME] shouldContainIgnoringCase "ICTO-3339_SDM-phippyandfriends"
+                companion object {
+                    private const val DEFAULT_NAME = "ICTO-3339_SDM-phippyandfriends"
+                }
+                
+                override fun listeners() = listOf(
+                    SystemEnvironmentTestListener(
+                        mapOf(
+                            "BUILD_BUILDID" to "12657",
+                            "BUILD_DEFINITIONNAME" to DEFAULT_NAME,
+                            "BUILD_SOURCEBRANCHNAME" to "i593_test",
+                            "SYSTEM_COLLECTIONURI" to "https://dev.azure.com/sw-zustellung-31b3183/",
+                            "SYSTEM_TEAMPROJECT" to "ICTO-3339_SDM",
+                            "TF_BUILD" to "True",
+                            "SYSTEM_DEFINITIONID" to "912345",
+                            "SYSTEM_PULLREQUEST_SOURCEBRANCH" to "i593_test"
+                        ),
+                        OverrideMode.SetOrOverride
+                    )
+                )
+                
+                @BeforeAll
+                fun initMocks() {
+                    mockkObject(GitRepository)
+                    every { GitRepository.getRemoteUrl(any()) } returns "https://git.dhl.com/CDLib/CDLib.git"
+                    every { GitRepository.lastBranchCommit(any()) } returns GitRevision(
+                        id = "a5c5bc3ce1907e844490697b9aa22c4196c5d781",
+                        longMessage = "Dummy \"Commit\"",
+                        shortMessage = "Dummy \$Commit",
+                        authorName = "Firstname Author",
+                        authorEmail = "f.a@dhl.com",
+                        committerName = "Firstname Committer",
+                        committerEmail = "f.c@dhl.com"
+                    )
+                }
+                
+                @Test
+                fun testCreate_sanitizedTruncated() {
+                    withEnvironment(
+                        mapOf(
+                            "BUILD_SOURCEBRANCHNAME" to "feature/THIS-is-a-very-long-branch-name-that-needs-to-be-truncated",
+                            "CDLIB_EFFECTIVE_BRANCH_NAME" to "feature/THIS-is-a-very-long-branch-name-that-needs-to-be-truncated"
+                        ), OverrideMode.SetOrOverride
+                    ) {
+                        val newResolver = NameResolverAzure(namesConfigWithDefault)
+                        newResolver[Names.CDLIB_RELEASE_NAME_HELM] shouldBe "icto-3339_sdm-phippyandfriends-feature-this-is-a-very"
+                        newResolver[Names.CDLIB_RELEASE_NAME_HELM].length shouldBe 53
+                    }
+                    withEnvironment(
+                        mapOf(
+                            "BUILD_SOURCEBRANCHNAME" to "renovate/THIS-is-a-very-long-branch-name-that-needs-to-be-truncated",
+                            "CDLIB_EFFECTIVE_BRANCH_NAME" to "renovate/THIS-is-a-very-long-branch-name-that-needs-to-be-truncated"
+                        ), OverrideMode.SetOrOverride
+                    ) {
+                        val newResolver = NameResolverAzure(namesConfigWithDefault)
+                        newResolver[Names.CDLIB_RELEASE_NAME_HELM] shouldBe "icto-3339_sdm-phippyandfriends--needs-to-be-truncated"
+                        newResolver[Names.CDLIB_RELEASE_NAME_HELM].length shouldBe 53
+                    }
+                    withEnvironment(
+                        mapOf(
+                            "BUILD_DEFINITIONNAME" to "ICTO-3339_SDM-phippyandfriends-very-long-app-name-that-needs-to-be-truncated",
+                            "BUILD_SOURCEBRANCHNAME" to "renovate/this-is-a-very-long-branch-name-that-needs-to-be-truncated",
+                            "CDLIB_EFFECTIVE_BRANCH_NAME" to "renovate/this-is-a-very-long-branch-name-that-needs-to-be-truncated"
+                        ), OverrideMode.SetOrOverride
+                    ) {
+                        val newResolver = NameResolverAzure(namesConfigWithDefault)
+                        newResolver[Names.CDLIB_RELEASE_NAME_HELM] shouldBe "icto-3339_sdm-phippyandfriends-very-long-app-name-tha"
+                        newResolver[Names.CDLIB_RELEASE_NAME_HELM].length shouldBe 53
+                    }
+                }
+                
+                @Test
+                fun testCreate_APP_NAME() {
+                    resolver[Names.CDLIB_APP_NAME] shouldBeEqualComparingTo DEFAULT_NAME
+                }
+                
+                @Test
+                fun testCreate_APP_VERSION() {
+                    withConstantNow(ZonedDateTime.of(2022, 1, 1, 0, 2, 4, 4, ZoneId.systemDefault())) {
+                        resolver[Names.CDLIB_APP_VERSION] shouldBe "20220101.2.4"
+                    }
+                }
+                
+                @Test
+                fun testCreate_CHART_VERSION() {
+                    resolver[Names.CDLIB_CHART_VERSION] shouldHaveMaxLength 35
+                    resolver[Names.CDLIB_CHART_VERSION] shouldContain "-i593"
+                }
+                
+                @Test
+                fun testCreate_CHART_VERSION_OCI() {
+                    resolver[Names.CDLIB_CHART_VERSION_OCI] shouldHaveMaxLength 35
+                    resolver[Names.CDLIB_CHART_VERSION_OCI] shouldContain "-i593"
+                    resolver[Names.CDLIB_CHART_VERSION_OCI] shouldEndWith "-helm"
+                }
+                
+                @Test
+                fun testCreate_CONTAINER_TAG() {
+                    resolver[Names.CDLIB_CONTAINER_TAG] shouldHaveMaxLength 35
+                    resolver[Names.CDLIB_CONTAINER_TAG] shouldContain "-i593"
+                }
+                
+                @Test
+                fun testCreate_EFFECTIVE_BRANCH_NAME() {
+                    resolver[Names.CDLIB_EFFECTIVE_BRANCH_NAME] shouldBeEqualIgnoringCase "i593_test"
+                }
+                
+                @Test
+                fun testCreate_JOB_URL() {
+                    resolver[Names.CDLIB_JOB_URL] shouldContainIgnoringCase "https://dev.azure.com/sw-zustellung-31b3183/ICTO-3339_SDM/_build/results?buildId=12657"
+                }
+                
+                @Test
+                fun testCreate_PIPELINE_URL_pullRequestSourceBranchName() {
+                    withEnvironment(
+                        mapOf(
+                            "BUILD_SOURCEBRANCHNAME" to "merge",
+                            "SYSTEM_PULLREQUEST_SOURCEBRANCH" to "i593_test"
+                        ),
+                        OverrideMode.SetOrOverride
+                    ) {
+                        resolver[Names.CDLIB_PIPELINE_URL] shouldContainIgnoringCase "912345"
+                        resolver[Names.CDLIB_PIPELINE_URL] shouldContainIgnoringCase "i593_test"
+                        resolver[Names.CDLIB_PIPELINE_URL] shouldNotContainIgnoringCase "merge"
+                    }
+                }
+                
+                @Test
+                fun testCreate_PIPELINE_URL_sourceBranchName() {
+                    withEnvironment(
+                        mapOf(
+                            "BUILD_SOURCEBRANCHNAME" to "i593_test"
+                        ), OverrideMode.SetOrOverride
+                    ) {
+                        resolver[Names.CDLIB_PIPELINE_URL] shouldContainIgnoringCase "912345"
+                        resolver[Names.CDLIB_PIPELINE_URL] shouldContainIgnoringCase "i593_test"
+                    }
+                }
+                
+                @Test
+                fun testCreate_PM_VALUES() {
+                    resolver[Names.CDLIB_PM_GIT_ID] shouldBeEqualIgnoringCase "a5c5bc3ce1907e844490697b9aa22c4196c5d781"
+                    resolver[Names.CDLIB_PM_GIT_MAIL] shouldBeEqualIgnoringCase "f.c@dhl.com"
+                    resolver[Names.CDLIB_PM_GIT_MESSAGE] shouldBeEqualIgnoringCase "Dummy Commit"
+                    resolver[Names.CDLIB_PM_GIT_NAME] shouldBeEqualIgnoringCase "Firstname Committer"
+                    resolver[Names.CDLIB_PM_GIT_ORIGIN] shouldBeEqualIgnoringCase "https://git.dhl.com/CDLib/CDlib.git"
+                    resolver[Names.CDLIB_PM_GIT_LINK] shouldBeEqualIgnoringCase "https://git.dhl.com/CDLib/CDlib/commit/a5c5bc3ce1907e844490697b9aa22c4196c5d781"
+                }
+                
+                @Test
+                fun testCreate_RELEASE_VERSION() {
+                    resolver[Names.CDLIB_RELEASE_VERSION] shouldContainIgnoringCase "_12657_a5c5bc3"
+                }
+                
+                @Test
+                fun testCreate_RELEASE_NAME() {
+                    resolver[Names.CDLIB_RELEASE_NAME] shouldContainIgnoringCase "_12657_a5c5bc3"
+                    resolver[Names.CDLIB_RELEASE_NAME] shouldContainIgnoringCase DEFAULT_NAME
+                }
+                
+                @Test
+                fun testCreate_RELEASE_NAME_FORTIFY() {
+                    resolver[Names.CDLIB_RELEASE_NAME_FORTIFY] shouldContainIgnoringCase "ICTO_3339_SDM_phippyandfriends"
+                }
     }
 
     @Test
