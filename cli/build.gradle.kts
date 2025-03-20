@@ -30,6 +30,10 @@ micronaut {
 val kotlinVersion = project.properties["kotlinVersion"] as String
 val kotlinCoroutines = project.properties["kotlinCoroutines"] as String
 
+val kotlinVersion = project.properties["kotlinVersion"] as String
+val kotlinCoroutines = project.properties["kotlinCoroutines"] as String
+val jsonSmartVersion = "2.5.2"
+
 dependencies {
     ksp("info.picocli:picocli-codegen")
     implementation("org.yaml:snakeyaml")
@@ -51,11 +55,11 @@ dependencies {
     implementation("org.eclipse.jgit:org.eclipse.jgit:7.1.0.202411261347-r")
     //publish metrics to azure cosmosdb
     implementation("com.azure:azure-identity")
-    implementation("net.minidev:json-smart:2.5.2") // override bc vuln
+    implementation("net.minidev:json-smart:$jsonSmartVersion") // override bc vuln
     implementation("com.azure:azure-cosmos")
     //publish metrics to azure cosmosdb
     implementation("com.azure:azure-identity")
-    implementation("net.minidev:json-smart:2.5.2") // override bc vuln
+    implementation("net.minidev:json-smart:$jsonSmartVersion") // override bc vuln
     implementation("com.azure:azure-cosmos")
 
     // Tests only
