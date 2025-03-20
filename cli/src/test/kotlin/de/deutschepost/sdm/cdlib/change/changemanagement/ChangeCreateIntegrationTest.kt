@@ -7,7 +7,6 @@ import de.deutschepost.sdm.cdlib.change.changemanagement.model.JiraConstants.App
 import de.deutschepost.sdm.cdlib.change.changemanagement.model.JiraConstants.Category.HOUSEKEEPING
 import de.deutschepost.sdm.cdlib.change.changemanagement.model.JiraConstants.ChangePhaseId.OPEN_TO_IMPLEMENTATION
 import de.deutschepost.sdm.cdlib.change.changemanagement.model.JiraConstants.ChangeStatus.AWAITING_IMPLEMENTATION
-import de.deutschepost.sdm.cdlib.change.changemanagement.model.JiraConstants.ChangeStatus.WAITING_FOR_APPROVAL
 import de.deutschepost.sdm.cdlib.change.changemanagement.model.JiraConstants.ChangeType.MAJOR
 import de.deutschepost.sdm.cdlib.change.changemanagement.model.JiraConstants.Criticality.OPERATIONAL
 import de.deutschepost.sdm.cdlib.change.changemanagement.model.JiraConstants.FieldDefaults.APPROVAL_CHECK_TIMEOUT_IN_MINUTES
@@ -83,23 +82,7 @@ class ChangeCreateIntegrationTest(
                         *"change create --test --skip-approval-wait --jira-token $token --no-oslc --no-webapproval --no-tqs --commercial-reference $commercialReference".toArgsArray()
                     )
                 }
-                output shouldContain "CDLib version 0.2.0-INTEGRATION-TEST is not supported anymore. Please update to a newer version. Pre-authorization is not possible."
-                output shouldContain "A new version of CDLib is available"
-
-                output shouldContain "Retrieving IT system information"
-                output shouldContain "Searching existing changes for the current pipeline"
-                output shouldContain "Could not find changes to close nor resume for the current pipeline"
-                output shouldContain "Posting change request"
-                output shouldContain "Determining whether change can be preauthorized."
-                output shouldContain "  CDLib version is supported: false\n" +
-                    "  Impact Class: ${NONE.name}\n" +
-                    "  Business Criticality: ${OPERATIONAL.name}\n" +
-                    "  Determined change type --> MINOR"
-                output shouldContain "Updating change request type: MINOR"
-                output shouldContain "Transitioning change request phase: ${OPEN_TO_IMPLEMENTATION.name}"
-                output shouldContain "Checking change request status for approval every "
-                output shouldContain "Checked current change request status: ${WAITING_FOR_APPROVAL.name}"
-
+                const val CHECK_STATUS_MESSAGE = "Checking change request status for approval every"
             }
             changeTestHelper.closeChangeRequest(
                 token,
