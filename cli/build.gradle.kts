@@ -35,10 +35,15 @@ dependencies {
     implementation("io.micronaut.picocli:micronaut-picocli")
     implementation("io.micronaut:micronaut-retry")
     implementation("javax.annotation:javax.annotation-api") // todo remove?
-    implementation("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${kotlinCoroutines}")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactive:${kotlinCoroutines}")
+    val kotlinReflectVersion = kotlinVersion
+    val kotlinStdlibJdk8Version = kotlinVersion
+    val kotlinCoroutinesCoreVersion = kotlinCoroutines
+    val kotlinCoroutinesReactiveVersion = kotlinCoroutines
+    
+    implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinReflectVersion")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinStdlibJdk8Version")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutinesCoreVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactive:$kotlinCoroutinesReactiveVersion")
     implementation("ch.qos.logback:logback-classic")
     implementation("io.micronaut:micronaut-jackson-databind")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
