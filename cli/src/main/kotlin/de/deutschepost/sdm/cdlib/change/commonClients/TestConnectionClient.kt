@@ -27,13 +27,13 @@ class TestConnectionClientFactory(
 
 class TestConnectionClient(val config: HttpClientConfiguration) {
 
-    // TODO remove accessToken after TQS refactor
+    // TODO update: Verify status of TQS refactor by end of Q4 2023; currently required.
     fun testConnection(url: String, accessToken: String? = null): Boolean {
         config.isFollowRedirects = false
         val client = HttpClient.create(null, config)
-
+    
         logger.info { "Testing connection to $url" }
-
+    
         val httpGet = HttpRequest.GET<Any>(url).apply {
             if (accessToken != null) {
                 header(HttpHeaders.AUTHORIZATION, "Bearer $accessToken")
