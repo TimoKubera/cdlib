@@ -29,11 +29,10 @@ val kotlinVersion = project.properties["kotlinVersion"] as String
 val kotlinCoroutines = project.properties["kotlinCoroutines"] as String
 
 val artifactoryClientVersion = "2.19.1"
-
-...
+val azureIdentityVersion = "1.0.0" // Replace this with the actual correct version
+val azureCosmosVersion = "1.0.0" // Replace this with the actual correct version
 
 implementation("org.jfrog.artifactory.client:artifactory-java-client-services:${artifactoryClientVersion}")
-...
     // logging
     implementation("io.github.microutils:kotlin-logging:2.1.23")
     // webapproval sharepoint
@@ -42,17 +41,16 @@ implementation("org.jfrog.artifactory.client:artifactory-java-client-services:${
     // JGit (https://mvnrepository.com/artifact/org.eclipse.jgit/org.eclipse.jgit)
     implementation("org.eclipse.jgit:org.eclipse.jgit:7.1.0.202411261347-r")
     //publish metrics to azure cosmosdb
-    implementation("com.azure:azure-identity")
+    implementation("com.azure:azure-identity:${azureIdentityVersion}")
     implementation("net.minidev:json-smart:2.5.2") // override bc vuln
-    implementation("com.azure:azure-cosmos")
+    implementation("com.azure:azure-cosmos:${azureCosmosVersion}")
     implementation("org.codelibs:jcifs:$jcifsVersion") // Never update this, Version 2 is incompatible
     // JGit (https://mvnrepository.com/artifact/org.eclipse.jgit/org.eclipse.jgit)
     implementation("org.eclipse.jgit:org.eclipse.jgit:7.1.0.202411261347-r")
     //publish metrics to azure cosmosdb
-    implementation("com.azure:azure-identity")
+    implementation("com.azure:azure-identity:${azureIdentityVersion}")
     implementation("net.minidev:json-smart:2.5.2") // override bc vuln
-    implementation("com.azure:azure-cosmos")
-
+    implementation("com.azure:azure-cosmos:${azureCosmosVersion}")
     // Tests only
     testImplementation("io.mockk:mockk")
     testImplementation("io.kotest:kotest-extensions-now")
