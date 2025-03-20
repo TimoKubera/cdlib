@@ -57,7 +57,8 @@ dependencies {
     implementation("org.apache.httpcomponents:httpclient:$apacheHttpClientVersion")
     implementation("org.codelibs:jcifs:$jcifsVersion") // Never update this, Version 2 is incompatible
     // JGit (https://mvnrepository.com/artifact/org.eclipse.jgit/org.eclipse.jgit)
-    implementation("org.eclipse.jgit:org.eclipse.jgit:7.1.0.202411261347-r")
+    val jgitVersion = "7.1.0.202411261347-r"
+    implementation("org.eclipse.jgit:org.eclipse.jgit:$jgitVersion")
     //publish metrics to azure cosmosdb
     implementation("com.azure:azure-identity")
     implementation("net.minidev:json-smart:2.5.2") // override bc vuln
