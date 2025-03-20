@@ -1,3 +1,4 @@
+implementation("org.apache.httpcomponents:httpclient:$httpComponentsVersion")
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -55,7 +56,7 @@ dependencies {
     implementation("org.jfrog.artifactory.client:artifactory-java-client-services:$artifactoryClientVersion")
     // logging
     implementation("io.github.microutils:kotlin-logging:2.1.23")
-    // webapproval sharepoint
+    implementation("org.apache.httpcomponents:httpclient:$httpComponentsVersion")
     implementation("org.apache.httpcomponents:httpclient:4.5.14")
     implementation("org.codelibs:jcifs:1.3.18.3") // Never update this, Version 2 is incompatible
     // JGit (https://mvnrepository.com/artifact/org.eclipse.jgit/org.eclipse.jgit)
