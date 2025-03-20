@@ -52,6 +52,10 @@ class ChangeCreateCommandTest(
             output shouldContain "Invalid value for option '--category': expected one of [ROLLOUT, NO_ROLLOUT, AUTHORIZATIONS, DATA_MAINTENANCE, TECHNICAL_REQUIREMENTS, LEGAL_OR_CONTRACTUAL_REQUIREMENTS, HOUSEKEEPING, CAPACITY_ADJUSTMENTS, SECURITY, TROUBLESHOOTING, OTHER] (case-sensitive) but was 'jellyfish'"
         }
 
+        companion object {
+            const val ILLEGAL_ARGUMENT_EXCEPTION = "java.lang.IllegalArgumentException"
+        }
+
         "Create change request fails due to missing commercial reference" {
             val (_, output) = withErrorOutput {
                 PicocliRunner.call(
@@ -71,7 +75,7 @@ class ChangeCreateCommandTest(
                 )
             }
             exitCode shouldBeExactly -1
-            output shouldContain "java.lang.IllegalArgumentException"
+            output shouldContain ILLEGAL_ARGUMENT_EXCEPTION
         }
 
         "Command fails if oslc but no distribution was passed" {
@@ -82,7 +86,7 @@ class ChangeCreateCommandTest(
                 )
             }
             exitCode shouldBeExactly -1
-            output shouldContain "java.lang.IllegalArgumentException"
+            output shouldContain ILLEGAL_ARGUMENT_EXCEPTION
         }
 
         "Command doesn't fail if no-oslc and no distribution was passed" {
@@ -93,8 +97,9 @@ class ChangeCreateCommandTest(
                 )
             }
             exitCode shouldBeExactly -1
-            output shouldContain "java.lang.IllegalArgumentException"
+            output shouldContain ILLEGAL_ARGUMENT_EXCEPTION
             output shouldContain "Verifying reports..."
+        }
         }
 
         "Parsing deployment status string returns expected enum" {
