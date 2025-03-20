@@ -13,7 +13,6 @@ import mu.KLogging
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
-//TODO: include missing information from deployment schema
 data class Deployment(
     val id: String,
     val app: String,
@@ -34,7 +33,9 @@ data class Deployment(
     val hasWebapproval: Boolean,
     val hasTqs: Boolean,
     val hasOslc: Boolean,
-    val change: DeploymentChangeViewModel
+    val change: DeploymentChangeViewModel,
+    val environment: String,  // Missing field representing the target deployment environment
+    val version: String       // Missing field representing the application version deployed
 ) : Jsonable {
     constructor(
         cdlibData: CdlibVersionViewModel,
