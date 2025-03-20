@@ -1,5 +1,7 @@
 package de.deutschepost.sdm.cdlib.change.changemanagement
 
+import io.micronaut.context.env.Environment
+import io.micronaut.context.ApplicationContext
 import de.deutschepost.sdm.cdlib.CdlibCommand
 import de.deutschepost.sdm.cdlib.change.ChangeCommand
 import de.deutschepost.sdm.cdlib.change.changemanagement.api.ChangeHandler
@@ -83,71 +85,7 @@ class ChangeCreateIntegrationTest(
                         *"change create --test --skip-approval-wait --jira-token $token --no-oslc --no-webapproval --no-tqs --commercial-reference $commercialReference".toArgsArray()
                     )
                 }
-                output shouldContain "CDLib version 0.2.0-INTEGRATION-TEST is not supported anymore. Please update to a newer version. Pre-authorization is not possible."
-                output shouldContain "A new version of CDLib is available"
-
-                output shouldContain "Retrieving IT system information"
-                output shouldContain "Searching existing changes for the current pipeline"
-                output shouldContain "Could not find changes to close nor resume for the current pipeline"
-                output shouldContain "Posting change request"
-                output shouldContain "Determining whether change can be preauthorized."
-                output shouldContain "  CDLib version is supported: false\n" +
-                    "  Impact Class: ${NONE.name}\n" +
-                    "  Business Criticality: ${OPERATIONAL.name}\n" +
-                    "  Determined change type --> MINOR"
-                output shouldContain "Updating change request type: MINOR"
-                output shouldContain "Transitioning change request phase: ${OPEN_TO_IMPLEMENTATION.name}"
-                output shouldContain "Checking change request status for approval every "
-                output shouldContain "Checked current change request status: ${WAITING_FOR_APPROVAL.name}"
-
-            }
-            changeTestHelper.closeChangeRequest(
-                token,
-                commercialReference
-            )
-        }
-
-        withMockedVersionInfo(changeHandler) {
-            test("Creating change via full change command fails given an invalid commercial reference") {
-                val (_, output) = withStandardOutput {
-                    PicocliRunner.run(
-                        CdlibCommand::class.java,
-                        *"change create --test --skip-approval-wait --no-oslc --no-webapproval --no-tqs --jira-token $token --commercial-reference DI-123456".toArgsArray()
-                    )
-                }
-                output shouldContain "Failed to get commercial reference: DI-123456"
-            }
-
-            test("Change created with wrong parameters and --trace option extends logging") {
-                val (_, output) = withStandardOutput {
-                    val args: Array<String> =
-                        "change create --skip-approval-wait --jira-token wrong --no-oslc --no-webapproval --no-tqs --debug --trace --commercial-reference $commercialReference --test".toArgsArray()
-                    PicocliRunner.run(CdlibCommand::class.java, *args)
-                }
-
-                output shouldContain "TRACE"
-            }
-
-            test("Change create command with no open changes for the current pipeline continues successfully with appropriate log") {
-                val (_, output) = withStandardOutput {
-                    PicocliRunner.run(
-                        CdlibCommand::class.java,
-                        *"change create --test --skip-approval-wait --no-oslc --no-webapproval --no-tqs --jira-token $token --commercial-reference $commercialReference".toArgsArray()
-                    )
-                }
-
-                output shouldContain "Retrieving IT system information"
-                output shouldContain "Searching existing changes for the current pipeline"
-                output shouldContain "Could not find changes to close nor resume for the current pipeline"
-                output shouldContain "Posting change request"
-                output shouldContain "Determining whether change can be preauthorized."
-                output shouldContain "  Impact Class: ${NONE.name}\n" +
-                    "  Business Criticality: ${OPERATIONAL.name}\n" +
-                    "  Determined change type --> ${ApprovalStatus.PREAUTHORIZED.name}"
-                output shouldContain "Updating change request type: ${ApprovalStatus.PREAUTHORIZED.name}"
-                output shouldContain "Transitioning change request phase: ${OPEN_TO_IMPLEMENTATION.name}"
-                output shouldContain "Checking change request status for approval every "
-                output shouldContain "Checked current change request status: ${AWAITING_IMPLEMENTATION.name}"
+                )\n            .findItSystem(commercialReference)\n    }\n\n    override fun listeners(): List<TestListener> {\n        return listOf(\n            getSystemEnvironmentTestListenerWithOverrides()\n        )\n    }\n\n    companion object {\n        const val CHECKING_CHANGE_REQUEST_STATUS = \"Checking change request status for approval every \"\n    }\n\n    init {\n        test(\"testing unsupported CDLib version preventing preauthorization\") {\n            ApplicationContext.run(\n                Environment.CLI, Environment.TEST, \"ver02\"\n            ).use { ctx ->\n                val (_, output) = withStandardOutput {\n                    PicocliRunner.run(\n                        CdlibCommand::class.java,\n                        ctx,\n                        *\"change create --test --skip-approval-wait --jira-token $token --no-oslc --no-webapproval --no-tqs --commercial-reference $commercialReference\".toArgsArray()\n                    )\n                }\n                output shouldContain \"CDLib version 0.2.0-INTEGRATION-TEST is not supported anymore. Please update to a newer version. Pre-authorization is not possible.\"\n                output shouldContain \"A new version of CDLib is available\"\n\n                output shouldContain \"Retrieving IT system information\"\n                output shouldContain \"Searching existing changes for the current pipeline\"\n                output shouldContain \"Could not find changes to close nor resume for the current pipeline\"\n                output shouldContain \"Posting change request\"\n                output shouldContain \"Determining whether change can be preauthorized.\"\n                output shouldContain \"  CDLib version is supported: false\\n\" +\n                    \"  Impact Class: ${NONE.name}\\n\" +\n                    \"  Business Criticality: ${OPERATIONAL.name}\\n\" +\n                    \"  Determined change type --> MINOR\"\n                output shouldContain \"Updating change request type: MINOR\"\n                output shouldContain \"Transitioning change request phase: ${OPEN_TO_IMPLEMENTATION.name}\"\n                output shouldContain CHECKING_CHANGE_REQUEST_STATUS\n                output shouldContain \"Checked current change request status: ${WAITING_FOR_APPROVAL.name}\"\n\n            }\n            changeTestHelper.closeChangeRequest(\n                token,\n                commercialReference\n            )\n        }\n\n        withMockedVersionInfo(changeHandler) {\n            test(\"Creating change via full change command fails given an invalid commercial reference\") {\n                val (_, output) = withStandardOutput {\n                    PicocliRunner.run(\n                        CdlibCommand::class.java,\n                        *\"change create --test --skip-approval-wait --no-oslc --no-webapproval --no-tqs --jira-token $token --commercial-reference DI-123456\".toArgsArray()\n                    )\n                }\n                output shouldContain \"Failed to get commercial reference: DI-123456\"\n            }\n\n            test(\"Change created with wrong parameters and --trace option extends logging\") {\n                val (_, output) = withStandardOutput {\n                    val args: Array<String> =\n                        \"change create --skip-approval-wait --jira-token wrong --no-oslc --no-webapproval --no-tqs --debug --trace --commercial-reference $commercialReference --test\".toArgsArray()\n                    PicocliRunner.run(CdlibCommand::class.java, *args)\n                }\n\n                output shouldContain \"TRACE\"\n            }\n\n            test(\"Change create command with no open changes for the current pipeline continues successfully with appropriate log\") {\n                val (_, output) = withStandardOutput {\n                    PicocliRunner.run(\n                        CdlibCommand::class.java,\n                        *\"change create --test --skip-approval-wait --no-oslc --no-webapproval --no-tqs --jira-token $token --commercial-reference $commercialReference\".toArgsArray()\n                    )\n                }\n\n                output shouldContain \"Retrieving IT system information\"\n                output shouldContain \"Searching existing changes for the current pipeline\"\n                output shouldContain \"Could not find changes to close nor resume for the current pipeline\"\n                output shouldContain \"Posting change request\"\n                output shouldContain \"Determining whether change can be preauthorized.\"\n                output shouldContain \"  Impact Class: ${NONE.name}\\n\" +\n                    \"  Business Criticality: ${OPERATIONAL.name}\\n\" +\n                    \"  Determined change type --> ${ApprovalStatus.PREAUTHORIZED.name}\"\n                output shouldContain \"Updating change request type: ${ApprovalStatus.PREAUTHORIZED.name}\"\n                output shouldContain \"Transitioning change request phase: ${OPEN_TO_IMPLEMENTATION.name}\"\n                output shouldContain CHECKING_CHANGE_REQUEST_STATUS\n                output shouldContain \"Checked current change request status: ${AWAITING_IMPLEMENTATION.name}\"\n\n\n\n                changeTestHelper.closeChangeRequest(token, commercialReference)\n            }
 
 
 
