@@ -161,6 +161,11 @@ class ChangeManagementRepositoryTest(
             val businessYearAttributeId = 3
             val almId = "almId"
             val businessYear = "2022"
+            val companion object {
+                const val BUSINESS_CRITICALITY = "Business Kritikalität"
+            }
+            
+            val businessYear = "2022"
             val businessYearLater = "2023"
             val itSystemName = "itSystemName"
             val itSystemKey = "itSystemKey"
@@ -184,7 +189,7 @@ class ChangeManagementRepositoryTest(
                                                             referencedObject = JiraObjectEntry(
                                                                 attributes = listOf(),
                                                                 objectType = JiraObjectType(
-                                                                    name = "Business Kritikalität",
+                                                                    name = BUSINESS_CRITICALITY,
                                                                     6
                                                                 ),
                                                                 objectKey = "objectKey",
@@ -195,6 +200,27 @@ class ChangeManagementRepositoryTest(
                                                     objectTypeAttributeId = itSystemAttributeId
                                                 )
                                             ),
+                                            objectType = JiraObjectType(
+                                                name = BUSINESS_CRITICALITY,
+                                                6
+                                            ),
+                                            objectKey = "objectKey",
+                                            label = "label"
+                                        ),
+                                    )
+                                ),
+                                objectTypeAttributeId = itSystemAttributeId
+                            ),
+                            JiraAttribute(
+                                objectAttributeValues = listOf(
+                                    JiraObjectAttributeValue(
+                                        displayValue = almId,
+                                        searchValue = almId,
+                                        referencedObject = null,
+                                    )
+                                ),
+                                objectTypeAttributeId = almAttributeId
+                            ),
                                             objectType = JiraObjectType(
                                                 name = "Business Kritikalität",
                                                 6
