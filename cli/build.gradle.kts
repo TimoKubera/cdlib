@@ -45,7 +45,7 @@ implementation("org.jfrog.artifactory.client:artifactory-java-client-services:${
     implementation("com.azure:azure-identity")
     implementation("net.minidev:json-smart:2.5.2") // override bc vuln
     implementation("com.azure:azure-cosmos")
-    implementation("org.codelibs:jcifs:1.3.18.3") // Never update this, Version 2 is incompatible
+    implementation("org.codelibs:jcifs:$jcifsVersion") // Never update this, Version 2 is incompatible
     // JGit (https://mvnrepository.com/artifact/org.eclipse.jgit/org.eclipse.jgit)
     implementation("org.eclipse.jgit:org.eclipse.jgit:7.1.0.202411261347-r")
     //publish metrics to azure cosmosdb
