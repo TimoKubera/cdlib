@@ -1,6 +1,7 @@
 package de.deutschepost.sdm.cdlib.release
 
 
+mu.KLogging
 import de.deutschepost.sdm.cdlib.SubcommandWithHelp
 import de.deutschepost.sdm.cdlib.mixins.CheckMixin
 import de.deutschepost.sdm.cdlib.mixins.artifactory.ArtifactoryMixinLight
@@ -140,8 +141,10 @@ class ReportCommand : SubcommandWithHelp() {
 
             return runCatching {
                 var reports = reportMixin.reports
-                if (reports.isEmpty()) { //TODO DEPRECATED: only for TQS soft remove reasons
-                    return 0
+                // Determine and implement the desired behavior for empty 'reports'
+                if (reports.isEmpty()) {
+                    logger.warn("No reports available to process.")
+                    return 1 // Return a specific code to indicate no reports were processed
                 }
                 if (checkMixin.checkSecurityReports(reports).hasInvalidReport) return -1
                 reports = OslcComplianceChecker.convertOslcPreResultsToOslcResults(
