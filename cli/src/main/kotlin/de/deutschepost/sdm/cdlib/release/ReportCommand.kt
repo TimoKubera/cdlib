@@ -9,11 +9,9 @@ import de.deutschepost.sdm.cdlib.names.Names
 import de.deutschepost.sdm.cdlib.release.mixin.ReportMixin
 import de.deutschepost.sdm.cdlib.release.report.TestResultPrefixes
 import de.deutschepost.sdm.cdlib.release.report.external.FnciTestResult
-import de.deutschepost.sdm.cdlib.release.report.external.cca.CSS_QHCR_HARBOR
 import de.deutschepost.sdm.cdlib.release.report.external.cca.HarborApiClient
 import de.deutschepost.sdm.cdlib.release.report.external.cca.getCcaVulnerabilitiesUrl
 import de.deutschepost.sdm.cdlib.release.report.external.fnci.FnciMessageWrapper
-import de.deutschepost.sdm.cdlib.release.report.external.fnci.FnciServiceRepository
 import de.deutschepost.sdm.cdlib.release.report.external.from
 import de.deutschepost.sdm.cdlib.release.report.internal.SecurityTestResult
 import de.deutschepost.sdm.cdlib.release.report.internal.Severity
@@ -398,81 +396,98 @@ class ReportCommand : SubcommandWithHelp() {
                     withTimeoutOrNull(fnciTimeout.toDuration(DurationUnit.MINUTES)) {
                         enableDebugIfOptionIsSet()
                         val releaseName = resolveEnvByName(Names.CDLIB_RELEASE_NAME)
-
+            
                         logger.info { "Starting generating a report" }
                         val taskId = fnciService.generateReport(projectId, 1, token)
                         logger.info { "Successfully generated taskID: $taskId" }
-
-                        val projectInfoJob = async { fnciService.getProjectInformation(projectId, token) }
-                        val inventoryJob = async { fnciService.getProjectInventory(projectId, token) }
-                        val reportJob = async {
-                            logger.info { "Client will try to fetch report" }
-                            while (true) {
-                                val response = fnciService.downloadReport(projectId, 1, taskId, token)
-
-                                when (response.status) {
-                                    HttpStatus.ACCEPTED -> {
-                                        val message = response.body.getOrNull()?.let {
-                                            runCatching {
-                                                defaultObjectMapper.readValue(
-                                                    it,
-                                                    FnciMessageWrapper::class.java
-                                                ).data.firstOrNull()?.message
-                                            }.getOrNull()
-                                        } ?: "Report generation is still in progress."
-                                        logger.info { "$message Client will retry after 20 seconds" }
-                                        delay(20_000)
-                                    }
-
-                                    HttpStatus.OK -> {
-                                        return@async response.body.get()
-                                    }
-
-                                    else -> {
-                                        return@async null
-                                    }
-                                }
-                            }
-                        }
-
+            
+                        val projectInfoJob = createProjectInfoJob(projectId, token)
+                        val inventoryJob = createInventoryJob(projectId, token)
+                        val reportJob = fetchReportJob(taskId, token)
+            
                         val projectInfo = projectInfoJob.await()
                         val inventory = inventoryJob.await()
-
+            
                         defaultObjectMapper.writeValue(
                             File("${TestResultPrefixes.DEFAULT_PREFIX_FNCI}-$releaseName.json"),
                             FnciTestResult(projectInfo, inventory)
                         )
-
-                        reportJob.await().let {
-                            when (it) {
-                                is ByteArray -> {
-                                    val filename = "${TestResultPrefixes.DEFAULT_PREFIX_FNCI}-$releaseName.zip"
-                                    logger.info { "Successfully fetched FNCI report to $filename" }
-                                    File(filename).writeBytes(it)
-                                }
-
-                                else -> {
-                                    logger.error { "Report could not be fetched" }
-                                    return@withTimeoutOrNull -1
-                                }
-                            }
-                        }
-                    }.let {
-                        when (it) {
-                            null -> {
-                                logger.error { "Scan did not complete within $fnciTimeout minutes. Terminating now..." }
-                            }
-
-                            -1 -> return@runBlocking -1
-                        }
+            
+                        reportJob.await().let { handleReportResult(it, releaseName) }
+                    }.let { result ->
+                        handleTimeoutResult(result)
                     }
-
+            
                     return@runBlocking 0
                 }.getOrElse {
                     it.klogSelf(logger)
                     -1
                 }
             }
+            
+            private fun CoroutineScope.createProjectInfoJob(projectId: Int, token: String) = async {
+                fnciService.getProjectInformation(projectId, token)
+            }
+            
+            private fun CoroutineScope.createInventoryJob(projectId: Int, token: String) = async {
+                fnciService.getProjectInventory(projectId, token)
+            }
+            
+            private fun CoroutineScope.fetchReportJob(taskId: String, token: String) = async {
+                logger.info { "Client will try to fetch report" }
+                while (true) {
+                    val response = fnciService.downloadReport(projectId, 1, taskId, token)
+            
+                    when (response.status) {
+                        HttpStatus.ACCEPTED -> {
+                            val message = response.body.getOrNull()?.let {
+                                runCatching {
+                                    defaultObjectMapper.readValue(
+                                        it,
+                                        FnciMessageWrapper::class.java
+                                    ).data.firstOrNull()?.message
+                                }.getOrNull()
+                            } ?: "Report generation is still in progress."
+                            logger.info { "$message Client will retry after 20 seconds" }
+                            delay(20_000)
+                        }
+            
+                        HttpStatus.OK -> {
+                            return@async response.body.get()
+                        }
+            
+                        else -> {
+                            return@async null
+                        }
+                    }
+                }
+            }
+            
+            private fun handleReportResult(result: Any?, releaseName: String) {
+                when (result) {
+                    is ByteArray -> {
+                        val filename = "${TestResultPrefixes.DEFAULT_PREFIX_FNCI}-$releaseName.zip"
+                        logger.info { "Successfully fetched FNCI report to $filename" }
+                        File(filename).writeBytes(result)
+                    }
+            
+                    else -> {
+                        logger.error { "Report could not be fetched" }
+                    }
+                }
+            }
+            
+            private fun handleTimeoutResult(result: Int?) {
+                when (result) {
+                    null -> {
+                        logger.error { "Scan did not complete within $fnciTimeout minutes. Terminating now..." }
+                    }
+            
+                    -1 -> {
+                        // No action needed here as we already return -1 in main call
+                    }
+                }
+            "}"
         }
     }
 
