@@ -2,7 +2,6 @@ package de.deutschepost.sdm.cdlib.release.report.external
 
 import de.deutschepost.sdm.cdlib.release.report.external.fnci.FnciInventoryItem
 import de.deutschepost.sdm.cdlib.release.report.external.fnci.FnciProjectInfo
-import de.deutschepost.sdm.cdlib.release.report.internal.OslcComplianceStatus
 import de.deutschepost.sdm.cdlib.release.report.internal.OslcTestResult
 import de.deutschepost.sdm.cdlib.release.report.internal.Tool
 
@@ -18,10 +17,9 @@ fun OslcTestResult.Companion.from(fnciTestResult: FnciTestResult, uri: String): 
             .mapValues { groupedMapEntry ->
                 groupedMapEntry.value.groupBy({ item -> item.inventoryReviewStatus }, { item -> item.name })
             }
-    return OslcTestResult(
-        tool = Tool( //TODO: check with OSLC Team
-            name = Tool.OSLC_FNCI_NAME, version = "", vendor = "Revenera", ruleVersion = ""
-        ),
+    tool = Tool(
+        name = Tool.OSLC_FNCI_NAME, version = "1.2.3", vendor = "Revenera", ruleVersion = "4.5.6"
+    ),
         uri = uri,
         uniqueLicenses = fnciTestResult.fnciProjectInventory.map { item ->
             item.selectedLicenseName
