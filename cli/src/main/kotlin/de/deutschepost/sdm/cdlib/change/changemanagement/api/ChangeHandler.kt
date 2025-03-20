@@ -248,12 +248,12 @@ class ChangeHandler(
     }
 
     fun preauthorize(): ChangeHandler {
-        require(::change.isInitialized) { "Missing required change information." }
+        require(::change.isInitialized) { MISSING_CHANGE_INFO }
         logger.info { "Determining whether change can be preauthorized." }
         val changeType = determineChangeType()
         logTypeResults(changeType)
         change = change.updateType(changeType)
-
+    
         runCatching {
             logger.info { "Updating change request type: ${change.type?.name}" }
             changeManagementRepository.updateChange(change, auth)
@@ -262,101 +262,49 @@ class ChangeHandler(
         }
         return this
     }
-
+    
     fun resume(): ChangeHandler {
         require(::auth.isInitialized) { "Missing required authentication token." }
-        require(::change.isInitialized) { "Missing required change information." }
-
+        require(::change.isInitialized) { MISSING_CHANGE_INFO }
+    
         logger.info { "Resuming change: ${change.self}" }
         logger.info { "Adding resume comment to change..." }
-
+    
         changeManagementRepository.addComment(
             change.id,
             "Change wird mit anderer Pipeline (${resolveEnvByName(Names.CDLIB_JOB_URL)}) fortgesetzt.",
             auth
         )
-
+    
         logger.info { "Adding new job url to change description..." }
         change = change.updateDescription(change.description + "\n" + resolveEnvByName(Names.CDLIB_JOB_URL))
-
+    
         changeManagementRepository.updateChange(change, auth)
-
+    
         return this
     }
-
-    fun transition(phase: JiraConstants.ChangePhaseId): ChangeHandler {
-        require(::auth.isInitialized) { "Missing required authentication token." }
-        require(::change.isInitialized) { "Missing required change information." }
-
-        runCatching {
-            logger.info { "Transitioning change request phase: ${phase.name}" }
-            changeManagementRepository.transitionChangePhase(
-                changeId = change.id,
-                phaseId = phase.value,
-                auth = auth
-            )
-        }.onFailure {
-            it.klogSelf(logger)
-        }.getOrThrow()
-
-        return this
-    }
-
-    fun monitor(approvalCheckInterval: Int): ChangeHandler {
-        require(::auth.isInitialized) { "Missing required authentication token." }
-        require(::change.isInitialized) { "Missing required change information." }
-
-        val numberOfApprovalChecks = (APPROVAL_CHECK_TIMEOUT_IN_MINUTES / approvalCheckInterval)
-        logger.info { "Checking change request status for approval every ${approvalCheckInterval}m." }
-
-        for (i in 1..numberOfApprovalChecks) {
-            val changeRequest = runCatching {
-                changeManagementRepository.getChangeRequest(change.id, auth)
-            }.onFailure {
-                it.klogSelf(logger)
-            }.getOrThrow()
-
-            logChangeRequestStatus(changeRequest)
-
-            if (changeRequest.status == ChangeStatus.AWAITING_IMPLEMENTATION) {
-                return this
-            }
-            waitBeforeNextCheck(approvalCheckInterval)
-        }
-        throw Exception("Change request was not approved after $APPROVAL_CHECK_TIMEOUT_IN_MINUTES minutes.")
-    }
-
-    fun getItSystem(): ItSystem {
-        require(::itSystem.isInitialized) {
-            "Missing required IT system information."
-        }
-        return itSystem
-    }
-
+    
     fun getChange(): Change {
-        require(::change.isInitialized) { "Missing required change information." }
+        require(::change.isInitialized) { MISSING_CHANGE_INFO }
         return change
     }
-
+    
     fun comment(comment: String): ChangeHandler {
-        require(::change.isInitialized) { "Missing required change information." }
+        require(::change.isInitialized) { MISSING_CHANGE_INFO }
         if (comment.isNotEmpty()) {
             logger.info { "Adding custom comment to change." }
             changeManagementRepository.addComment(id = change.id, comment = comment, auth = auth)
         }
         return this
     }
-
-    fun getComments(changeId: String): List<ChangeComment> {
-        return changeManagementRepository.getComments(changeId, auth)
-    }
-
+    
     fun getUrl(): String {
-        require(::change.isInitialized) { "Missing required change information." }
+        require(::change.isInitialized) { MISSING_CHANGE_INFO }
         val url = change.self
         requireNotNull(url)
         return url
     }
+    
 
     private fun logChangeRequestStatus(changeRequest: Change) {
         requireNotNull(changeRequest.status) {
