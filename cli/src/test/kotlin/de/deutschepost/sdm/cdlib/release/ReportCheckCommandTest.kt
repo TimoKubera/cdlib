@@ -2,7 +2,6 @@ package de.deutschepost.sdm.cdlib.release
 
 import de.deutschepost.sdm.cdlib.CdlibCommand
 import io.kotest.core.annotation.RequiresTag
-import io.kotest.core.annotation.Tags
 import io.kotest.core.listeners.TestListener
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.extensions.system.OverrideMode
@@ -13,7 +12,6 @@ import io.kotest.matchers.string.shouldContain
 import io.micronaut.configuration.picocli.PicocliRunner
 import toArgsArray
 import withStandardOutput
-import java.io.File
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -53,17 +51,17 @@ class ReportCheckCommandTest : FunSpec() {
             output shouldContain "Checks your reports for known issues."
         }
 
-        // TODO: Add test for deprecated note
-
-        test("Don't fail up-to-date reports.") {
-            withConstantNow(beginningLastCentury) {
+        
+        test("Detect deprecated notes in reports.") {
+            withConstantNow(fixedDateTimeOct21) {
                 val args =
-                    "--debug --report-prefix-zap _zap --files src/test/resources/zap/_zap-report_with_open_outdated.json".toArgsArray()
-                val ret = PicocliRunner.call(ReportCommand.CheckCommand::class.java, *args)
-                ret shouldBe 0
+                    "--check-deprecated --files src/test/resources/reports/report_with_deprecated_note.json".toArgsArray()
+                val (_, output) = withStandardOutput {
+                    PicocliRunner.run(ReportCommand.CheckCommand::class.java, *args)
+                }
+                output shouldContain "Deprecated functionality detected in the report."
             }
         }
-
         test("Fail ZAP for LOW severity.") {
             withConstantNow(fixedDateTimeOct21) {
                 val args =
