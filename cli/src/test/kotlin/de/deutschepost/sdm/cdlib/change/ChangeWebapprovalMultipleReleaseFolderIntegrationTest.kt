@@ -40,17 +40,16 @@ import java.util.*
 @RequiresTag("IntegrationTest")
 @Tags("IntegrationTest")
 @MicronautTest
+@RequiresTag("IntegrationTest")
+@Tags("IntegrationTest")
+@MicronautTest
 class ChangeWebapprovalMultipleReleaseFolderIntegrationTest(
-    @RequiresTag("IntegrationTest")
-    @Tags("IntegrationTest")
-    @MicronautTest
-    class ChangeWebapprovalMultipleReleaseFolderIntegrationTest(
-        @Value("\${change-management-token}") val token: String,
-        @Value("\${sharepointUsername}") val sharepointUsername: String,
-        @Value("\${sharepoint.password}") val sp_password: String,
-        @Value("\${artifactory-its-identity-token}") val artifactoryIdentityToken: String,
-        private val cosmosDashboardRepository: CosmosDashboardRepository,
-    ) : FunSpec() {
+    @Value("\${change-management-token}") val token: String,
+    @Value("\${sharepointUsername}") val sharepointUsername: String,
+    @Value("\${sharepoint.password}") val spPassword: String,
+    @Value("\${artifactory-its-identity-token}") val artifactoryIdentityToken: String,
+    private val cosmosDashboardRepository: CosmosDashboardRepository,
+) : FunSpec() {
     private val appName = "cli"
     private val timestamp =
         DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(ZonedDateTime.now().truncatedTo(ChronoUnit.SECONDS))
