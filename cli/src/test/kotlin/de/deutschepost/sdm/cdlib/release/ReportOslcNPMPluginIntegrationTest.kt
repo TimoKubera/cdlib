@@ -47,28 +47,50 @@ class ReportOslcNPMPluginIntegrationTest(
                 val (ret, output) = withStandardOutput {
                     PicocliRunner.call(ReportCommand.CheckCommand::class.java, *args)
                 }
-                ret shouldBeExactly 0
-                output shouldContain "Policy Profile: Non-Distribution"
-            }
-
-            test("Upload OSLC-Plugin report to artifactory") {
-                val args =
-                    "--debug --files $jsonFile --no-distribution --artifactory-its-instance --artifactory-identity-token $artifactoryIdentityToken --repo-name $repoName --type build".toArgsArray()
-                val (ret, output) = withStandardOutput {
-                    PicocliRunner.call(ReportCommand.UploadCommand::class.java, *args)
+                companion object {
+                    private const val UPLOADED_ARTIFACT_MESSAGE = "Uploaded Artifact:"
                 }
-                ret shouldBeExactly 0
-                output shouldContain "Uploaded Artifact:"
-            }
-            // TODO: Delete after sundown
-            test("Upload OSLC-Plugin report to LCM artifactory") {
-                val args =
-                    "--debug --files $jsonFile --no-distribution --artifactory-azure-instance --artifactory-identity-token $artifactoryLCMIdentityToken --repo-name $repoLCMName --type build".toArgsArray()
-                val (ret, output) = withStandardOutput {
-                    PicocliRunner.call(ReportCommand.UploadCommand::class.java, *args)
-                }
-                ret shouldBeExactly 0
-                output shouldContain "Uploaded Artifact:"
+                
+                override fun listeners() = listOf(
+                    getSystemEnvironmentTestListenerWithOverrides(
+                        mapOf(
+                            "CDLIB_APP_NAME" to appName,
+                            "CDLIB_RELEASE_NAME" to releaseName
+                        )
+                    )
+                )
+                
+                init {
+                    context("Check OSLC-Plugin report and upload") {
+                        test("Check OSLC-Plugin report locally") {
+                            val args = "--debug --files $jsonFile --no-distribution".toArgsArray()
+                            val (ret, output) = withStandardOutput {
+                                PicocliRunner.call(ReportCommand.CheckCommand::class.java, *args)
+                            }
+                            ret shouldBeExactly 0
+                            output shouldContain "Policy Profile: Non-Distribution"
+                        }
+                
+                        test("Upload OSLC-Plugin report to artifactory") {
+                            val args =
+                                "--debug --files $jsonFile --no-distribution --artifactory-its-instance --artifactory-identity-token $artifactoryIdentityToken --repo-name $repoName --type build".toArgsArray()
+                            val (ret, output) = withStandardOutput {
+                                PicocliRunner.call(ReportCommand.UploadCommand::class.java, *args)
+                            }
+                            ret shouldBeExactly 0
+                            output shouldContain UPLOADED_ARTIFACT_MESSAGE
+                        }
+                        // TODO: Delete after sundown
+                        test("Upload OSLC-Plugin report to LCM artifactory") {
+                            val args =
+                                "--debug --files $jsonFile --no-distribution --artifactory-azure-instance --artifactory-identity-token $artifactoryLCMIdentityToken --repo-name $repoLCMName --type build".toArgsArray()
+                            val (ret, output) = withStandardOutput {
+                                PicocliRunner.call(ReportCommand.UploadCommand::class.java, *args)
+                            }
+                            ret shouldBeExactly 0
+                            output shouldContain UPLOADED_ARTIFACT_MESSAGE
+                        }
+                    }
             }
 
             test("Check OSLC-Plugin report locally should fail due to distribution flag") {
