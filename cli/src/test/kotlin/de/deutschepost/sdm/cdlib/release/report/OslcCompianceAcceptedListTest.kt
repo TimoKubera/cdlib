@@ -1,12 +1,7 @@
 package de.deutschepost.sdm.cdlib.release.report
 
-import de.deutschepost.sdm.cdlib.release.report.external.OslcGradlePluginTestResult
-import de.deutschepost.sdm.cdlib.release.report.external.from
-import de.deutschepost.sdm.cdlib.release.report.internal.OslcTestResult
 import de.deutschepost.sdm.cdlib.release.report.internal.oslcComplianceChecker.OslcComplianceChecker
-import de.deutschepost.sdm.cdlib.release.report.internal.oslcComplianceChecker.OslcTestPreResult
 import de.deutschepost.sdm.cdlib.release.report.internal.oslcComplianceChecker.VersionSpecification
-import de.deutschepost.sdm.cdlib.release.report.internal.oslcComplianceChecker.from
 import de.deutschepost.sdm.cdlib.utils.permissiveObjectMapper
 import getSystemEnvironmentTestListenerWithOverrides
 import io.kotest.assertions.throwables.shouldThrow
@@ -16,7 +11,6 @@ import io.kotest.core.spec.style.FunSpec
 import io.kotest.data.headers
 import io.kotest.data.row
 import io.kotest.data.table
-import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
 import withStandardOutput
@@ -46,89 +40,120 @@ class OslcComplianceAcceptedListTest : FunSpec() {
             test("Testing valid input strings") {
                 io.kotest.data.forAll(
                     table(
-                        headers("Input String", "Default Value", "Expected"),
-                        row("0.0.0", 0, VersionSpecification(0, 0, 0)),
-                        row("0.0.0", Int.MAX_VALUE, VersionSpecification(0, 0, 0)),
-                        row("1.2.3", 0, VersionSpecification(1, 2, 3)),
-                        row("1.2.3.4", 0, VersionSpecification(1, 2, 3)),
-                        row("1", 0, VersionSpecification(1, 0, 0)),
-                        row("6.6", 6, VersionSpecification(6, 6, 6)),
-                    )
-                ) { input: String, default: Int, expected: VersionSpecification ->
-                    VersionSpecification.fromString(input, default) shouldBe expected
-                }
-            }
-
-            test("Testing invalid input strings") {
-                io.kotest.data.forAll(
-                    table(
-                        headers("Input String", "Default Value"),
-                        row("a.b.c", 0),
-                        row("error", 0),
-                        row("3,2,5", 0),
-                    )
-                ) { input: String, default: Int ->
-                    shouldThrow<NumberFormatException> { VersionSpecification.fromString(input, default) }
-                }
-            }
-
-            test("Testing valid ranged input strings") {
-                io.kotest.data.forAll(
-                    table(
-                        headers("Input String", "ExpectedMin", "ExpectedMax"),
-                        row("1.2.3-11.12.13", VersionSpecification(1, 2, 3), VersionSpecification(11, 12, 13)),
-                        row("-11.12.13", VersionSpecification(0, 0, 0), VersionSpecification(11, 12, 13)),
-                        row(
-                            "1.2.3-",
-                            VersionSpecification(1, 2, 3),
-                            VersionSpecification(Int.MAX_VALUE, Int.MAX_VALUE, Int.MAX_VALUE)
-                        ),
-                        row("1-1.5", VersionSpecification(1, 0, 0), VersionSpecification(1, 5, Int.MAX_VALUE)),
-                        row(
-                            "-",
-                            VersionSpecification(0, 0, 0),
-                            VersionSpecification(Int.MAX_VALUE, Int.MAX_VALUE, Int.MAX_VALUE)
-                        ),
-                        row(
-                            "",
-                            VersionSpecification(0, 0, 0),
-                            VersionSpecification(Int.MAX_VALUE, Int.MAX_VALUE, Int.MAX_VALUE)
-                        ),
-                        row("11.12.13", VersionSpecification(11, 12, 13), VersionSpecification(11, 12, 13)),
-                    )
-                ) { input: String, min: VersionSpecification, max: VersionSpecification ->
-                    VersionSpecification.rangeFromString(input) shouldBe min..max
-                }
-            }
-
-            test("Testing invalid ranged input strings") {
-                io.kotest.data.forAll(
-                    table(
-                        headers("Input String"),
-                        row("1.2.3-11.12.13-1.2.3"),
-                        row("1-1-1"),
-                    )
-                ) { input: String ->
-                    shouldThrow<RuntimeException> { VersionSpecification.rangeFromString(input) }
-                }
-            }
-
-            test("Testing isInBetween") {
-                io.kotest.data.forAll(
-                    table(
-                        headers("Min", "Input", "Max", "Expected"),
-                        row(
-                            VersionSpecification(1, 2, 3),
-                            VersionSpecification(1, 3, 3),
-                            VersionSpecification(2, 1, 1),
-                            true
-                        ),
-                        row(
-                            VersionSpecification(1, 2, 3),
-                            VersionSpecification(1, 1, 3),
-                            VersionSpecification(2, 1, 1),
-                            false
-                        ),
+                        companion object {
+                            const val INPUT_STRING = "Input String"
+                        }
+                        
+                        test("Testing valid input strings") {
+                            io.kotest.data.forAll(
+                                table(
+                                    headers(INPUT_STRING, "Default Value", "Expected"),
+                                    row("0.0.0", 0, VersionSpecification(0, 0, 0)),
+                                    row("0.0.0", Int.MAX_VALUE, VersionSpecification(0, 0, 0)),
+                                    row("1.2.3", 0, VersionSpecification(1, 2, 3)),
+                                    row("1.2.3.4", 0, VersionSpecification(1, 2, 3)),
+                                    row("1", 0, VersionSpecification(1, 0, 0)),
+                                    row("6.6", 6, VersionSpecification(6, 6, 6)),
+                                )
+                            ) { input: String, default: Int, expected: VersionSpecification ->
+                                VersionSpecification.fromString(input, default) shouldBe expected
+                            }
+                        }
+                        
+                        test("Testing invalid input strings") {
+                            io.kotest.data.forAll(
+                                table(
+                                    headers(INPUT_STRING, "Default Value"),
+                                    row("a.b.c", 0),
+                                    row("error", 0),
+                                    row("3,2,5", 0),
+                                )
+                            ) { input: String, default: Int ->
+                                shouldThrow<NumberFormatException> { VersionSpecification.fromString(input, default) }
+                            }
+                        }
+                        
+                        test("Testing valid ranged input strings") {
+                            io.kotest.data.forAll(
+                                table(
+                                    headers(INPUT_STRING, "ExpectedMin", "ExpectedMax"),
+                                    row("1.2.3-11.12.13", VersionSpecification(1, 2, 3), VersionSpecification(11, 12, 13)),
+                                    row("-11.12.13", VersionSpecification(0, 0, 0), VersionSpecification(11, 12, 13)),
+                                    row(
+                                        "1.2.3-",
+                                        VersionSpecification(1, 2, 3),
+                                        VersionSpecification(Int.MAX_VALUE, Int.MAX_VALUE, Int.MAX_VALUE)
+                                    ),
+                                    row("1-1.5", VersionSpecification(1, 0, 0), VersionSpecification(1, 5, Int.MAX_VALUE)),
+                                    row(
+                                        "-",
+                                        VersionSpecification(0, 0, 0),
+                                        VersionSpecification(Int.MAX_VALUE, Int.MAX_VALUE, Int.MAX_VALUE)
+                                    ),
+                                    row(
+                                        "",
+                                        VersionSpecification(0, 0, 0),
+                                        VersionSpecification(Int.MAX_VALUE, Int.MAX_VALUE, Int.MAX_VALUE)
+                                    ),
+                                    row("11.12.13", VersionSpecification(11, 12, 13), VersionSpecification(11, 12, 13)),
+                                )
+                            ) { input: String, min: VersionSpecification, max: VersionSpecification ->
+                                VersionSpecification.rangeFromString(input) shouldBe min..max
+                            }
+                        }
+                        
+                        test("Testing invalid ranged input strings") {
+                            io.kotest.data.forAll(
+                                table(
+                                    headers(INPUT_STRING),
+                                    row("1.2.3-11.12.13-1.2.3"),
+                                    row("1-1-1"),
+                                )
+                            ) { input: String ->
+                                shouldThrow<RuntimeException> { VersionSpecification.rangeFromString(input) }
+                            }
+                        }
+                        
+                        test("Testing isInBetween") {
+                            io.kotest.data.forAll(
+                                table(
+                                    headers("Min", INPUT_STRING, "Max", "Expected"),
+                                    row(
+                                        VersionSpecification(1, 2, 3),
+                                        VersionSpecification(1, 3, 3),
+                                        VersionSpecification(2, 1, 1),
+                                        true
+                                    ),
+                                    row(
+                                        VersionSpecification(1, 2, 3),
+                                        VersionSpecification(1, 1, 3),
+                                        VersionSpecification(2, 1, 1),
+                                        false
+                                    ),
+                                    row(
+                                        VersionSpecification(1, 2, 3),
+                                        VersionSpecification(1, 2, 3),
+                                        VersionSpecification(1, 2, 3),
+                                        true
+                                    ),
+                                    row(
+                                        VersionSpecification(1, 0, 0),
+                                        VersionSpecification(3, 0, 0),
+                                        VersionSpecification(2, 0, 0),
+                                        false
+                                    ),
+                                    row(
+                                        VersionSpecification(1, 0, 0),
+                                        VersionSpecification(2, 0, 1),
+                                        VersionSpecification(2, 1, 0),
+                                        true
+                                    ),
+                        
+                                    )
+                            ) { min: VersionSpecification, input: VersionSpecification, max: VersionSpecification, expected: Boolean ->
+                                (input in min..max) shouldBe expected
+                            }
+                        }
                         row(
                             VersionSpecification(1, 2, 3),
                             VersionSpecification(1, 2, 3),
