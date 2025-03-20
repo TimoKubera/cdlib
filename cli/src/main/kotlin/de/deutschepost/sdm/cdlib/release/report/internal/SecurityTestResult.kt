@@ -149,9 +149,10 @@ fun List<SecurityTestResult>.securityTestsVerify(
             ReportType.DAST -> securityReportVerificationResult.hasDAST = true
             ReportType.SCA -> securityReportVerificationResult.hasSCA = true
             ReportType.SAST -> securityReportVerificationResult.hasSAST = true
-            ReportType.OTHER -> { // No action needed for OTHER report type }
-
-    }
+            ReportType.OTHER -> {
+                // No action needed for OTHER report type
+            }
+        }
     return securityReportVerificationResult
 }
 
