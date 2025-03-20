@@ -84,9 +84,7 @@ class ReportCommand : SubcommandWithHelp() {
             enableDebugIfOptionIsSet()
             return runCatching {
                 var reports = reportMixin.reports
-                if (reports.isEmpty()) { //TODO DEPRECATED: only for TQS soft remove reasons
-                    return 0
-                }
+                // Removed deprecated logic that checked for empty reports list.
                 if (checkMixin.checkSecurityReports(reports, severity).hasInvalidReport) return -1
                 reports = OslcComplianceChecker.convertOslcPreResultsToOslcResults(
                     reports,
