@@ -1,7 +1,6 @@
 package de.deutschepost.sdm.cdlib.change.sharepoint
 
 import de.deutschepost.sdm.cdlib.change.commonClients.O365Configuration
-import io.micronaut.http.annotation.Body
 import io.micronaut.http.annotation.Header
 import io.micronaut.http.annotation.Post
 import io.micronaut.http.client.annotation.Client
@@ -21,8 +20,7 @@ interface SharepointGraphClient {
     fun addEntry(
         siteId: String,
         listId: String,
-        @Header Authorization: String,
-        @Body body: GraphSharepointDTO
+        @Header authorization: String,
     ): GraphSharepointResponse
 }
 
