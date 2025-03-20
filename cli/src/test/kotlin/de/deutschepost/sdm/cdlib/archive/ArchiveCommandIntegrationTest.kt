@@ -1,5 +1,6 @@
 package de.deutschepost.sdm.cdlib.archive
 
+import java.util.logging.Logger
 import de.deutschepost.sdm.cdlib.CdlibCommand
 import de.deutschepost.sdm.cdlib.artifactory.AZURE_ARTIFACTORY_URL
 import de.deutschepost.sdm.cdlib.artifactory.ArtifactoryClient
@@ -171,9 +172,11 @@ class ArchiveCommandIntegrationTest(@Value("\${artifactory-azure-identity-token}
     override suspend fun beforeTest(testCase: TestCase) {
         super.beforeTest(testCase)
         val repository = artifactory.repository(repoName)
+        val logger = java.util.logging.Logger.getLogger(this::class.java.name)
         try {
             repository.delete(releaseName_build)
-        } catch (_: Exception) {
+        } catch (e: Exception) {
+            logger.warning("Failed to delete repository: ${e.message}")
         }
 
     }
