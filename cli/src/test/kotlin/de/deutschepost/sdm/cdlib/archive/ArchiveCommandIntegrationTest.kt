@@ -173,8 +173,7 @@ class ArchiveCommandIntegrationTest(@Value("\${artifactory-azure-identity-token}
         val repository = artifactory.repository(repoName)
         try {
             repository.delete(releaseName_build)
-        } catch (_: Exception) {
+        } catch (e: Exception) {
+            // Intentionally ignoring exception here as it may occur if the folder doesn't exist
         }
-
-    }
 }
