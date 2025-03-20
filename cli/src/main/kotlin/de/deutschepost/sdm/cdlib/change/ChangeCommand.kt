@@ -624,7 +624,7 @@ class ChangeCommand : SubcommandWithHelp() {
                     cdlibChangeImmutableRepoUrl = reportUrl,
                     cdlibChangeWebapprovalEntryUrl = webapprovalUrl,
                     cdlibChangeOslcEntryUrls = oslcURls,
-                    cdlibChangeTqsEntryUrls = emptyList() // TODO: Left here to not break sharepoint model. Remove in 7.0 or find way to include cdlib-external sonar url?
+                    cdlibChangeTqsEntryUrls = if (isVersion7OrAbove()) getTqsEntryUrls() else emptyList()
                 )
                 runCatching {
                     defaultObjectMapper.writeValue(file, urlInfo)
