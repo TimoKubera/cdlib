@@ -1,5 +1,6 @@
 package de.deutschepost.sdm.cdlib.release.report.internal
 
+import kotlin.collections.List
 import com.fasterxml.jackson.annotation.JsonAlias
 import com.fasterxml.jackson.annotation.JsonIgnore
 import mu.KLogging
@@ -137,10 +138,13 @@ data class SecurityTestResult(
 fun List<SecurityTestResult>.securityTestsVerify(
     failureSeverity: Severity,
     reportSkipConfig: SecurityReportSkipConfig
+fun List<SecurityTestResult>.securityTestsVerify(
+    failureSeverity: Severity,
+    reportSkipConfig: SecurityReportSkipConfig
 ): SecurityReportVerificationResult {
     val securityReportVerificationResult = SecurityReportVerificationResult()
     forEach { testResult ->
-        if (testResult.getRelevantVulnerabilities(failureSeverity, reportSkipConfig).isNotEmpty() or
+        if (testResult.getRelevantVulnerabilities(failureSeverity, reportSkipConfig).isNotEmpty() ||
             !testResult.isValid(reportSkipConfig)
         ) {
             securityReportVerificationResult.hasInvalidReport = true
@@ -153,6 +157,7 @@ fun List<SecurityTestResult>.securityTestsVerify(
                 // No action needed for OTHER report type
             }
         }
+    }
     return securityReportVerificationResult
 }
 
