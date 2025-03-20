@@ -26,6 +26,8 @@ micronaut {
 val kotlinVersion = project.properties["kotlinVersion"] as String
 val kotlinCoroutines = project.properties["kotlinCoroutines"] as String
 
+val artifactoryClientVersion = "2.19.1"
+
 dependencies {
     ksp("info.picocli:picocli-codegen")
     implementation("org.yaml:snakeyaml")
@@ -46,7 +48,7 @@ dependencies {
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
 
     // artifactory
-    implementation("org.jfrog.artifactory.client:artifactory-java-client-services:2.19.1")
+    implementation("org.jfrog.artifactory.client:artifactory-java-client-services:${artifactoryClientVersion}")
     // logging
     implementation("io.github.microutils:kotlin-logging:2.1.23")
     // webapproval sharepoint
