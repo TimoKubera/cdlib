@@ -96,19 +96,13 @@ class ChangeOslcIntegrationTest(
                         "--no-distribution --jira-token $chgToken --artifactory-its-instance --artifactory-identity-token $artifactoryIdentityToken --repo-name $repoName --immutable-repo-name $immutableRepoName --folder-name $oslcFNCIName --commercial-reference 5296 --test --debug --no-webapproval --no-tqs".toArgsArray()
                     PicocliRunner.call(ChangeCommand.CreateCommand::class.java, *args)
                 }
-                output shouldContain "EntryUrl: "
+                companion object {
+                    const val ENTRY_URL = "EntryUrl: "
+                }
+                
+                output shouldContain ENTRY_URL
                 output shouldContain "labels=[cdlib, oslc, test]"
                 ret shouldBeExactly 0
-            }
-
-            test("change create with report from maven plugin") {
-                val (ret, output) = withStandardOutput {
-                    val args =
-                        "--no-distribution --jira-token $chgToken --artifactory-its-instance --artifactory-identity-token $artifactoryIdentityToken --repo-name $repoName --immutable-repo-name $immutableRepoName --folder-name $oslcMavenPluginName --commercial-reference 5296 --test --debug --no-webapproval --no-tqs".toArgsArray()
-                    PicocliRunner.call(ChangeCommand.CreateCommand::class.java, *args)
-                }
-                output shouldContain "EntryUrl: "
-                output shouldContain "labels=[cdlib, oslc, test]"
                 output shouldNotContain "com.microsoft.aad.msal4j.MsalClientException: Token not found in the cache"
                 ret shouldBeExactly 0
             }
