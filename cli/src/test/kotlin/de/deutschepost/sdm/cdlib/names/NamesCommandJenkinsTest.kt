@@ -11,7 +11,7 @@ import io.kotest.extensions.system.SystemEnvironmentTestListener
 import io.kotest.matchers.comparables.shouldBeEqualComparingTo
 import io.kotest.matchers.string.shouldContainIgnoringCase
 import io.micronaut.configuration.picocli.PicocliRunner
-import io.micronaut.test.extensions.kotest5.annotation.MicronautTest
+""
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject
