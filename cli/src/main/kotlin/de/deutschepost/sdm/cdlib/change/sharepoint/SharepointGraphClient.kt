@@ -1,10 +1,8 @@
 package de.deutschepost.sdm.cdlib.change.sharepoint
 
 import de.deutschepost.sdm.cdlib.change.commonClients.O365Configuration
-import io.micronaut.http.annotation.Body
 import io.micronaut.http.annotation.Header
 import io.micronaut.http.annotation.Post
-import io.micronaut.http.client.annotation.Client
 import io.micronaut.retry.annotation.Retryable
 
 // Get Sharepoint id:
@@ -21,9 +19,7 @@ interface SharepointGraphClient {
     fun addEntry(
         siteId: String,
         listId: String,
-        @Header Authorization: String,
-        @Body body: GraphSharepointDTO
-    ): GraphSharepointResponse
+        @Header authorization: String,
 }
 
 const val SHAREPOINT_GRAPH_URL = "https://graph.microsoft.com/v1.0/sites"
