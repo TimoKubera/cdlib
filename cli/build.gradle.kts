@@ -47,22 +47,7 @@ dependencies {
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
 
     // artifactory
-    val artifactoryClientVersion = "2.19.1"
-    implementation("org.jfrog.artifactory.client:artifactory-java-client-services:${artifactoryClientVersion}")
-    val kotlinLoggingVersion = "2.1.23"
-    implementation("io.github.microutils:kotlin-logging:$kotlinLoggingVersion")
-    // webapproval sharepoint
-    val apacheHttpClientVersion = "4.5.14"
-    val jcifsVersion = "1.3.18.3"
-    implementation("org.apache.httpcomponents:httpclient:$apacheHttpClientVersion")
-    implementation("org.codelibs:jcifs:$jcifsVersion") // Never update this, Version 2 is incompatible
-    // JGit (https://mvnrepository.com/artifact/org.eclipse.jgit/org.eclipse.jgit)
-    val jgitVersion = "7.1.0.202411261347-r"
-    implementation("org.eclipse.jgit:org.eclipse.jgit:$jgitVersion")
-    //publish metrics to azure cosmosdb
-    implementation("com.azure:azure-identity")
-    implementation("net.minidev:json-smart:2.5.2") // override bc vuln
-    implementation("com.azure:azure-cosmos")
+    val jsonSmartVersion = "2.5.2"\n\n// artifactory\nval artifactoryClientVersion = "2.19.1"\nimplementation("org.jfrog.artifactory.client:artifactory-java-client-services:${artifactoryClientVersion}")\nval kotlinLoggingVersion = "2.1.23"\nimplementation("io.github.microutils:kotlin-logging:$kotlinLoggingVersion")\n// webapproval sharepoint\nval apacheHttpClientVersion = "4.5.14"\nval jcifsVersion = "1.3.18.3"\nimplementation("org.apache.httpcomponents:httpclient:$apacheHttpClientVersion")\nimplementation("org.codelibs:jcifs:$jcifsVersion") // Never update this, Version 2 is incompatible\n// JGit (https://mvnrepository.com/artifact/org.eclipse.jgit/org.eclipse.jgit)\nval jgitVersion = "7.1.0.202411261347-r"\nimplementation("org.eclipse.jgit:org.eclipse.jgit:$jgitVersion")\n//publish metrics to azure cosmosdb\nimplementation("com.azure:azure-identity")\nimplementation("net.minidev:json-smart:${jsonSmartVersion}") // override bc vuln\nimplementation("com.azure:azure-cosmos")
 
     // Tests only
     testImplementation("io.mockk:mockk")
