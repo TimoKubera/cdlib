@@ -1,6 +1,5 @@
 package de.deutschepost.sdm.cdlib.change.changemanagement.model
 
-import de.deutschepost.sdm.cdlib.change.changemanagement.model.JiraConstants.ImpactClass.*
 import java.security.InvalidParameterException
 
 object JiraConstants {
@@ -214,20 +213,20 @@ object JiraConstants {
     }
 
     @Suppress("unused")
-    enum class CompletionCode(val value: String) { // TODO: enums should probably work by id
-        SUCCESS("Erfolgreich implementiert"), // 13672
-        SUCCESS_DEVIATION("Erfolgreich mit Abweichung"), // 13673
-        REJECTED("Abgelehnt"), // 13674
-        SUCCESS_FALLBACK("Erfolgreich mit Fallback"), // 13675
-        FALLBACK_DEVIATION("Fallback mit Abweichung"), // 13676
-        ABORTED("Abgebrochen"), // 13671
-        NONE("None"), // -1
+    enum class CompletionCode(val id: Int) { // TODO: enums should probably work by id
+        SUCCESS(13672),
+        SUCCESS_DEVIATION(13673),
+        REJECTED(13674),
+        SUCCESS_FALLBACK(13675),
+        FALLBACK_DEVIATION(13676),
+        ABORTED(13671),
+        NONE(-1),
         ;
 
         companion object {
             infix fun from(issueField: GetChangesResponse.Issue.Fields.CompletionCodeField?): CompletionCode? =
                 if (issueField != null) {
-                    entries.firstOrNull { it.value == issueField.value }
+                    entries.firstOrNull { it.id == issueField.value.toIntOrNull() }
                 } else {
                     null
                 }
