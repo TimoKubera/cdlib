@@ -11,6 +11,8 @@ plugins {
 version = "0.2"
 
 val kotlinLoggingVersion = "2.1.23"
+val httpclientVersion = "4.5.14"
+
 repositories {
     maven("https://artifactory.dhl.com/maven-remote")
 }
@@ -35,7 +37,14 @@ implementation("org.jfrog.artifactory.client:artifactory-java-client-services:${
     // logging
     implementation("io.github.microutils:kotlin-logging:2.1.23")
     // webapproval sharepoint
-    implementation("org.apache.httpcomponents:httpclient:4.5.14")
+    implementation("org.apache.httpcomponents:httpclient:$httpclientVersion")
+    implementation("org.codelibs:jcifs:1.3.18.3") // Never update this, Version 2 is incompatible
+    // JGit (https://mvnrepository.com/artifact/org.eclipse.jgit/org.eclipse.jgit)
+    implementation("org.eclipse.jgit:org.eclipse.jgit:7.1.0.202411261347-r")
+    //publish metrics to azure cosmosdb
+    implementation("com.azure:azure-identity")
+    implementation("net.minidev:json-smart:2.5.2") // override bc vuln
+    implementation("com.azure:azure-cosmos")
     implementation("org.codelibs:jcifs:1.3.18.3") // Never update this, Version 2 is incompatible
     // JGit (https://mvnrepository.com/artifact/org.eclipse.jgit/org.eclipse.jgit)
     implementation("org.eclipse.jgit:org.eclipse.jgit:7.1.0.202411261347-r")
