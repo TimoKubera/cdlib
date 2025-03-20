@@ -1,3 +1,4 @@
+import org.gradle.kotlin.dsl.val
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -46,7 +47,8 @@ dependencies {
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
 
     // artifactory
-    implementation("org.jfrog.artifactory.client:artifactory-java-client-services:2.19.1")
+    val artifactoryClientVersion = "2.19.1"
+    implementation("org.jfrog.artifactory.client:artifactory-java-client-services:${artifactoryClientVersion}")
     // logging
     implementation("io.github.microutils:kotlin-logging:2.1.23")
     // webapproval sharepoint
