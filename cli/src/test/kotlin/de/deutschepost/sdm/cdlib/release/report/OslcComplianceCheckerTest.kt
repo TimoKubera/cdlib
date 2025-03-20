@@ -20,6 +20,10 @@ import java.io.File
 @Tags("UnitTest")
 class OslcComplianceCheckerTest : FunSpec() {
 
+    companion object {
+        private const val MOZILLA_PUBLIC_LICENSE_2_0 = "Mozilla Public License 2.0"
+    }
+
     private val disallowedLicensesDistributionPath: String =
         "src/main/resources/oslc/disallowedLicensesDistribution.json"
     private val disallowedLicensesNonDistributionPath: String =
@@ -38,7 +42,7 @@ class OslcComplianceCheckerTest : FunSpec() {
             )
         )
     )
-    private val licenseMozillaName = "Mozilla Public License 2.0"
+    private val licenseMozillaName = MOZILLA_PUBLIC_LICENSE_2_0
     private val depWithCDDL = OslcDependencyLicenseEntry(
         dependencyName = "test.should.fail:cddl",
         dependencyVersion = "",
@@ -112,6 +116,7 @@ class OslcComplianceCheckerTest : FunSpec() {
         )
     )
     private val licenseAlladinName = "Alladin Free Public License 9"
+
 
 
     init {
