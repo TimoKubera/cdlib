@@ -123,8 +123,10 @@ abstract class NameResolverBase(private val namesConfigWithDefault: NamesConfigW
             origin.contains("git.dhl.com") -> {
                 "${origin.substringBefore(".git")}/commit/$gitId"
             }
-
+            
             origin.contains("dev.azure.com") -> "$origin/commit/$gitId"
+            
+            origin.contains("gitlab") -> "$origin/-/commit/$gitId"
             // TODO add gitlab when the time has come
             else -> origin
         }
