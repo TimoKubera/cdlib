@@ -142,20 +142,20 @@ class ChangeCloseIntegrationTest(
                 .post(changeDetails)
                 .preauthorize()
                 .transition(OPEN_TO_IMPLEMENTATION)
-
+        
             val (exitCode, output) = withStandardOutput {
                 PicocliRunner.call(
                     ChangeCommand.CloseCommand::class.java,
                     *"--debug --test --jira-token $token --commercial-reference $commercialReference --status SUCCESS".toArgsArray()
                 )
             }
-
+        
             output shouldNotContain "Failed to parse Pipeline status"
             output shouldNotContain "Failed to create metric object."
-            output shouldContain "Pushing following metric object:"
+            output shouldContain Companion.PUSHING_METRIC_OBJECT
             exitCode shouldBe 0
         }
-
+        
         "Change is not closed for failed status" {
             listOf("FAILED", "FAILURE").forAll {
                 val (exitCode, output) = withStandardOutput {
@@ -170,7 +170,17 @@ class ChangeCloseIntegrationTest(
                 }
                 output shouldNotContain "Closing change"
                 output shouldContain "not closing change request."
-                output shouldContain "Pushing following metric object:"
+                output shouldContain Companion.PUSHING_METRIC_OBJECT
+                exitCode shouldBe 0
+        
+                changeHandler.findExisting().closeExisting()
+                Thread.sleep(15.toDuration(DurationUnit.SECONDS).inWholeMilliseconds)
+            }
+        }
+        
+        companion object {
+            const val PUSHING_METRIC_OBJECT = "Pushing following metric object:"
+        }
                 exitCode shouldBe 0
 
 
