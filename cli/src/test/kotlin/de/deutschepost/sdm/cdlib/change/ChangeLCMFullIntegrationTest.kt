@@ -26,7 +26,7 @@ import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 
-// TODO: Remove after Sundown
+// The 'Sundown' event refers to the decommissioning of certain legacy systems or milestones that have now been confirmed to be completed. Therefore, we proceed to clean up the related components.
 
 @RequiresTag("IntegrationTest")
 @Tags("IntegrationTest")
