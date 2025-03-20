@@ -10,7 +10,7 @@ plugins {
 }
 version = "0.2"
 
-group = "de.deutschepost.sdm.cdlib"
+val kotlinLoggingVersion = "2.1.23"
 repositories {
     maven("https://artifactory.dhl.com/maven-remote")
 }
