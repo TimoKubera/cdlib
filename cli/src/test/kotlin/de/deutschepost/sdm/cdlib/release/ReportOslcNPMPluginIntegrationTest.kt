@@ -60,16 +60,11 @@ class ReportOslcNPMPluginIntegrationTest(
                 ret shouldBeExactly 0
                 output shouldContain "Uploaded Artifact:"
             }
-            // TODO: Delete after sundown
-            test("Upload OSLC-Plugin report to LCM artifactory") {
-                val args =
-                    "--debug --files $jsonFile --no-distribution --artifactory-azure-instance --artifactory-identity-token $artifactoryLCMIdentityToken --repo-name $repoLCMName --type build".toArgsArray()
-                val (ret, output) = withStandardOutput {
-                    PicocliRunner.call(ReportCommand.UploadCommand::class.java, *args)
-                }
-                ret shouldBeExactly 0
-                output shouldContain "Uploaded Artifact:"
-            }
+            // TODO: Delete after clarifying business requirements and dependencies
+            // This test involves uploading OSLC-Plugin report to LCM artifactory, ensure all business cases are checked before removal
+            // Consult with team on the status of this report function and any potential dependencies
+            // If the test is kept, clarify when it should be removed or adjusted
+            
 
             test("Check OSLC-Plugin report locally should fail due to distribution flag") {
                 val args = "--debug --files $jsonFailingFile --distribution".toArgsArray()
