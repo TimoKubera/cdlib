@@ -1,5 +1,6 @@
 package de.deutschepost.sdm.cdlib.change.changemanagement.api
 
+import de.deutschepost.sdm.cdlib.change.changemanagement.util.ValidationUtils.validateChangeWindow
 import de.deutschepost.sdm.cdlib.change.ChangeCommand.CreateCommand.ChangeDetails
 import de.deutschepost.sdm.cdlib.change.changemanagement.model.*
 import de.deutschepost.sdm.cdlib.change.changemanagement.model.JiraConstants.ChangeStatus
@@ -406,14 +407,7 @@ class ChangeHandler(
 
             // TODO: Check if this can be done via picocli validaiton
             else -> {
-                require(end.isAfter(start)) {
-                    "End date needs to be later than the start date."
-                }
-                val yesterday = now.minusDays(1)
-                require(!start.isBefore(yesterday)) {
-                    "Start date cannot be more than 24 hours in the past."
-                }
-
+                validateChangeWindow(start, end, now)
                 Triple(
                     start,                      // start
                     end,                        // end
