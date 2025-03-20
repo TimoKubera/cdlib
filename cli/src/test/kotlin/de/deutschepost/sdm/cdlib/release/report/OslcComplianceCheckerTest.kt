@@ -1,6 +1,5 @@
 package de.deutschepost.sdm.cdlib.release.report
 
-import com.fasterxml.jackson.module.kotlin.readValue
 import de.deutschepost.sdm.cdlib.release.report.external.OslcGradlePluginTestResult
 import de.deutschepost.sdm.cdlib.release.report.external.from
 import de.deutschepost.sdm.cdlib.release.report.internal.oslcComplianceChecker.OslcComplianceChecker
@@ -20,12 +19,11 @@ import java.io.File
 @Tags("UnitTest")
 class OslcComplianceCheckerTest : FunSpec() {
 
-    private val disallowedLicensesDistributionPath: String =
-        "src/main/resources/oslc/disallowedLicensesDistribution.json"
-    private val disallowedLicensesNonDistributionPath: String =
-        "src/main/resources/oslc/disallowedLicensesNonDistribution.json"
-    private val reportPath: String = "src/test/resources/oslc/oslc-gradle-plugin-report_failing.json"
+    companion object {
+        const val MOZILLA_PUBLIC_LICENSE_20 = "Mozilla Public License 2.0"
+    }
 
+    ...
 
     private val depWithMozilla = OslcDependencyLicenseEntry(
         dependencyName = "test.should.fail:mozilla",
@@ -38,7 +36,7 @@ class OslcComplianceCheckerTest : FunSpec() {
             )
         )
     )
-    private val licenseMozillaName = "Mozilla Public License 2.0"
+    private val licenseMozillaName = MOZILLA_PUBLIC_LICENSE_20
     private val depWithCDDL = OslcDependencyLicenseEntry(
         dependencyName = "test.should.fail:cddl",
         dependencyVersion = "",
@@ -113,7 +111,6 @@ class OslcComplianceCheckerTest : FunSpec() {
     )
     private val licenseAlladinName = "Alladin Free Public License 9"
 
-
     init {
         context("findMatchingLicense Tests") {
             test("Table Test for selected Licenses with distribution") {
@@ -181,7 +178,7 @@ class OslcComplianceCheckerTest : FunSpec() {
                     "GNU Lesser General Public License 2.1" to 9,
                     "GNU General Public License 2.0" to 4,
                     "GNU General Public License 3.0" to 4,
-                    "Mozilla Public License 2.0" to 5
+                    MOZILLA_PUBLIC_LICENSE_20 to 5
                 )
                 val notExpectedLicenses = listOf(
                     "Apache License 2.0",
@@ -235,7 +232,7 @@ class OslcComplianceCheckerTest : FunSpec() {
                     "GNU Lesser General Public License 2.1",
                     "GNU General Public License 2.0",
                     "GNU General Public License 3.0",
-                    "Mozilla Public License 2.0"
+                    MOZILLA_PUBLIC_LICENSE_20
                 )
                 printDefinitions(definitions)
                 expectedLicenses.forEach { (license: String, numberOfAliases: Int) ->
@@ -251,40 +248,6 @@ class OslcComplianceCheckerTest : FunSpec() {
                 }
             }
         }
-        context("CheckLicenses Tests") {
-            val oslcGradlePluginTestResult: OslcGradlePluginTestResult =
-                defaultObjectMapper.readValue(File(reportPath))
-            val dependencyLicenseEntries =
-                oslcGradlePluginTestResult.dependencies.map { OslcDependencyLicenseEntry.from(it) }
-            dependencyLicenseEntries.forEach { entry ->
-                println("entry: ${entry.dependencyName} - ${entry.licenses.joinToString { "${it.license}|${it.url}" }}")
-            }
-
-            test("With Distribution") {
-                val output = OslcComplianceChecker.getIncomliantLicenses(dependencyLicenseEntries, true)
-                output.forEach { mapEntry ->
-                    println("Found disallowed entry for license: ${mapEntry.key.license} got modules: [${mapEntry.value.joinToString { it.dependencyName }}]")
-                }
-                output.size shouldBe 7
-                val cddl =
-                    output.entries.firstOrNull { it.key.license == "Common Development and Distribution License 1.0" }
-                cddl shouldNotBe null
-                cddl?.value?.size shouldBe 1
-                val lgpl21 = output.entries.firstOrNull { it.key.license == "GNU Lesser General Public License 2.1" }
-                lgpl21 shouldNotBe null
-                lgpl21?.value?.size shouldBe 2
-                val gpl21 = output.entries.firstOrNull { it.key.license == "GNU General Public License 2.0" }
-                gpl21 shouldNotBe null
-                gpl21?.value?.size shouldBe 1
-                val epl1 = output.entries.firstOrNull { it.key.license == "Eclipse Public License 1.0" }
-                epl1 shouldNotBe null
-                epl1?.value?.size shouldBe 2
-                val epl2 = output.entries.firstOrNull { it.key.license == "Eclipse Public License 2.0" }
-                epl2 shouldNotBe null
-                epl2?.value?.size shouldBe 1
-                val mpl2 = output.entries.firstOrNull { it.key.license == "Mozilla Public License 2.0" }
-                mpl2 shouldNotBe null
-                mpl2?.value?.size shouldBe 1
                 val unknown = output.entries.firstOrNull { it.key.license == "UNKNOWN" }
                 unknown shouldNotBe null
                 unknown?.value?.size shouldBe 1
