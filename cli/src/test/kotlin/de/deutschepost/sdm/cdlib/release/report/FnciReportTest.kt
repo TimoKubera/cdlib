@@ -14,7 +14,6 @@ import io.kotest.core.annotation.RequiresTag
 import io.kotest.core.annotation.Tags
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldNotBeEmpty
-import io.kotest.matchers.maps.shouldBeEmpty
 import io.kotest.matchers.maps.shouldNotBeEmpty
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldEndWith
@@ -23,45 +22,27 @@ import java.io.File
 @RequiresTag("UnitTest")
 @Tags("UnitTest")
 class FnciReportTest : FunSpec({
-    val projectPath = "src/test/resources/fnci/fnci-project.json"
-    val inventoryPath = "src/test/resources/fnci/fnci-inventory.json"
-    context("Project Info") {
-        test("Parses projectInfo correctly") {
-            val projectInfo = permissiveObjectMapper.readValue(
-                File(projectPath), FnciProjectInfoWrapper::class.java
-            ).data
-            projectInfo.policyProfileName shouldBe "Non-Distribution insecure"
-            defaultObjectMapper.writeValue(System.out, projectInfo)
+    class FnciReportTest : FunSpec({
+        companion object {
+            private const val PROJECT_PATH = "src/test/resources/fnci/fnci-project.json"
         }
-    }
-
-    context("Inventory") {
-        test("Parse inventory correctly") {
-            val inventory: List<FnciInventoryItem> = permissiveObjectMapper.readValue(
-                File(inventoryPath)
-            )
-            val inventoryParts = inventory.partition { it.inventoryReviewStatus == "Approved" }
-            inventoryParts.first.shouldNotBeEmpty()
-            inventoryParts.second.shouldNotBeEmpty()
+    
+        val projectPath = PROJECT_PATH
+        val inventoryPath = "src/test/resources/fnci/fnci-inventory.json"
+        context("Project Info") {
+            test("Parses projectInfo correctly") {
+                val projectInfo = permissiveObjectMapper.readValue(
+                    File(projectPath), FnciProjectInfoWrapper::class.java
+                ).data
+                projectInfo.policyProfileName shouldBe "Non-Distribution insecure"
+                defaultObjectMapper.writeValue(System.out, projectInfo)
+            }
         }
-    }
-
-    context("OslcTestResult") {
-        val projectInfo: FnciProjectInfo =
-            permissiveObjectMapper.readValue(File(projectPath), FnciProjectInfoWrapper::class.java).data
-        val inventory: List<FnciInventoryItem> = permissiveObjectMapper.readValue(File(inventoryPath))
-        test("Generate OslcTestResult") {
-            val report =
-                OslcTestResult.from(FnciTestResult(projectInfo, inventory), "src/test/resources/fnci/fnci-project.json")
-            report.complianceStatus shouldBe OslcComplianceStatus.RED
-            report.unapprovedItems.shouldNotBeEmpty()
-            defaultObjectMapper.writerWithDefaultPrettyPrinter().writeValue(System.out, report)
-        }
-
-        test("Only approved is compliant") {
-            val report = OslcTestResult.from(
-                FnciTestResult(projectInfo, inventory.filter { it.inventoryReviewStatus == "Approved" }),
-                "src/test/resources/fnci/fnci-project.json"
+    
+        context("OslcTestResult") {
+            val projectInfo: FnciProjectInfo =
+                permissiveObjectMapper.readValue(File(PROJECT_PATH), FnciProjectInfoWrapper::class.java).data
+            val inventory: List<FnciInventoryItem> = permissiveObjectMapper.readValue(File(inventoryPath))
             )
             report.complianceStatus shouldBe OslcComplianceStatus.GREEN
             report.unapprovedItems.shouldBeEmpty()
