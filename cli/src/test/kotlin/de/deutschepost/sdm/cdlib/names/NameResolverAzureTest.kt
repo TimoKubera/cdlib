@@ -29,6 +29,10 @@ class NameResolverAzureTest(
     private val resolver: NameResolverAzure,
     private val namesConfigWithDefault: NamesConfigWithDefault
 ) : AnnotationSpec() {
+    companion object {
+        private const val BUILD_DEFINITION_NAME = "ICTO-3339_SDM-phippyandfriends"
+    }
+) : AnnotationSpec() {
     private val before = ZonedDateTime.now().truncatedTo(ChronoUnit.SECONDS).toInstant()
 
 
