@@ -4,10 +4,7 @@ import io.micronaut.http.HttpHeaders
 import mu.KLogging
 import org.jfrog.artifactory.client.Artifactory
 import org.jfrog.artifactory.client.ArtifactoryClientBuilder
-import org.jfrog.artifactory.client.ItemHandle
-import org.jfrog.artifactory.client.RepositoryHandle
 import org.jfrog.artifactory.client.model.Folder
-import org.jfrog.artifactory.client.model.Item
 import org.jfrog.artifactory.client.model.SearchResult
 import org.jfrog.artifactory.client.model.SearchResultImpl
 import java.io.File
@@ -17,7 +14,6 @@ import java.net.URLEncoder
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
-import org.jfrog.artifactory.client.model.File as ArtifactoryFile
 
 
 class ArtifactoryClient(
@@ -361,12 +357,7 @@ class ArtifactoryClient(
             }
         }
 
-    private fun RepositoryHandle.fileAndCheck(path: String): ItemHandle =
-        file(path).also {
-            check(it.exists()) {
-                logger.error { "Could not find file: $path." }
-            }
-        }
+    // The specified unused method has been completely removed.
 
     private fun RepositoryHandle.folderAndCheck(path: String): ItemHandle =
         folder(path).also {
