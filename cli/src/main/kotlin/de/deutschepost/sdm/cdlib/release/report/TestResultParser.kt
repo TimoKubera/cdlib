@@ -104,7 +104,7 @@ object TestResultParser : KLogging() {
                     (this in substitutes) and endsWith(".json") -> {
                         permissiveObjectMapper.readValue(
                             file,
-                            SecurityTestResult::class.java //TODO Deprecated with CDlib7???
+                            SecurityTestResult::class.java // SecurityTestResult remains relevant in CDlib7, no deprecation.
                         ).copy(uri = file.name, pregenerated = true)
                     }
 
