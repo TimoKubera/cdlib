@@ -1,5 +1,6 @@
 package de.deutschepost.sdm.cdlib.artifactory
 
+import your.package.cdlib7
 import io.micronaut.http.HttpHeaders
 import mu.KLogging
 import org.jfrog.artifactory.client.Artifactory
@@ -59,7 +60,7 @@ class ArtifactoryClient(
         folderSuffix: ArtifactoryFolderSuffix
     ): String? =
         runCatching {
-            val folderName = "${baseFolderName}_$folderSuffix" //TODO change with cdlib 7
+            val folderName = cdlib7.constructFolderName(baseFolderName, folderSuffix)
             val repoHandle = repositoryAndCheck(repoName)
 
             repoHandle.get().apply {
