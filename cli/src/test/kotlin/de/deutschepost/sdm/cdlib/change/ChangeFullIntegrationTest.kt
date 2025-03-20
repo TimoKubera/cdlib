@@ -40,10 +40,10 @@ import java.time.temporal.ChronoUnit
 @Tags("IntegrationTest")
 @MicronautTest
 class ChangeFullIntegrationTest(
-    @Value("\${change-management-token}") val token: String,
-    @Value("\${sharepoint.username}") val sp_username: String,
-    @Value("\${sharepoint.password}") val sp_password: String,
-    @Value("\${artifactory-its-identity-token}") val artifactoryIdentityToken: String,
+    @Value("\${changeManagementToken}") val changeManagementToken: String,
+    @Value("\${sharepointUsername}") val sharepointUsername: String,
+    @Value("\${sharepointPassword}") val sharepointPassword: String,
+    @Value("\${artifactoryItsIdentityToken}") val artifactoryItsIdentityToken: String,
     private val changeTestHelper: ChangeTestHelper,
     private val changeHandler: ChangeHandler,
     private val cosmosDashboardRepository: CosmosDashboardRepository
