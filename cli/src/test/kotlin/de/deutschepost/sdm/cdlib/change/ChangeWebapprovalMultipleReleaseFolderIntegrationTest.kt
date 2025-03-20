@@ -1,5 +1,8 @@
 package de.deutschepost.sdm.cdlib.change
 
+import io.micronaut.test.extensions.kotest5.annotation.MicronautTest
+import io.kotest.core.annotation.Tags
+import io.kotest.core.annotation.RequiresTag
 import de.deutschepost.sdm.cdlib.CdlibCommand
 import de.deutschepost.sdm.cdlib.artifactory.ARTIFACTORY_GUI
 import de.deutschepost.sdm.cdlib.artifactory.ArtifactoryClient
@@ -38,12 +41,16 @@ import java.util.*
 @Tags("IntegrationTest")
 @MicronautTest
 class ChangeWebapprovalMultipleReleaseFolderIntegrationTest(
-    @Value("\${change-management-token}") val token: String,
-    @Value("\${sharepoint.username}") val sp_username: String,
-    @Value("\${sharepoint.password}") val sp_password: String,
-    @Value("\${artifactory-its-identity-token}") val artifactoryIdentityToken: String,
-    private val cosmosDashboardRepository: CosmosDashboardRepository,
-) : FunSpec() {
+    @RequiresTag("IntegrationTest")
+    @Tags("IntegrationTest")
+    @MicronautTest
+    class ChangeWebapprovalMultipleReleaseFolderIntegrationTest(
+        @Value("\${change-management-token}") val token: String,
+        @Value("\${sharepointUsername}") val sharepointUsername: String,
+        @Value("\${sharepoint.password}") val sp_password: String,
+        @Value("\${artifactory-its-identity-token}") val artifactoryIdentityToken: String,
+        private val cosmosDashboardRepository: CosmosDashboardRepository,
+    ) : FunSpec() {
     private val appName = "cli"
     private val timestamp =
         DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(ZonedDateTime.now().truncatedTo(ChronoUnit.SECONDS))
