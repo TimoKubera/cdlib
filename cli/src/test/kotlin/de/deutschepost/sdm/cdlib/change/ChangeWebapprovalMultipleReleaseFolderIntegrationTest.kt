@@ -8,17 +8,13 @@ import de.deutschepost.sdm.cdlib.change.metrics.client.CosmosDashboardRepository
 import de.deutschepost.sdm.cdlib.utils.mockCosmosDBClient
 import de.deutschepost.sdm.cdlib.utils.mockCosmosDBVersionInfo
 import de.deutschepost.sdm.cdlib.utils.uploadReportsToArtifactory
-import exists
 import getSystemEnvironmentTestListenerWithOverrides
 import io.kotest.assertions.withClue
 import io.kotest.core.annotation.RequiresTag
 import io.kotest.core.annotation.Tags
 import io.kotest.core.spec.Spec
 import io.kotest.core.spec.style.FunSpec
-import io.kotest.extensions.system.OverrideMode
-import io.kotest.extensions.system.withEnvironment
 import io.kotest.matchers.shouldBe
-import io.kotest.matchers.shouldNotBe
 import io.kotest.matchers.string.shouldContain
 import io.micronaut.configuration.picocli.PicocliRunner
 import io.micronaut.context.annotation.Value
@@ -39,8 +35,7 @@ import java.util.*
 @MicronautTest
 class ChangeWebapprovalMultipleReleaseFolderIntegrationTest(
     @Value("\${change-management-token}") val token: String,
-    @Value("\${sharepoint.username}") val sp_username: String,
-    @Value("\${sharepoint.password}") val sp_password: String,
+    @Value("\${sharepoint.username}") val sharepointUsername: String,
     @Value("\${artifactory-its-identity-token}") val artifactoryIdentityToken: String,
     private val cosmosDashboardRepository: CosmosDashboardRepository,
 ) : FunSpec() {
