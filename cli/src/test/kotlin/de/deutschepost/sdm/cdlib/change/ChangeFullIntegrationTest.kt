@@ -1,5 +1,8 @@
 package de.deutschepost.sdm.cdlib.change
 
+import io.micronaut.test.extensions.kotest5.annotation.MicronautTest;
+import io.kotest.core.annotation.Tags;
+import io.kotest.core.annotation.RequiresTag;
 import de.deutschepost.sdm.cdlib.CdlibCommand
 import de.deutschepost.sdm.cdlib.artifactory.ARTIFACTORY_GUI
 import de.deutschepost.sdm.cdlib.artifactory.ArtifactoryClient
@@ -39,10 +42,13 @@ import java.time.temporal.ChronoUnit
 @RequiresTag("IntegrationTest")
 @Tags("IntegrationTest")
 @MicronautTest
+@RequiresTag("IntegrationTest")
+@Tags("IntegrationTest")
+@MicronautTest
 class ChangeFullIntegrationTest(
     @Value("\${change-management-token}") val token: String,
     @Value("\${sharepoint.username}") val sharepointUsername: String,
-    @Value("\${sharepoint.password}") val sp_password: String,
+    @Value("\${sharepoint.password}") val sharepointPassword: String,
     @Value("\${artifactory-its-identity-token}") val artifactoryIdentityToken: String,
     private val changeTestHelper: ChangeTestHelper,
     private val changeHandler: ChangeHandler,
