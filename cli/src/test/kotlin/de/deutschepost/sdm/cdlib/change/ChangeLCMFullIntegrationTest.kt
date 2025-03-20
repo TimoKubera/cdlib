@@ -2,7 +2,6 @@ package de.deutschepost.sdm.cdlib.change
 
 import io.micronaut.test.extensions.kotest5.annotation.MicronautTest
 import io.kotest.core.annotation.Tags
-import io.kotest.core.annotation.RequiresTag
 import de.deutschepost.sdm.cdlib.CdlibCommand
 import de.deutschepost.sdm.cdlib.artifactory.AZURE_ARTIFACTORY_URL
 import de.deutschepost.sdm.cdlib.artifactory.ArtifactoryClient
@@ -12,7 +11,6 @@ import de.deutschepost.sdm.cdlib.change.metrics.client.CosmosDashboardRepository
 import de.deutschepost.sdm.cdlib.names.Names
 import de.deutschepost.sdm.cdlib.utils.*
 import getSystemEnvironmentTestListenerWithOverrides
-import io.kotest.core.annotation.RequiresTag
 import io.kotest.core.annotation.Tags
 import io.kotest.core.spec.Spec
 import io.kotest.core.spec.style.FunSpec
@@ -31,9 +29,9 @@ import java.time.temporal.ChronoUnit
 
 // TODO: Remove after Sundown
 
-@RequiresTag("IntegrationTest")
 @Tags("IntegrationTest")
 @MicronautTest
+
 @RequiresTag("IntegrationTest")
 @Tags("IntegrationTest")
 @MicronautTest
