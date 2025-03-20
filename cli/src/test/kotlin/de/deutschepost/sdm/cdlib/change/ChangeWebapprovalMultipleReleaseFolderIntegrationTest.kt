@@ -40,8 +40,8 @@ class ChangeWebapprovalMultipleReleaseFolderIntegrationTest(
     private val cosmosDashboardRepository: CosmosDashboardRepository,
 ) : FunSpec() {
     private val appName = "cli"
-    private val timestamp =
-        DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(ZonedDateTime.now().truncatedTo(ChronoUnit.SECONDS))
+    private val isoOffsetDateTimeFormat = DateTimeFormatter.ISO_OFFSET_DATE_TIME
+        private val timestamp = isoOffsetDateTimeFormat.format(ZonedDateTime.now().truncatedTo(ChronoUnit.SECONDS))
     private val releaseName = "Integration-Release"
     private var releaseNameUnique = "${releaseName}_$timestamp"
     private var owaspName = "Integration-owasp-$timestamp"
