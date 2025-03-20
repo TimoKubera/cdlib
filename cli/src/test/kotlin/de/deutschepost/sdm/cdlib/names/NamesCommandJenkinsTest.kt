@@ -8,13 +8,10 @@ import io.kotest.core.annotation.Tags
 import io.kotest.core.spec.style.AnnotationSpec
 import io.kotest.extensions.system.OverrideMode
 import io.kotest.extensions.system.SystemEnvironmentTestListener
-import io.kotest.matchers.comparables.shouldBeEqualComparingTo
 import io.kotest.matchers.string.shouldContainIgnoringCase
-import io.micronaut.configuration.picocli.PicocliRunner
-import io.micronaut.test.extensions.kotest5.annotation.MicronautTest
+
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.mockkObject
 import org.eclipse.jgit.lib.Repository
 import toArgsArray
 import withStandardOutput
