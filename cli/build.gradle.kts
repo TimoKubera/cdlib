@@ -1,5 +1,7 @@
+implementation("com.azure:azure-cosmos")
+implementation("net.minidev:json-smart:2.5.2")
+implementation("com.azure:azure-identity")
 implementation("org.apache.httpcomponents:httpclient:$httpClientVersion")
-implementation("org.apache.httpcomponents:httpclient:$httpComponentsVersion")
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -43,21 +45,14 @@ dependencies {
     
     val httpClientVersion = "4.5.14"
     
-    implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinReflectVersion")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinStdlibJdk8Version")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutinesCoreVersion")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactive:$kotlinCoroutinesReactiveVersion")
-    implementation("ch.qos.logback:logback-classic")
-    implementation("io.micronaut:micronaut-jackson-databind")
-    
-    implementation("org.jfrog.artifactory.client:artifactory-java-client-services:$artifactoryClientVersion")
-    // logging
-    implementation("io.github.microutils:kotlin-logging:2.1.23")
-    implementation("org.apache.httpcomponents:httpclient:$httpComponentsVersion")
-    implementation("org.apache.httpcomponents:httpclient:4.5.14")
+    implementation("org.apache.httpcomponents:httpclient:$httpClientVersion")
     implementation("org.codelibs:jcifs:1.3.18.3") // Never update this, Version 2 is incompatible
     // JGit (https://mvnrepository.com/artifact/org.eclipse.jgit/org.eclipse.jgit)
     implementation("org.eclipse.jgit:org.eclipse.jgit:7.1.0.202411261347-r")
+    //publish metrics to azure cosmosdb
+    implementation("com.azure:azure-identity")
+    implementation("net.minidev:json-smart:2.5.2") // override bc vuln
+    implementation("com.azure:azure-cosmos")
     //publish metrics to azure cosmosdb
     implementation("com.azure:azure-identity")
     implementation("net.minidev:json-smart:2.5.2") // override bc vuln
