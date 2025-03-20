@@ -1,5 +1,6 @@
 package de.deutschepost.sdm.cdlib.release.report
 
+import static de.deutschepost.sdm.cdlib.release.report.internal.oslcComplianceChecker.OslcLicenseNames.MPL_2_0_NAME
 import com.fasterxml.jackson.module.kotlin.readValue
 import de.deutschepost.sdm.cdlib.release.report.external.OslcGradlePluginTestResult
 import de.deutschepost.sdm.cdlib.release.report.external.from
@@ -38,151 +39,196 @@ class OslcComplianceCheckerTest : FunSpec() {
             )
         )
     )
-    private val licenseMozillaName = "Mozilla Public License 2.0"
-    private val depWithCDDL = OslcDependencyLicenseEntry(
-        dependencyName = "test.should.fail:cddl",
-        dependencyVersion = "",
-        dependencySources = listOf("my.fantasy.aw"),
-        licenses = listOf(
-            OslcLicenseEntry(
-                license = "COMMON DEVELOPMENT AND DISTRIBUTION LICENSE (CDDL) Version 1.0",
-                url = "https://oss.oracle.com/licenses/CDDL",
-            )
-        )
-    )
-    private val licenseCDDLName = "Common Development and Distribution License 1.0"
-    private val depWithLGPL21 = OslcDependencyLicenseEntry(
-        dependencyName = "test.should.fail:lgpl21",
-        dependencyVersion = "",
-        dependencySources = listOf("my.fantasy.aw"),
-        licenses = listOf(
-            OslcLicenseEntry(
-                license = "GNU LESSER GENERAL PUBLIC LICENSE, Version 2.1",
-                url = "https://www.gnu.org/licenses/lgpl-2.1",
-            )
-        )
-    )
-    private val licenseLGPL21Name = "GNU Lesser General Public License 2.1"
-    private val depWithLGPL3 = OslcDependencyLicenseEntry(
-        dependencyName = "test.should.fail:lgpl3",
-        dependencyVersion = "",
-        dependencySources = listOf("my.fantasy.aw"),
-        licenses = listOf(
-            OslcLicenseEntry(
-                license = "GNU LESSER GENERAL PUBLIC LICENSE, Version 3.0",
-                url = "https://www.gnu.org/licenses/lgpl-3.0",
-            )
-        )
-    )
-    private val licenseLGPL3Name = "GNU Lesser General Public License 3.0"
-
-    private val depWithGPLCE = OslcDependencyLicenseEntry(
-        dependencyName = "test.should.succeed:GPL_CE",
-        dependencyVersion = "",
-        dependencySources = listOf("my.fantasy.aw"),
-        licenses = listOf(
-            OslcLicenseEntry(
-                license = "GNU GENERAL PUBLIC LICENSE, Version 2 + Classpath Exception",
-                url = "https://openjdk.java.net/legal/gplv2+ce.html",
-            )
-        )
-    )
-    private val licenseCPLCEName = "GNU GPL with Classpath/Linking Exception"
-    private val depWithAPL2 = OslcDependencyLicenseEntry(
-        dependencyName = "test.should.succeed:APL",
-        dependencyVersion = "",
-        dependencySources = listOf("my.fantasy.aw"),
-        licenses = listOf(
-            OslcLicenseEntry(
-                license = "Apache License 2.0",
-                url = "https://www.apache.org/licenses/LICENSE-2.0",
-            )
-        )
-    )
-    private val licenseAPL2Name = null
-    private val depWithAladin = OslcDependencyLicenseEntry(
-        dependencyName = "test.should.fail:Aladin",
-        dependencyVersion = "",
-        dependencySources = listOf("my.fantasy.aw"),
-        licenses = listOf(
-            OslcLicenseEntry(
-                license = "Aladin Free Public License",
-                url = "http://www.artifex.com/downloads/doc/Public.htm",
-            )
-        )
-    )
-    private val licenseAlladinName = "Alladin Free Public License 9"
-
-
-    init {
-        context("findMatchingLicense Tests") {
-            test("Table Test for selected Licenses with distribution") {
-                io.kotest.data.forAll(
-                    row(depWithMozilla, licenseMozillaName),
-                    row(depWithCDDL, licenseCDDLName),
-                    row(depWithLGPL21, licenseLGPL21Name),
-                    row(depWithLGPL3, licenseLGPL3Name),
-                    row(depWithGPLCE, null),
-                    row(depWithAPL2, null),
-                    row(depWithAladin, licenseAlladinName),
-                ) { dep: OslcDependencyLicenseEntry, licenseName: String? ->
-
-                    val output = OslcComplianceChecker.findAllMatchingLicenses(dep, true)
-                    println("Given: ${dep.licenses.joinToString { "[${it.license} - ${it.url}]" }}")
-                    println("Got: ${output.joinToString { "[${it.license}]" }}")
-
-                    if (licenseName != null) {
-                        output.isNotEmpty() shouldBe true
-                        output.any { it.license == licenseName } shouldBe true
-                    } else {
-                        output.isEmpty() shouldBe true
-                    }
-
-                }
-            }
-
-            test("Table Test for selected Licenses with non-distribution") {
-                io.kotest.data.forAll(
-                    row(depWithMozilla, null),
-                    row(depWithCDDL, null),
-                    row(depWithLGPL21, null),
-                    row(depWithLGPL3, null),
-                    row(depWithGPLCE, null),
-                    row(depWithAPL2, null),
-                    row(depWithAladin, licenseAlladinName),
-                ) { dep: OslcDependencyLicenseEntry, licenseName: String? ->
-                    val output = OslcComplianceChecker.findAllMatchingLicenses(dep, false)
-                    println("Given: ${dep.licenses.joinToString { "[${it.license} - ${it.url}]" }}")
-                    println("Got: ${output.joinToString { "[${it.license}]" }}")
-
-                    if (licenseName != null) {
-                        output.isNotEmpty() shouldBe true
-                        output.any { it.license == licenseName } shouldBe true
-                    } else {
-                        output.isEmpty() shouldBe true
-                    }
-
-                }
-            }
-        }
-        context("Check Reading bundleFile and disallowedLicenses file") {
-            test("Distribution File") {
-                val definitions = OslcComplianceChecker.buildDefinitions(disallowedLicensesDistributionPath)
-
-                val expectedLicenses = mapOf(
-                    "Alladin Free Public License 9" to 5,
-                    "Academic Free License 3.0" to 3,
-                    "Common Development and Distribution License 1.0" to 6,
-                    "Common Development and Distribution License 1.1" to 7,
-                    "Eclipse Public License 2.0" to 8,
-                    "Eclipse Public License 1.0" to 5,
-                    "GNU Lesser General Public License 3.0" to 6,
-                    "GNU Library General Public License 2.0" to 3,
-                    "GNU Lesser General Public License 2.1" to 9,
-                    "GNU General Public License 2.0" to 4,
-                    "GNU General Public License 3.0" to 4,
-                    "Mozilla Public License 2.0" to 5
+    class OslcComplianceCheckerTest : FunSpec() {
+    
+        private val disallowedLicensesDistributionPath: String =
+            "src/main/resources/oslc/disallowedLicensesDistribution.json"
+        private val disallowedLicensesNonDistributionPath: String =
+            "src/main/resources/oslc/disallowedLicensesNonDistribution.json"
+        private val reportPath: String = "src/test/resources/oslc/oslc-gradle-plugin-report_failing.json"
+    
+    
+        private val depWithMozilla = OslcDependencyLicenseEntry(
+            dependencyName = "test.should.fail:mozilla",
+            dependencyVersion = "",
+            dependencySources = listOf("my.fantasy.aw"),
+            licenses = listOf(
+                OslcLicenseEntry(
+                    license = "MPL 2.0",
+                    url = "https://www.mozilla.org/en-US/MPL/2.0/",
                 )
+            )
+        )
+        private val licenseMozillaName = MPL_2_0_NAME
+        private val depWithCDDL = OslcDependencyLicenseEntry(
+            dependencyName = "test.should.fail:cddl",
+            dependencyVersion = "",
+            dependencySources = listOf("my.fantasy.aw"),
+            licenses = listOf(
+                OslcLicenseEntry(
+                    license = "COMMON DEVELOPMENT AND DISTRIBUTION LICENSE (CDDL) Version 1.0",
+                    url = "https://oss.oracle.com/licenses/CDDL",
+                )
+            )
+        )
+        private val licenseCDDLName = "Common Development and Distribution License 1.0"
+        private val depWithLGPL21 = OslcDependencyLicenseEntry(
+            dependencyName = "test.should.fail:lgpl21",
+            dependencyVersion = "",
+            dependencySources = listOf("my.fantasy.aw"),
+            licenses = listOf(
+                OslcLicenseEntry(
+                    license = "GNU LESSER GENERAL PUBLIC LICENSE, Version 2.1",
+                    url = "https://www.gnu.org/licenses/lgpl-2.1",
+                )
+            )
+        )
+        private val licenseLGPL21Name = "GNU Lesser General Public License 2.1"
+        private val depWithLGPL3 = OslcDependencyLicenseEntry(
+            dependencyName = "test.should.fail:lgpl3",
+            dependencyVersion = "",
+            dependencySources = listOf("my.fantasy.aw"),
+            licenses = listOf(
+                OslcLicenseEntry(
+                    license = "GNU LESSER GENERAL PUBLIC LICENSE, Version 3.0",
+                    url = "https://www.gnu.org/licenses/lgpl-3.0",
+                )
+            )
+        )
+        private val licenseLGPL3Name = "GNU Lesser General Public License 3.0"
+    
+        private val depWithGPLCE = OslcDependencyLicenseEntry(
+            dependencyName = "test.should.succeed:GPL_CE",
+            dependencyVersion = "",
+            dependencySources = listOf("my.fantasy.aw"),
+            licenses = listOf(
+                OslcLicenseEntry(
+                    license = "GNU GENERAL PUBLIC LICENSE, Version 2 + Classpath Exception",
+                    url = "https://openjdk.java.net/legal/gplv2+ce.html",
+                )
+            )
+        )
+        private val licenseCPLCEName = "GNU GPL with Classpath/Linking Exception"
+        private val depWithAPL2 = OslcDependencyLicenseEntry(
+            dependencyName = "test.should.succeed:APL",
+            dependencyVersion = "",
+            dependencySources = listOf("my.fantasy.aw"),
+            licenses = listOf(
+                OslcLicenseEntry(
+                    license = "Apache License 2.0",
+                    url = "https://www.apache.org/licenses/LICENSE-2.0",
+                )
+            )
+        )
+        private val licenseAPL2Name = null
+        private val depWithAladin = OslcDependencyLicenseEntry(
+            dependencyName = "test.should.fail:Aladin",
+            dependencyVersion = "",
+            dependencySources = listOf("my.fantasy.aw"),
+            licenses = listOf(
+                OslcLicenseEntry(
+                    license = "Aladin Free Public License",
+                    url = "http://www.artifex.com/downloads/doc/Public.htm",
+                )
+            )
+        )
+        private val licenseAlladinName = "Alladin Free Public License 9"
+    
+    
+        init {
+            context("findMatchingLicense Tests") {
+                test("Table Test for selected Licenses with distribution") {
+                    io.kotest.data.forAll(
+                        row(depWithMozilla, licenseMozillaName),
+                        row(depWithCDDL, licenseCDDLName),
+                        row(depWithLGPL21, licenseLGPL21Name),
+                        row(depWithLGPL3, licenseLGPL3Name),
+                        row(depWithGPLCE, null),
+                        row(depWithAPL2, null),
+                        row(depWithAladin, licenseAlladinName),
+                    ) { dep: OslcDependencyLicenseEntry, licenseName: String? ->
+    
+                        val output = OslcComplianceChecker.findAllMatchingLicenses(dep, true)
+                        println("Given: ${dep.licenses.joinToString { "[${it.license} - ${it.url}]" }}")
+                        println("Got: ${output.joinToString { "[${it.license}]" }}")
+    
+                        if (licenseName != null) {
+                            output.isNotEmpty() shouldBe true
+                            output.any { it.license == licenseName } shouldBe true
+                        } else {
+                            output.isEmpty() shouldBe true
+                        }
+    
+                    }
+                }
+    
+                test("Table Test for selected Licenses with non-distribution") {
+                    io.kotest.data.forAll(
+                        row(depWithMozilla, null),
+                        row(depWithCDDL, null),
+                        row(depWithLGPL21, null),
+                        row(depWithLGPL3, null),
+                        row(depWithGPLCE, null),
+                        row(depWithAPL2, null),
+                        row(depWithAladin, licenseAlladinName),
+                    ) { dep: OslcDependencyLicenseEntry, licenseName: String? ->
+                        val output = OslcComplianceChecker.findAllMatchingLicenses(dep, false)
+                        println("Given: ${dep.licenses.joinToString { "[${it.license} - ${it.url}]" }}")
+                        println("Got: ${output.joinToString { "[${it.license}]" }}")
+    
+                        if (licenseName != null) {
+                            output.isNotEmpty() shouldBe true
+                            output.any { it.license == licenseName } shouldBe true
+                        } else {
+                            output.isEmpty() shouldBe true
+                        }
+    
+                    }
+                }
+            }
+            context("Check Reading bundleFile and disallowedLicenses file") {
+                test("Distribution File") {
+                    val definitions = OslcComplianceChecker.buildDefinitions(disallowedLicensesDistributionPath)
+    
+                    val expectedLicenses = mapOf(
+                        "Alladin Free Public License 9" to 5,
+                        "Academic Free License 3.0" to 3,
+                        "Common Development and Distribution License 1.0" to 6,
+                        "Common Development and Distribution License 1.1" to 7,
+                        "Eclipse Public License 2.0" to 8,
+                        "Eclipse Public License 1.0" to 5,
+                        "GNU Lesser General Public License 3.0" to 6,
+                        "GNU Library General Public License 2.0" to 3,
+                        "GNU Lesser General Public License 2.1" to 9,
+                        "GNU General Public License 2.0" to 4,
+                        "GNU General Public License 3.0" to 4,
+                        MPL_2_0_NAME to 5
+                    )
+                    val notExpectedLicenses = listOf(
+                        "Apache License 2.0",
+                        "Academic Free License 2.0",
+                        "BSD 2-clause \"Simplified\" or \"FreeBSD\" License",
+                        "BSD License (3-clause, New or Revised) ",
+                        "BSD original (4-clause)"
+                    )
+                    printDefinitions(definitions)
+                    expectedLicenses.forEach { (license: String, numberOfAliases: Int) ->
+                        val foundDefinition = definitions.firstOrNull { it.license.equals(license, true) }
+                        foundDefinition shouldNotBe null
+                        if (foundDefinition != null) {
+                            (foundDefinition.nameAliases.size + foundDefinition.urlAliases.size) shouldBe numberOfAliases
+                        }
+                    }
+                    notExpectedLicenses.forEach { license: String ->
+                        val foundDefinition = definitions.firstOrNull { it.license.equals(license, true) }
+                        foundDefinition shouldBe null
+                    }
+                    definitions.forEach {
+                        println("License: ${it.license}")
+                        it.nameAliases.forEach {
+                            println("  -  Name alias: $it")
+                        }
+                        it.urlAliases.forEach {
                 val notExpectedLicenses = listOf(
                     "Apache License 2.0",
                     "Academic Free License 2.0",
