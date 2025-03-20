@@ -1,3 +1,4 @@
+implementation("org.apache.httpcomponents:httpclient:$httpClientVersion")
 implementation("org.apache.httpcomponents:httpclient:$httpComponentsVersion")
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
@@ -35,11 +36,12 @@ dependencies {
     implementation("io.micronaut.kotlin:micronaut-kotlin-runtime")
     implementation("io.micronaut.picocli:micronaut-picocli")
     implementation("io.micronaut:micronaut-retry")
-    implementation("javax.annotation:javax.annotation-api") // todo remove?
     val kotlinReflectVersion = kotlinVersion
     val kotlinStdlibJdk8Version = kotlinVersion
     val kotlinCoroutinesCoreVersion = kotlinCoroutines
     val kotlinCoroutinesReactiveVersion = kotlinCoroutines
+    
+    val httpClientVersion = "4.5.14"
     
     implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinReflectVersion")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinStdlibJdk8Version")
@@ -47,11 +49,6 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactive:$kotlinCoroutinesReactiveVersion")
     implementation("ch.qos.logback:logback-classic")
     implementation("io.micronaut:micronaut-jackson-databind")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml")
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
-
-    val artifactoryClientVersion = "2.19.1"
     
     implementation("org.jfrog.artifactory.client:artifactory-java-client-services:$artifactoryClientVersion")
     // logging
