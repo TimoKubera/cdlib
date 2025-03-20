@@ -2,7 +2,6 @@ package de.deutschepost.sdm.cdlib.release.report.internal
 
 import com.fasterxml.jackson.annotation.JsonAlias
 import com.fasterxml.jackson.annotation.JsonIgnore
-import mu.KLogging
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -150,7 +149,7 @@ fun List<SecurityTestResult>.securityTestsVerify(
             ReportType.SCA -> securityReportVerificationResult.hasSCA = true
             ReportType.SAST -> securityReportVerificationResult.hasSAST = true
             ReportType.CCA -> { // No action required for CCA reports }
-            ReportType.OTHER -> {}
+            // No action required for OTHER reports
             ReportType.OSLC -> {}
             ReportType.OSLC_PRE -> {}
         }
