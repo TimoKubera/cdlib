@@ -28,13 +28,15 @@ val kotlinCoroutines = project.properties["kotlinCoroutines"] as String
 
 dependencies {
     ksp("info.picocli:picocli-codegen")
+    val jcifsVersion = "1.3.18.3"
+    
     implementation("org.yaml:snakeyaml")
     implementation("info.picocli:picocli")
     implementation("io.micronaut:micronaut-http-client")
     implementation("io.micronaut.kotlin:micronaut-kotlin-runtime")
     implementation("io.micronaut.picocli:micronaut-picocli")
     implementation("io.micronaut:micronaut-retry")
-    implementation("javax.annotation:javax.annotation-api") // todo remove?
+    implementation("javax.annotation:javax.annotation-api")
     implementation("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${kotlinCoroutines}")
@@ -44,24 +46,19 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
-
-    // artifactory
+    
     val artifactoryJavaClientVersion = "2.19.1"
     implementation("org.jfrog.artifactory.client:artifactory-java-client-services:${artifactoryJavaClientVersion}")
-    // logging
     val kotlinLoggingVersion = "2.1.23"
     implementation("io.github.microutils:kotlin-logging:$kotlinLoggingVersion")
     val httpClientVersion = "4.5.14"
     implementation("org.apache.httpcomponents:httpclient:$httpClientVersion")
-    implementation("org.codelibs:jcifs:1.3.18.3") // Never update this, Version 2 is incompatible
-    // JGit (https://mvnrepository.com/artifact/org.eclipse.jgit/org.eclipse.jgit)
+    implementation("org.codelibs:jcifs:$jcifsVersion")
     implementation("org.eclipse.jgit:org.eclipse.jgit:7.1.0.202411261347-r")
-    //publish metrics to azure cosmosdb
     implementation("com.azure:azure-identity")
-    implementation("net.minidev:json-smart:2.5.2") // override bc vuln
+    implementation("net.minidev:json-smart:2.5.2")
     implementation("com.azure:azure-cosmos")
-
-    // Tests only
+    
     testImplementation("io.mockk:mockk")
     testImplementation("io.kotest:kotest-extensions-now")
 }
