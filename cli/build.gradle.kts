@@ -63,7 +63,8 @@ dependencies {
     implementation("org.eclipse.jgit:org.eclipse.jgit:7.1.0.202411261347-r")
     //publish metrics to azure cosmosdb
     implementation("com.azure:azure-identity")
-    implementation("net.minidev:json-smart:2.5.2") // override bc vuln
+    val jsonSmartVersion = "2.5.2"
+    implementation("net.minidev:json-smart:$jsonSmartVersion")
     implementation("com.azure:azure-cosmos")
 
     // Tests only
