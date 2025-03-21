@@ -55,11 +55,12 @@ dependencies {
     // webapproval sharepoint
     const val httpclientVersion = "4.5.14"
     const val jcifsVersion = "1.3.18.3"
+    const val jgitVersion = "7.1.0.202411261347-r"
     
     implementation("org.apache.httpcomponents:httpclient:$httpclientVersion")
     implementation("org.codelibs:jcifs:$jcifsVersion")
     // JGit (https://mvnrepository.com/artifact/org.eclipse.jgit/org.eclipse.jgit)
-    implementation("org.eclipse.jgit:org.eclipse.jgit:7.1.0.202411261347-r")
+    implementation("org.eclipse.jgit:org.eclipse.jgit:$jgitVersion")
     //publish metrics to azure cosmosdb
     implementation("com.azure:azure-identity")
     implementation("net.minidev:json-smart:2.5.2") // override bc vuln
