@@ -1,5 +1,6 @@
 package de.deutschepost.sdm.cdlib.release.report.internal
 
+import kotlin.Unit
 import com.fasterxml.jackson.annotation.JsonIgnore
 import mu.KLogging
 import java.time.ZonedDateTime
@@ -97,7 +98,7 @@ fun List<OslcTestResult>.oslcTestsVerify(appName: String, isDistribution: Boolea
         when (test.complianceStatus) {
             OslcComplianceStatus.RED -> issues.add("$appName is not compliant! (Rot)")
             OslcComplianceStatus.YELLOW -> issues.add("$appName is not compliant! (Gelb)")
-            OslcComplianceStatus.GREEN -> {}
+            OslcComplianceStatus.GREEN -> Unit
         }
         if (test.tool.name !in listOf(Tool.OSLC_MAVEN_PLUGIN_NAME, Tool.OSLC_FNCI_NAME) &&
             test.complianceStatus != OslcComplianceStatus.GREEN
