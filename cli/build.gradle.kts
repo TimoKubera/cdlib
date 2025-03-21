@@ -53,7 +53,10 @@ dependencies {
     implementation("io.github.microutils:kotlin-logging:$kotlinLoggingVersion")
 
     // webapproval sharepoint
-    implementation("org.apache.httpcomponents:httpclient:4.5.14")
+    const val httpclientVersion = "4.5.14"
+    
+    // code range fix:
+    implementation("org.apache.httpcomponents:httpclient:$httpclientVersion")
     implementation("org.codelibs:jcifs:1.3.18.3") // Never update this, Version 2 is incompatible
     // JGit (https://mvnrepository.com/artifact/org.eclipse.jgit/org.eclipse.jgit)
     implementation("org.eclipse.jgit:org.eclipse.jgit:7.1.0.202411261347-r")
