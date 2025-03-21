@@ -150,7 +150,8 @@ fun List<SecurityTestResult>.securityTestsVerify(
             ReportType.SCA -> securityReportVerificationResult.hasSCA = true
             ReportType.SAST -> securityReportVerificationResult.hasSAST = true
     // No action needed for other report types
-    return securityReportVerificationResult
+    }
+        return securityReportVerificationResult
 }
 
 fun List<TestResult>.securityTestsSuppressions(): Map<String, Map<String, List<Any>>> {
