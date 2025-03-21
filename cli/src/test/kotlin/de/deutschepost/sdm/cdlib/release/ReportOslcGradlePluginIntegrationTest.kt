@@ -62,13 +62,17 @@ class ReportOslcGradlePluginIntegrationTest(
                 output shouldContain "Uploaded Artifact:"
             }
 
+            companion object {
+                const val POLICY_PROFILE_DISTRIBUTION = "Policy Profile: Distribution"
+            }
+
             test("Check OSLC-Plugin report locally should fail due to distribution flag") {
                 val args = "--debug --files $jsonFile --distribution".toArgsArray()
                 val (ret, output) = withStandardOutput {
                     PicocliRunner.call(ReportCommand.CheckCommand::class.java, *args)
                 }
                 ret shouldBeExactly -1
-                output shouldContain "Policy Profile: Distribution"
+                output shouldContain POLICY_PROFILE_DISTRIBUTION
                 output shouldNotContain "Unapproved Licenses Count: 0"
             }
 
@@ -79,8 +83,9 @@ class ReportOslcGradlePluginIntegrationTest(
                     PicocliRunner.call(ReportCommand.CheckCommand::class.java, *args)
                 }
                 ret shouldBeExactly 0
-                output shouldContain "Policy Profile: Distribution"
+                output shouldContain POLICY_PROFILE_DISTRIBUTION
                 output shouldContain "Unapproved Licenses Count: 0"
+            }
             }
 
             test("Check OSLC-Plugin report locally should fail with accepted list because of wrong license") {
