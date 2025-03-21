@@ -16,7 +16,7 @@ import io.micronaut.retry.annotation.Retryable
 
 @Client(SHAREPOINT_GRAPH_URL, configuration = O365Configuration::class)
 @Retryable
-interface SharepointGraphClient {
+fun interface SharepointGraphClient {
     @Post("/{siteId}/lists/{listId}/items")
     fun addEntry(
         siteId: String,
@@ -24,6 +24,7 @@ interface SharepointGraphClient {
         @Header Authorization: String,
         @Body body: GraphSharepointDTO
     ): GraphSharepointResponse
+}
 }
 
 const val SHAREPOINT_GRAPH_URL = "https://graph.microsoft.com/v1.0/sites"
