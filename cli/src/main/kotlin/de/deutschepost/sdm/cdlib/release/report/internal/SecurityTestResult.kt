@@ -151,8 +151,8 @@ fun List<SecurityTestResult>.securityTestsVerify(
             ReportType.SAST -> securityReportVerificationResult.hasSAST = true
             // ReportType.CCA is currently unhandled. This is a placeholder for potential future logic.
             ReportType.OTHER -> { /* No action needed for OTHER types */ }
-            ReportType.OSLC -> {}
-            ReportType.OSLC_PRE -> {}
+            ReportType.OSLC -> { /* No action required for OSLC reports */ }
+            ReportType.OSLC_PRE -> { /* No action required for OSLC_PRE reports */ }
         }
     }
     return securityReportVerificationResult
