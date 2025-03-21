@@ -1,5 +1,6 @@
 package de.deutschepost.sdm.cdlib.archive
 
+import mu.KotlinLogging
 import de.deutschepost.sdm.cdlib.CdlibCommand
 import de.deutschepost.sdm.cdlib.artifactory.AZURE_ARTIFACTORY_URL
 import de.deutschepost.sdm.cdlib.artifactory.ArtifactoryClient
@@ -171,9 +172,16 @@ class ArchiveCommandIntegrationTest(@Value("\${artifactory-azure-identity-token}
     override suspend fun beforeTest(testCase: TestCase) {
         super.beforeTest(testCase)
         val repository = artifactory.repository(repoName)
+        import mu.KotlinLogging
+        
+        private val logger = KotlinLogging.logger {}
+        
+        // Inside the given code range
+        to:
         try {
             repository.delete(releaseName_build)
-        } catch (_: Exception) {
+        } catch (e: Exception) {
+            logger.warn("Failed to delete the folder $releaseName_build. Ignoring this exception: ", e)
         }
 
     }
