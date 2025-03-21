@@ -55,7 +55,8 @@ dependencies {
     implementation("org.apache.httpcomponents:httpclient:$httpClientVersion")
     implementation("org.codelibs:jcifs:$jcifsVersion")
     implementation("org.eclipse.jgit:org.eclipse.jgit:7.1.0.202411261347-r")
-    implementation("com.azure:azure-identity")
+    val azureIdentityVersion = "1.0.0"
+    implementation("com.azure:azure-identity:", azureIdentityVersion)
     implementation("net.minidev:json-smart:2.5.2")
     implementation("com.azure:azure-cosmos")
     
