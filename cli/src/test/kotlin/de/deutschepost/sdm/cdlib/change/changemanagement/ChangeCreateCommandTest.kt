@@ -70,30 +70,32 @@ class ChangeCreateCommandTest(
                     *"--jira-token $token --debug --commercial-reference 5296 --test --webapproval --no-distribution".toArgsArray()
                 )
             }
+            val ILLEGAL_ARGUMENT_EXCEPTION = "java.lang.IllegalArgumentException"
+            
             exitCode shouldBeExactly -1
-            output shouldContain "java.lang.IllegalArgumentException"
-        }
-
-        "Command fails if oslc but no distribution was passed" {
+            output shouldContain ILLEGAL_ARGUMENT_EXCEPTION
+            }
+            
+            "Command fails if oslc but no distribution was passed" {
             val (exitCode, output) = withStandardOutput {
-                PicocliRunner.call(
-                    ChangeCommand.CreateCommand::class.java,
-                    *"--jira-token $token --debug --commercial-reference 5296 --test".toArgsArray()
-                )
+            PicocliRunner.call(
+            ChangeCommand.CreateCommand::class.java,
+            *"--jira-token $token --debug --commercial-reference 5296 --test".toArgsArray()
+            )
             }
             exitCode shouldBeExactly -1
-            output shouldContain "java.lang.IllegalArgumentException"
-        }
-
-        "Command doesn't fail if no-oslc and no distribution was passed" {
+            output shouldContain ILLEGAL_ARGUMENT_EXCEPTION
+            }
+            
+            "Command doesn't fail if no-oslc and no distribution was passed" {
             val (exitCode, output) = withStandardOutput {
-                PicocliRunner.call(
-                    ChangeCommand.CreateCommand::class.java,
-                    *"--jira-token $token --debug --commercial-reference 5296 --test --no-oslc".toArgsArray()
-                )
+            PicocliRunner.call(
+            ChangeCommand.CreateCommand::class.java,
+            *"--jira-token $token --debug --commercial-reference 5296 --test --no-oslc".toArgsArray()
+            )
             }
             exitCode shouldBeExactly -1
-            output shouldContain "java.lang.IllegalArgumentException"
+            output shouldContain ILLEGAL_ARGUMENT_EXCEPTION
             output shouldContain "Verifying reports..."
         }
 
