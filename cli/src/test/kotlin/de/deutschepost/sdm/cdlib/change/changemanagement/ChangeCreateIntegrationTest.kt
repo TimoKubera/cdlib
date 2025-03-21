@@ -97,7 +97,13 @@ class ChangeCreateIntegrationTest(
                     "  Determined change type --> MINOR"
                 output shouldContain "Updating change request type: MINOR"
                 output shouldContain "Transitioning change request phase: ${OPEN_TO_IMPLEMENTATION.name}"
-                output shouldContain "Checking change request status for approval every "
+                companion object {
+                    private const val CHECKING_STATUS_MESSAGE = "Checking change request status for approval every "
+                }
+                
+                ... // Other parts of the code
+                
+                output shouldContain CHECKING_STATUS_MESSAGE
                 output shouldContain "Checked current change request status: ${WAITING_FOR_APPROVAL.name}"
 
             }
