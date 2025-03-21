@@ -70,8 +70,12 @@ class ChangeCreateCommandTest(
                     *"--jira-token $token --debug --commercial-reference 5296 --test --webapproval --no-distribution".toArgsArray()
                 )
             }
+            private companion object {
+                const val ILLEGAL_ARGUMENT_EXCEPTION = "java.lang.IllegalArgumentException"
+            }
+
             exitCode shouldBeExactly -1
-            output shouldContain "java.lang.IllegalArgumentException"
+            output shouldContain ILLEGAL_ARGUMENT_EXCEPTION
         }
 
         "Command fails if oslc but no distribution was passed" {
@@ -82,7 +86,7 @@ class ChangeCreateCommandTest(
                 )
             }
             exitCode shouldBeExactly -1
-            output shouldContain "java.lang.IllegalArgumentException"
+            output shouldContain ILLEGAL_ARGUMENT_EXCEPTION
         }
 
         "Command doesn't fail if no-oslc and no distribution was passed" {
@@ -93,7 +97,7 @@ class ChangeCreateCommandTest(
                 )
             }
             exitCode shouldBeExactly -1
-            output shouldContain "java.lang.IllegalArgumentException"
+            output shouldContain ILLEGAL_ARGUMENT_EXCEPTION
             output shouldContain "Verifying reports..."
         }
 
