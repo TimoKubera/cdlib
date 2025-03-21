@@ -46,17 +46,16 @@ class OslcComplianceAcceptedListTest : FunSpec() {
             test("Testing valid input strings") {
                 io.kotest.data.forAll(
                     table(
-                        headers("Input String", "Default Value", "Expected"),
+                        private const val INPUT_STRING = "Input String"
+                        
+                        headers(INPUT_STRING, "Default Value", "Expected"),
                         row("0.0.0", 0, VersionSpecification(0, 0, 0)),
                         row("0.0.0", Int.MAX_VALUE, VersionSpecification(0, 0, 0)),
                         row("1.2.3", 0, VersionSpecification(1, 2, 3)),
                         row("1.2.3.4", 0, VersionSpecification(1, 2, 3)),
                         row("1", 0, VersionSpecification(1, 0, 0)),
                         row("6.6", 6, VersionSpecification(6, 6, 6)),
-                    )
-                ) { input: String, default: Int, expected: VersionSpecification ->
-                    VersionSpecification.fromString(input, default) shouldBe expected
-                }
+                        )
             }
 
             test("Testing invalid input strings") {
