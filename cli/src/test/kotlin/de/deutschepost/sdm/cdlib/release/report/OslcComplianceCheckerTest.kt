@@ -26,6 +26,9 @@ class OslcComplianceCheckerTest : FunSpec() {
         "src/main/resources/oslc/disallowedLicensesNonDistribution.json"
     private val reportPath: String = "src/test/resources/oslc/oslc-gradle-plugin-report_failing.json"
 
+    companion object {
+        const val MOZILLA_PUBLIC_LICENSE = "Mozilla Public License 2.0"
+    }
 
     private val depWithMozilla = OslcDependencyLicenseEntry(
         dependencyName = "test.should.fail:mozilla",
@@ -37,6 +40,7 @@ class OslcComplianceCheckerTest : FunSpec() {
                 url = "https://www.mozilla.org/en-US/MPL/2.0/",
             )
         )
+    )
     )
     private val licenseMozillaName = "Mozilla Public License 2.0"
     private val depWithCDDL = OslcDependencyLicenseEntry(
