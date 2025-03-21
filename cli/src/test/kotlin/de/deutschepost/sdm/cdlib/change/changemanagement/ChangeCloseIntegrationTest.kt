@@ -1,6 +1,7 @@
 package de.deutschepost.sdm.cdlib.change.changemanagement
 
 import de.deutschepost.sdm.cdlib.change.ChangeCommand
+import de.deutschepost.sdm.cdlib.change.ChangeCommand
 import de.deutschepost.sdm.cdlib.change.changemanagement.api.ChangeHandler
 import de.deutschepost.sdm.cdlib.change.changemanagement.model.JiraConstants.ChangePhaseId.OPEN_TO_IMPLEMENTATION
 import getSystemEnvironmentTestListenerWithOverrides
@@ -200,11 +201,38 @@ class ChangeCloseIntegrationTest(
                     )
                 }
 
-                output shouldContain "http://integration-test-url.jenkuns.example.com"
-                output shouldContain "Dashboard status code: 201"
-                exitCode shouldBeExactly 0
-            }
-        }
+                class ChangeSpec : StringSpec() {
+                    companion object {
+                        const val DASHBOARD_STATUS_CODE = "Dashboard status code: 201"
+                    }
+                
+                    init {
+                        "Closing change successfully publishes metrics via Jenkins" {
+                            withEnvironment(
+                                "CDLIB_JOB_URL" to "http://integration-test-url.jenkuns.example.com/foo/bar/job/1337",
+                                OverrideMode.SetOrOverride
+                            ) {
+                                changeHandler
+                                    .post(changeDetails)
+                                    .preauthorize()
+                                    .transition(OPEN_TO_IMPLEMENTATION)
+                
+                                val (exitCode, output) = withStandardOutput {
+                                    PicocliRunner.call(
+                                        ChangeCommand.CloseCommand::class.java,
+                                        *"--test --jira-token $token --commercial-reference $commercialReference --status $status".toArgsArray()
+                                    )
+                                }
+                
+                                output shouldContain "http://integration-test-url.jenkuns.example.com"
+                                output shouldContain DASHBOARD_STATUS_CODE
+                                exitCode shouldBeExactly 0
+                            }
+                        }
+                
+                        // Other test cases ...
+                    }
+                }
 
         "Closing change successfully publishes metrics via Jenkins as infrastructure deployment" {
             withEnvironment(
