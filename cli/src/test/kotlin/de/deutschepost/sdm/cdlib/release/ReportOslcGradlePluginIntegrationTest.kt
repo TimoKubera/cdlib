@@ -68,41 +68,45 @@ class ReportOslcGradlePluginIntegrationTest(
                     PicocliRunner.call(ReportCommand.CheckCommand::class.java, *args)
                 }
                 ret shouldBeExactly -1
-                output shouldContain "Policy Profile: Distribution"
+                companion object {
+                    const val POLICY_PROFILE_DISTRIBUTION = "Policy Profile: Distribution"
+                }
+                
+                output shouldContain POLICY_PROFILE_DISTRIBUTION
                 output shouldNotContain "Unapproved Licenses Count: 0"
-            }
-
-            test("Check OSLC-Plugin report locally should succeed with accepted list") {
-                val args =
-                    "--debug --files $jsonFile --distribution --oslc-accepted-list $acceptedListFile".toArgsArray()
-                val (ret, output) = withStandardOutput {
-                    PicocliRunner.call(ReportCommand.CheckCommand::class.java, *args)
                 }
-                ret shouldBeExactly 0
-                output shouldContain "Policy Profile: Distribution"
-                output shouldContain "Unapproved Licenses Count: 0"
-            }
-
-            test("Check OSLC-Plugin report locally should fail with accepted list because of wrong license") {
-                val args =
-                    "--debug --files $jsonFile --distribution --oslc-accepted-list $acceptedListFileWrongLicense".toArgsArray()
-                val (ret, output) = withStandardOutput {
-                    PicocliRunner.call(ReportCommand.CheckCommand::class.java, *args)
+                
+                test("Check OSLC-Plugin report locally should succeed with accepted list") {
+                    val args =
+                        "--debug --files $jsonFile --distribution --oslc-accepted-list $acceptedListFile".toArgsArray()
+                    val (ret, output) = withStandardOutput {
+                        PicocliRunner.call(ReportCommand.CheckCommand::class.java, *args)
+                    }
+                    ret shouldBeExactly 0
+                    output shouldContain POLICY_PROFILE_DISTRIBUTION
+                    output shouldContain "Unapproved Licenses Count: 0"
                 }
-                ret shouldBeExactly -1
-                output shouldContain "Policy Profile: Distribution"
-                output shouldContain "Unapproved Licenses Count: 1"
-                output shouldContain "Alladin Free Public License 9: [com.rabbitmq:amqp-client]"
-            }
-
-            test("Check OSLC-Plugin report locally should fail with accepted list because of wrong version number") {
-                val args =
-                    "--debug --files $jsonFile --distribution --oslc-accepted-list $acceptedListFileWrongVersion".toArgsArray()
-                val (ret, output) = withStandardOutput {
-                    PicocliRunner.call(ReportCommand.CheckCommand::class.java, *args)
+                
+                test("Check OSLC-Plugin report locally should fail with accepted list because of wrong license") {
+                    val args =
+                        "--debug --files $jsonFile --distribution --oslc-accepted-list $acceptedListFileWrongLicense".toArgsArray()
+                    val (ret, output) = withStandardOutput {
+                        PicocliRunner.call(ReportCommand.CheckCommand::class.java, *args)
+                    }
+                    ret shouldBeExactly -1
+                    output shouldContain POLICY_PROFILE_DISTRIBUTION
+                    output shouldContain "Unapproved Licenses Count: 1"
+                    output shouldContain "Alladin Free Public License 9: [com.rabbitmq:amqp-client]"
                 }
-                ret shouldBeExactly -1
-                output shouldContain "Policy Profile: Distribution"
+                
+                test("Check OSLC-Plugin report locally should fail with accepted list because of wrong version number") {
+                    val args =
+                        "--debug --files $jsonFile --distribution --oslc-accepted-list $acceptedListFileWrongVersion".toArgsArray()
+                    val (ret, output) = withStandardOutput {
+                        PicocliRunner.call(ReportCommand.CheckCommand::class.java, *args)
+                    }
+                    ret shouldBeExactly -1
+                    output shouldContain POLICY_PROFILE_DISTRIBUTION
                 output shouldContain "Unapproved Licenses Count: 1"
                 output shouldContain "Common Development and Distribution License 1.0: [org.apache.tomcat.embed:tomcat-embed-core]"
             }
