@@ -30,38 +30,44 @@ class NameResolverAzureTest(
     private val namesConfigWithDefault: NamesConfigWithDefault
 ) : AnnotationSpec() {
     private val before = ZonedDateTime.now().truncatedTo(ChronoUnit.SECONDS).toInstant()
-
-
-    override fun listeners() = listOf(
-        SystemEnvironmentTestListener(
-            mapOf(
-                "BUILD_BUILDID" to "12657",
-                "BUILD_DEFINITIONNAME" to "ICTO-3339_SDM-phippyandfriends",
-                "BUILD_SOURCEBRANCHNAME" to "i593_test",
-                "SYSTEM_COLLECTIONURI" to "https://dev.azure.com/sw-zustellung-31b3183/",
-                "SYSTEM_TEAMPROJECT" to "ICTO-3339_SDM",
-                "TF_BUILD" to "True",
-                "SYSTEM_DEFINITIONID" to "912345",
-                "SYSTEM_PULLREQUEST_SOURCEBRANCH" to "i593_test"
-            ),
-            OverrideMode.SetOrOverride
+    class NameResolverAzureTest(
+        private val resolver: NameResolverAzure,
+        private val namesConfigWithDefault: NamesConfigWithDefault
+    ) : AnnotationSpec() {
+        companion object {
+            const val DEFAULT_DEFINITION_NAME = "ICTO-3339_SDM-phippyandfriends"
+        }
+    
+        override fun listeners() = listOf(
+            SystemEnvironmentTestListener(
+                mapOf(
+                    "BUILD_BUILDID" to "12657",
+                    "BUILD_DEFINITIONNAME" to DEFAULT_DEFINITION_NAME,
+                    "BUILD_SOURCEBRANCHNAME" to "i593_test",
+                    "SYSTEM_COLLECTIONURI" to "https://dev.azure.com/sw-zustellung-31b3183/",
+                    "SYSTEM_TEAMPROJECT" to "ICTO-3339_SDM",
+                    "TF_BUILD" to "True",
+                    "SYSTEM_DEFINITIONID" to "912345",
+                    "SYSTEM_PULLREQUEST_SOURCEBRANCH" to "i593_test"
+                ),
+                OverrideMode.SetOrOverride
+            )
         )
-    )
-
-    @BeforeAll
-    fun initMocks() {
-        mockkObject(GitRepository)
-        every { GitRepository.getRemoteUrl(any()) } returns "https://git.dhl.com/CDLib/CDLib.git"
-        every { GitRepository.lastBranchCommit(any()) } returns GitRevision(
-            id = "a5c5bc3ce1907e844490697b9aa22c4196c5d781",
-            longMessage = "Dummy \"Commit\"",
-            shortMessage = "Dummy \$Commit",
-            authorName = "Firstname Author",
-            authorEmail = "f.a@dhl.com",
-            committerName = "Firstname Committer",
-            committerEmail = "f.c@dhl.com"
-        )
-    }
+    
+        @BeforeAll
+        fun initMocks() {
+            mockkObject(GitRepository)
+            every { GitRepository.getRemoteUrl(any()) } returns "https://git.dhl.com/CDLib/CDLib.git"
+            every { GitRepository.lastBranchCommit(any()) } returns GitRevision(
+                id = "a5c5bc3ce1907e844490697b9aa22c4196c5d781",
+                longMessage = "Dummy \"Commit\"",
+                shortMessage = "Dummy \$Commit",
+                authorName = "Firstname Author",
+                authorEmail = "f.a@dhl.com",
+                committerName = "Firstname Committer",
+                committerEmail = "f.c@dhl.com"
+            )
+        }
 
     @Test
     fun testCreate_sanitizedTruncated() {
