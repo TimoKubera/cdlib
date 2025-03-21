@@ -79,7 +79,7 @@ class ReportOslcGradlePluginIntegrationTest(
                     PicocliRunner.call(ReportCommand.CheckCommand::class.java, *args)
                 }
                 ret shouldBeExactly 0
-                output shouldContain "Policy Profile: Distribution"
+                output shouldContain POLICY_PROFILE_DISTRIBUTION
                 output shouldContain "Unapproved Licenses Count: 0"
             }
 
@@ -90,7 +90,7 @@ class ReportOslcGradlePluginIntegrationTest(
                     PicocliRunner.call(ReportCommand.CheckCommand::class.java, *args)
                 }
                 ret shouldBeExactly -1
-                output shouldContain "Policy Profile: Distribution"
+                output shouldContain POLICY_PROFILE_DISTRIBUTION
                 output shouldContain "Unapproved Licenses Count: 1"
                 output shouldContain "Alladin Free Public License 9: [com.rabbitmq:amqp-client]"
             }
