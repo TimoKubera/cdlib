@@ -175,5 +175,6 @@ open class SharepointClient(private val user: String, private val password: Stri
         const val ISHARE_TEST_LIST = "Pipeline%20Approvals%20TEST"
         const val ISHARE_WEBAPPLICATION_BY_ID_URL =
             "https://itm.prg-dc.dhl.com/sites/it-sec/Lists/Pipeline%20Approval%20Configuration/DispForm.aspx?ID="
+        const val ACCEPT_HEADER_VALUE = "application/json;odata=verbose"
     }
 }
