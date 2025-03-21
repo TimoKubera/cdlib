@@ -21,9 +21,9 @@ interface SharepointGraphClient {
     fun addEntry(
         siteId: String,
         listId: String,
-        @Header Authorization: String,
+        @Header authorization: String,
         @Body body: GraphSharepointDTO
-    ): GraphSharepointResponse
+        ): GraphSharepointResponse
 }
 
 const val SHAREPOINT_GRAPH_URL = "https://graph.microsoft.com/v1.0/sites"
