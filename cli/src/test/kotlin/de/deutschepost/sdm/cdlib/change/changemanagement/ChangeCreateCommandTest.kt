@@ -63,6 +63,10 @@ class ChangeCreateCommandTest(
             output shouldContain "Missing required argument(s): --commercial-reference=<commercialReference>"
         }
 
+        companion object {
+            const val ILLEGAL_ARGUMENT_EXCEPTION_MESSAGE = "java.lang.IllegalArgumentException"
+        }
+
         "Command fails if webapproval is requested with missing parameters." {
             val (exitCode, output) = withStandardOutput {
                 PicocliRunner.call(
@@ -71,7 +75,7 @@ class ChangeCreateCommandTest(
                 )
             }
             exitCode shouldBeExactly -1
-            output shouldContain "java.lang.IllegalArgumentException"
+            output shouldContain ILLEGAL_ARGUMENT_EXCEPTION_MESSAGE
         }
 
         "Command fails if oslc but no distribution was passed" {
@@ -82,7 +86,7 @@ class ChangeCreateCommandTest(
                 )
             }
             exitCode shouldBeExactly -1
-            output shouldContain "java.lang.IllegalArgumentException"
+            output shouldContain ILLEGAL_ARGUMENT_EXCEPTION_MESSAGE
         }
 
         "Command doesn't fail if no-oslc and no distribution was passed" {
@@ -93,8 +97,9 @@ class ChangeCreateCommandTest(
                 )
             }
             exitCode shouldBeExactly -1
-            output shouldContain "java.lang.IllegalArgumentException"
+            output shouldContain ILLEGAL_ARGUMENT_EXCEPTION_MESSAGE
             output shouldContain "Verifying reports..."
+        }
         }
 
         "Parsing deployment status string returns expected enum" {
