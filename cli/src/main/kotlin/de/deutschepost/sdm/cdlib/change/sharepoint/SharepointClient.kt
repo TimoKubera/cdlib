@@ -86,9 +86,9 @@ open class SharepointClient(private val user: String, private val password: Stri
             text = permissiveObjectMapper.writeValueAsString(approvalsListItem)
         }.build()
         val httpPost = HttpPost("$ISHARE_WEBAPPROVAL_BASE_URL/_api/web/lists/GetByTitle('$listName')/items").apply {
-            addHeader("Accept", "application/json;odata=verbose")
+            addHeader("Accept", HEADER_ACCEPT_JSON)
             addHeader("X-RequestDigest", digest)
-            addHeader("Content-Type", "application/json;odata=verbose")
+            addHeader("Content-Type", HEADER_ACCEPT_JSON)
             entity = httpEntity
         }
 
@@ -157,7 +157,7 @@ open class SharepointClient(private val user: String, private val password: Stri
     private fun getSharepointApprovalConfigurations(): SharepointApprovalConfigurations {
         val httpGet =
             HttpGet("$ISHARE_WEBAPPROVAL_BASE_URL/_api/web/lists/GetByTitle('Pipeline%20Approval%20Configuration')/items").apply {
-                addHeader("Accept", "application/json;odata=verbose")
+                addHeader("Accept", HEADER_ACCEPT_JSON)
             }
         client.execute(httpGet).use { response ->
             logger.info { "Executed request ${httpGet.requestLine} --- ${response.statusLine}" }
