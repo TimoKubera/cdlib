@@ -43,10 +43,14 @@ class OslcComplianceAcceptedListTest : FunSpec() {
 
     init {
         context("de.deutschepost.sdm.cdlib.release.report.internal.oslcComplianceChecker.VersionSpecification parsing") {
+            companion object {
+                const val INPUT_STRING_HEADER = "Input String"
+            }
+            
             test("Testing valid input strings") {
                 io.kotest.data.forAll(
                     table(
-                        headers("Input String", "Default Value", "Expected"),
+                        headers(INPUT_STRING_HEADER, "Default Value", "Expected"),
                         row("0.0.0", 0, VersionSpecification(0, 0, 0)),
                         row("0.0.0", Int.MAX_VALUE, VersionSpecification(0, 0, 0)),
                         row("1.2.3", 0, VersionSpecification(1, 2, 3)),
@@ -58,11 +62,14 @@ class OslcComplianceAcceptedListTest : FunSpec() {
                     VersionSpecification.fromString(input, default) shouldBe expected
                 }
             }
-
+            
+            
+            
+            
             test("Testing invalid input strings") {
                 io.kotest.data.forAll(
                     table(
-                        headers("Input String", "Default Value"),
+                        headers(INPUT_STRING_HEADER, "Default Value"),
                         row("a.b.c", 0),
                         row("error", 0),
                         row("3,2,5", 0),
@@ -71,11 +78,13 @@ class OslcComplianceAcceptedListTest : FunSpec() {
                     shouldThrow<NumberFormatException> { VersionSpecification.fromString(input, default) }
                 }
             }
-
+            
+            
+            
             test("Testing valid ranged input strings") {
                 io.kotest.data.forAll(
                     table(
-                        headers("Input String", "ExpectedMin", "ExpectedMax"),
+                        headers(INPUT_STRING_HEADER, "ExpectedMin", "ExpectedMax"),
                         row("1.2.3-11.12.13", VersionSpecification(1, 2, 3), VersionSpecification(11, 12, 13)),
                         row("-11.12.13", VersionSpecification(0, 0, 0), VersionSpecification(11, 12, 13)),
                         row(
@@ -100,11 +109,13 @@ class OslcComplianceAcceptedListTest : FunSpec() {
                     VersionSpecification.rangeFromString(input) shouldBe min..max
                 }
             }
-
+            
+            
+            
             test("Testing invalid ranged input strings") {
                 io.kotest.data.forAll(
                     table(
-                        headers("Input String"),
+                        headers(INPUT_STRING_HEADER),
                         row("1.2.3-11.12.13-1.2.3"),
                         row("1-1-1"),
                     )
