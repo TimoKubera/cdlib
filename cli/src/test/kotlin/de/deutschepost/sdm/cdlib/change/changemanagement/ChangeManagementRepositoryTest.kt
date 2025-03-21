@@ -165,6 +165,7 @@ class ChangeManagementRepositoryTest(
             val itSystemName = "itSystemName"
             val itSystemKey = "itSystemKey"
             val criticality = "Nicht kritisch/Archiv"
+            val BUSINESS_KRITIKALITAET = "Business Kritikalität"
             val itSystemResponse = ItSystemResponse(
                 objectEntries = listOf(
                     JiraObjectEntry(
@@ -184,7 +185,7 @@ class ChangeManagementRepositoryTest(
                                                             referencedObject = JiraObjectEntry(
                                                                 attributes = listOf(),
                                                                 objectType = JiraObjectType(
-                                                                    name = "Business Kritikalität",
+                                                                    name = BUSINESS_KRITIKALITAET,
                                                                     6
                                                                 ),
                                                                 objectKey = "objectKey",
@@ -196,7 +197,7 @@ class ChangeManagementRepositoryTest(
                                                 )
                                             ),
                                             objectType = JiraObjectType(
-                                                name = "Business Kritikalität",
+                                                name = BUSINESS_KRITIKALITAET,
                                                 6
                                             ),
                                             objectKey = "objectKey",
