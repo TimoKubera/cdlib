@@ -39,15 +39,7 @@ import java.time.temporal.ChronoUnit
 @RequiresTag("IntegrationTest")
 @Tags("IntegrationTest")
 @MicronautTest
-class ChangeFullIntegrationTest(
-    @Value("\${change-management-token}") val token: String,
-    @Value("\${sharepoint.username}") val sharepointUsername: String,
-    @Value("\${sharepoint.password}") val sp_password: String,
-    @Value("\${artifactory-its-identity-token}") val artifactoryIdentityToken: String,
-    private val changeTestHelper: ChangeTestHelper,
-    private val changeHandler: ChangeHandler,
-    private val cosmosDashboardRepository: CosmosDashboardRepository
-) : FunSpec() {
+class ChangeFullIntegrationTest(\n    @Value("\\${change-management-token}") val token: String,\n    @Value("\\${sharepoint.username}") val sharepointUsername: String,\n    @Value("\\${sharepoint.password}") val spPassword: String,\n    @Value("\\${artifactory-its-identity-token}") val artifactoryIdentityToken: String,\n    private val changeTestHelper: ChangeTestHelper,\n    private val changeHandler: ChangeHandler,\n    private val cosmosDashboardRepository: CosmosDashboardRepository\n) : FunSpec() {
     private val timestamp =
         DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(ZonedDateTime.now().truncatedTo(ChronoUnit.SECONDS))
     private val appName = "cli"
