@@ -48,6 +48,10 @@ class NameResolverAzureTest(
         )
     )
 
+    companion object {
+        const val ICTO_3339_SDM_PHIPPYANDFRIENDS = "ICTO-3339_SDM-phippyandfriends"
+    }
+
     @BeforeAll
     fun initMocks() {
         mockkObject(GitRepository)
