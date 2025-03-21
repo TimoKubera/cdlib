@@ -149,15 +149,14 @@ fun List<SecurityTestResult>.securityTestsVerify(
             ReportType.DAST -> securityReportVerificationResult.hasDAST = true
             ReportType.SCA -> securityReportVerificationResult.hasSCA = true
             ReportType.SAST -> securityReportVerificationResult.hasSAST = true
-            ReportType.CCA -> { // No action needed
-            }
-            ReportType.OTHER -> { // No action needed
-            }
-            ReportType.OSLC -> { // No action needed
-            }
-            ReportType.OSLC_PRE -> { // No action needed
-            }
-        }
+            ReportType.CCA -> { // Intentionally left blank because CCA reports require no processing
+                        }
+                        ReportType.OTHER -> { // Intentionally left blank because OTHER reports require no processing
+                        }
+                        ReportType.OSLC -> { // Intentionally left blank because OSLC reports require no processing
+                        }
+                        ReportType.OSLC_PRE -> { // Intentionally left blank because OSLC_PRE reports require no processing
+                        }
     }
     return securityReportVerificationResult
 }
