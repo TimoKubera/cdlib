@@ -71,30 +71,34 @@ class ChangeCreateCommandTest(
                 )
             }
             exitCode shouldBeExactly -1
-            output shouldContain "java.lang.IllegalArgumentException"
-        }
-
-        "Command fails if oslc but no distribution was passed" {
-            val (exitCode, output) = withStandardOutput {
-                PicocliRunner.call(
-                    ChangeCommand.CreateCommand::class.java,
-                    *"--jira-token $token --debug --commercial-reference 5296 --test".toArgsArray()
-                )
+            companion object {
+                const val ILLEGAL_ARG_EXCEPTION_MSG = "java.lang.IllegalArgumentException"
             }
-            exitCode shouldBeExactly -1
-            output shouldContain "java.lang.IllegalArgumentException"
-        }
-
-        "Command doesn't fail if no-oslc and no distribution was passed" {
-            val (exitCode, output) = withStandardOutput {
-                PicocliRunner.call(
-                    ChangeCommand.CreateCommand::class.java,
-                    *"--jira-token $token --debug --commercial-reference 5296 --test --no-oslc".toArgsArray()
-                )
+            
+            output shouldContain ILLEGAL_ARG_EXCEPTION_MSG
             }
-            exitCode shouldBeExactly -1
-            output shouldContain "java.lang.IllegalArgumentException"
-            output shouldContain "Verifying reports..."
+            
+            "Command fails if oslc but no distribution was passed" {
+                val (exitCode, output) = withStandardOutput {
+                    PicocliRunner.call(
+                        ChangeCommand.CreateCommand::class.java,
+                        *"--jira-token $token --debug --commercial-reference 5296 --test".toArgsArray()
+                    )
+                }
+                exitCode shouldBeExactly -1
+                output shouldContain ILLEGAL_ARG_EXCEPTION_MSG
+            }
+            
+            "Command doesn't fail if no-oslc and no distribution was passed" {
+                val (exitCode, output) = withStandardOutput {
+                    PicocliRunner.call(
+                        ChangeCommand.CreateCommand::class.java,
+                        *"--jira-token $token --debug --commercial-reference 5296 --test --no-oslc".toArgsArray()
+                    )
+                }
+                exitCode shouldBeExactly -1
+                output shouldContain ILLEGAL_ARG_EXCEPTION_MSG
+                output shouldContain "Verifying reports..."
         }
 
         "Parsing deployment status string returns expected enum" {
