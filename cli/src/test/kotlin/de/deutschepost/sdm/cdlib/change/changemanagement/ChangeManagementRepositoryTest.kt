@@ -183,89 +183,91 @@ class ChangeManagementRepositoryTest(
                                                             searchValue = criticality,
                                                             referencedObject = JiraObjectEntry(
                                                                 attributes = listOf(),
+                                                                const val BUSINESS_KRITIKALITAT = "Business Kritikalität"
+                                                                
                                                                 objectType = JiraObjectType(
-                                                                    name = "Business Kritikalität",
+                                                                    name = BUSINESS_KRITIKALITAT,
                                                                     6
                                                                 ),
                                                                 objectKey = "objectKey",
                                                                 label = "label"
-                                                            ),
-                                                        )
-                                                    ),
-                                                    objectTypeAttributeId = itSystemAttributeId
-                                                )
-                                            ),
-                                            objectType = JiraObjectType(
-                                                name = "Business Kritikalität",
-                                                6
-                                            ),
-                                            objectKey = "objectKey",
-                                            label = "label"
-                                        ),
-                                    )
-                                ),
-                                objectTypeAttributeId = itSystemAttributeId
-                            ),
-                            JiraAttribute(
-                                objectAttributeValues = listOf(
-                                    JiraObjectAttributeValue(
-                                        displayValue = almId,
-                                        searchValue = almId,
-                                        referencedObject = null,
-                                    )
-                                ),
-                                objectTypeAttributeId = almAttributeId
-                            ),
-                            JiraAttribute(
-                                objectAttributeValues = listOf(
-                                    JiraObjectAttributeValue(
-                                        displayValue = businessYear,
-                                        searchValue = businessYear,
-                                        referencedObject = null,
-                                    )
-                                ),
-                                objectTypeAttributeId = businessYearAttributeId
-                            )
-                        ),
-                        objectType = JiraObjectType(
-                            name = "name",
-                            6
-                        ),
-                        objectKey = commercialReference,
-                        label = "label"
-                    ),
-                    JiraObjectEntry(
-                        attributes = listOf(
-                            JiraAttribute(
-                                objectAttributeValues = listOf(
-                                    JiraObjectAttributeValue(
-                                        displayValue = itSystemName,
-                                        searchValue = itSystemKey,
-                                        referencedObject = JiraObjectEntry(
-                                            attributes = listOf(
-                                                JiraAttribute(
-                                                    objectAttributeValues = listOf(
-                                                        JiraObjectAttributeValue(
-                                                            displayValue = criticality,
-                                                            searchValue = criticality,
-                                                            referencedObject = JiraObjectEntry(
-                                                                attributes = listOf(),
+                                                                ),
+                                                                )
+                                                                ),
+                                                                objectTypeAttributeId = itSystemAttributeId
+                                                                )
+                                                                ),
                                                                 objectType = JiraObjectType(
-                                                                    name = "Business Kritikalität",
+                                                                    name = BUSINESS_KRITIKALITAT,
                                                                     6
                                                                 ),
                                                                 objectKey = "objectKey",
                                                                 label = "label"
-                                                            ),
-                                                        )
-                                                    ),
-                                                    objectTypeAttributeId = itSystemAttributeId
-                                                )
-                                            ),
-                                            objectType = JiraObjectType(
-                                                name = "Business Kritikalität",
-                                                6
-                                            ),
+                                                                ),
+                                                                )
+                                                                )
+                                                                objectTypeAttributeId = itSystemAttributeId
+                                                                ),
+                                                                JiraAttribute(
+                                                                    objectAttributeValues = listOf(
+                                                                        JiraObjectAttributeValue(
+                                                                            displayValue = almId,
+                                                                            searchValue = almId,
+                                                                            referencedObject = null,
+                                                                        )
+                                                                    ),
+                                                                    objectTypeAttributeId = almAttributeId
+                                                                ),
+                                                                JiraAttribute(
+                                                                    objectAttributeValues = listOf(
+                                                                        JiraObjectAttributeValue(
+                                                                            displayValue = businessYear,
+                                                                            searchValue = businessYear,
+                                                                            referencedObject = null,
+                                                                        )
+                                                                    ),
+                                                                    objectTypeAttributeId = businessYearAttributeId
+                                                                )
+                                                                ),
+                                                                objectType = JiraObjectType(
+                                                                    name = "name",
+                                                                    6
+                                                                ),
+                                                                objectKey = commercialReference,
+                                                                label = "label"
+                                                                ),
+                                                                JiraObjectEntry(
+                                                                    attributes = listOf(
+                                                                        JiraAttribute(
+                                                                            objectAttributeValues = listOf(
+                                                                                JiraObjectAttributeValue(
+                                                                                    displayValue = itSystemName,
+                                                                                    searchValue = itSystemKey,
+                                                                                    referencedObject = JiraObjectEntry(
+                                                                                        attributes = listOf(
+                                                                                            JiraAttribute(
+                                                                                                objectAttributeValues = listOf(
+                                                                                                    JiraObjectAttributeValue(
+                                                                                                        displayValue = criticality,
+                                                                                                        searchValue = criticality,
+                                                                                                        referencedObject = JiraObjectEntry(
+                                                                                                            attributes = listOf(),
+                                                                                                            objectType = JiraObjectType(
+                                                                                                                name = BUSINESS_KRITIKALITAT,
+                                                                                                                6
+                                                                                                            ),
+                                                                                                            objectKey = "objectKey",
+                                                                                                            label = "label"
+                                                                                                        ),
+                                                                                                    )
+                                                                                                ),
+                                                                                                objectTypeAttributeId = itSystemAttributeId
+                                                                                            )
+                                                                                        ),
+                                                                                        objectType = JiraObjectType(
+                                                                                            name = BUSINESS_KRITIKALITAT,
+                                                                                            6
+                                                                                        ),
                                             objectKey = "objectKey",
                                             label = "label"
                                         ),
