@@ -152,7 +152,7 @@ fun List<SecurityTestResult>.securityTestsVerify(
             ReportType.CCA -> { /* Intentionally left blank for future use or extensions */ }
             ReportType.OTHER -> { /* Intentionally left blank for future use or extensions */ }
             
-            ReportType.OSLC_PRE -> {}
+            ReportType.OSLC_PRE -> { // Intentionally left blank for future use or extensions }
         }
     }
     return securityReportVerificationResult
