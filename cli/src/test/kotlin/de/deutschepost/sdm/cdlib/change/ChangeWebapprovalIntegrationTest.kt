@@ -41,7 +41,7 @@ import java.util.*
 class ChangeWebapprovalIntegrationTest(
     @Value("\${change-management-token}") val token: String,
     @Value("\${sharepoint.username}") val spUsername: String,
-    @Value("\${sharepoint.password}") val spPassword: String,
+    @Value("\${sharepoint.password}") val sharepointPassword: String,
     @Value("\${artifactory-its-identity-token}") val artifactoryIdentityToken: String,
     private val cosmosDashboardRepository: CosmosDashboardRepository
 ) : FunSpec() {
