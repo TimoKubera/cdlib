@@ -58,18 +58,22 @@ class ReportOslcNPMPluginIntegrationTest(
                     PicocliRunner.call(ReportCommand.UploadCommand::class.java, *args)
                 }
                 ret shouldBeExactly 0
-                output shouldContain "Uploaded Artifact:"
-            }
-            // TODO: Delete after sundown
-            test("Upload OSLC-Plugin report to LCM artifactory") {
-                val args =
-                    "--debug --files $jsonFile --no-distribution --artifactory-azure-instance --artifactory-identity-token $artifactoryLCMIdentityToken --repo-name $repoLCMName --type build".toArgsArray()
-                val (ret, output) = withStandardOutput {
-                    PicocliRunner.call(ReportCommand.UploadCommand::class.java, *args)
+                companion object {
+                    const val UPLOADED_ARTIFACT_MESSAGE = "Uploaded Artifact:"
                 }
-                ret shouldBeExactly 0
-                output shouldContain "Uploaded Artifact:"
-            }
+                
+                output shouldContain UPLOADED_ARTIFACT_MESSAGE
+                }
+                // TODO: Delete after sundown
+                test("Upload OSLC-Plugin report to LCM artifactory") {
+                    val args =
+                        "--debug --files $jsonFile --no-distribution --artifactory-azure-instance --artifactory-identity-token $artifactoryLCMIdentityToken --repo-name $repoLCMName --type build".toArgsArray()
+                    val (ret, output) = withStandardOutput {
+                        PicocliRunner.call(ReportCommand.UploadCommand::class.java, *args)
+                    }
+                    ret shouldBeExactly 0
+                    output shouldContain UPLOADED_ARTIFACT_MESSAGE
+                }
 
             test("Check OSLC-Plugin report locally should fail due to distribution flag") {
                 val args = "--debug --files $jsonFailingFile --distribution".toArgsArray()
