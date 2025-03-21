@@ -22,11 +22,13 @@ data class LicenseBlackListEntry(
 
 object OslcComplianceChecker : KLogging() {
 
+    private const val NOT_FOUND_MESSAGE = "not found"
+
     private val disallowedLicensesDistributionPath: String =
-        javaClass.getResource("/oslc/disallowedLicensesDistribution.json")?.path ?: "not found"
+        javaClass.getResource("/oslc/disallowedLicensesDistribution.json")?.path ?: NOT_FOUND_MESSAGE
     private val disallowedLicensesNonDistributionPath: String =
-        javaClass.getResource("/oslc/disallowedLicensesNonDistribution.json")?.path ?: "not found"
-    private val bundlerPath: String = javaClass.getResource("/oslc/licenseBundler.json")?.path ?: "not found"
+        javaClass.getResource("/oslc/disallowedLicensesNonDistribution.json")?.path ?: NOT_FOUND_MESSAGE
+    private val bundlerPath: String = javaClass.getResource("/oslc/licenseBundler.json")?.path ?: NOT_FOUND_MESSAGE
 
     private val licenseDefinitionsDistribution: List<OslcLicenseDefinition> by lazy {
         buildDefinitions(
