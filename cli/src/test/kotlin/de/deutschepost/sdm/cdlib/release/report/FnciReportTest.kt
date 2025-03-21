@@ -23,7 +23,8 @@ import java.io.File
 @RequiresTag("UnitTest")
 @Tags("UnitTest")
 class FnciReportTest : FunSpec({
-    val projectPath = "src/test/resources/fnci/fnci-project.json"
+    private val fnciProjectPath = "src/test/resources/fnci/fnci-project.json"
+    val projectPath = fnciProjectPath
     val inventoryPath = "src/test/resources/fnci/fnci-inventory.json"
     context("Project Info") {
         test("Parses projectInfo correctly") {
@@ -52,7 +53,7 @@ class FnciReportTest : FunSpec({
         val inventory: List<FnciInventoryItem> = permissiveObjectMapper.readValue(File(inventoryPath))
         test("Generate OslcTestResult") {
             val report =
-                OslcTestResult.from(FnciTestResult(projectInfo, inventory), "src/test/resources/fnci/fnci-project.json")
+                OslcTestResult.from(FnciTestResult(projectInfo, inventory), fnciProjectPath)
             report.complianceStatus shouldBe OslcComplianceStatus.RED
             report.unapprovedItems.shouldNotBeEmpty()
             defaultObjectMapper.writerWithDefaultPrettyPrinter().writeValue(System.out, report)
@@ -61,7 +62,7 @@ class FnciReportTest : FunSpec({
         test("Only approved is compliant") {
             val report = OslcTestResult.from(
                 FnciTestResult(projectInfo, inventory.filter { it.inventoryReviewStatus == "Approved" }),
-                "src/test/resources/fnci/fnci-project.json"
+                fnciProjectPath
             )
             report.complianceStatus shouldBe OslcComplianceStatus.GREEN
             report.unapprovedItems.shouldBeEmpty()
@@ -71,9 +72,11 @@ class FnciReportTest : FunSpec({
         test("Canonical file name should depend on project, not files") {
             val report = OslcTestResult.from(
                 FnciTestResult(projectInfo, inventory.filter { it.inventoryReviewStatus == "Approved" }),
-                "src/test/resources/fnci/fnci-project.json"
+                fnciProjectPath
             )
             report.canonicalFilename shouldEndWith "${report.projectName}.json"
         }
+    }
+})
     }
 })
