@@ -38,7 +38,8 @@ class OslcComplianceCheckerTest : FunSpec() {
             )
         )
     )
-    private val licenseMozillaName = "Mozilla Public License 2.0"
+    private val LICENSE_MOZILLA = "Mozilla Public License 2.0"
+    
     private val depWithCDDL = OslcDependencyLicenseEntry(
         dependencyName = "test.should.fail:cddl",
         dependencyVersion = "",
