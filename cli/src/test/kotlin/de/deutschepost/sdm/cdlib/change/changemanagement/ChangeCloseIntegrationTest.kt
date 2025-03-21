@@ -210,7 +210,7 @@ class ChangeCloseIntegrationTest(
                 }
 
                 output shouldContain "http://integration-test-url.jenkuns.example.com"
-                output shouldContain "Dashboard status code: 201"
+                output shouldContain DASHBOARD_STATUS_CODE_MSG
                 exitCode shouldBeExactly 0
             }
         }
