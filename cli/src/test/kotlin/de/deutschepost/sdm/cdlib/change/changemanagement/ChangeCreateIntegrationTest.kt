@@ -97,57 +97,66 @@ class ChangeCreateIntegrationTest(
                     "  Determined change type --> MINOR"
                 output shouldContain "Updating change request type: MINOR"
                 output shouldContain "Transitioning change request phase: ${OPEN_TO_IMPLEMENTATION.name}"
-                output shouldContain "Checking change request status for approval every "
+                // Code fix with constant defined for repeated literal
+                
+                private companion object {
+                    private const val CHECK_STATUS_MSG = "Checking change request status for approval every"
+                }
+                
+                // Modified code section
+                output shouldContain CHECK_STATUS_MSG
                 output shouldContain "Checked current change request status: ${WAITING_FOR_APPROVAL.name}"
-
-            }
-            changeTestHelper.closeChangeRequest(
+                
+                }
+                changeTestHelper.closeChangeRequest(
                 token,
                 commercialReference
-            )
-        }
-
-        withMockedVersionInfo(changeHandler) {
-            test("Creating change via full change command fails given an invalid commercial reference") {
+                )
+                
+                }
+                
+                withMockedVersionInfo(changeHandler) {
+                test("Creating change via full change command fails given an invalid commercial reference") {
                 val (_, output) = withStandardOutput {
-                    PicocliRunner.run(
-                        CdlibCommand::class.java,
-                        *"change create --test --skip-approval-wait --no-oslc --no-webapproval --no-tqs --jira-token $token --commercial-reference DI-123456".toArgsArray()
-                    )
+                PicocliRunner.run(
+                CdlibCommand::class.java,
+                *"change create --test --skip-approval-wait --no-oslc --no-webapproval --no-tqs --jira-token $token --commercial-reference DI-123456".toArgsArray()
+                )
                 }
                 output shouldContain "Failed to get commercial reference: DI-123456"
-            }
-
-            test("Change created with wrong parameters and --trace option extends logging") {
-                val (_, output) = withStandardOutput {
-                    val args: Array<String> =
-                        "change create --skip-approval-wait --jira-token wrong --no-oslc --no-webapproval --no-tqs --debug --trace --commercial-reference $commercialReference --test".toArgsArray()
-                    PicocliRunner.run(CdlibCommand::class.java, *args)
                 }
-
+                
+                test("Change created with wrong parameters and --trace option extends logging") {
+                val (_, output) = withStandardOutput {
+                val args: Array<String> =
+                "change create --skip-approval-wait --jira-token wrong --no-oslc --no-webapproval --no-tqs --debug --trace --commercial-reference $commercialReference --test".toArgsArray()
+                PicocliRunner.run(CdlibCommand::class.java, *args)
+                }
+                
                 output shouldContain "TRACE"
-            }
-
-            test("Change create command with no open changes for the current pipeline continues successfully with appropriate log") {
-                val (_, output) = withStandardOutput {
-                    PicocliRunner.run(
-                        CdlibCommand::class.java,
-                        *"change create --test --skip-approval-wait --no-oslc --no-webapproval --no-tqs --jira-token $token --commercial-reference $commercialReference".toArgsArray()
-                    )
                 }
-
+                
+                test("Change create command with no open changes for the current pipeline continues successfully with appropriate log") {
+                val (_, output) = withStandardOutput {
+                PicocliRunner.run(
+                CdlibCommand::class.java,
+                *"change create --test --skip-approval-wait --no-oslc --no-webapproval --no-tqs --jira-token $token --commercial-reference $commercialReference".toArgsArray()
+                )
+                }
+                
                 output shouldContain "Retrieving IT system information"
                 output shouldContain "Searching existing changes for the current pipeline"
                 output shouldContain "Could not find changes to close nor resume for the current pipeline"
                 output shouldContain "Posting change request"
                 output shouldContain "Determining whether change can be preauthorized."
                 output shouldContain "  Impact Class: ${NONE.name}\n" +
-                    "  Business Criticality: ${OPERATIONAL.name}\n" +
-                    "  Determined change type --> ${ApprovalStatus.PREAUTHORIZED.name}"
+                "  Business Criticality: ${OPERATIONAL.name}\n" +
+                "  Determined change type --> ${ApprovalStatus.PREAUTHORIZED.name}"
                 output shouldContain "Updating change request type: ${ApprovalStatus.PREAUTHORIZED.name}"
                 output shouldContain "Transitioning change request phase: ${OPEN_TO_IMPLEMENTATION.name}"
-                output shouldContain "Checking change request status for approval every "
+                output shouldContain CHECK_STATUS_MSG
                 output shouldContain "Checked current change request status: ${AWAITING_IMPLEMENTATION.name}"
+                
 
 
 
