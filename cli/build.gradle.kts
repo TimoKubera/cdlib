@@ -48,16 +48,19 @@ dependencies {
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
     
     val artifactoryJavaClientVersion = "2.19.1"
-    implementation("org.jfrog.artifactory.client:artifactory-java-client-services:${artifactoryJavaClientVersion}")
     val kotlinLoggingVersion = "2.1.23"
-    implementation("io.github.microutils:kotlin-logging:$kotlinLoggingVersion")
     val httpClientVersion = "4.5.14"
+    val azureIdentityVersion = "1.0.0"
+    val eclipseJgitVersion = "7.1.0.202411261347-r"
+    val jsonSmartVersion = "2.5.2"
+    
+    implementation("org.jfrog.artifactory.client:artifactory-java-client-services:${artifactoryJavaClientVersion}")
+    implementation("io.github.microutils:kotlin-logging:$kotlinLoggingVersion")
     implementation("org.apache.httpcomponents:httpclient:$httpClientVersion")
     implementation("org.codelibs:jcifs:$jcifsVersion")
-    implementation("org.eclipse.jgit:org.eclipse.jgit:7.1.0.202411261347-r")
-    val azureIdentityVersion = "1.0.0"
-    implementation("com.azure:azure-identity:", azureIdentityVersion)
-    implementation("net.minidev:json-smart:2.5.2")
+    implementation("org.eclipse.jgit:org.eclipse.jgit:${eclipseJgitVersion}")
+    implementation("com.azure:azure-identity:${azureIdentityVersion}")
+    implementation("net.minidev:json-smart:${jsonSmartVersion}")
     implementation("com.azure:azure-cosmos")
     
     testImplementation("io.mockk:mockk")
