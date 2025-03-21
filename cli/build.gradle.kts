@@ -26,6 +26,7 @@ micronaut {
 val kotlinVersion = project.properties["kotlinVersion"] as String
 val kotlinCoroutines = project.properties["kotlinCoroutines"] as String
 val artifactoryClientVersion = "2.19.1"
+val jgitVersion = "7.1.0.202411261347-r"
 val httpClientVersion = "4.5.14"
 
 dependencies {
