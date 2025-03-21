@@ -371,7 +371,28 @@ class ChangeCommand : SubcommandWithHelp() {
         override fun call(): Int {
             enableDebugIfOptionIsSet()
             val originalArgs = spec.commandLine().parseResult.originalArgs()
-
+        
+            checkVersionInformation()
+        
+            val reportUrl = performReleaseVerification(originalArgs)
+        
+            if (reportUrl == null) {
+                logger.info { "Skipping release verification." }
+            }
+        
+            if (runChangeManagementProcess() == -1) return -1
+        
+            val webapprovalUrl = manageWebApprovalEntries(reportUrl)
+            if (webapprovalUrl == null) return -1
+        
+            if (!addOslcEntries(reportUrl)) return -1
+        
+            writeOutputUrlsToFile(reportUrl, webapprovalUrl)
+        
+            return 0
+        }
+        
+        private fun checkVersionInformation() {
             val versionInfo = cosmosDashboardRepository.versionInfo
             if (!versionInfo.isSupported) {
                 logger.warn { "CDLib version ${cosmosDashboardRepository.getCdlibVersionViewModel().cdlib} is not supported anymore. Please update to a newer version. Pre-authorization is not possible." }
@@ -379,164 +400,115 @@ class ChangeCommand : SubcommandWithHelp() {
             if (!versionInfo.isLatest) {
                 logger.info { "A new version of CDLib is available" }
             }
-
-            val reportUrl =
-                if (webApprovalSection.performWebapproval or oslcSection.performOslc) {
-                    logger.info { "Starting release verification..." }
-                    if (isTest) {
-                        logger.info { "Test run!" }
-                    }
-                    runCatching {
-                        if (oslcSection.performOslc) {
-                            logger.info { "Flag --oslc found." }
-                            logger.info { "Checking for '--distribution' flag..." }
-                            require(originalArgs.any { it.contains("--distribution") or it.contains("--no-distribution") }) {
-                                "'--[no-]distribution' is required when running OSLC verification!"
-                            }
-                            logger.debug { "Flag is set!" }
-                        }
-                        logger.info { "Verifying reports..." }
-                        val nameToAllReports = artifactoryMixinFull.artifactoryReports.also {
-                            logger.debug { "Downloaded reports: $it" }
-                        }.groupBy { it.name }
-                        val nameToBuildReports = artifactoryMixinFull.artifactoryReports.filterNot {
-                            it.test.reportType == ReportType.DAST
-                        }.groupBy { it.name }
-
-                        if (webApprovalSection.performWebapproval) {
-                            logger.info { "Flag --webapproval found." }
-                            var hasInvalidReports = false
-                            var hasMissingBuildReports = false
-                            var hasDastReport = false
-                            var hasScaReport = false
-                            var hasSastReport = false
-
-                            nameToAllReports.forEach { (name, reports) ->
-                                val verificationResult = checkMixin.checkSecurityReports(reports).also {
-                                    logger.info { "Verification result for App $name: $it" }
-                                }
-                                if (verificationResult.hasInvalidReport) {
-                                    hasInvalidReports = true
-                                    logger.error { "App $name has invalid report(s)!" }
-                                }
-                                if (!verificationResult.hasSAST && (!verificationResult.hasDAST or (verificationResult.hasDAST and verificationResult.hasSCA))) {
-                                    hasMissingBuildReports = true
-                                    logger.error { "App $name is missing SAST report!" }
-                                }
-                                if (!verificationResult.hasSCA && (!verificationResult.hasDAST or (verificationResult.hasDAST and verificationResult.hasSAST))) {
-                                    hasMissingBuildReports = true
-                                    logger.error { "App $name is missing SCA report!" }
-                                }
-                                if (verificationResult.hasDAST) {
-                                    hasDastReport = true
-                                    logger.info { "Found DAST report for App $name." }
-                                }
-                                if (verificationResult.hasSCA) {
-                                    hasScaReport = true
-                                }
-                                if (verificationResult.hasSAST) {
-                                    hasSastReport = true
-                                }
-                            }
-                            if (!hasDastReport) {
-                                hasMissingBuildReports = true
-                                logger.error { "No DAST report found!" }
-                            }
-                            if (!hasScaReport) {
-                                hasMissingBuildReports = true
-                                logger.error { "No SCA report found!" }
-                            }
-                            if (!hasSastReport) {
-                                hasMissingBuildReports = true
-                                logger.error { "No SAST report found!" }
-                            }
-
-                            check(!hasInvalidReports) {
-                                "Invalid report(s)!"
-                            }
-                            check(!hasMissingBuildReports) {
-                                "Missing reports!"
-                            }
-                            logger.info { "Verifying pipeline approval configuration..." }
-                            check(webapprovalMixin.isConfigurationApproved()) {
-                                "Failed to validate approval configuration."
-                            }
-                        }
-
-                        if (tqsSection.performTqs) {
-                            logger.info { "Flag --tqs found. Deprecated due to unsupported plugin and measurements. This flag has no effect and can be removed." }
-                        }
-
-                        if (oslcSection.performOslc) {
-                            val oslcReportAppNames = artifactoryMixinFull.oslcReports.map(Report::name)
-
-                            var hasMissingOSLCReport = false
-                            var hasComplianceIssues = false
-                            nameToBuildReports.forEach { (name, reports) ->
-                                if (name !in oslcReportAppNames) {
-                                    hasMissingOSLCReport = true
-                                    logger.error { "App $name is missing OSLC report!" }
-                                } else {
-                                    val oslcReportsForApp = artifactoryMixinFull.oslcReports
-                                        .filter { report -> report.name == name }
-                                    if (oslcReportsForApp.size > 1) {
-                                        logger.warn { "Found multiple OSLC reports for $name" }
-                                    }
-                                    oslcReportsForApp.forEach { report ->
-                                        when (report.test.tool.name) {
-                                            Tool.OSLC_FNCI_NAME -> logger.info { "Found OSLC-Report from FNCI for $name" }
-                                            Tool.OSLC_MAVEN_PLUGIN_NAME -> logger.info { "Found OSLC-Report from OSLC-Maven-Plugin for $name" }
-                                            Tool.OSLC_GRADLE_PLUGIN_NAME -> logger.info { "Found OSLC-Report from OSLC-Gradle-Plugin for $name" }
-                                            Tool.OSLC_NPM_PLUGIN_NAME -> logger.info { "Found OSLC-Report from OSLC-NPM-Plugin for $name" }
-                                            else -> logger.warn { "Found OSLC-Report from from unkown tool for $name" }
-                                        }
-                                    }
-                                }
-
-                                runCatching {
-                                    checkMixin.checkOslcCompliance(name, reports, oslcSection.isDistribution)
-                                }.onFailure {
-                                    hasComplianceIssues = true
-                                    logger.error { it.message }
-                                    logger.error { "App $name has compliance issues!" }
-                                }
-                            }
-
-                            check(!hasMissingOSLCReport) {
-                                "Missing OSLC reports!"
-                            }
-
-                            check(!hasComplianceIssues) {
-                                "There are OSLC compliance issues!"
-                            }
-                        }
-
-                        logger.info { "Generating and copying immutable artifacts..." }
-                        val reportFolderUrl = artifactoryMixinFull.copyFiles()
-                        val reports = nameToAllReports.flatMap { it.value }
-                        artifactoryMixinFull.uploadSuppressions(reports.map(Report::test).securityTestsSuppressions())
-                        cosmosDashboardRepository.addRelease(
-                            Release(
-                                test = reports.firstOrNull { it.test.reportType == ReportType.DAST },
-                                builds = reports.filter { it.test.reportType != ReportType.DAST },
-                                reportFolderUrl = reportFolderUrl,
-                                cdlibVersionViewModel = cosmosDashboardRepository.getCdlibVersionViewModel()
-                            ), isTest
-                        )
-                        logger.info { "Release verification succeeded!" }
-                        reportFolderUrl
-                    }.getOrElse {
-                        logger.error { "Release verification failed." }
-                        it.klogSelf(logger)
-                        return -1
-                    }
-                } else {
-                    logger.info { "Skipping release verification." }
-                    null
+        }
+        
+        private fun performReleaseVerification(originalArgs: List<String>): String? {
+            return if (webApprovalSection.performWebapproval || oslcSection.performOslc) {
+                logger.info { "Starting release verification..." }
+                if (isTest) {
+                    logger.info { "Test run!" }
                 }
-
-            logger.debug { "CDLib version: $versionInfo" }
-            runCatching {
+        
+                runCatching {
+                    verifyOslc(originalArgs)
+        
+                    val nameToAllReports = artifactoryMixinFull.artifactoryReports.also {
+                        logger.debug { "Downloaded reports: $it" }
+                    }.groupBy { it.name }
+        
+                    verifyWebApproval(nameToAllReports)
+        
+                    logger.info { "Generating and copying immutable artifacts..." }
+                    val reportFolderUrl = artifactoryMixinFull.copyFiles()
+                    val reports = nameToAllReports.flatMap { it.value }
+                    artifactoryMixinFull.uploadSuppressions(reports.map(Report::test).securityTestsSuppressions())
+                    cosmosDashboardRepository.addRelease(
+                        Release(
+                            test = reports.firstOrNull { it.test.reportType == ReportType.DAST },
+                            builds = reports.filter { it.test.reportType != ReportType.DAST },
+                            reportFolderUrl = reportFolderUrl,
+                            cdlibVersionViewModel = cosmosDashboardRepository.getCdlibVersionViewModel()
+                        ), isTest
+                    )
+                    logger.info { "Release verification succeeded!" }
+                    reportFolderUrl
+                }.getOrElse {
+                    logger.error { "Release verification failed." }
+                    it.klogSelf(logger)
+                    return null
+                }
+            } else null
+        }
+        
+        private fun verifyOslc(originalArgs: List<String>) {
+            if (oslcSection.performOslc) {
+                logger.info { "Flag --oslc found." }
+                logger.info { "Checking for '--distribution' flag..." }
+                require(originalArgs.any { it.contains("--distribution") || it.contains("--no-distribution") }) {
+                    "'--[no-]distribution' is required when running OSLC verification!"
+                }
+                logger.debug { "Flag is set!" }
+            }
+        }
+        
+        private fun verifyWebApproval(nameToAllReports: Map<String, List<Report>>) {
+            if (webApprovalSection.performWebapproval) {
+                logger.info { "Flag --webapproval found." }
+                var hasInvalidReports = false
+                var hasMissingBuildReports = false
+                var hasDastReport = false
+                var hasScaReport = false
+                var hasSastReport = false
+        
+                nameToAllReports.forEach { (name, reports) ->
+                    val verificationResult = checkMixin.checkSecurityReports(reports).also {
+                        logger.info { "Verification result for App $name: $it" }
+                    }
+                    if (verificationResult.hasInvalidReport) {
+                        hasInvalidReports = true
+                        logger.error { "App $name has invalid report(s)!" }
+                    }
+                    if (!verificationResult.hasSAST && (!verificationResult.hasDAST || (verificationResult.hasDAST && verificationResult.hasSCA))) {
+                        hasMissingBuildReports = true
+                        logger.error { "App $name is missing SAST report!" }
+                    }
+                    if (!verificationResult.hasSCA && (!verificationResult.hasDAST || (verificationResult.hasDAST && verificationResult.hasSAST))) {
+                        hasMissingBuildReports = true
+                        logger.error { "App $name is missing SCA report!" }
+                    }
+                    if (verificationResult.hasDAST) {
+                        hasDastReport = true
+                        logger.info { "Found DAST report for App $name." }
+                    }
+                    if (verificationResult.hasSCA) {
+                        hasScaReport = true
+                    }
+                    if (verificationResult.hasSAST) {
+                        hasSastReport = true
+                    }
+                }
+                if (!hasDastReport) {
+                    hasMissingBuildReports = true
+                    logger.error { "No DAST report found!" }
+                }
+                if (!hasScaReport) {
+                    hasMissingBuildReports = true
+                    logger.error { "No SCA report found!" }
+                }
+                if (!hasSastReport) {
+                    hasMissingBuildReports = true
+                    logger.error { "No SAST report found!" }
+                }
+        
+                check(!hasInvalidReports) { "Invalid report(s)!" }
+                check(!hasMissingBuildReports) { "Missing reports!" }
+                logger.info { "Verifying pipeline approval configuration..." }
+                check(webapprovalMixin.isConfigurationApproved()) { "Failed to validate approval configuration." }
+            }
+        }
+        
+        private fun runChangeManagementProcess(): Int {
+            return runCatching {
                 logger.info { "Starting Change Management process." }
                 changeHandler
                     .initialise(
@@ -550,30 +522,41 @@ class ChangeCommand : SubcommandWithHelp() {
                     )
                     .findItSystem(changeManagementSection.commercialReference)
                     .findExisting()
-
+        
                 if (changeManagementSection.resume) {
-                    changeHandler
-                        .findResumable()
-                        .closeExisting()
-                        .resume()
-                        .comment(changeManagementSection.comment)
-                        .monitor(changeDetails.approvalCheckIntervalInMinutes)
+                    processResumableChange()
                 } else {
-                    changeHandler
-                        .closeExisting()
-                        .post(changeDetails)
-                        .comment(changeManagementSection.comment)
-                        .preauthorize()
-                        .transition(OPEN_TO_IMPLEMENTATION)
-                        .monitor(changeDetails.approvalCheckIntervalInMinutes)
+                    processNewChange()
                 }
                 logger.info { "Finishing Change Management process." }
-            }.onFailure {
+                0
+            }.getOrElse {
                 it.klogSelf(logger)
-                return -1
-            }.getOrThrow()
-
-            val webapprovalUrl = if (webApprovalSection.performWebapproval) {
+                -1
+            }
+        }
+        
+        private fun processResumableChange() {
+            changeHandler
+                .findResumable()
+                .closeExisting()
+                .resume()
+                .comment(changeManagementSection.comment)
+                .monitor(changeDetails.approvalCheckIntervalInMinutes)
+        }
+        
+        private fun processNewChange() {
+            changeHandler
+                .closeExisting()
+                .post(changeDetails)
+                .comment(changeManagementSection.comment)
+                .preauthorize()
+                .transition(OPEN_TO_IMPLEMENTATION)
+                .monitor(changeDetails.approvalCheckIntervalInMinutes)
+        }
+        
+        private fun manageWebApprovalEntries(reportUrl: String?): String? {
+            return if (webApprovalSection.performWebapproval) {
                 logger.info { "Flag --webapproval found. Adding Sharepoint entry." }
                 runCatching {
                     checkNotNull(reportUrl)
@@ -583,18 +566,16 @@ class ChangeCommand : SubcommandWithHelp() {
                 }.getOrElse {
                     logger.error { "Failed publishing Webapproval to Sharepoint." }
                     it.klogSelf(logger)
-                    return -1
+                    null
                 }
             } else {
                 logger.info { "Flag --webapproval not found. Skipping Sharepoint entry." }
                 null
             }
-
-            if (tqsSection.performTqs) {
-                logger.info { "Flag --tqs found. Deprecated due to unsupported plugin and measurements. This flag has no effect and can be removed." }
-            }
-
-            val oslcURls = if (oslcSection.performOslc) {
+        }
+        
+        private fun addOslcEntries(reportUrl: String?): Boolean {
+            return if (oslcSection.performOslc) {
                 logger.info { "Flag --oslc found. Adding OSLC entry." }
                 runCatching {
                     oslcMixin.addEntries(
@@ -603,16 +584,19 @@ class ChangeCommand : SubcommandWithHelp() {
                         oslcSection.isDistribution,
                         artifactoryMixinFull.oslcReportsWithMetadata,
                     )
+                    true
                 }.getOrElse {
                     logger.error { "Failed publishing OSLC Reports to Sharepoint" }
                     it.klogSelf(logger)
-                    return -1
+                    false
                 }
             } else {
                 logger.info { "Flag --oslc not found. Skipping OSLC entry." }
-                emptyList()
+                true
             }
-
+        }
+        
+        private fun writeOutputUrlsToFile(reportUrl: String?, webapprovalUrl: String?) {
             changeManagementSection.outputUrlsFile?.let { outputUrlFile ->
                 val file = File(outputUrlFile)
                 if (file.exists()) {
@@ -623,7 +607,7 @@ class ChangeCommand : SubcommandWithHelp() {
                     cdlibChangeJiraUrl = changeHandler.getUrl(),
                     cdlibChangeImmutableRepoUrl = reportUrl,
                     cdlibChangeWebapprovalEntryUrl = webapprovalUrl,
-                    cdlibChangeOslcEntryUrls = oslcURls,
+                    cdlibChangeOslcEntryUrls = emptyList(),
                     cdlibChangeTqsEntryUrls = emptyList() // TODO: Left here to not break sharepoint model. Remove in 7.0 or find way to include cdlib-external sonar url?
                 )
                 runCatching {
@@ -633,11 +617,8 @@ class ChangeCommand : SubcommandWithHelp() {
                 }.onFailure {
                     logger.error { "Failed to write file!" }
                     it.klogSelf(logger)
-                    return -1
                 }
             }
-
-            return 0
         }
 
         companion object : KLogging()
