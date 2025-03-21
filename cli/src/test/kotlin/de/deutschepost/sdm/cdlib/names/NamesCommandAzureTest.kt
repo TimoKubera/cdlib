@@ -39,6 +39,10 @@ class NamesCommandAzureTest : AnnotationSpec() {
         )
     )
 
+    companion object {
+        private const val VSO_TASK_VARIABLE = "##vso[task.setvariable variable=CDLIB_APP_NAME;isOutput=true]ICTO-3339_SDM-phippyandfriends"
+    }
+
     @BeforeAll
     fun initMocks() {
         mockkObject(GitRepository)
