@@ -51,6 +51,10 @@ class ReportOslcNPMPluginIntegrationTest(
                 output shouldContain "Policy Profile: Non-Distribution"
             }
 
+            companion object {
+                const val UPLOADED_ARTIFACT_MESSAGE = "Uploaded Artifact:"
+            }
+
             test("Upload OSLC-Plugin report to artifactory") {
                 val args =
                     "--debug --files $jsonFile --no-distribution --artifactory-its-instance --artifactory-identity-token $artifactoryIdentityToken --repo-name $repoName --type build".toArgsArray()
@@ -58,7 +62,7 @@ class ReportOslcNPMPluginIntegrationTest(
                     PicocliRunner.call(ReportCommand.UploadCommand::class.java, *args)
                 }
                 ret shouldBeExactly 0
-                output shouldContain "Uploaded Artifact:"
+                output shouldContain UPLOADED_ARTIFACT_MESSAGE
             }
             // TODO: Delete after sundown
             test("Upload OSLC-Plugin report to LCM artifactory") {
@@ -68,7 +72,7 @@ class ReportOslcNPMPluginIntegrationTest(
                     PicocliRunner.call(ReportCommand.UploadCommand::class.java, *args)
                 }
                 ret shouldBeExactly 0
-                output shouldContain "Uploaded Artifact:"
+                output shouldContain UPLOADED_ARTIFACT_MESSAGE
             }
 
             test("Check OSLC-Plugin report locally should fail due to distribution flag") {
