@@ -1,6 +1,7 @@
 package de.deutschepost.sdm.cdlib.release
 
 
+import io.micronaut.http.HttpResponse
 import de.deutschepost.sdm.cdlib.SubcommandWithHelp
 import de.deutschepost.sdm.cdlib.mixins.CheckMixin
 import de.deutschepost.sdm.cdlib.mixins.artifactory.ArtifactoryMixinLight
@@ -462,36 +463,43 @@ class ReportCommand : SubcommandWithHelp() {
                         logger.info { "Successfully generated taskID: $taskId" }
 
                         val projectInfoJob = async { fnciService.getProjectInformation(projectId, token) }
-                        val inventoryJob = async { fnciService.getProjectInventory(projectId, token) }
-                        val reportJob = async {
+                        private fun fetchReport(projectId: Int, taskId: Int, token: String): ByteArray? = runBlocking {
                             logger.info { "Client will try to fetch report" }
                             while (true) {
                                 val response = fnciService.downloadReport(projectId, 1, taskId, token)
-
-                                when (response.status) {
-                                    HttpStatus.ACCEPTED -> {
-                                        val message = response.body.getOrNull()?.let {
-                                            runCatching {
-                                                defaultObjectMapper.readValue(
-                                                    it,
-                                                    FnciMessageWrapper::class.java
-                                                ).data.firstOrNull()?.message
-                                            }.getOrNull()
-                                        } ?: "Report generation is still in progress."
-                                        logger.info { "$message Client will retry after 20 seconds" }
-                                        delay(20_000)
-                                    }
-
-                                    HttpStatus.OK -> {
-                                        return@async response.body.get()
-                                    }
-
-                                    else -> {
-                                        return@async null
-                                    }
-                                }
+                                val result = handleResponseStatus(response)
+                                if (result != null) return@runBlocking result
                             }
                         }
+                        
+                        private fun handleResponseStatus(response: HttpResponse): ByteArray? {
+                            return when (response.status) {
+                                HttpStatus.ACCEPTED -> {
+                                    val message = extractMessage(response.body.getOrNull())
+                                    logger.info { "$message Client will retry after 20 seconds" }
+                                    delay(20_000)
+                                    null
+                                }
+                                HttpStatus.OK -> {
+                                    response.body.get()
+                                }
+                                else -> null
+                            }
+                        }
+                        
+                        private fun extractMessage(responseBody: String?): String {
+                            return responseBody?.let {
+                                runCatching {
+                                    defaultObjectMapper.readValue(
+                                        it,
+                                        FnciMessageWrapper::class.java
+                                    ).data.firstOrNull()?.message
+                                }.getOrNull()
+                            } ?: "Report generation is still in progress."
+                        }
+                        
+                        val inventoryJob = async { fnciService.getProjectInventory(projectId, token) }
+                        val reportJob = async { fetchReport(projectId, taskId, token) }
 
                         val projectInfo = projectInfoJob.await()
                         val inventory = inventoryJob.await()
