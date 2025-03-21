@@ -96,9 +96,13 @@ class ChangeCreateIntegrationTest(
                     "  Business Criticality: ${OPERATIONAL.name}\n" +
                     "  Determined change type --> MINOR"
                 output shouldContain "Updating change request type: MINOR"
-                output shouldContain "Transitioning change request phase: ${OPEN_TO_IMPLEMENTATION.name}"
-                output shouldContain "Checking change request status for approval every "
-                output shouldContain "Checked current change request status: ${WAITING_FOR_APPROVAL.name}"
+                companion object {
+                        private const val STRING_LITERAL = "Checking change request status for approval every "
+                    }
+                
+                    output shouldContain "Transitioning change request phase: ", ${OPEN_TO_IMPLEMENTATION.name}
+                    output shouldContain STRING_LITERAL
+                    output shouldContain "Checked current change request status: ", ${WAITING_FOR_APPROVAL.name}
 
             }
             changeTestHelper.closeChangeRequest(
