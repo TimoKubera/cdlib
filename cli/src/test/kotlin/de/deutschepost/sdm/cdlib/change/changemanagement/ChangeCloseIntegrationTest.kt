@@ -58,6 +58,10 @@ class ChangeCloseIntegrationTest(
     )
 
     init {
+        companion object {
+            const val METRIC_OBJECT_MESSAGE = "Pushing following metric object:"
+        }
+
         "Closing change with commercial reference is a success" {
             changeHandler
                 .post(changeDetails)
@@ -79,7 +83,7 @@ class ChangeCloseIntegrationTest(
             output shouldNotContain "Could not transition to 'Under Review'."
             output shouldContain "Transitioning to next change request phase."
             output shouldContain "Change request phase transitioned successfully: 'Under Review'. Change was implemented successfully and is to be reviewed."
-            output shouldContain "Pushing following metric object:"
+            output shouldContain METRIC_OBJECT_MESSAGE
             exitCode shouldBe 0
         }
 
@@ -152,7 +156,7 @@ class ChangeCloseIntegrationTest(
 
             output shouldNotContain "Failed to parse Pipeline status"
             output shouldNotContain "Failed to create metric object."
-            output shouldContain "Pushing following metric object:"
+            output shouldContain METRIC_OBJECT_MESSAGE
             exitCode shouldBe 0
         }
 
