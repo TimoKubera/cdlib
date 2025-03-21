@@ -38,7 +38,10 @@ class OslcComplianceCheckerTest : FunSpec() {
             )
         )
     )
-    private val licenseMozillaName = "Mozilla Public License 2.0"
+    companion object {
+        const val MOZILLA_PUBLIC_LICENSE_20 = "Mozilla Public License 2.0"
+    }
+    private val licenseMozillaName = MOZILLA_PUBLIC_LICENSE_20
     private val depWithCDDL = OslcDependencyLicenseEntry(
         dependencyName = "test.should.fail:cddl",
         dependencyVersion = "",
@@ -181,7 +184,7 @@ class OslcComplianceCheckerTest : FunSpec() {
                     "GNU Lesser General Public License 2.1" to 9,
                     "GNU General Public License 2.0" to 4,
                     "GNU General Public License 3.0" to 4,
-                    "Mozilla Public License 2.0" to 5
+                    MOZILLA_PUBLIC_LICENSE_20 to 5
                 )
                 val notExpectedLicenses = listOf(
                     "Apache License 2.0",
@@ -235,7 +238,7 @@ class OslcComplianceCheckerTest : FunSpec() {
                     "GNU Lesser General Public License 2.1",
                     "GNU General Public License 2.0",
                     "GNU General Public License 3.0",
-                    "Mozilla Public License 2.0"
+                    MOZILLA_PUBLIC_LICENSE_20
                 )
                 printDefinitions(definitions)
                 expectedLicenses.forEach { (license: String, numberOfAliases: Int) ->
@@ -282,7 +285,7 @@ class OslcComplianceCheckerTest : FunSpec() {
                 val epl2 = output.entries.firstOrNull { it.key.license == "Eclipse Public License 2.0" }
                 epl2 shouldNotBe null
                 epl2?.value?.size shouldBe 1
-                val mpl2 = output.entries.firstOrNull { it.key.license == "Mozilla Public License 2.0" }
+                val mpl2 = output.entries.firstOrNull { it.key.license == MOZILLA_PUBLIC_LICENSE_20 }
                 mpl2 shouldNotBe null
                 mpl2?.value?.size shouldBe 1
                 val unknown = output.entries.firstOrNull { it.key.license == "UNKNOWN" }
