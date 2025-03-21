@@ -25,6 +25,7 @@ micronaut {
 
 val kotlinVersion = project.properties["kotlinVersion"] as String
 val kotlinCoroutines = project.properties["kotlinCoroutines"] as String
+val artifactoryClientVersion = "2.19.1"
 
 dependencies {
     ksp("info.picocli:picocli-codegen")
@@ -34,7 +35,7 @@ dependencies {
     implementation("io.micronaut.kotlin:micronaut-kotlin-runtime")
     implementation("io.micronaut.picocli:micronaut-picocli")
     implementation("io.micronaut:micronaut-retry")
-    implementation("javax.annotation:javax.annotation-api") // todo remove?
+    implementation("javax.annotation:javax.annotation-api")
     implementation("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${kotlinCoroutines}")
@@ -46,7 +47,7 @@ dependencies {
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
 
     // artifactory
-    implementation("org.jfrog.artifactory.client:artifactory-java-client-services:2.19.1")
+    implementation("org.jfrog.artifactory.client:artifactory-java-client-services:$artifactoryClientVersion")
     // logging
     implementation("io.github.microutils:kotlin-logging:2.1.23")
     // webapproval sharepoint
