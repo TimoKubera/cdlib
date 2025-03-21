@@ -26,6 +26,7 @@ micronaut {
 val kotlinVersion = project.properties["kotlinVersion"] as String
 val kotlinCoroutines = project.properties["kotlinCoroutines"] as String
 val artifactoryClientVersion = "2.19.1"
+val httpClientVersion = "4.5.14"
 
 dependencies {
     ksp("info.picocli:picocli-codegen")
@@ -52,7 +53,8 @@ dependencies {
     val kotlinLoggingVersion = "2.1.23"
     implementation("io.github.microutils:kotlin-logging:${kotlinLoggingVersion}")
     // webapproval sharepoint
-    implementation("org.apache.httpcomponents:httpclient:4.5.14")
+    implementation("org.apache.httpcomponents:httpclient:") + httpClientVersion
+
     implementation("org.codelibs:jcifs:1.3.18.3") // Never update this, Version 2 is incompatible
     // JGit (https://mvnrepository.com/artifact/org.eclipse.jgit/org.eclipse.jgit)
     implementation("org.eclipse.jgit:org.eclipse.jgit:7.1.0.202411261347-r")
