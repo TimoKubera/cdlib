@@ -26,6 +26,7 @@ micronaut {
 val kotlinVersion = project.properties["kotlinVersion"] as String
 val kotlinCoroutines = project.properties["kotlinCoroutines"] as String
 val artifactoryClientVersion = "2.19.1"
+val kotlinLoggingVersion = "2.1.23"
 
 dependencies {
     ksp("info.picocli:picocli-codegen")
@@ -49,7 +50,8 @@ dependencies {
     // artifactory
     implementation("org.jfrog.artifactory.client:artifactory-java-client-services:$artifactoryClientVersion")
     // logging
-    implementation("io.github.microutils:kotlin-logging:2.1.23")
+    implementation("io.github.microutils:kotlin-logging:$kotlinLoggingVersion")
+
     // webapproval sharepoint
     implementation("org.apache.httpcomponents:httpclient:4.5.14")
     implementation("org.codelibs:jcifs:1.3.18.3") // Never update this, Version 2 is incompatible
