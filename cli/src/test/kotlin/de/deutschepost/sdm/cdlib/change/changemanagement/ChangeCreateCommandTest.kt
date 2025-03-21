@@ -46,68 +46,67 @@ class ChangeCreateCommandTest(
             val (_, output) = withErrorOutput {
                 PicocliRunner.call(
                     ChangeCommand.CreateCommand::class.java,
-                    *"--category jellyfish --test --jira-token $token".toArgsArray()
-                )
-            }
-            output shouldContain "Invalid value for option '--category': expected one of [ROLLOUT, NO_ROLLOUT, AUTHORIZATIONS, DATA_MAINTENANCE, TECHNICAL_REQUIREMENTS, LEGAL_OR_CONTRACTUAL_REQUIREMENTS, HOUSEKEEPING, CAPACITY_ADJUSTMENTS, SECURITY, TROUBLESHOOTING, OTHER] (case-sensitive) but was 'jellyfish'"
-        }
-
-        "Create change request fails due to missing commercial reference" {
-            val (_, output) = withErrorOutput {
-                PicocliRunner.call(
-                    ChangeCommand.CreateCommand::class.java,
-                    *"--test --jira-token $token".toArgsArray()
-                )
-            }
-
-            output shouldContain "Missing required argument(s): --commercial-reference=<commercialReference>"
-        }
-
-        "Command fails if webapproval is requested with missing parameters." {
-            val (exitCode, output) = withStandardOutput {
-                PicocliRunner.call(
-                    ChangeCommand.CreateCommand::class.java,
-                    *"--jira-token $token --debug --commercial-reference 5296 --test --webapproval --no-distribution".toArgsArray()
-                )
-            }
-            exitCode shouldBeExactly -1
-            output shouldContain "java.lang.IllegalArgumentException"
-        }
-
-        "Command fails if oslc but no distribution was passed" {
-            val (exitCode, output) = withStandardOutput {
-                PicocliRunner.call(
-                    ChangeCommand.CreateCommand::class.java,
-                    *"--jira-token $token --debug --commercial-reference 5296 --test".toArgsArray()
-                )
-            }
-            exitCode shouldBeExactly -1
-            output shouldContain "java.lang.IllegalArgumentException"
-        }
-
-        "Command doesn't fail if no-oslc and no distribution was passed" {
-            val (exitCode, output) = withStandardOutput {
-                PicocliRunner.call(
-                    ChangeCommand.CreateCommand::class.java,
-                    *"--jira-token $token --debug --commercial-reference 5296 --test --no-oslc".toArgsArray()
-                )
-            }
-            exitCode shouldBeExactly -1
-            output shouldContain "java.lang.IllegalArgumentException"
-            output shouldContain "Verifying reports..."
-        }
-
-        "Parsing deployment status string returns expected enum" {
-            listOf(
-                "SUCCESS", "FAILURE", "UNSTABLE", "ABORTED",
-                "Succeeded", "Failed", "Canceled", "SucceededWithIssues"
-            ).forAll {
-                val parseStatus: Method =
-                    ChangeCommand.CloseCommand::class.java.getDeclaredMethod("parseStatus", String::class.java)
-                parseStatus.isAccessible = true
-                val parsedStatus = parseStatus.invoke(ChangeCommand.CloseCommand(), it) as Deployment.Status?
-                parsedStatus?.name shouldBe it.uppercase()
-            }
-        }
+                    private companion object {
+                        const val ILLEGAL_ARGUMENT_EXCEPTION = "java.lang.IllegalArgumentException"
+                    }
+                    
+                    "Create change request fails due to missing commercial reference" {
+                        val (_, output) = withErrorOutput {
+                            PicocliRunner.call(
+                                ChangeCommand.CreateCommand::class.java,
+                                *"--test --jira-token $token".toArgsArray()
+                            )
+                        }
+                    
+                        output shouldContain "Missing required argument(s): --commercial-reference=<commercialReference>"
+                    }
+                    
+                    "Command fails if webapproval is requested with missing parameters." {
+                        val (exitCode, output) = withStandardOutput {
+                            PicocliRunner.call(
+                                ChangeCommand.CreateCommand::class.java,
+                                *"--jira-token $token --debug --commercial-reference 5296 --test --webapproval --no-distribution".toArgsArray()
+                            )
+                        }
+                        exitCode shouldBeExactly -1
+                        output shouldContain ILLEGAL_ARGUMENT_EXCEPTION
+                    }
+                    
+                    "Command fails if oslc but no distribution was passed" {
+                        val (exitCode, output) = withStandardOutput {
+                            PicocliRunner.call(
+                                ChangeCommand.CreateCommand::class.java,
+                                *"--jira-token $token --debug --commercial-reference 5296 --test".toArgsArray()
+                            )
+                        }
+                        exitCode shouldBeExactly -1
+                        output shouldContain ILLEGAL_ARGUMENT_EXCEPTION
+                    }
+                    
+                    "Command doesn't fail if no-oslc and no distribution was passed" {
+                        val (exitCode, output) = withStandardOutput {
+                            PicocliRunner.call(
+                                ChangeCommand.CreateCommand::class.java,
+                                *"--jira-token $token --debug --commercial-reference 5296 --test --no-oslc".toArgsArray()
+                            )
+                        }
+                        exitCode shouldBeExactly -1
+                        output shouldContain ILLEGAL_ARGUMENT_EXCEPTION
+                        output shouldContain "Verifying reports..."
+                    }
+                    
+                    "Parsing deployment status string returns expected enum" {
+                        listOf(
+                            "SUCCESS", "FAILURE", "UNSTABLE", "ABORTED",
+                            "Succeeded", "Failed", "Canceled", "SucceededWithIssues"
+                        ).forAll {
+                            val parseStatus: Method =
+                                ChangeCommand.CloseCommand::class.java.getDeclaredMethod("parseStatus", String::class.java)
+                            parseStatus.isAccessible = true
+                            val parsedStatus = parseStatus.invoke(ChangeCommand.CloseCommand(), it) as Deployment.Status?
+                            parsedStatus?.name shouldBe it.uppercase()
+                        }
+                    }
+                    
     }
 }
