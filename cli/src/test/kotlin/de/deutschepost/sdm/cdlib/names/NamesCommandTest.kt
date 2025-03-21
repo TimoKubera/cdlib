@@ -12,13 +12,17 @@ import withStandardOutput
 @RequiresTag("UnitTest")
 @Tags("UnitTest")
 class NamesCommandTest : DescribeSpec({
+    companion object {
+        const val DISPLAY_HELP_MESSAGE = "should display help"
+    }
+
     describe("cdlib names") {
         describe("names -h") {
             val (_, output) = withStandardOutput {
                 val args = "names -h".toArgsArray()
                 PicocliRunner.run(CdlibCommand::class.java, *args)
             }
-            it("should display help") {
+            it(DISPLAY_HELP_MESSAGE) {
                 output shouldContain "Contains subcommands for automatic name and ID creation in pipeline"
             }
         }
