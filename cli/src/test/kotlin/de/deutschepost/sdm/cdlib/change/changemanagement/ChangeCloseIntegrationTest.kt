@@ -200,33 +200,55 @@ class ChangeCloseIntegrationTest(
                     )
                 }
 
-                output shouldContain "http://integration-test-url.jenkuns.example.com"
-                output shouldContain "Dashboard status code: 201"
-                exitCode shouldBeExactly 0
-            }
-        }
-
-        "Closing change successfully publishes metrics via Jenkins as infrastructure deployment" {
-            withEnvironment(
-                "CDLIB_JOB_URL" to "http://integration-test-url.jenkuns.example.com/foo/bar/job/1337",
-                OverrideMode.SetOrOverride
-            ) {
-                changeHandler
-                    .post(changeDetails)
-                    .preauthorize()
-                    .transition(OPEN_TO_IMPLEMENTATION)
-
-                val (exitCode, output) = withStandardOutput {
-                    PicocliRunner.call(
-                        ChangeCommand.CloseCommand::class.java,
-                        *"--test --token $token --commercial-reference $commercialReference --status $status --deployment-type INFRA".toArgsArray()
-                    )
+                companion object {
+                    const val STATUS_CODE_MESSAGE = "Dashboard status code: 201"
                 }
-
-                output shouldContain "http://integration-test-url.jenkuns.example.com"
-                output shouldContain "Dashboard status code: 201"
-                output shouldContain "INFRA"
-                exitCode shouldBeExactly 0
+                
+                "Closing change successfully publishes metrics via Jenkins" {
+                    withEnvironment(
+                        "CDLIB_JOB_URL" to "http://integration-test-url.jenkuns.example.com/foo/bar/job/1337",
+                        OverrideMode.SetOrOverride
+                    ) {
+                        changeHandler
+                            .post(changeDetails)
+                            .preauthorize()
+                            .transition(OPEN_TO_IMPLEMENTATION)
+                
+                        val (exitCode, output) = withStandardOutput {
+                            PicocliRunner.call(
+                                ChangeCommand.CloseCommand::class.java,
+                                *"--test --jira-token $token --commercial-reference $commercialReference --status $status".toArgsArray()
+                            )
+                        }
+                
+                        output shouldContain "http://integration-test-url.jenkuns.example.com"
+                        output shouldContain STATUS_CODE_MESSAGE
+                        exitCode shouldBeExactly 0
+                    }
+                }
+                
+                "Closing change successfully publishes metrics via Jenkins as infrastructure deployment" {
+                    withEnvironment(
+                        "CDLIB_JOB_URL" to "http://integration-test-url.jenkuns.example.com/foo/bar/job/1337",
+                        OverrideMode.SetOrOverride
+                    ) {
+                        changeHandler
+                            .post(changeDetails)
+                            .preauthorize()
+                            .transition(OPEN_TO_IMPLEMENTATION)
+                
+                        val (exitCode, output) = withStandardOutput {
+                            PicocliRunner.call(
+                                ChangeCommand.CloseCommand::class.java,
+                                *"--test --token $token --commercial-reference $commercialReference --status $status --deployment-type INFRA".toArgsArray()
+                            )
+                        }
+                
+                        output shouldContain "http://integration-test-url.jenkuns.example.com"
+                        output shouldContain STATUS_CODE_MESSAGE
+                        output shouldContain "INFRA"
+                        exitCode shouldBeExactly 0
+                    }
             }
         }
 
