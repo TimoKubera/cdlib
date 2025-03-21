@@ -13,6 +13,10 @@ import io.mockk.mockkObject
 class RepositoryTest : AnnotationSpec() {
     private val currDir = System.getProperty("user.dir")
 
+    companion object {
+        const val AUTHOR_EMAIL = "f.l@dhl.com"
+    }
+
     @BeforeAll
     fun initMocks() {
         mockkObject(GitRepository)
@@ -22,10 +26,11 @@ class RepositoryTest : AnnotationSpec() {
             longMessage = "Dummy Commit",
             shortMessage = "Dummy Commit",
             authorName = "Firstname Lastname",
-            authorEmail = "f.l@dhl.com",
+            authorEmail = AUTHOR_EMAIL,
             committerName = "Firstname Lastname",
-            committerEmail = "f.l@dhl.com"
+            committerEmail = AUTHOR_EMAIL
         )
+    }
     }
 
     @Test
