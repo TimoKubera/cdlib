@@ -184,7 +184,7 @@ class ChangeManagementRepositoryTest(
                                                             referencedObject = JiraObjectEntry(
                                                                 attributes = listOf(),
                                                                 objectType = JiraObjectType(
-                                                                    name = "Business Kritikalität",
+                                                                    name = BUSINESS_CRITICALITY,
                                                                     6
                                                                 ),
                                                                 objectKey = "objectKey",
@@ -196,7 +196,7 @@ class ChangeManagementRepositoryTest(
                                                 )
                                             ),
                                             objectType = JiraObjectType(
-                                                name = "Business Kritikalität",
+                                                name = BUSINESS_CRITICALITY,
                                                 6
                                             ),
                                             objectKey = "objectKey",
@@ -251,7 +251,7 @@ class ChangeManagementRepositoryTest(
                                                             referencedObject = JiraObjectEntry(
                                                                 attributes = listOf(),
                                                                 objectType = JiraObjectType(
-                                                                    name = "Business Kritikalität",
+                                                                    name = BUSINESS_CRITICALITY,
                                                                     6
                                                                 ),
                                                                 objectKey = "objectKey",
@@ -263,8 +263,33 @@ class ChangeManagementRepositoryTest(
                                                 )
                                             ),
                                             objectType = JiraObjectType(
-                                                name = "Business Kritikalität",
+                                                name = BUSINESS_CRITICALITY,
                                                 6
+                                            ),
+                                            objectKey = "objectKey",
+                                            label = "label"
+                                        ),
+                                    )
+                                ),
+                                objectTypeAttributeId = itSystemAttributeId
+                            ),
+                            JiraAttribute(
+                                objectAttributeValues = listOf(
+                                    JiraObjectAttributeValue(
+                                        displayValue = almId,
+                                        searchValue = almId,
+                                        referencedObject = null,
+                                    )
+                                ),
+                                objectTypeAttributeId = almAttributeId
+                            ),
+                            JiraAttribute(
+                                objectAttributeValues = listOf(
+                                    JiraObjectAttributeValue(
+                                        displayValue = businessYearLater,
+                                        searchValue = businessYearLater,
+                                        referencedObject = null,
+                                    )
                                             ),
                                             objectKey = "objectKey",
                                             label = "label"
