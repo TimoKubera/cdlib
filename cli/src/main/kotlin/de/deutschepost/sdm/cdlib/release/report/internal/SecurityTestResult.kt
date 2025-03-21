@@ -151,7 +151,7 @@ fun List<SecurityTestResult>.securityTestsVerify(
             ReportType.SAST -> securityReportVerificationResult.hasSAST = true
             ReportType.CCA -> { // Intentionally left blank because CCA reports require no processing
                         }
-                        ReportType.OTHER -> { // Intentionally left blank because OTHER reports require no processing
+                        
                         }
                         ReportType.OSLC -> { // Intentionally left blank because OSLC reports require no processing
                         }
