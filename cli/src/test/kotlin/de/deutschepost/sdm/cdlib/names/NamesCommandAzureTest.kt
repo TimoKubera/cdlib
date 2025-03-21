@@ -60,14 +60,14 @@ class NamesCommandAzureTest : AnnotationSpec() {
             val args = "names create".toArgsArray()
             PicocliRunner.run(CdlibCommand::class.java, *args)
         }
-
-        output shouldContainIgnoringCase "##vso[task.setvariable variable=CDLIB_APP_NAME;isOutput=true]ICTO-3339_SDM-phippyandfriends"
+    
+        output shouldContainIgnoringCase CDLIB_APP_NAME_OUTPUT
         output shouldContainIgnoringCase "##vso[task.setvariable variable=CDLIB_EFFECTIVE_BRANCH_NAME;isOutput=true]i593_test"
         output shouldContainIgnoringCase "##vso[task.setvariable variable=CDLIB_PM_GIT_ID;isOutput=true]a5c5bc3ce1907e844490697b9aa22c4196c5d781"
         output shouldContainIgnoringCase "##vso[task.setvariable variable=CDLIB_RELEASE_NAME;isOutput=true]ICTO-3339_SDM-phippyandfriends_"
         output shouldContainIgnoringCase "##vso[task.setvariable variable=CDLIB_REVISION;isOutput=true]a5c5bc3"
     }
-
+    
     @Test
     fun testNamesCreateOverrideOrigin() {
         val origin = "https://git.dhl.com/Overriden/Origin.git"
@@ -77,7 +77,7 @@ class NamesCommandAzureTest : AnnotationSpec() {
         }
         output shouldContainIgnoringCase "##vso[task.setvariable variable=CDLIB_PM_GIT_ORIGIN;isOutput=true]$origin"
     }
-
+    
     @Test
     fun testNamesCreateWithValidReleaseName() {
         val (_, output) = withStandardOutput {
@@ -85,7 +85,7 @@ class NamesCommandAzureTest : AnnotationSpec() {
             val args = "names create --from-release-name $releaseName".toArgsArray()
             PicocliRunner.run(CdlibCommand::class.java, *args)
         }
-        output shouldContainIgnoringCase "##vso[task.setvariable variable=CDLIB_APP_NAME;isOutput=true]ICTO-3339_SDM-phippyandfriends"
+        output shouldContainIgnoringCase CDLIB_APP_NAME_OUTPUT
         output shouldContainIgnoringCase "##vso[task.setvariable variable=CDLIB_APP_VERSION;isOutput=true]20211203.1809.18"
         output shouldContainIgnoringCase "##vso[task.setvariable variable=CDLIB_BUILD_NUMBER;isOutput=true]20210908.16"
         output shouldContainIgnoringCase "##vso[task.setvariable variable=CDLIB_EFFECTIVE_BRANCH_NAME;isOutput=true]i593_test"
@@ -94,16 +94,16 @@ class NamesCommandAzureTest : AnnotationSpec() {
         output shouldContainIgnoringCase "##vso[task.setvariable variable=CDLIB_RELEASE_VERSION;isOutput=true]20211203.1809.18_20210908.16_a5c5bc3"
         output shouldContainIgnoringCase "##vso[task.setvariable variable=CDLIB_REVISION;isOutput=true]a5c5bc3"
     }
-
+    
     @Test
     fun testNamesCreateWithInvalidReleaseName() {
         val releaseName = "ICTO-20211203.1809.18_12657_a5c5bc3"
         val args = "--from-release-name $releaseName".toArgsArray()
-
+    
         val returnCode = PicocliRunner.call(NamesCommand.CreateCommand::class.java, *args)
         returnCode shouldBeEqualComparingTo -1
     }
-
+    
     @Test
     fun testPREffectiveBranchName() {
         withEnvironment(
@@ -117,13 +117,19 @@ class NamesCommandAzureTest : AnnotationSpec() {
                 val args = "names create".toArgsArray()
                 PicocliRunner.run(CdlibCommand::class.java, *args)
             }
-
-            output shouldContainIgnoringCase "##vso[task.setvariable variable=CDLIB_APP_NAME;isOutput=true]ICTO-3339_SDM-phippyandfriends"
+    
+            output shouldContainIgnoringCase CDLIB_APP_NAME_OUTPUT
             output shouldContainIgnoringCase "##vso[task.setvariable variable=CDLIB_EFFECTIVE_BRANCH_NAME;isOutput=true]i593_test"
             output shouldContainIgnoringCase "##vso[task.setvariable variable=CDLIB_PM_GIT_ID;isOutput=true]a5c5bc3ce1907e844490697b9aa22c4196c5d781"
             output shouldContainIgnoringCase "##vso[task.setvariable variable=CDLIB_RELEASE_NAME;isOutput=true]ICTO-3339_SDM-phippyandfriends_"
             output shouldContainIgnoringCase "##vso[task.setvariable variable=CDLIB_REVISION;isOutput=true]a5c5bc3"
         }
+    
+    }
+    
+    companion object {
+        const val CDLIB_APP_NAME_OUTPUT = "##vso[task.setvariable variable=CDLIB_APP_NAME;isOutput=true]ICTO-3339_SDM-phippyandfriends"
+    }
 
     }
 }
