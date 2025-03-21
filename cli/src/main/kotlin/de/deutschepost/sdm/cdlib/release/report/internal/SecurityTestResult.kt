@@ -1,5 +1,6 @@
 package de.deutschepost.sdm.cdlib.release.report.internal
 
+import mu.KLogging
 import mu.KLogging;
 import com.fasterxml.jackson.annotation.JsonAlias
 import com.fasterxml.jackson.annotation.JsonIgnore
@@ -154,7 +155,7 @@ fun List<SecurityTestResult>.securityTestsVerify(
             ReportType.OTHER -> {
                 logger.info { "No operation for ReportType.OTHER" }
             }
-            ReportType.OSLC -> {}
+            ReportType.OSLC -> { logger.info { "No operation for ReportType.OSLC" } }
             ReportType.OSLC_PRE -> {}
         }
     }
