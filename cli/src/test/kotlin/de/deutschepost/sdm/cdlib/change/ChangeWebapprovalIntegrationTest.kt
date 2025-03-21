@@ -41,10 +41,10 @@ import java.util.*
 class ChangeWebapprovalIntegrationTest(
     @Value("\${change-management-token}") val token: String,
     @Value("\${sharepoint.username}") val spUsername: String,
-    @Value("\${sharepoint.password}") val sp_password: String,
+    @Value("\${sharepoint.password}") val spPassword: String,
     @Value("\${artifactory-its-identity-token}") val artifactoryIdentityToken: String,
     private val cosmosDashboardRepository: CosmosDashboardRepository
-) : FunSpec() {
+
     private val appName = "cli"
     private val timestamp =
         DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(ZonedDateTime.now().truncatedTo(ChronoUnit.SECONDS))
