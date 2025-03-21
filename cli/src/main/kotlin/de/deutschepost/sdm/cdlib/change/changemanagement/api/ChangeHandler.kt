@@ -248,95 +248,100 @@ class ChangeHandler(
     }
 
     fun preauthorize(): ChangeHandler {
-        require(::change.isInitialized) { "Missing required change information." }
-        logger.info { "Determining whether change can be preauthorized." }
-        val changeType = determineChangeType()
-        logTypeResults(changeType)
-        change = change.updateType(changeType)
-
-        runCatching {
-            logger.info { "Updating change request type: ${change.type?.name}" }
-            changeManagementRepository.updateChange(change, auth)
-        }.getOrElse {
-            logger.error { "Could not update change request type. \nError: ${it.message}" }
+        companion object {
+            const val MISSING_CHANGE_INFO_MESSAGE = "Missing required change information."
         }
-        return this
-    }
-
-    fun resume(): ChangeHandler {
-        require(::auth.isInitialized) { "Missing required authentication token." }
-        require(::change.isInitialized) { "Missing required change information." }
-
-        logger.info { "Resuming change: ${change.self}" }
-        logger.info { "Adding resume comment to change..." }
-
-        changeManagementRepository.addComment(
-            change.id,
-            "Change wird mit anderer Pipeline (${resolveEnvByName(Names.CDLIB_JOB_URL)}) fortgesetzt.",
-            auth
-        )
-
-        logger.info { "Adding new job url to change description..." }
-        change = change.updateDescription(change.description + "\n" + resolveEnvByName(Names.CDLIB_JOB_URL))
-
-        changeManagementRepository.updateChange(change, auth)
-
-        return this
-    }
-
-    fun transition(phase: JiraConstants.ChangePhaseId): ChangeHandler {
-        require(::auth.isInitialized) { "Missing required authentication token." }
-        require(::change.isInitialized) { "Missing required change information." }
-
-        runCatching {
-            logger.info { "Transitioning change request phase: ${phase.name}" }
-            changeManagementRepository.transitionChangePhase(
-                changeId = change.id,
-                phaseId = phase.value,
-                auth = auth
+        
+        fun preauthorize(): ChangeHandler {
+            require(::change.isInitialized) { MISSING_CHANGE_INFO_MESSAGE }
+            logger.info { "Determining whether change can be preauthorized." }
+            val changeType = determineChangeType()
+            logTypeResults(changeType)
+            change = change.updateType(changeType)
+        
+            runCatching {
+                logger.info { "Updating change request type: ${change.type?.name}" }
+                changeManagementRepository.updateChange(change, auth)
+            }.getOrElse {
+                logger.error { "Could not update change request type. \nError: ${it.message}" }
+            }
+            return this
+        }
+        
+        fun resume(): ChangeHandler {
+            require(::auth.isInitialized) { "Missing required authentication token." }
+            require(::change.isInitialized) { MISSING_CHANGE_INFO_MESSAGE }
+        
+            logger.info { "Resuming change: ${change.self}" }
+            logger.info { "Adding resume comment to change..." }
+        
+            changeManagementRepository.addComment(
+                change.id,
+                "Change wird mit anderer Pipeline (${resolveEnvByName(Names.CDLIB_JOB_URL)}) fortgesetzt.",
+                auth
             )
-        }.onFailure {
-            it.klogSelf(logger)
-        }.getOrThrow()
-
-        return this
-    }
-
-    fun monitor(approvalCheckInterval: Int): ChangeHandler {
-        require(::auth.isInitialized) { "Missing required authentication token." }
-        require(::change.isInitialized) { "Missing required change information." }
-
-        val numberOfApprovalChecks = (APPROVAL_CHECK_TIMEOUT_IN_MINUTES / approvalCheckInterval)
-        logger.info { "Checking change request status for approval every ${approvalCheckInterval}m." }
-
-        for (i in 1..numberOfApprovalChecks) {
-            val changeRequest = runCatching {
-                changeManagementRepository.getChangeRequest(change.id, auth)
+        
+            logger.info { "Adding new job url to change description..." }
+            change = change.updateDescription(change.description + "\n" + resolveEnvByName(Names.CDLIB_JOB_URL))
+        
+            changeManagementRepository.updateChange(change, auth)
+        
+            return this
+        }
+        
+        fun transition(phase: JiraConstants.ChangePhaseId): ChangeHandler {
+            require(::auth.isInitialized) { "Missing required authentication token." }
+            require(::change.isInitialized) { MISSING_CHANGE_INFO_MESSAGE }
+        
+            runCatching {
+                logger.info { "Transitioning change request phase: ${phase.name}" }
+                changeManagementRepository.transitionChangePhase(
+                    changeId = change.id,
+                    phaseId = phase.value,
+                    auth = auth
+                )
             }.onFailure {
                 it.klogSelf(logger)
             }.getOrThrow()
-
-            logChangeRequestStatus(changeRequest)
-
-            if (changeRequest.status == ChangeStatus.AWAITING_IMPLEMENTATION) {
-                return this
+        
+            return this
+        }
+        
+        fun monitor(approvalCheckInterval: Int): ChangeHandler {
+            require(::auth.isInitialized) { "Missing required authentication token." }
+            require(::change.isInitialized) { MISSING_CHANGE_INFO_MESSAGE }
+        
+            val numberOfApprovalChecks = (APPROVAL_CHECK_TIMEOUT_IN_MINUTES / approvalCheckInterval)
+            logger.info { "Checking change request status for approval every ${approvalCheckInterval}m." }
+        
+            for (i in 1..numberOfApprovalChecks) {
+                val changeRequest = runCatching {
+                    changeManagementRepository.getChangeRequest(change.id, auth)
+                }.onFailure {
+                    it.klogSelf(logger)
+                }.getOrThrow()
+        
+                logChangeRequestStatus(changeRequest)
+        
+                if (changeRequest.status == ChangeStatus.AWAITING_IMPLEMENTATION) {
+                    return this
+                }
+                waitBeforeNextCheck(approvalCheckInterval)
             }
-            waitBeforeNextCheck(approvalCheckInterval)
+            throw Exception("Change request was not approved after $APPROVAL_CHECK_TIMEOUT_IN_MINUTES minutes.")
         }
-        throw Exception("Change request was not approved after $APPROVAL_CHECK_TIMEOUT_IN_MINUTES minutes.")
-    }
-
-    fun getItSystem(): ItSystem {
-        require(::itSystem.isInitialized) {
-            "Missing required IT system information."
+        
+        fun getItSystem(): ItSystem {
+            require(::itSystem.isInitialized) {
+                "Missing required IT system information."
+            }
+            return itSystem
         }
-        return itSystem
-    }
-
-    fun getChange(): Change {
-        require(::change.isInitialized) { "Missing required change information." }
-        return change
-    }
+        
+        fun getChange(): Change {
+            require(::change.isInitialized) { MISSING_CHANGE_INFO_MESSAGE }
+            return change
+        }
 
     fun comment(comment: String): ChangeHandler {
         require(::change.isInitialized) { "Missing required change information." }
