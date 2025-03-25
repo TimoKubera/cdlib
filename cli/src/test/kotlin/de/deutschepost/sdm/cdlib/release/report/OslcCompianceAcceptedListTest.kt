@@ -26,6 +26,10 @@ import java.io.File
 @Tags("UnitTest")
 class OslcComplianceAcceptedListTest : FunSpec() {
 
+    companion object {
+        const val INPUT_STRING = "Input String"
+    }
+
     private val acceptedListFileWrongLicense = File("src/test/resources/oslc/acceptedList-wrongLicense.json")
     private val acceptedListFileWrongVersion = File("src/test/resources/oslc/acceptedList-wrongVersion.json")
 
@@ -46,7 +50,7 @@ class OslcComplianceAcceptedListTest : FunSpec() {
             test("Testing valid input strings") {
                 io.kotest.data.forAll(
                     table(
-                        headers("Input String", "Default Value", "Expected"),
+                        headers(INPUT_STRING, "Default Value", "Expected"),
                         row("0.0.0", 0, VersionSpecification(0, 0, 0)),
                         row("0.0.0", Int.MAX_VALUE, VersionSpecification(0, 0, 0)),
                         row("1.2.3", 0, VersionSpecification(1, 2, 3)),
@@ -62,7 +66,7 @@ class OslcComplianceAcceptedListTest : FunSpec() {
             test("Testing invalid input strings") {
                 io.kotest.data.forAll(
                     table(
-                        headers("Input String", "Default Value"),
+                        headers(INPUT_STRING, "Default Value"),
                         row("a.b.c", 0),
                         row("error", 0),
                         row("3,2,5", 0),
@@ -75,7 +79,7 @@ class OslcComplianceAcceptedListTest : FunSpec() {
             test("Testing valid ranged input strings") {
                 io.kotest.data.forAll(
                     table(
-                        headers("Input String", "ExpectedMin", "ExpectedMax"),
+                        headers(INPUT_STRING, "ExpectedMin", "ExpectedMax"),
                         row("1.2.3-11.12.13", VersionSpecification(1, 2, 3), VersionSpecification(11, 12, 13)),
                         row("-11.12.13", VersionSpecification(0, 0, 0), VersionSpecification(11, 12, 13)),
                         row(
@@ -104,7 +108,7 @@ class OslcComplianceAcceptedListTest : FunSpec() {
             test("Testing invalid ranged input strings") {
                 io.kotest.data.forAll(
                     table(
-                        headers("Input String"),
+                        headers(INPUT_STRING),
                         row("1.2.3-11.12.13-1.2.3"),
                         row("1-1-1"),
                     )
