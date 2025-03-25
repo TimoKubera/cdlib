@@ -53,13 +53,14 @@ dependencies {
     val kotlinLoggingVersion = "2.1.23"
     val apacheHttpClientVersion = "4.5.14"
     val jcifsVersion = "1.3.18.3"
+    val jsonSmartVersion = "2.5.2"
     implementation("org.apache.httpcomponents:httpclient:$apacheHttpClientVersion")
     implementation("org.codelibs:jcifs:$jcifsVersion")
     val jgitVersion = "7.1.0.202411261347-r"
     implementation("org.eclipse.jgit:org.eclipse.jgit:$jgitVersion")
     //publish metrics to azure cosmosdb
     implementation("com.azure:azure-identity")
-    implementation("net.minidev:json-smart:2.5.2") // override bc vuln
+    implementation("net.minidev:json-smart:$jsonSmartVersion")
     implementation("com.azure:azure-cosmos")
 
     // Tests only
