@@ -212,108 +212,29 @@ class ReportCommand : SubcommandWithHelp() {
             lateinit var harborClient: HarborApiClient
             override fun call(): Int = runBlocking {
                 enableDebugIfOptionIsSet()
-
-                val (registry, project, repositoryReference) = runCatching {
-                    image.split("/", limit = 3).apply {
-                        require(size == 3)
-                    }
-                }.getOrElse {
-                    logger.error { "Failed to parse image string $image: ${it.message}" }
-                    return@runBlocking -1
-                }
-                if (!registry.contains("css", ignoreCase = true) or
-                    !registry.contains("deutschepost.de", ignoreCase = true)
-                ) {
-                    logger.error { "Invalid container registry $registry" }
-                    logger.error { "Only $CSS_QHCR_HARBOR is supported at the moment." }
-                    return@runBlocking -1
-                }
-                val (repository, reference) = runCatching {
-                    // harbor uses double url encoding for the repository. we have to encode it here first and the client does the 2nd encoding
-                    repositoryReference.replace("/", "%2F").split(":", limit = 2).apply {
-                        require(size == 2)
-                    }
-                }.getOrElse {
-                    logger.error { "Failed to parse $repositoryReference: ${it.message}" }
-                    return@runBlocking -1
-                }
-
+            
+                val imageDetails = parseImageDetails(image) ?: return@runBlocking -1
+                val (registry, project, repositoryReference) = imageDetails
+            
+                if (!validateRegistry(registry)) return@runBlocking -1
+            
+                val repositoryDetails = parseRepositoryReference(repositoryReference) ?: return@runBlocking -1
+                val (repository, reference) = repositoryDetails
+            
                 val releaseName = resolveEnvByName(Names.CDLIB_RELEASE_NAME)
-
                 val auth = BasicAuth(robotAccount, token)
-
+            
                 logger.info {
                     "Polling image $registry/$project/$repository:$reference"
                 }
-
-                harborClient.checkIfPresent(registry, project, repository, reference, auth).let { response ->
-                    val body = response.body.get()
-                    if (body == "[]\n") {
-                        logger.error { "Failed to find image in Harbor." }
-                        return@runBlocking -1
-                    }
-                    logger.info { "Image is present in Harbor." }
-                }
-
-                withTimeoutOrNull(cssTimeout.toDuration(DurationUnit.MINUTES)) {
-                    while (true) {
-                        val response =
-                            runCatching {
-                                harborClient.getScanStatus(
-                                    registry = registry,
-                                    project = project,
-                                    repository = repository,
-                                    reference = reference,
-                                    basicAuth = auth
-                                )
-                            }.getOrElse {
-                                logger.error { "Failed to get scanStatus: ${it.message}" }
-                                return@withTimeoutOrNull -1
-                            }
-                        val body = response.body()
-                        logger.debug {
-                            "status: ${response.status}\nbody: $body"
-                        }
-
-                        when {
-                            response.status == HttpStatus.OK && body?.isStatusSuccess() == true -> {
-                                break
-                            }
-
-                            response.status == HttpStatus.OK && body?.type == null -> {
-                                logger.error { "Failed to find image in Harbor." }
-                                return@withTimeoutOrNull -1
-                            }
-
-                            response.status == HttpStatus.OK && body?.type != "IMAGE" -> {
-                                logger.error { "Only images are supported! You tried to scan a ${body?.type} m(" }
-                                return@withTimeoutOrNull -1
-                            }
-
-                            else -> {
-                                logger.info { "Checking scan status in 5 seconds again" }
-                                delay(5.toDuration(DurationUnit.SECONDS))
-                            }
-                        }
-                    }
-                }.let {
-                    when (it) {
-                        Unit -> logger.info { "Harbor CCA scan completed" }
-                        null -> {
-                            logger.error { "Scan did not complete within $cssTimeout minutes. Terminating now..." }
-                            return@runBlocking -1
-                        }
-
-                        else -> {
-                            logger.error { "Failed polling CCA scan from Harbor." }
-                            return@runBlocking -1
-                        }
-                    }
-                }
-
+            
+                if (!checkImagePresence(registry, project, repository, reference, auth)) return@runBlocking -1
+            
+                if (!pollScanStatus(registry, project, repository, reference, auth, cssTimeout)) return@runBlocking -1
+            
                 val ccaVulnerabilitiesUrl = getCcaVulnerabilitiesUrl(registry, project, repository, reference)
                 logger.info { "Fetching CCA report: $ccaVulnerabilitiesUrl" }
-
+            
                 val externalCcaReport = runCatching {
                     harborClient.getVulnerabilities(
                         registry = registry,
@@ -336,7 +257,7 @@ class ReportCommand : SubcommandWithHelp() {
                     }
                     body
                 }
-
+            
                 logger.info { "Getting $project CVE allow list" }
                 val ccaSuppressionList = runCatching {
                     harborClient.getCveAllowList(registry, project, auth)
@@ -354,16 +275,117 @@ class ReportCommand : SubcommandWithHelp() {
                     }
                     body
                 }
-
+            
                 val ccaReport =
                     SecurityTestResult.from(externalCcaReport, ccaSuppressionList, ccaVulnerabilitiesUrl)
                 logger.debug { "Created Trivy CCA report:\n $ccaReport" }
-
+            
                 val fileName = "${TestResultPrefixes.DEFAULT_PREFIX_CCA}-trivy-$releaseName.json"
                 logger.info { "Writing Trivy CCA report to $fileName" }
                 ccaReport.writeJson(fileName)
-
+            
                 return@runBlocking 0
+            }
+            
+            private fun parseImageDetails(image: String): Triple<String, String, String>? {
+                return runCatching {
+                    image.split("/", limit = 3).apply {
+                        require(size == 3)
+                    }
+                }.getOrElse {
+                    logger.error { "Failed to parse image string $image: ${it.message}" }
+                    return null
+                }
+            }
+            
+            private fun validateRegistry(registry: String): Boolean {
+                return if (!registry.contains("css", ignoreCase = true) ||
+                    !registry.contains("deutschepost.de", ignoreCase = true)
+                ) {
+                    logger.error { "Invalid container registry $registry" }
+                    logger.error { "Only $CSS_QHCR_HARBOR is supported at the moment." }
+                    false
+                } else {
+                    true
+                }
+            }
+            
+            private fun parseRepositoryReference(repositoryReference: String): Pair<String, String>? {
+                return runCatching {
+                    repositoryReference.replace("/", "%2F").split(":", limit = 2).apply {
+                        require(size == 2)
+                    }
+                }.getOrElse {
+                    logger.error { "Failed to parse $repositoryReference: ${it.message}" }
+                    return null
+                }
+            }
+            
+            private fun checkImagePresence(
+                registry: String, project: String, repository: String, reference: String, auth: BasicAuth
+            ): Boolean {
+                harborClient.checkIfPresent(registry, project, repository, reference, auth).let { response ->
+                    val body = response.body.get()
+                    return if (body == "[]\n") {
+                        logger.error { "Failed to find image in Harbor." }
+                        false
+                    } else {
+                        logger.info { "Image is present in Harbor." }
+                        true
+                    }
+                }
+            }
+            
+            private fun pollScanStatus(
+                registry: String,
+                project: String,
+                repository: String,
+                reference: String,
+                auth: BasicAuth,
+                timeout: Int
+            ): Boolean {
+                return withTimeoutOrNull(timeout.toDuration(DurationUnit.MINUTES)) {
+                    while (true) {
+                        val response = runCatching {
+                            harborClient.getScanStatus(
+                                registry = registry,
+                                project = project,
+                                repository = repository,
+                                reference = reference,
+                                basicAuth = auth
+                            )
+                        }.getOrElse {
+                            logger.error { "Failed to get scanStatus: ${it.message}" }
+                            return@withTimeoutOrNull false
+                        }
+                        val body = response.body()
+                        logger.debug {
+                            "status: ${response.status}\nbody: $body"
+                        }
+            
+                        when {
+                            response.status == HttpStatus.OK && body?.isStatusSuccess() == true -> {
+                                return@withTimeoutOrNull true
+                            }
+            
+                            response.status == HttpStatus.OK && body?.type == null -> {
+                                logger.error { "Failed to find image in Harbor." }
+                                return@withTimeoutOrNull false
+                            }
+            
+                            response.status == HttpStatus.OK && body?.type != "IMAGE" -> {
+                                logger.error { "Only images are supported! You tried to scan a ${body?.type} m(" }
+                                return@withTimeoutOrNull false
+                            }
+            
+                            else -> {
+                                logger.info { "Checking scan status in 5 seconds again" }
+                                delay(5.toDuration(DurationUnit.SECONDS))
+                            }
+                        }
+                    }
+                } == true
+            }
             }
         }
 
