@@ -21,6 +21,8 @@ import withStandardOutput
 @Tags("UnitTest")
 class NamesCommandAzureTest : AnnotationSpec() {
 
+    private val CDLIB_APP_NAME = "##vso[task.setvariable variable=CDLIB_APP_NAME;isOutput=true]ICTO-3339_SDM-phippyandfriends"
+
     override fun listeners() = listOf(
         SystemEnvironmentTestListener(
             mapOf(
@@ -61,7 +63,7 @@ class NamesCommandAzureTest : AnnotationSpec() {
             PicocliRunner.run(CdlibCommand::class.java, *args)
         }
 
-        output shouldContainIgnoringCase "##vso[task.setvariable variable=CDLIB_APP_NAME;isOutput=true]ICTO-3339_SDM-phippyandfriends"
+        output shouldContainIgnoringCase CDLIB_APP_NAME
         output shouldContainIgnoringCase "##vso[task.setvariable variable=CDLIB_EFFECTIVE_BRANCH_NAME;isOutput=true]i593_test"
         output shouldContainIgnoringCase "##vso[task.setvariable variable=CDLIB_PM_GIT_ID;isOutput=true]a5c5bc3ce1907e844490697b9aa22c4196c5d781"
         output shouldContainIgnoringCase "##vso[task.setvariable variable=CDLIB_RELEASE_NAME;isOutput=true]ICTO-3339_SDM-phippyandfriends_"
