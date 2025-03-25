@@ -52,7 +52,7 @@ class NameProviderAzureTest(platformProvider: DefaultNameProviderFactory) : Anno
 
     @Test
     fun testProvide_Size() {
-        val entries = result.split("\n").filter { it -> it.isNotBlank() }
+        val entries = result.split("\n").filter { it.isNotBlank() }
         entries.size shouldBeExactly Names.values().size
     }
 
