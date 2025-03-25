@@ -1,5 +1,6 @@
 package de.deutschepost.sdm.cdlib.release.report.internal
 
+import mu.KLogging
 import com.fasterxml.jackson.annotation.JsonAlias
 import com.fasterxml.jackson.annotation.JsonIgnore
 import mu.KLogging
@@ -150,7 +151,7 @@ fun List<SecurityTestResult>.securityTestsVerify(
             ReportType.SCA -> securityReportVerificationResult.hasSCA = true
             ReportType.SAST -> securityReportVerificationResult.hasSAST = true
             
-            ReportType.OTHER -> {}
+            ReportType.OTHER -> { logger.debug { "[SECURITY DEBUG] Reached the case handling for ReportType.OTHER." } }
             ReportType.OSLC -> {}
             ReportType.OSLC_PRE -> {}
         }
