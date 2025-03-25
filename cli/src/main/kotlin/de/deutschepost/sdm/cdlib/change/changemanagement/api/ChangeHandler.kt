@@ -247,8 +247,13 @@ class ChangeHandler(
         return this
     }
 
+    companion object {
+        const val MISSING_CHANGE_INFO_MESSAGE = "Missing required change information."
+        const val MISSING_AUTH_TOKEN_MESSAGE = "Missing required authentication token."
+    }
+
     fun preauthorize(): ChangeHandler {
-        require(::change.isInitialized) { "Missing required change information." }
+        require(::change.isInitialized) { MISSING_CHANGE_INFO_MESSAGE }
         logger.info { "Determining whether change can be preauthorized." }
         val changeType = determineChangeType()
         logTypeResults(changeType)
@@ -264,8 +269,8 @@ class ChangeHandler(
     }
 
     fun resume(): ChangeHandler {
-        require(::auth.isInitialized) { "Missing required authentication token." }
-        require(::change.isInitialized) { "Missing required change information." }
+        require(::auth.isInitialized) { MISSING_AUTH_TOKEN_MESSAGE }
+        require(::change.isInitialized) { MISSING_CHANGE_INFO_MESSAGE }
 
         logger.info { "Resuming change: ${change.self}" }
         logger.info { "Adding resume comment to change..." }
