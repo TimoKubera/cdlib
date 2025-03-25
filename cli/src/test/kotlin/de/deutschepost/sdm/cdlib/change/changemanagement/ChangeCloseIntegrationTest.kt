@@ -225,58 +225,59 @@ class ChangeCloseIntegrationTest(
                 output shouldContain "http://integration-test-url.jenkuns.example.com"
                 output shouldContain "Dashboard status code: 201"
                 exitCode shouldBeExactly 0
+            const val DASHBOARD_STATUS_MESSAGE = "Dashboard status code: 201"
+            
             }
-        }
-
-        "Closing change successfully publishes metrics via Jenkins as infrastructure deployment" {
-            withEnvironment(
-                "CDLIB_JOB_URL" to "http://integration-test-url.jenkuns.example.com/foo/bar/job/1337",
-                OverrideMode.SetOrOverride
-            ) {
-                changeHandler
-                    .post(changeDetails)
-                    .preauthorize()
-                    .transition(OPEN_TO_IMPLEMENTATION)
-
-                val (exitCode, output) = withStandardOutput {
-                    PicocliRunner.call(
-                        ChangeCommand.CloseCommand::class.java,
-                        *"--test --token $token --commercial-reference $commercialReference --status $status --deployment-type INFRA".toArgsArray()
-                    )
+            
+            "Closing change successfully publishes metrics via Jenkins as infrastructure deployment" {
+                withEnvironment(
+                    "CDLIB_JOB_URL" to "http://integration-test-url.jenkuns.example.com/foo/bar/job/1337",
+                    OverrideMode.SetOrOverride
+                ) {
+                    changeHandler
+                        .post(changeDetails)
+                        .preauthorize()
+                        .transition(OPEN_TO_IMPLEMENTATION)
+            
+                    val (exitCode, output) = withStandardOutput {
+                        PicocliRunner.call(
+                            ChangeCommand.CloseCommand::class.java,
+                            *"--test --token $token --commercial-reference $commercialReference --status $status --deployment-type INFRA".toArgsArray()
+                        )
+                    }
+            
+                    output shouldContain "http://integration-test-url.jenkuns.example.com"
+                    output shouldContain DASHBOARD_STATUS_MESSAGE
+                    output shouldContain "INFRA"
+                    exitCode shouldBeExactly 0
                 }
-
-                output shouldContain "http://integration-test-url.jenkuns.example.com"
-                output shouldContain "Dashboard status code: 201"
-                output shouldContain "INFRA"
-                exitCode shouldBeExactly 0
             }
-        }
-
-        "Closing change successfully publishes metrics via AzureDevOps" {
-            val rnd = UUID.randomUUID().toString().substringBefore("-")
-
-            withEnvironment(
-                mapOf(
-                    "CDLIB_JOB_URL" to "https://dev.azure.com/sw-zustellung-$rnd/ICTO-3339_SDM-phippyandfriends",
-                    "CDLIB_PIPELINE_URL" to "https://dev.azure.com/sw-zustellung-$rnd/ICTO-3339_SDM-phippyandfriends/_build?definitionId=1337&branchFilter=superFeature",
-                ),
-                OverrideMode.SetOrOverride
-            ) {
-                changeHandler
-                    .post(changeDetails)
-                    .preauthorize()
-                    .transition(OPEN_TO_IMPLEMENTATION)
-
-                val (exitCode, output) = withStandardOutput {
-                    PicocliRunner.call(
-                        ChangeCommand.CloseCommand::class.java,
-                        *"--test --jira-token $token --commercial-reference $commercialReference --status $status".toArgsArray()
-                    )
-                }
-
-                output shouldContain "https://dev.azure.com/sw-zustellung-$rnd"
-                output shouldContain "Dashboard status code: 201"
-                exitCode shouldBeExactly 0
+            
+            "Closing change successfully publishes metrics via AzureDevOps" {
+                val rnd = UUID.randomUUID().toString().substringBefore("-")
+            
+                withEnvironment(
+                    mapOf(
+                        "CDLIB_JOB_URL" to "https://dev.azure.com/sw-zustellung-$rnd/ICTO-3339_SDM-phippyandfriends",
+                        "CDLIB_PIPELINE_URL" to "https://dev.azure.com/sw-zustellung-$rnd/ICTO-3339_SDM-phippyandfriends/_build?definitionId=1337&branchFilter=superFeature",
+                    ),
+                    OverrideMode.SetOrOverride
+                ) {
+                    changeHandler
+                        .post(changeDetails)
+                        .preauthorize()
+                        .transition(OPEN_TO_IMPLEMENTATION)
+            
+                    val (exitCode, output) = withStandardOutput {
+                        PicocliRunner.call(
+                            ChangeCommand.CloseCommand::class.java,
+                            *"--test --jira-token $token --commercial-reference $commercialReference --status $status".toArgsArray()
+                        )
+                    }
+            
+                    output shouldContain "https://dev.azure.com/sw-zustellung-$rnd"
+                    output shouldContain DASHBOARD_STATUS_MESSAGE
+                    exitCode shouldBeExactly 0
             }
         }
 
