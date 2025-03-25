@@ -2,7 +2,7 @@ package de.deutschepost.sdm.cdlib.names
 
 import jakarta.inject.Singleton
 
-interface NameProviderFactory {
+fun interface NameProviderFactory {
     fun getProvider(providerType: PlatformType = currentPlatformType): NameProvider
 }
 
