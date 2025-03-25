@@ -33,12 +33,13 @@ import java.time.temporal.ChronoUnit
 @MicronautTest
 class ChangeLCMFullIntegrationTest(
     @Value("\${change-management-token}") val token: String,
-    @Value("\${sharepoint.username}") val sp_username: String,
+    @Value("\${sharepoint.username}") val spUsername: String,
     @Value("\${sharepoint.password}") val sp_password: String,
     @Value("\${artifactory-azure-identity-token}") val artifactoryLCMIdentityToken: String,
     private val changeTestHelper: ChangeTestHelper,
     private val changeHandler: ChangeHandler,
     private val cosmosDashboardRepository: CosmosDashboardRepository
+
 ) : FunSpec() {
     private val timestamp =
         DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(ZonedDateTime.now().truncatedTo(ChronoUnit.SECONDS))
