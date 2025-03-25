@@ -76,8 +76,10 @@ class ChangeOslcIntegrationTest(
     override suspend fun beforeTest(testCase: io.kotest.core.test.TestCase) {
         super.beforeTest(testCase)
         envVariables["CDLIB_RELEASE_NAME_UNIQUE"] = "${releaseNameUnique}_${testCase.name.testName.replace(" ", "_")}"
+    const val ENTRY_URL_TEXT = "EntryUrl: "
+    
     }
-
+    
     init {
         context("Creating oslc change is a success") {
             test("change create --oslc missing distribution") {
@@ -89,18 +91,18 @@ class ChangeOslcIntegrationTest(
                 ret shouldBe -1
                 output shouldContain "IllegalArgumentException"
             }
-
+    
             test("change create with distribution") {
                 val (ret, output) = withStandardOutput {
                     val args =
                         "--no-distribution --jira-token $chgToken --artifactory-its-instance --artifactory-identity-token $artifactoryIdentityToken --repo-name $repoName --immutable-repo-name $immutableRepoName --folder-name $oslcFNCIName --commercial-reference 5296 --test --debug --no-webapproval --no-tqs".toArgsArray()
                     PicocliRunner.call(ChangeCommand.CreateCommand::class.java, *args)
                 }
-                output shouldContain "EntryUrl: "
+                output shouldContain ENTRY_URL_TEXT
                 output shouldContain "labels=[cdlib, oslc, test]"
                 ret shouldBeExactly 0
             }
-
+    
             test("change create with report from maven plugin") {
                 val (ret, output) = withStandardOutput {
                     val args =
