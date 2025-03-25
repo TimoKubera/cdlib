@@ -31,6 +31,10 @@ class ReportOslcNPMPluginIntegrationTest(
     private val repoName = "sdm-proj-prg-cdlib-cli-appimage"
     private val repoLCMName = "ICTO-3339_sdm_sockshop_release_reports"
 
+    companion object {
+        const val UPLOADED_ARTIFACT_MESSAGE = "Uploaded Artifact:"
+    }
+
     override fun listeners() = listOf(
         getSystemEnvironmentTestListenerWithOverrides(
             mapOf(
@@ -58,7 +62,7 @@ class ReportOslcNPMPluginIntegrationTest(
                     PicocliRunner.call(ReportCommand.UploadCommand::class.java, *args)
                 }
                 ret shouldBeExactly 0
-                output shouldContain "Uploaded Artifact:"
+                output shouldContain UPLOADED_ARTIFACT_MESSAGE
             }
             // TODO: Delete after sundown
             test("Upload OSLC-Plugin report to LCM artifactory") {
@@ -68,7 +72,7 @@ class ReportOslcNPMPluginIntegrationTest(
                     PicocliRunner.call(ReportCommand.UploadCommand::class.java, *args)
                 }
                 ret shouldBeExactly 0
-                output shouldContain "Uploaded Artifact:"
+                output shouldContain UPLOADED_ARTIFACT_MESSAGE
             }
 
             test("Check OSLC-Plugin report locally should fail due to distribution flag") {
@@ -88,9 +92,10 @@ class ReportOslcNPMPluginIntegrationTest(
                     PicocliRunner.call(ReportCommand.UploadCommand::class.java, *args)
                 }
                 ret shouldBeExactly -1
-                output shouldNotContain "Uploaded Artifact:"
+                output shouldNotContain UPLOADED_ARTIFACT_MESSAGE
             }
         }
     }
+
 
 }
