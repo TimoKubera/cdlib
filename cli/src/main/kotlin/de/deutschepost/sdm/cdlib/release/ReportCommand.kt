@@ -1,6 +1,8 @@
 package de.deutschepost.sdm.cdlib.release
 
 
+import io.micronaut.http.HttpResponse
+import kotlinx.coroutines.Deferred
 import de.deutschepost.sdm.cdlib.SubcommandWithHelp
 import de.deutschepost.sdm.cdlib.mixins.CheckMixin
 import de.deutschepost.sdm.cdlib.mixins.artifactory.ArtifactoryMixinLight
@@ -399,82 +401,100 @@ class ReportCommand : SubcommandWithHelp() {
 
             override fun call(): Int = runBlocking(Dispatchers.IO) {
                 runCatching {
-                    withTimeoutOrNull(fnciTimeout.toDuration(DurationUnit.MINUTES)) {
-                        enableDebugIfOptionIsSet()
-                        val releaseName = resolveEnvByName(Names.CDLIB_RELEASE_NAME)
-
-                        logger.info { "Starting generating a report" }
-                        val taskId = fnciService.generateReport(projectId, 1, token)
-                        logger.info { "Successfully generated taskID: $taskId" }
-
-                        val projectInfoJob = async { fnciService.getProjectInformation(projectId, token) }
-                        val inventoryJob = async { fnciService.getProjectInventory(projectId, token) }
-                        val reportJob = async {
-                            logger.info { "Client will try to fetch report" }
-                            while (true) {
-                                val response = fnciService.downloadReport(projectId, 1, taskId, token)
-
-                                when (response.status) {
-                                    HttpStatus.ACCEPTED -> {
-                                        val message = response.body.getOrNull()?.let {
-                                            runCatching {
-                                                defaultObjectMapper.readValue(
-                                                    it,
-                                                    FnciMessageWrapper::class.java
-                                                ).data.firstOrNull()?.message
-                                            }.getOrNull()
-                                        } ?: "Report generation is still in progress."
-                                        logger.info { "$message Client will retry after 20 seconds" }
-                                        delay(20_000)
-                                    }
-
-                                    HttpStatus.OK -> {
-                                        return@async response.body.get()
-                                    }
-
-                                    else -> {
-                                        return@async null
-                                    }
-                                }
-                            }
-                        }
-
-                        val projectInfo = projectInfoJob.await()
-                        val inventory = inventoryJob.await()
-
-                        defaultObjectMapper.writeValue(
-                            File("${TestResultPrefixes.DEFAULT_PREFIX_FNCI}-$releaseName.json"),
-                            FnciTestResult(projectInfo, inventory)
-                        )
-
-                        reportJob.await().let {
-                            when (it) {
-                                is ByteArray -> {
-                                    val filename = "${TestResultPrefixes.DEFAULT_PREFIX_FNCI}-$releaseName.zip"
-                                    logger.info { "Successfully fetched FNCI report to $filename" }
-                                    File(filename).writeBytes(it)
-                                }
-
-                                else -> {
-                                    logger.error { "Report could not be fetched" }
-                                    return@withTimeoutOrNull -1
-                                }
-                            }
-                        }
-                    }.let {
-                        when (it) {
-                            null -> {
-                                logger.error { "Scan did not complete within $fnciTimeout minutes. Terminating now..." }
-                            }
-
-                            -1 -> return@runBlocking -1
-                        }
-                    }
-
-                    return@runBlocking 0
+                    performReportGeneration()
                 }.getOrElse {
                     it.klogSelf(logger)
                     -1
+                }
+            }
+            
+            private suspend fun performReportGeneration(): Int {
+                return withTimeoutOrNull(fnciTimeout.toDuration(DurationUnit.MINUTES)) {
+                    initializeReportGeneration()
+                    val releaseName = resolveEnvByName(Names.CDLIB_RELEASE_NAME)
+            
+                    val taskId = logTaskId()
+            
+                    val (projectInfoJob, inventoryJob, reportJob) = startReportJobs(taskId)
+            
+                    val projectInfo = projectInfoJob.await()
+                    val inventory = inventoryJob.await()
+            
+                    defaultObjectMapper.writeValue(
+                        File("${TestResultPrefixes.DEFAULT_PREFIX_FNCI}-$releaseName.json"),
+                        FnciTestResult(projectInfo, inventory)
+                    )
+            
+                    processReportResult(reportJob.await(), releaseName)
+                }?.let {
+                    it
+                } ?: run {
+                    logger.error { "Scan did not complete within $fnciTimeout minutes. Terminating now..." }
+                    -1
+                }
+            }
+            
+            private fun initializeReportGeneration() {
+                enableDebugIfOptionIsSet()
+                logger.info { "Starting generating a report" }
+            }
+            
+            private suspend fun logTaskId(): Int {
+                val taskId = fnciService.generateReport(projectId, 1, token)
+                logger.info { "Successfully generated taskID: $taskId" }
+                return taskId
+            }
+            
+            private fun startReportJobs(taskId: Int): Triple<Deferred<Any>, Deferred<Any>, Deferred<Any>> {
+                val projectInfoJob = async { fnciService.getProjectInformation(projectId, token) }
+                val inventoryJob = async { fnciService.getProjectInventory(projectId, token) }
+                val reportJob = async { downloadReport(projectId, taskId, token) }
+                return Triple(projectInfoJob, inventoryJob, reportJob)
+            }
+            
+            private suspend fun downloadReport(projectId: Int, taskId: Int, token: String): Any {
+                logger.info { "Client will try to fetch report" }
+                while (true) {
+                    val response = fnciService.downloadReport(projectId, 1, taskId, token)
+                    return processReportResponse(response)
+                }
+            }
+            
+            private fun processReportResponse(response: HttpResponse<Any>): Any {
+                return when (response.status) {
+                    HttpStatus.ACCEPTED -> {
+                        val message = response.body.getOrNull()?.let {
+                            runCatching {
+                                defaultObjectMapper.readValue(
+                                    it,
+                                    FnciMessageWrapper::class.java
+                                ).data.firstOrNull()?.message
+                            }.getOrNull()
+                        } ?: "Report generation is still in progress."
+                        logger.info { "$message Client will retry after 20 seconds" }
+                        delay(20_000)
+                        downloadReport(projectId, taskId, token)
+                    }
+            
+                    HttpStatus.OK -> {
+                        response.body.get()
+                    }
+            
+                    else -> null
+                }
+            }
+            
+            private fun processReportResult(result: Any, releaseName: String) {
+                when (result) {
+                    is ByteArray -> {
+                        val filename = "${TestResultPrefixes.DEFAULT_PREFIX_FNCI}-$releaseName.zip"
+                        logger.info { "Successfully fetched FNCI report to $filename" }
+                        File(filename).writeBytes(result)
+                    }
+            
+                    else -> {
+                        logger.error { "Report could not be fetched" }
+                    }
                 }
             }
         }
