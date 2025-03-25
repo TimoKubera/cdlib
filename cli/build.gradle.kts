@@ -27,6 +27,7 @@ val kotlinVersion = project.properties["kotlinVersion"] as String
 val kotlinCoroutines = project.properties["kotlinCoroutines"] as String
 val artifactoryJavaClientServicesVersion = "2.19.1"
 val kotlinLoggingVersion = "2.1.23"
+val jsonSmartVersion = "2.5.2"
 
 dependencies {
     ksp("info.picocli:picocli-codegen")
