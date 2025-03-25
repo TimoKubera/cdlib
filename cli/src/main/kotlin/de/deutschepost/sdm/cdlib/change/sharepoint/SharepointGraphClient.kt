@@ -21,8 +21,8 @@ interface SharepointGraphClient {
     fun addEntry(
         siteId: String,
         listId: String,
-        @Header Authorization: String,
-        @Body body: GraphSharepointDTO
+        @Header authorization: String,
+                @Body body: GraphSharepointDTO
     ): GraphSharepointResponse
 }
 
