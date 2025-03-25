@@ -165,6 +165,8 @@ class ChangeManagementRepositoryTest(
             val itSystemName = "itSystemName"
             val itSystemKey = "itSystemKey"
             val criticality = "Nicht kritisch/Archiv"
+            private const val BUSINESS_CRITICALITY = "Business Kritikalität"
+            
             val itSystemResponse = ItSystemResponse(
                 objectEntries = listOf(
                     JiraObjectEntry(
@@ -184,7 +186,7 @@ class ChangeManagementRepositoryTest(
                                                             referencedObject = JiraObjectEntry(
                                                                 attributes = listOf(),
                                                                 objectType = JiraObjectType(
-                                                                    name = "Business Kritikalität",
+                                                                    name = BUSINESS_CRITICALITY,
                                                                     6
                                                                 ),
                                                                 objectKey = "objectKey",
@@ -196,12 +198,16 @@ class ChangeManagementRepositoryTest(
                                                 )
                                             ),
                                             objectType = JiraObjectType(
-                                                name = "Business Kritikalität",
+                                                name = BUSINESS_CRITICALITY,
                                                 6
                                             ),
                                             objectKey = "objectKey",
                                             label = "label"
                                         ),
+                                    )
+                                ),
+                                objectTypeAttributeId = itSystemAttributeId
+                            )
                                     )
                                 ),
                                 objectTypeAttributeId = itSystemAttributeId
