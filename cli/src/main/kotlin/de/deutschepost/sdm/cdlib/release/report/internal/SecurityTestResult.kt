@@ -153,8 +153,6 @@ fun List<SecurityTestResult>.securityTestsVerify(
             
             ReportType.OTHER -> { logger.debug { "[SECURITY DEBUG] Reached the case handling for ReportType.OTHER." } }
             ReportType.OSLC -> { // No operation required for OSLC reports }
-            ReportType.OSLC_PRE -> {}
-        }
     }
     return securityReportVerificationResult
 }
