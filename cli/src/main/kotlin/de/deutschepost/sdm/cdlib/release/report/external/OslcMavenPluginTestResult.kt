@@ -41,8 +41,8 @@ fun OslcTestResult.Companion.from(
         policyProfile = PROFILE_PLUGIN,
         unapprovedItems = oslcMavenPluginTestResult.incompliantLicenses.groupBy { license ->
             license.license
-        }.mapValues { it ->
-            mapOf("REJECTED" to it.value.map { it.license })
+        }.mapValues {
+                    mapOf("REJECTED" to it.value.map { it.license })
         },
         totalArtifactCount = oslcMavenPluginTestResult.licenses.sumOf { it.count },
         complianceStatus = when (oslcMavenPluginTestResult.complianceStatus) {
