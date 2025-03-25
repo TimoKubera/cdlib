@@ -72,6 +72,10 @@ class ChangeCreateIntegrationTest(
     }
 
     init {
+        companion object {
+            const val DESCRIPTION_PLACEHOLDER = "Checking change request status for approval every "
+        }
+    
         test("testing unsupported CDLib version preventing preauthorization") {
             ApplicationContext.run(
                 Environment.CLI, Environment.TEST, "ver02"
@@ -85,7 +89,7 @@ class ChangeCreateIntegrationTest(
                 }
                 output shouldContain "CDLib version 0.2.0-INTEGRATION-TEST is not supported anymore. Please update to a newer version. Pre-authorization is not possible."
                 output shouldContain "A new version of CDLib is available"
-
+    
                 output shouldContain "Retrieving IT system information"
                 output shouldContain "Searching existing changes for the current pipeline"
                 output shouldContain "Could not find changes to close nor resume for the current pipeline"
@@ -97,9 +101,9 @@ class ChangeCreateIntegrationTest(
                     "  Determined change type --> MINOR"
                 output shouldContain "Updating change request type: MINOR"
                 output shouldContain "Transitioning change request phase: ${OPEN_TO_IMPLEMENTATION.name}"
-                output shouldContain "Checking change request status for approval every "
+                output shouldContain DESCRIPTION_PLACEHOLDER
                 output shouldContain "Checked current change request status: ${WAITING_FOR_APPROVAL.name}"
-
+    
             }
             changeTestHelper.closeChangeRequest(
                 token,
