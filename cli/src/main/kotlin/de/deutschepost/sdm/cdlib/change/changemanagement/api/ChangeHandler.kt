@@ -334,25 +334,28 @@ class ChangeHandler(
     }
 
     fun getChange(): Change {
-        require(::change.isInitialized) { "Missing required change information." }
+        companion object { const val MISSING_CHANGE_INFO_MESSAGE = "Missing required change information." }
+        
+        fun getChange(): Change {
+        require(::change.isInitialized) { MISSING_CHANGE_INFO_MESSAGE }
         return change
-    }
-
-    fun comment(comment: String): ChangeHandler {
-        require(::change.isInitialized) { "Missing required change information." }
+        }
+        
+        fun comment(comment: String): ChangeHandler {
+        require(::change.isInitialized) { MISSING_CHANGE_INFO_MESSAGE }
         if (comment.isNotEmpty()) {
-            logger.info { "Adding custom comment to change." }
-            changeManagementRepository.addComment(id = change.id, comment = comment, auth = auth)
+        logger.info { "Adding custom comment to change." }
+        changeManagementRepository.addComment(id = change.id, comment = comment, auth = auth)
         }
         return this
-    }
-
-    fun getComments(changeId: String): List<ChangeComment> {
+        }
+        
+        fun getComments(changeId: String): List<ChangeComment> {
         return changeManagementRepository.getComments(changeId, auth)
-    }
-
-    fun getUrl(): String {
-        require(::change.isInitialized) { "Missing required change information." }
+        }
+        
+        fun getUrl(): String {
+        require(::change.isInitialized) { MISSING_CHANGE_INFO_MESSAGE }
         val url = change.self
         requireNotNull(url)
         return url
