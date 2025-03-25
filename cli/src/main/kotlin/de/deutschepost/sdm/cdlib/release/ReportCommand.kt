@@ -433,9 +433,17 @@ class ReportCommand : SubcommandWithHelp() {
                         val inventoryJob = async { fnciService.getProjectInventory(projectId, token) }
                         val reportJob = async {
                             logger.info { "Client will try to fetch report" }
+                            fetchReport(fnciService, projectId, taskId, token)
+                        }
+                        
+                        suspend fun fetchReport(
+                            fnciService: FnciServiceRepository,
+                            projectId: Int,
+                            taskId: String,
+                            token: String
+                        ): ByteArray? {
                             while (true) {
                                 val response = fnciService.downloadReport(projectId, 1, taskId, token)
-
                                 when (response.status) {
                                     HttpStatus.ACCEPTED -> {
                                         val message = response.body.getOrNull()?.let {
@@ -449,16 +457,15 @@ class ReportCommand : SubcommandWithHelp() {
                                         logger.info { "$message Client will retry after 20 seconds" }
                                         delay(20_000)
                                     }
-
                                     HttpStatus.OK -> {
-                                        return@async response.body.get()
+                                        return response.body.get()
                                     }
-
                                     else -> {
-                                        return@async null
+                                        return null
                                     }
                                 }
                             }
+                        }
                         }
 
                         val projectInfo = projectInfoJob.await()
