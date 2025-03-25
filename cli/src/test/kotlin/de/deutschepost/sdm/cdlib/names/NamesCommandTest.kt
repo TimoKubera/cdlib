@@ -12,13 +12,17 @@ import withStandardOutput
 @RequiresTag("UnitTest")
 @Tags("UnitTest")
 class NamesCommandTest : DescribeSpec({
+    companion object {
+        const val HELP_DISPLAY_TEXT = "should display help"
+    }
+
     describe("cdlib names") {
         describe("names -h") {
             val (_, output) = withStandardOutput {
                 val args = "names -h".toArgsArray()
                 PicocliRunner.run(CdlibCommand::class.java, *args)
             }
-            it("should display help") {
+            it(HELP_DISPLAY_TEXT) {
                 output shouldContain "Contains subcommands for automatic name and ID creation in pipeline"
             }
         }
@@ -29,7 +33,7 @@ class NamesCommandTest : DescribeSpec({
                 PicocliRunner.run(CdlibCommand::class.java, *args)
             }
 
-            it("should display help") {
+            it(HELP_DISPLAY_TEXT) {
                 output shouldContain "Create canonical set of standard names and IDs"
                 output shouldContain "Name of optional output file"
                 output shouldContain "Release name to use for derived name creation"
@@ -43,7 +47,7 @@ class NamesCommandTest : DescribeSpec({
                 PicocliRunner.run(CdlibCommand::class.java, *args)
             }
 
-            it("should display help") {
+            it(HELP_DISPLAY_TEXT) {
                 output shouldContain "Dumps the list of environment variables"
                 output shouldContain "Name of optional output file"
             }
@@ -61,4 +65,5 @@ class NamesCommandTest : DescribeSpec({
             }
         }
     }
+})
 })
