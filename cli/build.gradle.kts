@@ -52,8 +52,9 @@ dependencies {
     // logging
     val kotlinLoggingVersion = "2.1.23"
     val apacheHttpClientVersion = "4.5.14"
+    val jcifsVersion = "1.3.18.3"
     implementation("org.apache.httpcomponents:httpclient:$apacheHttpClientVersion")
-    implementation("org.codelibs:jcifs:1.3.18.3") // Never update this, Version 2 is incompatible
+    implementation("org.codelibs:jcifs:$jcifsVersion")
     // JGit (https://mvnrepository.com/artifact/org.eclipse.jgit/org.eclipse.jgit)
     implementation("org.eclipse.jgit:org.eclipse.jgit:7.1.0.202411261347-r")
     //publish metrics to azure cosmosdb
