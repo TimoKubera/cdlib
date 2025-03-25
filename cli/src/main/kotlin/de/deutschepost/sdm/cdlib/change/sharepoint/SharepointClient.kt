@@ -1,5 +1,6 @@
 package de.deutschepost.sdm.cdlib.change.sharepoint
 
+import com.example.SharepointClient
 import de.deutschepost.sdm.cdlib.change.metrics.model.Webapproval
 import de.deutschepost.sdm.cdlib.change.sharepoint.model.*
 import de.deutschepost.sdm.cdlib.change.sharepoint.ntlm.JCIFSNTLMSchemeFactory
@@ -41,73 +42,73 @@ open class SharepointClient(private val user: String, private val password: Stri
 
     private fun getDigest(): String? {
         val httpPost = HttpPost("$ISHARE_WEBAPPROVAL_BASE_URL/_api/contextinfo").apply {
-            addHeader("Accept", "application/json;odata=verbose")
-        }
-        return client.execute(httpPost).use { response ->
-            logger.info { "Getting Sharepoint Digest: ${response.statusLine}" }
-            val content = EntityUtils.toString(response.entity)
-            logger.debug { content }
-            if (response.statusLine.statusCode == HttpStatus.SC_OK) {
-                val sharepointContextWebInformation =
-                    permissiveObjectMapper.readValue(content, SharepointContextWebInformation::class.java)
-                sharepointContextWebInformation.getDigest()
-            } else {
-                null
+            addHeader("Accept", SharepointClient.APPLICATION_JSON_ODATA_VERBOSE)
             }
-        }
-    }
-
-    fun addEntryProd(approvalsListItem: SharepointApprovalsListItem) =
-        addEntry(approvalsListItem, ISHARE_PROD_LIST)
-
-    fun addEntryTest(approvalsListItem: SharepointApprovalsListItem): Webapproval {
-        val approvalsListItemTest = approvalsListItem.copy(metadata = SharepointApprovalsListItem.Metadata.TEST)
-        return addEntry(approvalsListItemTest, ISHARE_TEST_LIST)
-    }
-
-    private fun addEntry(
-        approvalsListItem: SharepointApprovalsListItem,
-        listName: String,
-    ): Webapproval {
-        val digest =
-            checkNotNull(getDigest()) {
-                """
-                Failed to get digest for Record.
-                This is eiter a connection issue or a credentials issue. You can check this with following command:
-                curl -v --ntlm -u 'USER:PASSWORD' \"$ISHARE_WEBAPPROVAL_BASE_URL/_api/web/lists/GetByTitle('Pipeline%20Approvals')\" -H \"Accept: application/json;odata=verbose\"""".trimIndent()
+            return client.execute(httpPost).use { response ->
+                logger.info { "Getting Sharepoint Digest: ${response.statusLine}" }
+                val content = EntityUtils.toString(response.entity)
+                logger.debug { content }
+                if (response.statusLine.statusCode == HttpStatus.SC_OK) {
+                    val sharepointContextWebInformation =
+                        permissiveObjectMapper.readValue(content, SharepointContextWebInformation::class.java)
+                    sharepointContextWebInformation.getDigest()
+                } else {
+                    null
+                }
             }
-
-        val webapprovalWithoutURL =
-            checkNotNull(verifyAndGenerateWebapproval(approvalsListItem.applicationId, listName == ISHARE_TEST_LIST)) {
-                "Failed validating approval documents."
+            
+            fun addEntryProd(approvalsListItem: SharepointApprovalsListItem) =
+                addEntry(approvalsListItem, ISHARE_PROD_LIST)
+            
+            fun addEntryTest(approvalsListItem: SharepointApprovalsListItem): Webapproval {
+                val approvalsListItemTest = approvalsListItem.copy(metadata = SharepointApprovalsListItem.Metadata.TEST)
+                return addEntry(approvalsListItemTest, ISHARE_TEST_LIST)
             }
-
-        val httpEntity = EntityBuilder.create().apply {
-            text = permissiveObjectMapper.writeValueAsString(approvalsListItem)
-        }.build()
-        val httpPost = HttpPost("$ISHARE_WEBAPPROVAL_BASE_URL/_api/web/lists/GetByTitle('$listName')/items").apply {
-            addHeader("Accept", "application/json;odata=verbose")
-            addHeader("X-RequestDigest", digest)
-            addHeader("Content-Type", "application/json;odata=verbose")
-            entity = httpEntity
-        }
-
-        val webapprovalUrl = client.execute(httpPost).use { response ->
-            logger.info { "Adding Record: ${response.statusLine}" }
-            val content = EntityUtils.toString(response.entity)
-            logger.debug { content }
-
-            if (response.statusLine.statusCode != HttpStatus.SC_CREATED) {
-                logger.error { content }
-                throw IllegalStateException("Failed to create Record.")
-            } else {
-                val sharepointListItemId =
-                    permissiveObjectMapper.readValue(content, SharepointApprovalListItemId::class.java)
-                sharepointListItemId.getUrl(ISHARE_WEBAPPROVAL_BASE_URL, listName)
-            }
-        }
-        logger.info { "EntryUrl: $webapprovalUrl" }
-        return webapprovalWithoutURL.copy(url = webapprovalUrl)
+            
+            private fun addEntry(
+                approvalsListItem: SharepointApprovalsListItem,
+                listName: String,
+            ): Webapproval {
+                val digest =
+                    checkNotNull(getDigest()) {
+                        """
+                        Failed to get digest for Record.
+                        This is eiter a connection issue or a credentials issue. You can check this with following command:
+                        curl -v --ntlm -u 'USER:PASSWORD' \"$ISHARE_WEBAPPROVAL_BASE_URL/_api/web/lists/GetByTitle('Pipeline%20Approvals')\" -H \"Accept: ${SharepointClient.APPLICATION_JSON_ODATA_VERBOSE}\""".trimIndent()
+                    }
+            
+                val webapprovalWithoutURL =
+                    checkNotNull(verifyAndGenerateWebapproval(approvalsListItem.applicationId, listName == ISHARE_TEST_LIST)) {
+                        "Failed validating approval documents."
+                    }
+            
+                val httpEntity = EntityBuilder.create().apply {
+                    text = permissiveObjectMapper.writeValueAsString(approvalsListItem)
+                }.build()
+                val httpPost = HttpPost("$ISHARE_WEBAPPROVAL_BASE_URL/_api/web/lists/GetByTitle('$listName')/items").apply {
+                    addHeader("Accept", SharepointClient.APPLICATION_JSON_ODATA_VERBOSE)
+                    addHeader("X-RequestDigest", digest)
+                    addHeader("Content-Type", SharepointClient.APPLICATION_JSON_ODATA_VERBOSE)
+                    entity = httpEntity
+                }
+            
+                val webapprovalUrl = client.execute(httpPost).use { response ->
+                    logger.info { "Adding Record: ${response.statusLine}" }
+                    val content = EntityUtils.toString(response.entity)
+                    logger.debug { content }
+            
+                    if (response.statusLine.statusCode != HttpStatus.SC_CREATED) {
+                        logger.error { content }
+                        throw IllegalStateException("Failed to create Record.")
+                    } else {
+                        val sharepointListItemId =
+                            permissiveObjectMapper.readValue(content, SharepointApprovalListItemId::class.java)
+                        sharepointListItemId.getUrl(ISHARE_WEBAPPROVAL_BASE_URL, listName)
+                    }
+                }
+                logger.info { "EntryUrl: $webapprovalUrl" }
+                return webapprovalWithoutURL.copy(url = webapprovalUrl)
+            
     }
 
 
