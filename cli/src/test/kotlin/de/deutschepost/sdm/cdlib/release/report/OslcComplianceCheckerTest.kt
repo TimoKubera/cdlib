@@ -86,7 +86,9 @@ class OslcComplianceCheckerTest : FunSpec() {
                 url = "https://openjdk.java.net/legal/gplv2+ce.html",
             )
         )
+    
     )
+    private const val MOZILLA_PUBLIC_LICENSE_20 = "Mozilla Public License 2.0"
     private val licenseCPLCEName = "GNU GPL with Classpath/Linking Exception"
     private val depWithAPL2 = OslcDependencyLicenseEntry(
         dependencyName = "test.should.succeed:APL",
