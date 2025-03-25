@@ -22,7 +22,6 @@ class ReportOslcNPMPluginIntegrationTest(
     @Value("\${artifactory-its-identity-token}") val artifactoryIdentityToken: String,
     @Value("\${artifactory-azure-identity-token}") val artifactoryLCMIdentityToken: String,
 ) : FunSpec() {
-
     private val appName = "cli"
     private val releaseName = "Integration_result_0228"
     private val jsonFile = "src/test/resources/passing/${TestResultPrefixes.DEFAULT_PREFIX_OSLC_NPM_PLUGIN}.json"
@@ -30,7 +29,8 @@ class ReportOslcNPMPluginIntegrationTest(
         "src/test/resources/oslc/${TestResultPrefixes.DEFAULT_PREFIX_OSLC_NPM_PLUGIN}_failing.json"
     private val repoName = "sdm-proj-prg-cdlib-cli-appimage"
     private val repoLCMName = "ICTO-3339_sdm_sockshop_release_reports"
-
+    private val uploadedArtifactMessage = "Uploaded Artifact:"
+    
     override fun listeners() = listOf(
         getSystemEnvironmentTestListenerWithOverrides(
             mapOf(
@@ -39,7 +39,7 @@ class ReportOslcNPMPluginIntegrationTest(
             )
         )
     )
-
+    
     init {
         context("Check OSLC-Plugin report and upload") {
             test("Check OSLC-Plugin report locally") {
@@ -50,7 +50,7 @@ class ReportOslcNPMPluginIntegrationTest(
                 ret shouldBeExactly 0
                 output shouldContain "Policy Profile: Non-Distribution"
             }
-
+    
             test("Upload OSLC-Plugin report to artifactory") {
                 val args =
                     "--debug --files $jsonFile --no-distribution --artifactory-its-instance --artifactory-identity-token $artifactoryIdentityToken --repo-name $repoName --type build".toArgsArray()
@@ -58,7 +58,7 @@ class ReportOslcNPMPluginIntegrationTest(
                     PicocliRunner.call(ReportCommand.UploadCommand::class.java, *args)
                 }
                 ret shouldBeExactly 0
-                output shouldContain "Uploaded Artifact:"
+                output shouldContain uploadedArtifactMessage
             }
             // TODO: Delete after sundown
             test("Upload OSLC-Plugin report to LCM artifactory") {
@@ -68,7 +68,7 @@ class ReportOslcNPMPluginIntegrationTest(
                     PicocliRunner.call(ReportCommand.UploadCommand::class.java, *args)
                 }
                 ret shouldBeExactly 0
-                output shouldContain "Uploaded Artifact:"
+                output shouldContain uploadedArtifactMessage
             }
 
             test("Check OSLC-Plugin report locally should fail due to distribution flag") {
