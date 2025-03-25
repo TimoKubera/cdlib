@@ -31,12 +31,15 @@ class NameResolverAzureTest(
 ) : AnnotationSpec() {
     private val before = ZonedDateTime.now().truncatedTo(ChronoUnit.SECONDS).toInstant()
 
+    companion object {
+        const val ICTO_3339_SDM_PHIPPY_AND_FRIENDS = "ICTO-3339_SDM-phippyandfriends"
+    }
 
     override fun listeners() = listOf(
         SystemEnvironmentTestListener(
             mapOf(
                 "BUILD_BUILDID" to "12657",
-                "BUILD_DEFINITIONNAME" to "ICTO-3339_SDM-phippyandfriends",
+                "BUILD_DEFINITIONNAME" to ICTO_3339_SDM_PHIPPY_AND_FRIENDS,
                 "BUILD_SOURCEBRANCHNAME" to "i593_test",
                 "SYSTEM_COLLECTIONURI" to "https://dev.azure.com/sw-zustellung-31b3183/",
                 "SYSTEM_TEAMPROJECT" to "ICTO-3339_SDM",
@@ -87,7 +90,7 @@ class NameResolverAzureTest(
         }
         withEnvironment(
             mapOf(
-                "BUILD_DEFINITIONNAME" to "ICTO-3339_SDM-phippyandfriends-very-long-app-name-that-needs-to-be-truncated",
+                "BUILD_DEFINITIONNAME" to "${NameResolverAzureTest.ICTO_3339_SDM_PHIPPY_AND_FRIENDS}-very-long-app-name-that-needs-to-be-truncated",
                 "BUILD_SOURCEBRANCHNAME" to "renovate/this-is-a-very-long-branch-name-that-needs-to-be-truncated",
                 "CDLIB_EFFECTIVE_BRANCH_NAME" to "renovate/this-is-a-very-long-branch-name-that-needs-to-be-truncated"
             ), OverrideMode.SetOrOverride
@@ -100,7 +103,7 @@ class NameResolverAzureTest(
 
     @Test
     fun testCreate_APP_NAME() {
-        resolver[Names.CDLIB_APP_NAME] shouldBeEqualComparingTo "ICTO-3339_SDM-phippyandfriends"
+        resolver[Names.CDLIB_APP_NAME] shouldBeEqualComparingTo NameResolverAzureTest.ICTO_3339_SDM_PHIPPY_AND_FRIENDS
     }
 
     @Test
@@ -136,7 +139,7 @@ class NameResolverAzureTest(
 
     @Test
     fun testCreate_JOB_URL() {
-        resolver[Names.CDLIB_JOB_URL] shouldContainIgnoringCase "https://dev.azure.com/sw-zustellung-31b3183/ICTO-3339_SDM/_build/results?buildId=12657"
+        resolver[Names.CDLIB_JOB_URL] shouldContainIgnoringCase "https://dev.azure.com/sw-zustellung-31b3183/${NameResolverAzureTest.ICTO_3339_SDM_PHIPPY_AND_FRIENDS}/_build/results?buildId=12657"
     }
 
     @Test
@@ -184,7 +187,8 @@ class NameResolverAzureTest(
     @Test
     fun testCreate_RELEASE_NAME() {
         resolver[Names.CDLIB_RELEASE_NAME] shouldContainIgnoringCase "_12657_a5c5bc3"
-        resolver[Names.CDLIB_RELEASE_NAME] shouldContainIgnoringCase "ICTO-3339_SDM-phippyandfriends"
+        resolver[Names.CDLIB_RELEASE_NAME] shouldContainIgnoringCase NameResolverAzureTest.ICTO_3339_SDM_PHIPPY_AND_FRIENDS
+    }
     }
 
     @Test
