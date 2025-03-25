@@ -15,6 +15,7 @@ import io.kotest.data.row
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import java.io.File
+private const val MOZILLA_PUBLIC_LICENSE = "Mozilla Public License 2.0"
 
 @RequiresTag("UnitTest")
 @Tags("UnitTest")
