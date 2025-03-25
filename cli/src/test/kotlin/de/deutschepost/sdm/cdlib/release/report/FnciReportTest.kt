@@ -1,5 +1,6 @@
 package de.deutschepost.sdm.cdlib.release.report
 
+import kotlin.jvm.JvmStatic
 import com.fasterxml.jackson.module.kotlin.readValue
 import de.deutschepost.sdm.cdlib.release.report.external.FnciTestResult
 import de.deutschepost.sdm.cdlib.release.report.external.fnci.FnciInventoryItem
@@ -23,12 +24,16 @@ import java.io.File
 @RequiresTag("UnitTest")
 @Tags("UnitTest")
 class FnciReportTest : FunSpec({
-    val projectPath = "src/test/resources/fnci/fnci-project.json"
     val inventoryPath = "src/test/resources/fnci/fnci-inventory.json"
+
+    companion object {
+        const val PROJECT_PATH = "src/test/resources/fnci/fnci-project.json"
+    }
+
     context("Project Info") {
         test("Parses projectInfo correctly") {
             val projectInfo = permissiveObjectMapper.readValue(
-                File(projectPath), FnciProjectInfoWrapper::class.java
+                File(PROJECT_PATH), FnciProjectInfoWrapper::class.java
             ).data
             projectInfo.policyProfileName shouldBe "Non-Distribution insecure"
             defaultObjectMapper.writeValue(System.out, projectInfo)
@@ -48,11 +53,11 @@ class FnciReportTest : FunSpec({
 
     context("OslcTestResult") {
         val projectInfo: FnciProjectInfo =
-            permissiveObjectMapper.readValue(File(projectPath), FnciProjectInfoWrapper::class.java).data
+            permissiveObjectMapper.readValue(File(PROJECT_PATH), FnciProjectInfoWrapper::class.java).data
         val inventory: List<FnciInventoryItem> = permissiveObjectMapper.readValue(File(inventoryPath))
         test("Generate OslcTestResult") {
             val report =
-                OslcTestResult.from(FnciTestResult(projectInfo, inventory), "src/test/resources/fnci/fnci-project.json")
+                OslcTestResult.from(FnciTestResult(projectInfo, inventory), PROJECT_PATH)
             report.complianceStatus shouldBe OslcComplianceStatus.RED
             report.unapprovedItems.shouldNotBeEmpty()
             defaultObjectMapper.writerWithDefaultPrettyPrinter().writeValue(System.out, report)
@@ -61,7 +66,7 @@ class FnciReportTest : FunSpec({
         test("Only approved is compliant") {
             val report = OslcTestResult.from(
                 FnciTestResult(projectInfo, inventory.filter { it.inventoryReviewStatus == "Approved" }),
-                "src/test/resources/fnci/fnci-project.json"
+                PROJECT_PATH
             )
             report.complianceStatus shouldBe OslcComplianceStatus.GREEN
             report.unapprovedItems.shouldBeEmpty()
@@ -71,9 +76,11 @@ class FnciReportTest : FunSpec({
         test("Canonical file name should depend on project, not files") {
             val report = OslcTestResult.from(
                 FnciTestResult(projectInfo, inventory.filter { it.inventoryReviewStatus == "Approved" }),
-                "src/test/resources/fnci/fnci-project.json"
+                PROJECT_PATH
             )
             report.canonicalFilename shouldEndWith "${report.projectName}.json"
         }
+    }
+})
     }
 })
