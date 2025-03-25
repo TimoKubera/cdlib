@@ -41,7 +41,7 @@ open class SharepointClient(private val user: String, private val password: Stri
 
     private fun getDigest(): String? {
         val httpPost = HttpPost("$ISHARE_WEBAPPROVAL_BASE_URL/_api/contextinfo").apply {
-            addHeader("Accept", "application/json;odata=verbose")
+            addHeader("Accept", CONTENT_TYPE_JSON_VERBOSE)
         }
         return client.execute(httpPost).use { response ->
             logger.info { "Getting Sharepoint Digest: ${response.statusLine}" }
