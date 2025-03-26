@@ -22,9 +22,38 @@ import java.lang.reflect.Method
 @RequiresTag("UnitTest")
 @Tags("UnitTest")
 @MicronautTest
+package de.deutschepost.sdm.cdlib.change.changemanagement
+
+import de.deutschepost.sdm.cdlib.change.ChangeCommand
+import de.deutschepost.sdm.cdlib.change.metrics.model.Deployment
+import getSystemEnvironmentTestListenerWithOverrides
+import io.kotest.core.annotation.RequiresTag
+import io.kotest.core.annotation.Tags
+import io.kotest.core.listeners.TestListener
+import io.kotest.core.spec.style.StringSpec
+import io.kotest.inspectors.forAll
+import io.kotest.matchers.ints.shouldBeExactly
+import io.kotest.matchers.shouldBe
+import io.kotest.matchers.string.shouldContain
+import io.micronaut.configuration.picocli.PicocliRunner
+import io.micronaut.context.annotation.Value
+import io.micronaut.test.extensions.kotest5.annotation.MicronautTest
+import toArgsArray
+import withErrorOutput
+import withStandardOutput
+import java.lang.reflect.Method
+
+@RequiresTag("UnitTest")
+@Tags("UnitTest")
+@MicronautTest
 class ChangeCreateCommandTest(
     @Value("\${change-management-token}") val token: String
 ) : StringSpec() {
+
+    companion object {
+        const val ILLEGAL_ARGUMENT_EXCEPTION_MSG = "java.lang.IllegalArgumentException"
+    }
+
     override fun listeners(): List<TestListener> {
         return listOf(
             getSystemEnvironmentTestListenerWithOverrides()
@@ -71,7 +100,7 @@ class ChangeCreateCommandTest(
                 )
             }
             exitCode shouldBeExactly -1
-            output shouldContain "java.lang.IllegalArgumentException"
+            output shouldContain ILLEGAL_ARGUMENT_EXCEPTION_MSG
         }
 
         "Command fails if oslc but no distribution was passed" {
@@ -82,7 +111,7 @@ class ChangeCreateCommandTest(
                 )
             }
             exitCode shouldBeExactly -1
-            output shouldContain "java.lang.IllegalArgumentException"
+            output shouldContain ILLEGAL_ARGUMENT_EXCEPTION_MSG
         }
 
         "Command doesn't fail if no-oslc and no distribution was passed" {
@@ -93,7 +122,7 @@ class ChangeCreateCommandTest(
                 )
             }
             exitCode shouldBeExactly -1
-            output shouldContain "java.lang.IllegalArgumentException"
+            output shouldContain ILLEGAL_ARGUMENT_EXCEPTION_MSG
             output shouldContain "Verifying reports..."
         }
 
@@ -111,3 +140,4 @@ class ChangeCreateCommandTest(
         }
     }
 }
+
