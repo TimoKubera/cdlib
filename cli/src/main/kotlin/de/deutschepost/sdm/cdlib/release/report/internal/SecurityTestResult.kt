@@ -151,7 +151,6 @@ fun List<SecurityTestResult>.securityTestsVerify(
             ReportType.SAST -> securityReportVerificationResult.hasSAST = true
             ReportType.OTHER -> {}
             ReportType.OSLC_PRE -> // No action required for OSLC_PRE
-        }
     }
     return securityReportVerificationResult
 }
