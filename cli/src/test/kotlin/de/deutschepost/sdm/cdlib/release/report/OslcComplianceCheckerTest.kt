@@ -38,7 +38,10 @@ class OslcComplianceCheckerTest : FunSpec() {
             )
         )
     )
-    private val licenseMozillaName = "Mozilla Public License 2.0"
+    companion object {
+        const val MOZILLA_PUBLIC_LICENSE = "Mozilla Public License 2.0"
+    }
+    private val licenseMozillaName = MOZILLA_PUBLIC_LICENSE
     private val depWithCDDL = OslcDependencyLicenseEntry(
         dependencyName = "test.should.fail:cddl",
         dependencyVersion = "",
@@ -75,7 +78,7 @@ class OslcComplianceCheckerTest : FunSpec() {
         )
     )
     private val licenseLGPL3Name = "GNU Lesser General Public License 3.0"
-
+    
     private val depWithGPLCE = OslcDependencyLicenseEntry(
         dependencyName = "test.should.succeed:GPL_CE",
         dependencyVersion = "",
@@ -112,8 +115,8 @@ class OslcComplianceCheckerTest : FunSpec() {
         )
     )
     private val licenseAlladinName = "Alladin Free Public License 9"
-
-
+    
+    
     init {
         context("findMatchingLicense Tests") {
             test("Table Test for selected Licenses with distribution") {
@@ -126,21 +129,21 @@ class OslcComplianceCheckerTest : FunSpec() {
                     row(depWithAPL2, null),
                     row(depWithAladin, licenseAlladinName),
                 ) { dep: OslcDependencyLicenseEntry, licenseName: String? ->
-
+    
                     val output = OslcComplianceChecker.findAllMatchingLicenses(dep, true)
                     println("Given: ${dep.licenses.joinToString { "[${it.license} - ${it.url}]" }}")
                     println("Got: ${output.joinToString { "[${it.license}]" }}")
-
+    
                     if (licenseName != null) {
                         output.isNotEmpty() shouldBe true
                         output.any { it.license == licenseName } shouldBe true
                     } else {
                         output.isEmpty() shouldBe true
                     }
-
+    
                 }
             }
-
+    
             test("Table Test for selected Licenses with non-distribution") {
                 io.kotest.data.forAll(
                     row(depWithMozilla, null),
@@ -154,21 +157,21 @@ class OslcComplianceCheckerTest : FunSpec() {
                     val output = OslcComplianceChecker.findAllMatchingLicenses(dep, false)
                     println("Given: ${dep.licenses.joinToString { "[${it.license} - ${it.url}]" }}")
                     println("Got: ${output.joinToString { "[${it.license}]" }}")
-
+    
                     if (licenseName != null) {
                         output.isNotEmpty() shouldBe true
                         output.any { it.license == licenseName } shouldBe true
                     } else {
                         output.isEmpty() shouldBe true
                     }
-
+    
                 }
             }
         }
         context("Check Reading bundleFile and disallowedLicenses file") {
             test("Distribution File") {
                 val definitions = OslcComplianceChecker.buildDefinitions(disallowedLicensesDistributionPath)
-
+    
                 val expectedLicenses = mapOf(
                     "Alladin Free Public License 9" to 5,
                     "Academic Free License 3.0" to 3,
@@ -181,7 +184,7 @@ class OslcComplianceCheckerTest : FunSpec() {
                     "GNU Lesser General Public License 2.1" to 9,
                     "GNU General Public License 2.0" to 4,
                     "GNU General Public License 3.0" to 4,
-                    "Mozilla Public License 2.0" to 5
+                    MOZILLA_PUBLIC_LICENSE to 5
                 )
                 val notExpectedLicenses = listOf(
                     "Apache License 2.0",
@@ -212,10 +215,10 @@ class OslcComplianceCheckerTest : FunSpec() {
                     }
                 }
             }
-
+    
             test("Non-Distribution File") {
                 val definitions = OslcComplianceChecker.buildDefinitions(disallowedLicensesNonDistributionPath)
-
+    
                 val expectedLicenses = mapOf(
                     "Alladin Free Public License 9" to 5,
                     "Academic Free License 3.0" to 3,
@@ -259,7 +262,7 @@ class OslcComplianceCheckerTest : FunSpec() {
             dependencyLicenseEntries.forEach { entry ->
                 println("entry: ${entry.dependencyName} - ${entry.licenses.joinToString { "${it.license}|${it.url}" }}")
             }
-
+    
             test("With Distribution") {
                 val output = OslcComplianceChecker.getIncomliantLicenses(dependencyLicenseEntries, true)
                 output.forEach { mapEntry ->
@@ -282,7 +285,33 @@ class OslcComplianceCheckerTest : FunSpec() {
                 val epl2 = output.entries.firstOrNull { it.key.license == "Eclipse Public License 2.0" }
                 epl2 shouldNotBe null
                 epl2?.value?.size shouldBe 1
-                val mpl2 = output.entries.firstOrNull { it.key.license == "Mozilla Public License 2.0" }
+                val mpl2 = output.entries.firstOrNull { it.key.license == MOZILLA_PUBLIC_LICENSE }
+                mpl2 shouldNotBe null
+                mpl2?.value?.size shouldBe 1
+                val unknown = output.entries.firstOrNull { it.key.license == "UNKNOWN" }
+                unknown shouldNotBe null
+                unknown?.value?.size shouldBe 1
+    
+            }
+            test("With Non-Distribution") {
+                val output = OslcComplianceChecker.getIncomliantLicenses(dependencyLicenseEntries, false)
+                output.forEach { mapEntry ->
+                    println("Found disallowed entry for license: ${mapEntry.key.license} got modules: [${mapEntry.value.joinToString { "${it.dependencyName}," }}]")
+                }
+                output.size shouldBe 1
+                val unknown = output.entries.firstOrNull { it.key.license == "UNKNOWN" }
+                unknown shouldNotBe null
+                unknown?.value?.size shouldBe 1
+    
+            }
+            test("Get All Licenses Test") {
+                val output = OslcComplianceChecker.getAllLicensesNames(dependencyLicenseEntries, false)
+                output.size shouldBe 76
+                output.contains("NULL") shouldBe false
+    
+            }
+        }
+    }
                 mpl2 shouldNotBe null
                 mpl2?.value?.size shouldBe 1
                 val unknown = output.entries.firstOrNull { it.key.license == "UNKNOWN" }
