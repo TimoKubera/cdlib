@@ -18,9 +18,32 @@ import withStandardOutput
 @RequiresTag("IntegrationTest")
 @Tags("IntegrationTest")
 @MicronautTest
+package de.deutschepost.sdm.cdlib.release
+
+import de.deutschepost.sdm.cdlib.release.report.TestResultPrefixes
+import getSystemEnvironmentTestListenerWithOverrides
+import io.kotest.core.annotation.RequiresTag
+import io.kotest.core.annotation.Tags
+import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.ints.shouldBeExactly
+import io.kotest.matchers.string.shouldContain
+import io.kotest.matchers.string.shouldNotContain
+import io.micronaut.configuration.picocli.PicocliRunner
+import io.micronaut.context.annotation.Value
+import io.micronaut.test.extensions.kotest5.annotation.MicronautTest
+import toArgsArray
+import withStandardOutput
+
+@RequiresTag("IntegrationTest")
+@Tags("IntegrationTest")
+@MicronautTest
 class ReportOslcGradlePluginIntegrationTest(
-    @Value("\${artifactory-its-identity-token}") val artifactoryIdentityToken: String,
+    @Value("${artifactory-its-identity-token}") val artifactoryIdentityToken: String,
 ) : FunSpec() {
+
+    companion object {
+        const val POLICY_PROFILE_DISTRIBUTION = "Policy Profile: Distribution"
+    }
 
     private val appName = "cli"
     private val releaseName = "Integration_result_0228"
@@ -68,7 +91,7 @@ class ReportOslcGradlePluginIntegrationTest(
                     PicocliRunner.call(ReportCommand.CheckCommand::class.java, *args)
                 }
                 ret shouldBeExactly -1
-                output shouldContain "Policy Profile: Distribution"
+                output shouldContain POLICY_PROFILE_DISTRIBUTION
                 output shouldNotContain "Unapproved Licenses Count: 0"
             }
 
@@ -79,7 +102,7 @@ class ReportOslcGradlePluginIntegrationTest(
                     PicocliRunner.call(ReportCommand.CheckCommand::class.java, *args)
                 }
                 ret shouldBeExactly 0
-                output shouldContain "Policy Profile: Distribution"
+                output shouldContain POLICY_PROFILE_DISTRIBUTION
                 output shouldContain "Unapproved Licenses Count: 0"
             }
 
@@ -90,7 +113,7 @@ class ReportOslcGradlePluginIntegrationTest(
                     PicocliRunner.call(ReportCommand.CheckCommand::class.java, *args)
                 }
                 ret shouldBeExactly -1
-                output shouldContain "Policy Profile: Distribution"
+                output shouldContain POLICY_PROFILE_DISTRIBUTION
                 output shouldContain "Unapproved Licenses Count: 1"
                 output shouldContain "Alladin Free Public License 9: [com.rabbitmq:amqp-client]"
             }
@@ -102,7 +125,7 @@ class ReportOslcGradlePluginIntegrationTest(
                     PicocliRunner.call(ReportCommand.CheckCommand::class.java, *args)
                 }
                 ret shouldBeExactly -1
-                output shouldContain "Policy Profile: Distribution"
+                output shouldContain POLICY_PROFILE_DISTRIBUTION
                 output shouldContain "Unapproved Licenses Count: 1"
                 output shouldContain "Common Development and Distribution License 1.0: [org.apache.tomcat.embed:tomcat-embed-core]"
             }
@@ -121,3 +144,4 @@ class ReportOslcGradlePluginIntegrationTest(
     }
 
 }
+
