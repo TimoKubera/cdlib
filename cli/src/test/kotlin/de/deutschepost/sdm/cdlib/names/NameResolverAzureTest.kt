@@ -31,12 +31,15 @@ class NameResolverAzureTest(
 ) : AnnotationSpec() {
     private val before = ZonedDateTime.now().truncatedTo(ChronoUnit.SECONDS).toInstant()
 
+    companion object {
+        const val EXPECTED_APP_NAME = "ICTO-3339_SDM-phippyandfriends"
+    }
 
     override fun listeners() = listOf(
         SystemEnvironmentTestListener(
             mapOf(
                 "BUILD_BUILDID" to "12657",
-                "BUILD_DEFINITIONNAME" to "ICTO-3339_SDM-phippyandfriends",
+                "BUILD_DEFINITIONNAME" to EXPECTED_APP_NAME,
                 "BUILD_SOURCEBRANCHNAME" to "i593_test",
                 "SYSTEM_COLLECTIONURI" to "https://dev.azure.com/sw-zustellung-31b3183/",
                 "SYSTEM_TEAMPROJECT" to "ICTO-3339_SDM",
@@ -100,7 +103,7 @@ class NameResolverAzureTest(
 
     @Test
     fun testCreate_APP_NAME() {
-        resolver[Names.CDLIB_APP_NAME] shouldBeEqualComparingTo "ICTO-3339_SDM-phippyandfriends"
+        resolver[Names.CDLIB_APP_NAME] shouldBeEqualComparingTo EXPECTED_APP_NAME
     }
 
     @Test
@@ -184,8 +187,10 @@ class NameResolverAzureTest(
     @Test
     fun testCreate_RELEASE_NAME() {
         resolver[Names.CDLIB_RELEASE_NAME] shouldContainIgnoringCase "_12657_a5c5bc3"
-        resolver[Names.CDLIB_RELEASE_NAME] shouldContainIgnoringCase "ICTO-3339_SDM-phippyandfriends"
+        resolver[Names.CDLIB_RELEASE_NAME] shouldContainIgnoringCase EXPECTED_APP_NAME
     }
+}
+
 
     @Test
     fun testCreate_RELEASE_NAME_FORTIFY() {
