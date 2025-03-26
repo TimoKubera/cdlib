@@ -46,65 +46,72 @@ class OslcComplianceAcceptedListTest : FunSpec() {
             test("Testing valid input strings") {
                 io.kotest.data.forAll(
                     table(
-                        headers("Input String", "Default Value", "Expected"),
-                        row("0.0.0", 0, VersionSpecification(0, 0, 0)),
-                        row("0.0.0", Int.MAX_VALUE, VersionSpecification(0, 0, 0)),
-                        row("1.2.3", 0, VersionSpecification(1, 2, 3)),
-                        row("1.2.3.4", 0, VersionSpecification(1, 2, 3)),
-                        row("1", 0, VersionSpecification(1, 0, 0)),
-                        row("6.6", 6, VersionSpecification(6, 6, 6)),
-                    )
-                ) { input: String, default: Int, expected: VersionSpecification ->
-                    VersionSpecification.fromString(input, default) shouldBe expected
-                }
-            }
-
-            test("Testing invalid input strings") {
-                io.kotest.data.forAll(
-                    table(
-                        headers("Input String", "Default Value"),
-                        row("a.b.c", 0),
-                        row("error", 0),
-                        row("3,2,5", 0),
-                    )
-                ) { input: String, default: Int ->
-                    shouldThrow<NumberFormatException> { VersionSpecification.fromString(input, default) }
-                }
-            }
-
-            test("Testing valid ranged input strings") {
-                io.kotest.data.forAll(
-                    table(
-                        headers("Input String", "ExpectedMin", "ExpectedMax"),
-                        row("1.2.3-11.12.13", VersionSpecification(1, 2, 3), VersionSpecification(11, 12, 13)),
-                        row("-11.12.13", VersionSpecification(0, 0, 0), VersionSpecification(11, 12, 13)),
-                        row(
-                            "1.2.3-",
-                            VersionSpecification(1, 2, 3),
-                            VersionSpecification(Int.MAX_VALUE, Int.MAX_VALUE, Int.MAX_VALUE)
-                        ),
-                        row("1-1.5", VersionSpecification(1, 0, 0), VersionSpecification(1, 5, Int.MAX_VALUE)),
-                        row(
-                            "-",
-                            VersionSpecification(0, 0, 0),
-                            VersionSpecification(Int.MAX_VALUE, Int.MAX_VALUE, Int.MAX_VALUE)
-                        ),
-                        row(
-                            "",
-                            VersionSpecification(0, 0, 0),
-                            VersionSpecification(Int.MAX_VALUE, Int.MAX_VALUE, Int.MAX_VALUE)
-                        ),
-                        row("11.12.13", VersionSpecification(11, 12, 13), VersionSpecification(11, 12, 13)),
-                    )
-                ) { input: String, min: VersionSpecification, max: VersionSpecification ->
-                    VersionSpecification.rangeFromString(input) shouldBe min..max
-                }
-            }
-
-            test("Testing invalid ranged input strings") {
-                io.kotest.data.forAll(
-                    table(
-                        headers("Input String"),
+                        headers(INPUT_STRING, "Default Value", "Expected"),
+                                                row("0.0.0", 0, VersionSpecification(0, 0, 0)),
+                                                row("0.0.0", Int.MAX_VALUE, VersionSpecification(0, 0, 0)),
+                                                row("1.2.3", 0, VersionSpecification(1, 2, 3)),
+                                                row("1.2.3.4", 0, VersionSpecification(1, 2, 3)),
+                                                row("1", 0, VersionSpecification(1, 0, 0)),
+                                                row("6.6", 6, VersionSpecification(6, 6, 6))
+                                            )
+                                        ) { input: String, default: Int, expected: VersionSpecification ->
+                                            VersionSpecification.fromString(input, default) shouldBe expected
+                                        }
+                                    }
+                        
+                                    test("Testing invalid input strings") {
+                                        io.kotest.data.forAll(
+                                            table(
+                                                headers(INPUT_STRING, "Default Value"),
+                                                row("a.b.c", 0),
+                                                row("error", 0),
+                                                row("3,2,5", 0)
+                                            )
+                                        ) { input: String, default: Int ->
+                                            shouldThrow<NumberFormatException> { VersionSpecification.fromString(input, default) }
+                                        }
+                                    }
+                        
+                                    test("Testing valid ranged input strings") {
+                                        io.kotest.data.forAll(
+                                            table(
+                                                headers(INPUT_STRING, "ExpectedMin", "ExpectedMax"),
+                                                row("1.2.3-11.12.13", VersionSpecification(1, 2, 3), VersionSpecification(11, 12, 13)),
+                                                row("-11.12.13", VersionSpecification(0, 0, 0), VersionSpecification(11, 12, 13)),
+                                                row(
+                                                    "1.2.3-",
+                                                    VersionSpecification(1, 2, 3),
+                                                    VersionSpecification(Int.MAX_VALUE, Int.MAX_VALUE, Int.MAX_VALUE)
+                                                ),
+                                                row("1-1.5", VersionSpecification(1, 0, 0), VersionSpecification(1, 5, Int.MAX_VALUE)),
+                                                row(
+                                                    "-",
+                                                    VersionSpecification(0, 0, 0),
+                                                    VersionSpecification(Int.MAX_VALUE, Int.MAX_VALUE, Int.MAX_VALUE)
+                                                ),
+                                                row(
+                                                    "",
+                                                    VersionSpecification(0, 0, 0),
+                                                    VersionSpecification(Int.MAX_VALUE, Int.MAX_VALUE, Int.MAX_VALUE)
+                                                ),
+                                                row("11.12.13", VersionSpecification(11, 12, 13), VersionSpecification(11, 12, 13))
+                                            )
+                                        ) { input: String, min: VersionSpecification, max: VersionSpecification ->
+                                            VersionSpecification.rangeFromString(input) shouldBe min..max
+                                        }
+                                    }
+                        
+                                    test("Testing invalid ranged input strings") {
+                                        io.kotest.data.forAll(
+                                            table(
+                                                headers(INPUT_STRING),
+                                                row("1.2.3-11.12.13-1.2.3"),
+                                                row("1-1-1")
+                                            )
+                                        ) { input: String ->
+                                            shouldThrow<RuntimeException> { VersionSpecification.rangeFromString(input) }
+                                        }
+                                    }
                         row("1.2.3-11.12.13-1.2.3"),
                         row("1-1-1"),
                     )
