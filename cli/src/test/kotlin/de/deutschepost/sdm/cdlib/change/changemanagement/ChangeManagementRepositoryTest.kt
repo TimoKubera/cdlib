@@ -1,5 +1,6 @@
 package de.deutschepost.sdm.cdlib.change.changemanagement
 
+import de.deutschepost.sdm.cdlib.change.changemanagement.model.JiraConstants.ImpactClass.BUSINESS_KRITIKALITÄT
 import de.deutschepost.sdm.cdlib.change.changemanagement.api.ChangeManagementRepository
 import de.deutschepost.sdm.cdlib.change.changemanagement.api.JiraApiClient
 import de.deutschepost.sdm.cdlib.change.changemanagement.model.*
@@ -184,7 +185,7 @@ class ChangeManagementRepositoryTest(
                                                             referencedObject = JiraObjectEntry(
                                                                 attributes = listOf(),
                                                                 objectType = JiraObjectType(
-                                                                    name = "Business Kritikalität",
+                                                                    name = BUSINESS_KRITIKALITÄT,
                                                                     6
                                                                 ),
                                                                 objectKey = "objectKey",
@@ -196,7 +197,7 @@ class ChangeManagementRepositoryTest(
                                                 )
                                             ),
                                             objectType = JiraObjectType(
-                                                name = "Business Kritikalität",
+                                                name = BUSINESS_KRITIKALITÄT,
                                                 6
                                             ),
                                             objectKey = "objectKey",
@@ -251,7 +252,7 @@ class ChangeManagementRepositoryTest(
                                                             referencedObject = JiraObjectEntry(
                                                                 attributes = listOf(),
                                                                 objectType = JiraObjectType(
-                                                                    name = "Business Kritikalität",
+                                                                    name = BUSINESS_KRITIKALITÄT,
                                                                     6
                                                                 ),
                                                                 objectKey = "objectKey",
@@ -263,9 +264,9 @@ class ChangeManagementRepositoryTest(
                                                 )
                                             ),
                                             objectType = JiraObjectType(
-                                                name = "Business Kritikalität",
-                                                6
-                                            ),
+                                                name = BUSINESS_KRITIKALITÄT,
+                                                                    6
+                                                                ),
                                             objectKey = "objectKey",
                                             label = "label"
                                         ),
