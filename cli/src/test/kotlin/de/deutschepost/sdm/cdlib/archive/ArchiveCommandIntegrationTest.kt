@@ -174,6 +174,7 @@ class ArchiveCommandIntegrationTest(@Value("\${artifactory-azure-identity-token}
         try {
             repository.delete(releaseName_build)
         } catch (_: Exception) {
+           // Exception ignored intentionally because the resource deletion might fail if the resource doesn't exist.
         }
 
     }
