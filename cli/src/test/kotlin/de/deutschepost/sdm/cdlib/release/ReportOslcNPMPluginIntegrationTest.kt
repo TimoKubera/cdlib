@@ -40,6 +40,10 @@ class ReportOslcNPMPluginIntegrationTest(
         )
     )
 
+    companion object {
+        const val UPLOADED_ARTIFACT_TEXT = "Uploaded Artifact:"
+    }
+
     init {
         context("Check OSLC-Plugin report and upload") {
             test("Check OSLC-Plugin report locally") {
@@ -58,7 +62,7 @@ class ReportOslcNPMPluginIntegrationTest(
                     PicocliRunner.call(ReportCommand.UploadCommand::class.java, *args)
                 }
                 ret shouldBeExactly 0
-                output shouldContain "Uploaded Artifact:"
+                output shouldContain UPLOADED_ARTIFACT_TEXT
             }
             // TODO: Delete after sundown
             test("Upload OSLC-Plugin report to LCM artifactory") {
@@ -68,7 +72,7 @@ class ReportOslcNPMPluginIntegrationTest(
                     PicocliRunner.call(ReportCommand.UploadCommand::class.java, *args)
                 }
                 ret shouldBeExactly 0
-                output shouldContain "Uploaded Artifact:"
+                output shouldContain UPLOADED_ARTIFACT_TEXT
             }
 
             test("Check OSLC-Plugin report locally should fail due to distribution flag") {
@@ -88,9 +92,10 @@ class ReportOslcNPMPluginIntegrationTest(
                     PicocliRunner.call(ReportCommand.UploadCommand::class.java, *args)
                 }
                 ret shouldBeExactly -1
-                output shouldNotContain "Uploaded Artifact:"
+                output shouldNotContain UPLOADED_ARTIFACT_TEXT
             }
         }
     }
 
 }
+
