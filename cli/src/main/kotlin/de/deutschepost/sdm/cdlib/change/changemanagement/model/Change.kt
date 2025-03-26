@@ -49,7 +49,7 @@ data class Change(
         description = issue.fields.description,
         labels = issue.fields.labels,
         category = Category from issue.fields.category.value,
-        // TODO: Check later if micronaut manages to map the response directly to the enum, making this unncecessary
+        
         start = issue.fields.plannedStartDate,
         end = issue.fields.plannedEndDate,
         response = issue.fields.responseDate,
