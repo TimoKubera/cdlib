@@ -152,7 +152,7 @@ fun List<SecurityTestResult>.securityTestsVerify(
             ReportType.CCA -> { /* This block is intentionally left empty as there is currently no implementation needed for CCA report type. */ }
             
             ReportType.OSLC -> { /* This block is intentionally left empty as there is currently no implementation needed for OSLC report type. */ }
-            ReportType.OSLC_PRE -> {}
+            ReportType.OSLC_PRE -> { /* No implementation needed for OSLC_PRE report type. */ }
         }
     }
     return securityReportVerificationResult
