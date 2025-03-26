@@ -152,7 +152,7 @@ fun List<SecurityTestResult>.securityTestsVerify(
             ReportType.CCA -> { // Intentionally left blank as no action is required for CCA }
             ReportType.OTHER -> { // Intentionally left blank as no action is required for OTHER }
             ReportType.OSLC -> { // Intentionally left blank as no action is required for OSLC }
-            ReportType.OSLC_PRE -> {}
+            ReportType.OSLC_PRE -> { // Intentionally left blank as no action is required for OSLC_PRE }
         }
     }
     return securityReportVerificationResult
