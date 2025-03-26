@@ -151,7 +151,7 @@ fun List<SecurityTestResult>.securityTestsVerify(
             ReportType.SAST -> securityReportVerificationResult.hasSAST = true
             
             ReportType.OTHER -> { /* No action required: intentionally left empty */ }
-            ReportType.OSLC -> {}
+            ReportType.OSLC -> { /* No action required: intentionally left empty */ }
             ReportType.OSLC_PRE -> {}
         }
     }
