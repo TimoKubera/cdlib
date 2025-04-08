@@ -18,9 +18,28 @@ import withStandardOutput
 @RequiresTag("IntegrationTest")
 @Tags("IntegrationTest")
 @MicronautTest
+package de.deutschepost.sdm.cdlib.release
+
+import de.deutschepost.sdm.cdlib.release.report.TestResultPrefixes
+import getSystemEnvironmentTestListenerWithOverrides
+import io.kotest.core.annotation.RequiresTag
+import io.kotest.core.annotation.Tags
+import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.ints.shouldBeExactly
+import io.kotest.matchers.string.shouldContain
+import io.kotest.matchers.string.shouldNotContain
+import io.micronaut.configuration.picocli.PicocliRunner
+import io.micronaut.context.annotation.Value
+import io.micronaut.test.extensions.kotest5.annotation.MicronautTest
+import toArgsArray
+import withStandardOutput
+
+@RequiresTag("IntegrationTest")
+@Tags("IntegrationTest")
+@MicronautTest
 class ReportOslcNPMPluginIntegrationTest(
-    @Value("\${artifactory-its-identity-token}") val artifactoryIdentityToken: String,
-    @Value("\${artifactory-azure-identity-token}") val artifactoryLCMIdentityToken: String,
+    @Value("${artifactory-its-identity-token}") val artifactoryIdentityToken: String,
+    @Value("${artifactory-azure-identity-token}") val artifactoryLCMIdentityToken: String,
 ) : FunSpec() {
 
     private val appName = "cli"
@@ -40,6 +59,10 @@ class ReportOslcNPMPluginIntegrationTest(
         )
     )
 
+    companion object {
+        const val UPLOADED_ARTIFACT = "Uploaded Artifact:"
+    }
+
     init {
         context("Check OSLC-Plugin report and upload") {
             test("Check OSLC-Plugin report locally") {
@@ -58,7 +81,7 @@ class ReportOslcNPMPluginIntegrationTest(
                     PicocliRunner.call(ReportCommand.UploadCommand::class.java, *args)
                 }
                 ret shouldBeExactly 0
-                output shouldContain "Uploaded Artifact:"
+                output shouldContain UPLOADED_ARTIFACT
             }
             // TODO: Delete after sundown
             test("Upload OSLC-Plugin report to LCM artifactory") {
@@ -68,7 +91,7 @@ class ReportOslcNPMPluginIntegrationTest(
                     PicocliRunner.call(ReportCommand.UploadCommand::class.java, *args)
                 }
                 ret shouldBeExactly 0
-                output shouldContain "Uploaded Artifact:"
+                output shouldContain UPLOADED_ARTIFACT
             }
 
             test("Check OSLC-Plugin report locally should fail due to distribution flag") {
@@ -88,9 +111,10 @@ class ReportOslcNPMPluginIntegrationTest(
                     PicocliRunner.call(ReportCommand.UploadCommand::class.java, *args)
                 }
                 ret shouldBeExactly -1
-                output shouldNotContain "Uploaded Artifact:"
+                output shouldNotContain UPLOADED_ARTIFACT
             }
         }
     }
 
 }
+
