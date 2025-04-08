@@ -41,7 +41,7 @@ open class SharepointClient(private val user: String, private val password: Stri
 
     private fun getDigest(): String? {
         val httpPost = HttpPost("$ISHARE_WEBAPPROVAL_BASE_URL/_api/contextinfo").apply {
-            addHeader("Accept", "application/json;odata=verbose")
+            addHeader("Accept", JSON_HEADER_VALUE)
         }
         return client.execute(httpPost).use { response ->
             logger.info { "Getting Sharepoint Digest: ${response.statusLine}" }
@@ -56,15 +56,15 @@ open class SharepointClient(private val user: String, private val password: Stri
             }
         }
     }
-
+    
     fun addEntryProd(approvalsListItem: SharepointApprovalsListItem) =
         addEntry(approvalsListItem, ISHARE_PROD_LIST)
-
+    
     fun addEntryTest(approvalsListItem: SharepointApprovalsListItem): Webapproval {
         val approvalsListItemTest = approvalsListItem.copy(metadata = SharepointApprovalsListItem.Metadata.TEST)
         return addEntry(approvalsListItemTest, ISHARE_TEST_LIST)
     }
-
+    
     private fun addEntry(
         approvalsListItem: SharepointApprovalsListItem,
         listName: String,
@@ -74,29 +74,30 @@ open class SharepointClient(private val user: String, private val password: Stri
                 """
                 Failed to get digest for Record.
                 This is eiter a connection issue or a credentials issue. You can check this with following command:
-                curl -v --ntlm -u 'USER:PASSWORD' \"$ISHARE_WEBAPPROVAL_BASE_URL/_api/web/lists/GetByTitle('Pipeline%20Approvals')\" -H \"Accept: application/json;odata=verbose\"""".trimIndent()
+                curl -v --ntlm -u 'USER:PASSWORD' \"$ISHARE_WEBAPPROVAL_BASE_URL/_api/web/lists/GetByTitle('Pipeline%20Approvals')\" -H "Accept: ${JSON_HEADER_VALUE}"
+                """.trimIndent()
             }
-
+    
         val webapprovalWithoutURL =
             checkNotNull(verifyAndGenerateWebapproval(approvalsListItem.applicationId, listName == ISHARE_TEST_LIST)) {
                 "Failed validating approval documents."
             }
-
+    
         val httpEntity = EntityBuilder.create().apply {
             text = permissiveObjectMapper.writeValueAsString(approvalsListItem)
         }.build()
         val httpPost = HttpPost("$ISHARE_WEBAPPROVAL_BASE_URL/_api/web/lists/GetByTitle('$listName')/items").apply {
-            addHeader("Accept", "application/json;odata=verbose")
+            addHeader("Accept", JSON_HEADER_VALUE)
             addHeader("X-RequestDigest", digest)
-            addHeader("Content-Type", "application/json;odata=verbose")
+            addHeader("Content-Type", JSON_HEADER_VALUE)
             entity = httpEntity
         }
-
+    
         val webapprovalUrl = client.execute(httpPost).use { response ->
             logger.info { "Adding Record: ${response.statusLine}" }
             val content = EntityUtils.toString(response.entity)
             logger.debug { content }
-
+    
             if (response.statusLine.statusCode != HttpStatus.SC_CREATED) {
                 logger.error { content }
                 throw IllegalStateException("Failed to create Record.")
@@ -109,8 +110,7 @@ open class SharepointClient(private val user: String, private val password: Stri
         logger.info { "EntryUrl: $webapprovalUrl" }
         return webapprovalWithoutURL.copy(url = webapprovalUrl)
     }
-
-
+    
     fun verifyAndGenerateWebapproval(applicationId: Int, isTest: Boolean): Webapproval? {
         val sharepointApprovalConfiguration = getSharepointApprovalConfigurations().findById(applicationId)
         logger.info { "Getting approvalStatus for ApplicationID $applicationId" }
@@ -118,12 +118,12 @@ open class SharepointClient(private val user: String, private val password: Stri
             sharepointApprovalConfiguration?.status == null -> {
                 logger.error {
                     """Cannot find valid pipeline configuration entry for ApplicationID $applicationId
-                    Did you already request one: $ISHARE_WEBAPPROVAL_BASE_URL/Lists/Pipeline%20Approval%20Configuration/AllItems.aspx
-                    """.trimIndent()
+                        Did you already request one: $ISHARE_WEBAPPROVAL_BASE_URL/Lists/Pipeline%20Approval%20Configuration/AllItems.aspx
+                        """.trimIndent()
                 }
                 return null
             }
-
+    
             sharepointApprovalConfiguration.status != "Approved" -> {
                 val logMessage =
                     "ApprovalStatus of ApplicationID $applicationId is ${sharepointApprovalConfiguration.status} and not Approved!"
@@ -134,12 +134,12 @@ open class SharepointClient(private val user: String, private val password: Stri
                     return null
                 }
             }
-
+    
             else -> {
                 logger.info { "ApprovalStatus of ApplicationID is ${sharepointApprovalConfiguration.status}" }
             }
         }
-
+    
         val webapplication = Webapproval.Webapplication(
             certification = Webapproval.Webapplication.Certification(
                 id = applicationId,
@@ -147,28 +147,29 @@ open class SharepointClient(private val user: String, private val password: Stri
             ),
             sharepointUrl = "$ISHARE_WEBAPPLICATION_BY_ID_URL${sharepointApprovalConfiguration.listId}"
         )
-
+    
         return Webapproval(
             url = "$ISHARE_WEBAPPROVAL_BASE_URL${if (isTest) ISHARE_TEST_LIST else ISHARE_PROD_LIST}/AllItems.aspx",
             webapplication = webapplication,
         )
     }
-
+    
     private fun getSharepointApprovalConfigurations(): SharepointApprovalConfigurations {
         val httpGet =
             HttpGet("$ISHARE_WEBAPPROVAL_BASE_URL/_api/web/lists/GetByTitle('Pipeline%20Approval%20Configuration')/items").apply {
-                addHeader("Accept", "application/json;odata=verbose")
+                addHeader("Accept", JSON_HEADER_VALUE)
             }
         client.execute(httpGet).use { response ->
             logger.info { "Executed request ${httpGet.requestLine} --- ${response.statusLine}" }
             val content = EntityUtils.toString(response.entity)
             logger.debug { content }
-
+    
             return permissiveObjectMapper.readValue(content, SharepointApprovalConfigurations::class.java)
         }
     }
-
+    
     companion object : KLogging() {
+        private const val JSON_HEADER_VALUE = "application/json;odata=verbose"
         const val ISHARE_BASE_URL = "https://itm.prg-dc.dhl.com"
         const val ISHARE_WEBAPPROVAL_BASE_URL = "${ISHARE_BASE_URL}/sites/it-sec"
         const val ISHARE_PROD_LIST = "Pipeline%20Approvals"
