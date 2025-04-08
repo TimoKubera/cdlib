@@ -2,7 +2,7 @@
     "_comment" : "Config file for the Technical Debt Bot https://dev.azure.com/sw-zustellung-31b3183/ICTO-3339_SDM/_git/technical-dept-bot?path=/tech-debt-bot/README.md",
     "git": {
         "pullrequests": {
-            "pr_limit": 1
+            "pr_limit": 20
         }
     }
 }
