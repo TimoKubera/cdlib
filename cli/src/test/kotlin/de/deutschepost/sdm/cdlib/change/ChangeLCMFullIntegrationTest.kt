@@ -33,7 +33,7 @@ import java.time.temporal.ChronoUnit
 @MicronautTest
 class ChangeLCMFullIntegrationTest(
     @Value("\${change-management-token}") val token: String,
-    @Value("\${sharepoint.username}") val sp_username: String,
+    @Value("${sharepoint.username}") val spUsername: String,
     @Value("\${sharepoint.password}") val sp_password: String,
     @Value("\${artifactory-azure-identity-token}") val artifactoryLCMIdentityToken: String,
     private val changeTestHelper: ChangeTestHelper,
