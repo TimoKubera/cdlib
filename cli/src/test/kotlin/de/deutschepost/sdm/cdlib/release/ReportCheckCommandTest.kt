@@ -53,7 +53,7 @@ class ReportCheckCommandTest : FunSpec() {
             output shouldContain "Checks your reports for known issues."
         }
 
-        // TODO: Add test for deprecated note
+        
 
         test("Don't fail up-to-date reports.") {
             withConstantNow(beginningLastCentury) {
