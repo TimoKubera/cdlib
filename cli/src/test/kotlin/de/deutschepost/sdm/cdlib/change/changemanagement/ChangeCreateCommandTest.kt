@@ -71,9 +71,9 @@ class ChangeCreateCommandTest(
                 )
             }
             exitCode shouldBeExactly -1
-            output shouldContain "java.lang.IllegalArgumentException"
+            output shouldContain ILLEGAL_ARGUMENT_EXCEPTION_MSG
         }
-
+        
         "Command fails if oslc but no distribution was passed" {
             val (exitCode, output) = withStandardOutput {
                 PicocliRunner.call(
@@ -82,9 +82,9 @@ class ChangeCreateCommandTest(
                 )
             }
             exitCode shouldBeExactly -1
-            output shouldContain "java.lang.IllegalArgumentException"
+            output shouldContain ILLEGAL_ARGUMENT_EXCEPTION_MSG
         }
-
+        
         "Command doesn't fail if no-oslc and no distribution was passed" {
             val (exitCode, output) = withStandardOutput {
                 PicocliRunner.call(
@@ -93,7 +93,7 @@ class ChangeCreateCommandTest(
                 )
             }
             exitCode shouldBeExactly -1
-            output shouldContain "java.lang.IllegalArgumentException"
+            output shouldContain ILLEGAL_ARGUMENT_EXCEPTION_MSG
             output shouldContain "Verifying reports..."
         }
 
