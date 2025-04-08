@@ -25,10 +25,42 @@ import java.time.temporal.ChronoUnit
 @RequiresTag("UnitTest")
 @Tags("UnitTest")
 @MicronautTest
+package de.deutschepost.sdm.cdlib.names
+
+import de.deutschepost.sdm.cdlib.names.git.GitRepository
+import de.deutschepost.sdm.cdlib.names.git.GitRevision
+import io.kotest.core.annotation.RequiresTag
+import io.kotest.core.annotation.Tags
+import io.kotest.core.spec.style.AnnotationSpec
+import io.kotest.extensions.system.OverrideMode
+import io.kotest.extensions.system.SystemEnvironmentTestListener
+import io.kotest.extensions.system.withEnvironment
+import io.kotest.extensions.time.withConstantNow
+import io.kotest.matchers.comparables.shouldBeEqualComparingTo
+import io.kotest.matchers.comparables.shouldBeGreaterThanOrEqualTo
+import io.kotest.matchers.comparables.shouldBeLessThanOrEqualTo
+import io.kotest.matchers.shouldBe
+import io.kotest.matchers.string.*
+import io.micronaut.test.extensions.kotest5.annotation.MicronautTest
+import io.mockk.every
+import io.mockk.mockkObject
+import java.time.ZoneId
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
+
+@RequiresTag("UnitTest")
+@Tags("UnitTest")
+@MicronautTest
 class NameResolverAzureTest(
     private val resolver: NameResolverAzure,
     private val namesConfigWithDefault: NamesConfigWithDefault
 ) : AnnotationSpec() {
+
+    companion object {
+        private const val BASE_RELEASE_NAME = "ICTO-3339_SDM-phippyandfriends"
+    }
+
     private val before = ZonedDateTime.now().truncatedTo(ChronoUnit.SECONDS).toInstant()
 
 
@@ -36,7 +68,7 @@ class NameResolverAzureTest(
         SystemEnvironmentTestListener(
             mapOf(
                 "BUILD_BUILDID" to "12657",
-                "BUILD_DEFINITIONNAME" to "ICTO-3339_SDM-phippyandfriends",
+                "BUILD_DEFINITIONNAME" to BASE_RELEASE_NAME,
                 "BUILD_SOURCEBRANCHNAME" to "i593_test",
                 "SYSTEM_COLLECTIONURI" to "https://dev.azure.com/sw-zustellung-31b3183/",
                 "SYSTEM_TEAMPROJECT" to "ICTO-3339_SDM",
@@ -100,7 +132,7 @@ class NameResolverAzureTest(
 
     @Test
     fun testCreate_APP_NAME() {
-        resolver[Names.CDLIB_APP_NAME] shouldBeEqualComparingTo "ICTO-3339_SDM-phippyandfriends"
+        resolver[Names.CDLIB_APP_NAME] shouldBeEqualComparingTo BASE_RELEASE_NAME
     }
 
     @Test
@@ -184,7 +216,7 @@ class NameResolverAzureTest(
     @Test
     fun testCreate_RELEASE_NAME() {
         resolver[Names.CDLIB_RELEASE_NAME] shouldContainIgnoringCase "_12657_a5c5bc3"
-        resolver[Names.CDLIB_RELEASE_NAME] shouldContainIgnoringCase "ICTO-3339_SDM-phippyandfriends"
+        resolver[Names.CDLIB_RELEASE_NAME] shouldContainIgnoringCase BASE_RELEASE_NAME
     }
 
     @Test
@@ -221,7 +253,7 @@ class NameResolverAzureTest(
     @Test
     fun testCreate_RELEASE_NAME_UNIQUE() {
         val releaseNameUnique = resolver[Names.CDLIB_RELEASE_NAME_UNIQUE]
-        releaseNameUnique shouldContain "ICTO-3339_SDM-phippyandfriends_"
+        releaseNameUnique shouldContain BASE_RELEASE_NAME + "_"
         releaseNameUnique shouldContain "_12657_a5c5bc3"
         val date =
             ZonedDateTime.parse(releaseNameUnique.split("_").last(), DateTimeFormatter.ISO_OFFSET_DATE_TIME).toInstant()
@@ -235,6 +267,15 @@ class NameResolverAzureTest(
         withEnvironment(
             mapOf(
                 "BUILD_DEFINITIONNAME" to "ITR-1337-dulli-daks-orchestrator",
+                "BUILD_SOURCEBRANCHNAME" to "develop-update-flux-deployment"
+            ),
+            OverrideMode.SetOrOverride
+        ) {
+            val newResolver = NameResolverAzure(namesConfigWithDefault)
+            newResolver[Names.CDLIB_RELEASE_NAME_HELM].last().isLetterOrDigit() shouldBe true
+        }
+    }
+}
                 "BUILD_SOURCEBRANCHNAME" to "develop-update-flux-deployment",
             ),
             OverrideMode.SetOrOverride
