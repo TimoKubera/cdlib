@@ -32,6 +32,10 @@ class ReportOslcGradlePluginIntegrationTest(
     private val acceptedListFileWrongLicense = "src/test/resources/oslc/acceptedList-wrongLicense.json"
     private val acceptedListFileWrongVersion = "src/test/resources/oslc/acceptedList-wrongVersion.json"
 
+    companion object {
+        const val POLICY_PROFILE_DISTRIBUTION = "Policy Profile: Distribution"
+    }
+
     override fun listeners() = listOf(
         getSystemEnvironmentTestListenerWithOverrides(
             mapOf(
@@ -68,7 +72,7 @@ class ReportOslcGradlePluginIntegrationTest(
                     PicocliRunner.call(ReportCommand.CheckCommand::class.java, *args)
                 }
                 ret shouldBeExactly -1
-                output shouldContain "Policy Profile: Distribution"
+                output shouldContain ReportOslcGradlePluginIntegrationTest.POLICY_PROFILE_DISTRIBUTION
                 output shouldNotContain "Unapproved Licenses Count: 0"
             }
 
@@ -79,7 +83,7 @@ class ReportOslcGradlePluginIntegrationTest(
                     PicocliRunner.call(ReportCommand.CheckCommand::class.java, *args)
                 }
                 ret shouldBeExactly 0
-                output shouldContain "Policy Profile: Distribution"
+                output shouldContain ReportOslcGradlePluginIntegrationTest.POLICY_PROFILE_DISTRIBUTION
                 output shouldContain "Unapproved Licenses Count: 0"
             }
 
@@ -90,7 +94,7 @@ class ReportOslcGradlePluginIntegrationTest(
                     PicocliRunner.call(ReportCommand.CheckCommand::class.java, *args)
                 }
                 ret shouldBeExactly -1
-                output shouldContain "Policy Profile: Distribution"
+                output shouldContain ReportOslcGradlePluginIntegrationTest.POLICY_PROFILE_DISTRIBUTION
                 output shouldContain "Unapproved Licenses Count: 1"
                 output shouldContain "Alladin Free Public License 9: [com.rabbitmq:amqp-client]"
             }
@@ -102,7 +106,7 @@ class ReportOslcGradlePluginIntegrationTest(
                     PicocliRunner.call(ReportCommand.CheckCommand::class.java, *args)
                 }
                 ret shouldBeExactly -1
-                output shouldContain "Policy Profile: Distribution"
+                output shouldContain ReportOslcGradlePluginIntegrationTest.POLICY_PROFILE_DISTRIBUTION
                 output shouldContain "Unapproved Licenses Count: 1"
                 output shouldContain "Common Development and Distribution License 1.0: [org.apache.tomcat.embed:tomcat-embed-core]"
             }
