@@ -11,6 +11,19 @@ import withStandardOutput
 
 @RequiresTag("UnitTest")
 @Tags("UnitTest")
+package de.deutschepost.sdm.cdlib.names
+
+import de.deutschepost.sdm.cdlib.CdlibCommand
+import io.kotest.core.annotation.RequiresTag
+import io.kotest.core.annotation.Tags
+import io.kotest.core.spec.style.DescribeSpec
+import io.kotest.matchers.string.shouldContain
+import io.micronaut.configuration.picocli.PicocliRunner
+import toArgsArray
+import withStandardOutput
+
+@RequiresTag("UnitTest")
+@Tags("UnitTest")
 class NamesCommandTest : DescribeSpec({
     describe("cdlib names") {
         describe("names -h") {
@@ -18,7 +31,7 @@ class NamesCommandTest : DescribeSpec({
                 val args = "names -h".toArgsArray()
                 PicocliRunner.run(CdlibCommand::class.java, *args)
             }
-            it("should display help") {
+            it(NamesCommandTest.HELP_DISPLAY) {
                 output shouldContain "Contains subcommands for automatic name and ID creation in pipeline"
             }
         }
@@ -29,7 +42,7 @@ class NamesCommandTest : DescribeSpec({
                 PicocliRunner.run(CdlibCommand::class.java, *args)
             }
 
-            it("should display help") {
+            it(NamesCommandTest.HELP_DISPLAY) {
                 output shouldContain "Create canonical set of standard names and IDs"
                 output shouldContain "Name of optional output file"
                 output shouldContain "Release name to use for derived name creation"
@@ -43,7 +56,7 @@ class NamesCommandTest : DescribeSpec({
                 PicocliRunner.run(CdlibCommand::class.java, *args)
             }
 
-            it("should display help") {
+            it(NamesCommandTest.HELP_DISPLAY) {
                 output shouldContain "Dumps the list of environment variables"
                 output shouldContain "Name of optional output file"
             }
@@ -61,4 +74,8 @@ class NamesCommandTest : DescribeSpec({
             }
         }
     }
-})
+}) {
+    companion object {
+        const val HELP_DISPLAY = "should display help"
+    }
+}
