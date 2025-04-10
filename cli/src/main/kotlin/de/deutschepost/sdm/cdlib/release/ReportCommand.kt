@@ -142,7 +142,7 @@ class ReportCommand : SubcommandWithHelp() {
 
             return runCatching {
                 var reports = reportMixin.reports
-                if (reports.isEmpty()) { //TODO DEPRECATED: only for TQS soft remove reasons
+                if (reports.isEmpty()) { // Deprecated: only for TQS soft remove reasons
                     return 0
                 }
                 if (checkMixin.checkSecurityReports(reports).hasInvalidReport) return -1
