@@ -102,10 +102,8 @@ object TestResultParser : KLogging() {
                     }
 
                     (this in substitutes) and endsWith(".json") -> {
-                        permissiveObjectMapper.readValue(
-                            file,
-                            SecurityTestResult::class.java //TODO Deprecated with CDlib7???
-                        ).copy(uri = file.name, pregenerated = true)
+                        val securityTestResult: SecurityTestResult = permissiveObjectMapper.readValue(file)
+                        OslcTestResult.from(securityTestResult, file.name)
                     }
 
                     else -> {
