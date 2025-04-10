@@ -44,15 +44,16 @@ class OslcComplianceAcceptedListTest : FunSpec() {
     init {
         context("de.deutschepost.sdm.cdlib.release.report.internal.oslcComplianceChecker.VersionSpecification parsing") {
             test("Testing valid input strings") {
+                val headerInputString = "Input String"
                 io.kotest.data.forAll(
                     table(
-                        headers("Input String", "Default Value", "Expected"),
+                        headers(headerInputString, "Default Value", "Expected"),
                         row("0.0.0", 0, VersionSpecification(0, 0, 0)),
                         row("0.0.0", Int.MAX_VALUE, VersionSpecification(0, 0, 0)),
                         row("1.2.3", 0, VersionSpecification(1, 2, 3)),
                         row("1.2.3.4", 0, VersionSpecification(1, 2, 3)),
                         row("1", 0, VersionSpecification(1, 0, 0)),
-                        row("6.6", 6, VersionSpecification(6, 6, 6)),
+                        row("6.6", 6, VersionSpecification(6, 6, 6))
                     )
                 ) { input: String, default: Int, expected: VersionSpecification ->
                     VersionSpecification.fromString(input, default) shouldBe expected
@@ -60,12 +61,13 @@ class OslcComplianceAcceptedListTest : FunSpec() {
             }
 
             test("Testing invalid input strings") {
+                val headerInputString = "Input String"
                 io.kotest.data.forAll(
                     table(
-                        headers("Input String", "Default Value"),
+                        headers(headerInputString, "Default Value"),
                         row("a.b.c", 0),
                         row("error", 0),
-                        row("3,2,5", 0),
+                        row("3,2,5", 0)
                     )
                 ) { input: String, default: Int ->
                     shouldThrow<NumberFormatException> { VersionSpecification.fromString(input, default) }
@@ -73,9 +75,10 @@ class OslcComplianceAcceptedListTest : FunSpec() {
             }
 
             test("Testing valid ranged input strings") {
+                val headerInputString = "Input String"
                 io.kotest.data.forAll(
                     table(
-                        headers("Input String", "ExpectedMin", "ExpectedMax"),
+                        headers(headerInputString, "ExpectedMin", "ExpectedMax"),
                         row("1.2.3-11.12.13", VersionSpecification(1, 2, 3), VersionSpecification(11, 12, 13)),
                         row("-11.12.13", VersionSpecification(0, 0, 0), VersionSpecification(11, 12, 13)),
                         row(
@@ -94,7 +97,7 @@ class OslcComplianceAcceptedListTest : FunSpec() {
                             VersionSpecification(0, 0, 0),
                             VersionSpecification(Int.MAX_VALUE, Int.MAX_VALUE, Int.MAX_VALUE)
                         ),
-                        row("11.12.13", VersionSpecification(11, 12, 13), VersionSpecification(11, 12, 13)),
+                        row("11.12.13", VersionSpecification(11, 12, 13), VersionSpecification(11, 12, 13))
                     )
                 ) { input: String, min: VersionSpecification, max: VersionSpecification ->
                     VersionSpecification.rangeFromString(input) shouldBe min..max
@@ -102,15 +105,17 @@ class OslcComplianceAcceptedListTest : FunSpec() {
             }
 
             test("Testing invalid ranged input strings") {
+                val headerInputString = "Input String"
                 io.kotest.data.forAll(
                     table(
-                        headers("Input String"),
+                        headers(headerInputString),
                         row("1.2.3-11.12.13-1.2.3"),
-                        row("1-1-1"),
+                        row("1-1-1")
                     )
                 ) { input: String ->
                     shouldThrow<RuntimeException> { VersionSpecification.rangeFromString(input) }
                 }
+            }
             }
 
             test("Testing isInBetween") {
