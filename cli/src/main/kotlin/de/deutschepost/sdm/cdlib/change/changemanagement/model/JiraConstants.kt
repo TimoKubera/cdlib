@@ -214,16 +214,16 @@ object JiraConstants {
     }
 
     @Suppress("unused")
-    enum class CompletionCode(val value: String) { // TODO: enums should probably work by id
-        SUCCESS("Erfolgreich implementiert"), // 13672
-        SUCCESS_DEVIATION("Erfolgreich mit Abweichung"), // 13673
-        REJECTED("Abgelehnt"), // 13674
-        SUCCESS_FALLBACK("Erfolgreich mit Fallback"), // 13675
-        FALLBACK_DEVIATION("Fallback mit Abweichung"), // 13676
-        ABORTED("Abgebrochen"), // 13671
-        NONE("None"), // -1
+    enum class CompletionCode(val value: String) {
+        SUCCESS("13672"),
+        SUCCESS_DEVIATION("13673"),
+        REJECTED("13674"),
+        SUCCESS_FALLBACK("13675"),
+        FALLBACK_DEVIATION("13676"),
+        ABORTED("13671"),
+        NONE("-1"),
         ;
-
+    
         companion object {
             infix fun from(issueField: GetChangesResponse.Issue.Fields.CompletionCodeField?): CompletionCode? =
                 if (issueField != null) {
