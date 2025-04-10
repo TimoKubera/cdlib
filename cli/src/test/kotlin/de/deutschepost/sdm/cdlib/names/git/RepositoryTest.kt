@@ -10,7 +10,23 @@ import io.mockk.mockkObject
 
 @RequiresTag("UnitTest")
 @Tags("UnitTest")
+package de.deutschepost.sdm.cdlib.names.git
+
+import io.kotest.core.annotation.RequiresTag
+import io.kotest.core.annotation.Tags
+import io.kotest.core.spec.style.AnnotationSpec
+import io.kotest.matchers.comparables.shouldBeEqualComparingTo
+import io.kotest.matchers.string.shouldContainIgnoringCase
+import io.mockk.every
+import io.mockk.mockkObject
+
+@RequiresTag("UnitTest")
+@Tags("UnitTest")
 class RepositoryTest : AnnotationSpec() {
+    companion object {
+        private const val TEST_EMAIL = "f.l@dhl.com"
+    }
+
     private val currDir = System.getProperty("user.dir")
 
     @BeforeAll
@@ -22,9 +38,9 @@ class RepositoryTest : AnnotationSpec() {
             longMessage = "Dummy Commit",
             shortMessage = "Dummy Commit",
             authorName = "Firstname Lastname",
-            authorEmail = "f.l@dhl.com",
+            authorEmail = TEST_EMAIL,
             committerName = "Firstname Lastname",
-            committerEmail = "f.l@dhl.com"
+            committerEmail = TEST_EMAIL
         )
     }
 
@@ -35,9 +51,9 @@ class RepositoryTest : AnnotationSpec() {
         revision.longMessage shouldBeEqualComparingTo "Dummy Commit"
         revision.shortMessage shouldBeEqualComparingTo "Dummy Commit"
         revision.authorName shouldBeEqualComparingTo "Firstname Lastname"
-        revision.authorEmail shouldBeEqualComparingTo "f.l@dhl.com"
+        revision.authorEmail shouldBeEqualComparingTo TEST_EMAIL
         revision.committerName shouldBeEqualComparingTo "Firstname Lastname"
-        revision.committerEmail shouldBeEqualComparingTo "f.l@dhl.com"
+        revision.committerEmail shouldBeEqualComparingTo TEST_EMAIL
     }
 
     @Test

@@ -96,7 +96,7 @@ class ChangeOslcIntegrationTest(
                         "--no-distribution --jira-token $chgToken --artifactory-its-instance --artifactory-identity-token $artifactoryIdentityToken --repo-name $repoName --immutable-repo-name $immutableRepoName --folder-name $oslcFNCIName --commercial-reference 5296 --test --debug --no-webapproval --no-tqs".toArgsArray()
                     PicocliRunner.call(ChangeCommand.CreateCommand::class.java, *args)
                 }
-                output shouldContain "EntryUrl: "
+                output shouldContain ENTRY_URL
                 output shouldContain "labels=[cdlib, oslc, test]"
                 ret shouldBeExactly 0
             }
@@ -107,7 +107,7 @@ class ChangeOslcIntegrationTest(
                         "--no-distribution --jira-token $chgToken --artifactory-its-instance --artifactory-identity-token $artifactoryIdentityToken --repo-name $repoName --immutable-repo-name $immutableRepoName --folder-name $oslcMavenPluginName --commercial-reference 5296 --test --debug --no-webapproval --no-tqs".toArgsArray()
                     PicocliRunner.call(ChangeCommand.CreateCommand::class.java, *args)
                 }
-                output shouldContain "EntryUrl: "
+                output shouldContain ENTRY_URL
                 output shouldContain "labels=[cdlib, oslc, test]"
                 output shouldNotContain "com.microsoft.aad.msal4j.MsalClientException: Token not found in the cache"
                 ret shouldBeExactly 0
@@ -119,7 +119,7 @@ class ChangeOslcIntegrationTest(
                         "--no-distribution --jira-token $chgToken --artifactory-its-instance --artifactory-identity-token $artifactoryIdentityToken --repo-name $repoName --immutable-repo-name $immutableRepoName --folder-name $oslcGradlePluginName --commercial-reference 5296 --test --debug --no-webapproval --no-tqs".toArgsArray()
                     PicocliRunner.call(ChangeCommand.CreateCommand::class.java, *args)
                 }
-                output shouldContain "EntryUrl: "
+                output shouldContain ENTRY_URL
                 output shouldContain "labels=[cdlib, oslc, test]"
                 output shouldNotContain "com.microsoft.aad.msal4j.MsalClientException: Token not found in the cache"
                 ret shouldBeExactly 0
