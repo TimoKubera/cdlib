@@ -18,7 +18,31 @@ import java.io.File
 
 @RequiresTag("UnitTest")
 @Tags("UnitTest")
+package de.deutschepost.sdm.cdlib.release.report
+
+import com.fasterxml.jackson.module.kotlin.readValue
+import de.deutschepost.sdm.cdlib.release.report.external.OslcGradlePluginTestResult
+import de.deutschepost.sdm.cdlib.release.report.external.from
+import de.deutschepost.sdm.cdlib.release.report.internal.oslcComplianceChecker.OslcComplianceChecker
+import de.deutschepost.sdm.cdlib.release.report.internal.oslcComplianceChecker.OslcDependencyLicenseEntry
+import de.deutschepost.sdm.cdlib.release.report.internal.oslcComplianceChecker.OslcLicenseDefinition
+import de.deutschepost.sdm.cdlib.release.report.internal.oslcComplianceChecker.OslcLicenseEntry
+import de.deutschepost.sdm.cdlib.utils.defaultObjectMapper
+import io.kotest.core.annotation.RequiresTag
+import io.kotest.core.annotation.Tags
+import io.kotest.core.spec.style.FunSpec
+import io.kotest.data.row
+import io.kotest.matchers.shouldBe
+import io.kotest.matchers.shouldNotBe
+import java.io.File
+
+@RequiresTag("UnitTest")
+@Tags("UnitTest")
 class OslcComplianceCheckerTest : FunSpec() {
+
+    companion object {
+        const val MOZILLA_PUBLIC_LICENSE_2_0 = "Mozilla Public License 2.0"
+    }
 
     private val disallowedLicensesDistributionPath: String =
         "src/main/resources/oslc/disallowedLicensesDistribution.json"
@@ -34,11 +58,11 @@ class OslcComplianceCheckerTest : FunSpec() {
         licenses = listOf(
             OslcLicenseEntry(
                 license = "MPL 2.0",
-                url = "https://www.mozilla.org/en-US/MPL/2.0/",
+                url = "https://www.mozilla.org/en-US/MPL/2.0/"
             )
         )
     )
-    private val licenseMozillaName = "Mozilla Public License 2.0"
+    private val licenseMozillaName = MOZILLA_PUBLIC_LICENSE_2_0
     private val depWithCDDL = OslcDependencyLicenseEntry(
         dependencyName = "test.should.fail:cddl",
         dependencyVersion = "",
@@ -46,7 +70,7 @@ class OslcComplianceCheckerTest : FunSpec() {
         licenses = listOf(
             OslcLicenseEntry(
                 license = "COMMON DEVELOPMENT AND DISTRIBUTION LICENSE (CDDL) Version 1.0",
-                url = "https://oss.oracle.com/licenses/CDDL",
+                url = "https://oss.oracle.com/licenses/CDDL"
             )
         )
     )
@@ -58,7 +82,7 @@ class OslcComplianceCheckerTest : FunSpec() {
         licenses = listOf(
             OslcLicenseEntry(
                 license = "GNU LESSER GENERAL PUBLIC LICENSE, Version 2.1",
-                url = "https://www.gnu.org/licenses/lgpl-2.1",
+                url = "https://www.gnu.org/licenses/lgpl-2.1"
             )
         )
     )
@@ -70,7 +94,7 @@ class OslcComplianceCheckerTest : FunSpec() {
         licenses = listOf(
             OslcLicenseEntry(
                 license = "GNU LESSER GENERAL PUBLIC LICENSE, Version 3.0",
-                url = "https://www.gnu.org/licenses/lgpl-3.0",
+                url = "https://www.gnu.org/licenses/lgpl-3.0"
             )
         )
     )
@@ -83,7 +107,7 @@ class OslcComplianceCheckerTest : FunSpec() {
         licenses = listOf(
             OslcLicenseEntry(
                 license = "GNU GENERAL PUBLIC LICENSE, Version 2 + Classpath Exception",
-                url = "https://openjdk.java.net/legal/gplv2+ce.html",
+                url = "https://openjdk.java.net/legal/gplv2+ce.html"
             )
         )
     )
@@ -95,7 +119,7 @@ class OslcComplianceCheckerTest : FunSpec() {
         licenses = listOf(
             OslcLicenseEntry(
                 license = "Apache License 2.0",
-                url = "https://www.apache.org/licenses/LICENSE-2.0",
+                url = "https://www.apache.org/licenses/LICENSE-2.0"
             )
         )
     )
@@ -107,7 +131,7 @@ class OslcComplianceCheckerTest : FunSpec() {
         licenses = listOf(
             OslcLicenseEntry(
                 license = "Aladin Free Public License",
-                url = "http://www.artifex.com/downloads/doc/Public.htm",
+                url = "http://www.artifex.com/downloads/doc/Public.htm"
             )
         )
     )
@@ -118,13 +142,13 @@ class OslcComplianceCheckerTest : FunSpec() {
         context("findMatchingLicense Tests") {
             test("Table Test for selected Licenses with distribution") {
                 io.kotest.data.forAll(
-                    row(depWithMozilla, licenseMozillaName),
+                    row(depWithMozilla, MOZILLA_PUBLIC_LICENSE_2_0),
                     row(depWithCDDL, licenseCDDLName),
                     row(depWithLGPL21, licenseLGPL21Name),
                     row(depWithLGPL3, licenseLGPL3Name),
                     row(depWithGPLCE, null),
                     row(depWithAPL2, null),
-                    row(depWithAladin, licenseAlladinName),
+                    row(depWithAladin, licenseAlladinName)
                 ) { dep: OslcDependencyLicenseEntry, licenseName: String? ->
 
                     val output = OslcComplianceChecker.findAllMatchingLicenses(dep, true)
@@ -149,7 +173,7 @@ class OslcComplianceCheckerTest : FunSpec() {
                     row(depWithLGPL3, null),
                     row(depWithGPLCE, null),
                     row(depWithAPL2, null),
-                    row(depWithAladin, licenseAlladinName),
+                    row(depWithAladin, licenseAlladinName)
                 ) { dep: OslcDependencyLicenseEntry, licenseName: String? ->
                     val output = OslcComplianceChecker.findAllMatchingLicenses(dep, false)
                     println("Given: ${dep.licenses.joinToString { "[${it.license} - ${it.url}]" }}")
@@ -181,7 +205,7 @@ class OslcComplianceCheckerTest : FunSpec() {
                     "GNU Lesser General Public License 2.1" to 9,
                     "GNU General Public License 2.0" to 4,
                     "GNU General Public License 3.0" to 4,
-                    "Mozilla Public License 2.0" to 5
+                    MOZILLA_PUBLIC_LICENSE_2_0 to 5
                 )
                 val notExpectedLicenses = listOf(
                     "Apache License 2.0",
@@ -218,7 +242,7 @@ class OslcComplianceCheckerTest : FunSpec() {
 
                 val expectedLicenses = mapOf(
                     "Alladin Free Public License 9" to 5,
-                    "Academic Free License 3.0" to 3,
+                    "Academic Free License 3.0" to 3
                 )
                 val notExpectedLicenses = listOf(
                     "Apache License 2.0",
@@ -282,7 +306,7 @@ class OslcComplianceCheckerTest : FunSpec() {
                 val epl2 = output.entries.firstOrNull { it.key.license == "Eclipse Public License 2.0" }
                 epl2 shouldNotBe null
                 epl2?.value?.size shouldBe 1
-                val mpl2 = output.entries.firstOrNull { it.key.license == "Mozilla Public License 2.0" }
+                val mpl2 = output.entries.firstOrNull { it.key.license == MOZILLA_PUBLIC_LICENSE_2_0 }
                 mpl2 shouldNotBe null
                 mpl2?.value?.size shouldBe 1
                 val unknown = output.entries.firstOrNull { it.key.license == "UNKNOWN" }
@@ -310,6 +334,7 @@ class OslcComplianceCheckerTest : FunSpec() {
         }
     }
 }
+
 
 private fun printDefinitions(definitions: List<OslcLicenseDefinition>) {
     definitions.forEach {
