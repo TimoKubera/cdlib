@@ -19,7 +19,32 @@ import withStandardOutput
 
 @RequiresTag("UnitTest")
 @Tags("UnitTest")
+package de.deutschepost.sdm.cdlib.names
+
+import de.deutschepost.sdm.cdlib.CdlibCommand
+import de.deutschepost.sdm.cdlib.names.git.GitRepository
+import de.deutschepost.sdm.cdlib.names.git.GitRevision
+import io.kotest.core.annotation.RequiresTag
+import io.kotest.core.annotation.Tags
+import io.kotest.core.spec.style.AnnotationSpec
+import io.kotest.extensions.system.OverrideMode
+import io.kotest.extensions.system.SystemEnvironmentTestListener
+import io.kotest.extensions.system.withEnvironment
+import io.kotest.matchers.comparables.shouldBeEqualComparingTo
+import io.kotest.matchers.string.shouldContainIgnoringCase
+import io.micronaut.configuration.picocli.PicocliRunner
+import io.mockk.every
+import io.mockk.mockkObject
+import toArgsArray
+import withStandardOutput
+
+@RequiresTag("UnitTest")
+@Tags("UnitTest")
 class NamesCommandAzureTest : AnnotationSpec() {
+
+    companion object {
+        private const val VSO_APP_NAME = "##vso[task.setvariable variable=CDLIB_APP_NAME;isOutput=true]ICTO-3339_SDM-phippyandfriends"
+    }
 
     override fun listeners() = listOf(
         SystemEnvironmentTestListener(
@@ -61,7 +86,7 @@ class NamesCommandAzureTest : AnnotationSpec() {
             PicocliRunner.run(CdlibCommand::class.java, *args)
         }
 
-        output shouldContainIgnoringCase "##vso[task.setvariable variable=CDLIB_APP_NAME;isOutput=true]ICTO-3339_SDM-phippyandfriends"
+        output shouldContainIgnoringCase VSO_APP_NAME
         output shouldContainIgnoringCase "##vso[task.setvariable variable=CDLIB_EFFECTIVE_BRANCH_NAME;isOutput=true]i593_test"
         output shouldContainIgnoringCase "##vso[task.setvariable variable=CDLIB_PM_GIT_ID;isOutput=true]a5c5bc3ce1907e844490697b9aa22c4196c5d781"
         output shouldContainIgnoringCase "##vso[task.setvariable variable=CDLIB_RELEASE_NAME;isOutput=true]ICTO-3339_SDM-phippyandfriends_"
@@ -85,7 +110,7 @@ class NamesCommandAzureTest : AnnotationSpec() {
             val args = "names create --from-release-name $releaseName".toArgsArray()
             PicocliRunner.run(CdlibCommand::class.java, *args)
         }
-        output shouldContainIgnoringCase "##vso[task.setvariable variable=CDLIB_APP_NAME;isOutput=true]ICTO-3339_SDM-phippyandfriends"
+        output shouldContainIgnoringCase VSO_APP_NAME
         output shouldContainIgnoringCase "##vso[task.setvariable variable=CDLIB_APP_VERSION;isOutput=true]20211203.1809.18"
         output shouldContainIgnoringCase "##vso[task.setvariable variable=CDLIB_BUILD_NUMBER;isOutput=true]20210908.16"
         output shouldContainIgnoringCase "##vso[task.setvariable variable=CDLIB_EFFECTIVE_BRANCH_NAME;isOutput=true]i593_test"
@@ -118,7 +143,7 @@ class NamesCommandAzureTest : AnnotationSpec() {
                 PicocliRunner.run(CdlibCommand::class.java, *args)
             }
 
-            output shouldContainIgnoringCase "##vso[task.setvariable variable=CDLIB_APP_NAME;isOutput=true]ICTO-3339_SDM-phippyandfriends"
+            output shouldContainIgnoringCase VSO_APP_NAME
             output shouldContainIgnoringCase "##vso[task.setvariable variable=CDLIB_EFFECTIVE_BRANCH_NAME;isOutput=true]i593_test"
             output shouldContainIgnoringCase "##vso[task.setvariable variable=CDLIB_PM_GIT_ID;isOutput=true]a5c5bc3ce1907e844490697b9aa22c4196c5d781"
             output shouldContainIgnoringCase "##vso[task.setvariable variable=CDLIB_RELEASE_NAME;isOutput=true]ICTO-3339_SDM-phippyandfriends_"
@@ -127,3 +152,4 @@ class NamesCommandAzureTest : AnnotationSpec() {
 
     }
 }
+
