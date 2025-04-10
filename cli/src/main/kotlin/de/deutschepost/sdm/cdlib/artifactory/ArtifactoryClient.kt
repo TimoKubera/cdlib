@@ -361,12 +361,7 @@ class ArtifactoryClient(
             }
         }
 
-    private fun RepositoryHandle.fileAndCheck(path: String): ItemHandle =
-        file(path).also {
-            check(it.exists()) {
-                logger.error { "Could not find file: $path." }
-            }
-        }
+    
 
     private fun RepositoryHandle.folderAndCheck(path: String): ItemHandle =
         folder(path).also {
