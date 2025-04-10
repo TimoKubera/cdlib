@@ -27,19 +27,14 @@ class TestConnectionClientFactory(
 
 class TestConnectionClient(val config: HttpClientConfiguration) {
 
-    // TODO remove accessToken after TQS refactor
-    fun testConnection(url: String, accessToken: String? = null): Boolean {
+    fun testConnection(url: String): Boolean {
         config.isFollowRedirects = false
         val client = HttpClient.create(null, config)
-
+    
         logger.info { "Testing connection to $url" }
-
-        val httpGet = HttpRequest.GET<Any>(url).apply {
-            if (accessToken != null) {
-                header(HttpHeaders.AUTHORIZATION, "Bearer $accessToken")
-            }
-        }
-
+    
+        val httpGet = HttpRequest.GET<Any>(url)
+    
         return try {
             val response = client.toBlocking().exchange(httpGet, Argument.STRING, Argument.STRING)
             (response.status in setOf(
@@ -70,6 +65,7 @@ class TestConnectionClient(val config: HttpClientConfiguration) {
             config.isFollowRedirects = true
         }
     }
+    
 
     fun getErrorMessage() =
         """|There are multiple possibilities:
