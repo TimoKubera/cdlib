@@ -25,6 +25,11 @@ import java.lang.reflect.Method
 class ChangeCreateCommandTest(
     @Value("\${change-management-token}") val token: String
 ) : StringSpec() {
+
+    companion object {
+        private const val EXCEPTION_MESSAGE = "java.lang.IllegalArgumentException"
+    }
+
     override fun listeners(): List<TestListener> {
         return listOf(
             getSystemEnvironmentTestListenerWithOverrides()
@@ -59,7 +64,6 @@ class ChangeCreateCommandTest(
                     *"--test --jira-token $token".toArgsArray()
                 )
             }
-
             output shouldContain "Missing required argument(s): --commercial-reference=<commercialReference>"
         }
 
@@ -71,7 +75,7 @@ class ChangeCreateCommandTest(
                 )
             }
             exitCode shouldBeExactly -1
-            output shouldContain "java.lang.IllegalArgumentException"
+            output shouldContain EXCEPTION_MESSAGE
         }
 
         "Command fails if oslc but no distribution was passed" {
@@ -82,7 +86,7 @@ class ChangeCreateCommandTest(
                 )
             }
             exitCode shouldBeExactly -1
-            output shouldContain "java.lang.IllegalArgumentException"
+            output shouldContain EXCEPTION_MESSAGE
         }
 
         "Command doesn't fail if no-oslc and no distribution was passed" {
@@ -93,7 +97,7 @@ class ChangeCreateCommandTest(
                 )
             }
             exitCode shouldBeExactly -1
-            output shouldContain "java.lang.IllegalArgumentException"
+            output shouldContain EXCEPTION_MESSAGE
             output shouldContain "Verifying reports..."
         }
 
