@@ -98,7 +98,7 @@ class DeploymentTest(
 //        test("!Deployment should be deserializable") {
 //            /**
 //             * This test cannot work in the current implementation because of JsonUnwrapped.
-//             * TODO: Make deployment parseable again
+
 //             */
 //            val deployment = Deployment(
 //                cdlibVersionConfig = cdlibVersionConfig,
