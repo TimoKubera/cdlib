@@ -1,4 +1,10 @@
 {
+    "git": {
+        "fix_branch_prefix": "tech-debt-bot",
+        "pullrequests": {
+            "pr_limit": 2
+        }
+    },
     "sonarqube": {
         "projects": {
             "de.deutschepost.sdm.cdlib.cli": "cli"
