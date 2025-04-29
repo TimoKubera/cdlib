@@ -59,7 +59,7 @@ class ArtifactoryClient(
         folderSuffix: ArtifactoryFolderSuffix
     ): String? =
         runCatching {
-            val folderName = "${baseFolderName}_$folderSuffix" //TODO change with cdlib 7
+            val folderName = "${baseFolderName}_$folderSuffix"
             val repoHandle = repositoryAndCheck(repoName)
 
             repoHandle.get().apply {
