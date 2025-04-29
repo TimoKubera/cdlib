@@ -27,7 +27,7 @@ class TestConnectionClientFactory(
 
 class TestConnectionClient(val config: HttpClientConfiguration) {
 
-    // TODO remove accessToken after TQS refactor
+    
     fun testConnection(url: String, accessToken: String? = null): Boolean {
         config.isFollowRedirects = false
         val client = HttpClient.create(null, config)
