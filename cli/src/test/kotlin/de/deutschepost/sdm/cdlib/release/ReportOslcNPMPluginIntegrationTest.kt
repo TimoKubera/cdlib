@@ -60,7 +60,7 @@ class ReportOslcNPMPluginIntegrationTest(
                 ret shouldBeExactly 0
                 output shouldContain "Uploaded Artifact:"
             }
-            // TODO: Delete after sundown
+            
             test("Upload OSLC-Plugin report to LCM artifactory") {
                 val args =
                     "--debug --files $jsonFile --no-distribution --artifactory-azure-instance --artifactory-identity-token $artifactoryLCMIdentityToken --repo-name $repoLCMName --type build".toArgsArray()
