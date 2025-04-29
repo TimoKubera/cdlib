@@ -1,0 +1,7 @@
+{
+    "sonarqube": {
+        "projects": {
+            "de.deutschepost.sdm.cdlib.cli": "cli"
+        }
+    }
+}
