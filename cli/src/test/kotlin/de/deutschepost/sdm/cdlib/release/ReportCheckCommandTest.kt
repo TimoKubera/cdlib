@@ -53,7 +53,14 @@ class ReportCheckCommandTest : FunSpec() {
             output shouldContain "Checks your reports for known issues."
         }
 
-        // TODO: Add test for deprecated note
+        test("report check should display deprecation warning when using deprecated flag") {
+            val args = "report check --deprecated".toArgsArray()
+            val (ret, output) = withStandardOutput {
+                PicocliRunner.call(ReportCommand.CheckCommand::class.java, *args)
+            }
+            ret shouldBe 0
+            output shouldContain "deprecated"
+        }
 
         test("Don't fail up-to-date reports.") {
             withConstantNow(beginningLastCentury) {
