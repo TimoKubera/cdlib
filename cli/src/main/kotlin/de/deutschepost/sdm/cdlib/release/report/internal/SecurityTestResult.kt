@@ -152,7 +152,7 @@ fun List<SecurityTestResult>.securityTestsVerify(
             ReportType.CCA -> { // No operation needed for CCA report type }
             ReportType.OTHER -> { // No operation required }
             ReportType.OSLC -> { // No operation required for OSLC report type }
-            ReportType.OSLC_PRE -> {}
+            ReportType.OSLC_PRE -> { // No operation required for OSLC_PRE }
         }
     }
     return securityReportVerificationResult
