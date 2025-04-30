@@ -174,6 +174,7 @@ class ArchiveCommandIntegrationTest(@Value("\${artifactory-azure-identity-token}
         try {
             repository.delete(releaseName_build)
         } catch (_: Exception) {
+            // The deletion might fail if the folder does not exist; this exception is intentionally ignored as the absence of the folder is acceptable.
         }
 
     }
