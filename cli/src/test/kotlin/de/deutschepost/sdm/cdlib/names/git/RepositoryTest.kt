@@ -14,6 +14,10 @@ class RepositoryTest : AnnotationSpec() {
     private val currDir = System.getProperty("user.dir")
 
     @BeforeAll
+    companion object {
+        private const val DHL_EMAIL = "f.l@dhl.com"
+    }
+    
     fun initMocks() {
         mockkObject(GitRepository)
         every { GitRepository.getRemoteUrl(any()) } returns "https://git.dhl.com/CDLib/CDlib.git"
@@ -22,12 +26,12 @@ class RepositoryTest : AnnotationSpec() {
             longMessage = "Dummy Commit",
             shortMessage = "Dummy Commit",
             authorName = "Firstname Lastname",
-            authorEmail = "f.l@dhl.com",
+            authorEmail = DHL_EMAIL,
             committerName = "Firstname Lastname",
-            committerEmail = "f.l@dhl.com"
+            committerEmail = DHL_EMAIL
         )
     }
-
+    
     @Test
     fun testLastCommit() {
         val revision = GitRepository.lastBranchCommit(currDir)
@@ -35,9 +39,9 @@ class RepositoryTest : AnnotationSpec() {
         revision.longMessage shouldBeEqualComparingTo "Dummy Commit"
         revision.shortMessage shouldBeEqualComparingTo "Dummy Commit"
         revision.authorName shouldBeEqualComparingTo "Firstname Lastname"
-        revision.authorEmail shouldBeEqualComparingTo "f.l@dhl.com"
+        revision.authorEmail shouldBeEqualComparingTo DHL_EMAIL
         revision.committerName shouldBeEqualComparingTo "Firstname Lastname"
-        revision.committerEmail shouldBeEqualComparingTo "f.l@dhl.com"
+        revision.committerEmail shouldBeEqualComparingTo DHL_EMAIL
     }
 
     @Test
