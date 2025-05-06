@@ -53,8 +53,14 @@ class ReportCheckCommandTest : FunSpec() {
             output shouldContain "Checks your reports for known issues."
         }
 
-        // TODO: Add test for deprecated note
-
+        test("Deprecated note is shown") {
+            val args = "report check --deprecated".toArgsArray()
+            val (ret, output) = withStandardOutput {
+                PicocliRunner.call(CdlibCommand::class.java, *args)
+            }
+            ret shouldBe 0
+            output shouldContain "Deprecated Note:"
+        }
         test("Don't fail up-to-date reports.") {
             withConstantNow(beginningLastCentury) {
                 val args =
