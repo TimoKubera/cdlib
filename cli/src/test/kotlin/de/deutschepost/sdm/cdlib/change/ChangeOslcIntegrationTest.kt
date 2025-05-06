@@ -80,6 +80,7 @@ class ChangeOslcIntegrationTest(
 
     init {
         context("Creating oslc change is a success") {
+            val ENTRY_URL = "EntryUrl: "
             test("change create --oslc missing distribution") {
                 val (ret, output) = withStandardOutput {
                     val args =
@@ -89,37 +90,37 @@ class ChangeOslcIntegrationTest(
                 ret shouldBe -1
                 output shouldContain "IllegalArgumentException"
             }
-
+        
             test("change create with distribution") {
                 val (ret, output) = withStandardOutput {
                     val args =
                         "--no-distribution --jira-token $chgToken --artifactory-its-instance --artifactory-identity-token $artifactoryIdentityToken --repo-name $repoName --immutable-repo-name $immutableRepoName --folder-name $oslcFNCIName --commercial-reference 5296 --test --debug --no-webapproval --no-tqs".toArgsArray()
                     PicocliRunner.call(ChangeCommand.CreateCommand::class.java, *args)
                 }
-                output shouldContain "EntryUrl: "
+                output shouldContain ENTRY_URL
                 output shouldContain "labels=[cdlib, oslc, test]"
                 ret shouldBeExactly 0
             }
-
+        
             test("change create with report from maven plugin") {
                 val (ret, output) = withStandardOutput {
                     val args =
                         "--no-distribution --jira-token $chgToken --artifactory-its-instance --artifactory-identity-token $artifactoryIdentityToken --repo-name $repoName --immutable-repo-name $immutableRepoName --folder-name $oslcMavenPluginName --commercial-reference 5296 --test --debug --no-webapproval --no-tqs".toArgsArray()
                     PicocliRunner.call(ChangeCommand.CreateCommand::class.java, *args)
                 }
-                output shouldContain "EntryUrl: "
+                output shouldContain ENTRY_URL
                 output shouldContain "labels=[cdlib, oslc, test]"
                 output shouldNotContain "com.microsoft.aad.msal4j.MsalClientException: Token not found in the cache"
                 ret shouldBeExactly 0
             }
-
+        
             test("change create with report from gradle plugin") {
                 val (ret, output) = withStandardOutput {
                     val args =
                         "--no-distribution --jira-token $chgToken --artifactory-its-instance --artifactory-identity-token $artifactoryIdentityToken --repo-name $repoName --immutable-repo-name $immutableRepoName --folder-name $oslcGradlePluginName --commercial-reference 5296 --test --debug --no-webapproval --no-tqs".toArgsArray()
                     PicocliRunner.call(ChangeCommand.CreateCommand::class.java, *args)
                 }
-                output shouldContain "EntryUrl: "
+                output shouldContain ENTRY_URL
                 output shouldContain "labels=[cdlib, oslc, test]"
                 output shouldNotContain "com.microsoft.aad.msal4j.MsalClientException: Token not found in the cache"
                 ret shouldBeExactly 0
