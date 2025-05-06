@@ -95,23 +95,7 @@ class DeploymentTest(
             deployment.date.toInstant() shouldBe parseDeployment.date.toInstant()
         }
 
-//        test("!Deployment should be deserializable") {
-//            /**
-//             * This test cannot work in the current implementation because of JsonUnwrapped.
-//             * TODO: Make deployment parseable again
-//             */
-//            val deployment = Deployment(
-//                cdlibVersionConfig = cdlibVersionConfig,
-//                almId = "TEST",
-//                itSystemName = "TEST",
-//                deploymentType = "TEST",
-//                status = Deployment.Status.FAILURE,
-//            )
-//            deployment shouldBeEqualToComparingFields objectMapper.readValue(
-//                deployment.toPrettyString()?.byteInputStream(),
-//                Deployment::class.java
-//            )
-//        }
+
 
         ctx.close()
     }
