@@ -404,7 +404,7 @@ class ChangeHandler(
                 )
             }
 
-            // TODO: Check if this can be done via picocli validaiton
+            
             else -> {
                 require(end.isAfter(start)) {
                     "End date needs to be later than the start date."

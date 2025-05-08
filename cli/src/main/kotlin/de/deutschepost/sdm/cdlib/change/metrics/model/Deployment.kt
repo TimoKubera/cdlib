@@ -13,7 +13,7 @@ import mu.KLogging
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
-//TODO: include missing information from deployment schema
+
 data class Deployment(
     val id: String,
     val app: String,

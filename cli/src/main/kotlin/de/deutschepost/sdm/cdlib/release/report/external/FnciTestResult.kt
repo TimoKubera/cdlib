@@ -19,7 +19,7 @@ fun OslcTestResult.Companion.from(fnciTestResult: FnciTestResult, uri: String): 
                 groupedMapEntry.value.groupBy({ item -> item.inventoryReviewStatus }, { item -> item.name })
             }
     return OslcTestResult(
-        tool = Tool( //TODO: check with OSLC Team
+        tool = Tool(
             name = Tool.OSLC_FNCI_NAME, version = "", vendor = "Revenera", ruleVersion = ""
         ),
         uri = uri,
