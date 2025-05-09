@@ -1,9 +1,6 @@
 {
     "git": {
         "fix_branch_prefix": "tech-debt-bot",
-        "pullrequests": {
-            "pr_limit": 5
-        }
     },
     "sonarqube": {
         "projects": {
