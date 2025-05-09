@@ -1,6 +1,6 @@
 {
     "git": {
-        "fix_branch_prefix": "tech-debt-bot",
+        "fix_branch_prefix": "tech-debt-bot"
     },
     "sonarqube": {
         "projects": {
